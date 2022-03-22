@@ -12,16 +12,4 @@ services:
       - FLASK_APP=main.py
       - FLASK_DEBUG=0 # FLASK_DEBUG=0 -> server will be reloaded when code changes
 
-#      - 'RUN=flask run --host=0.0.0.0 --port=80' # MH: what's this for?
-
-    # Run development server
-#    command: flask run --host=0.0.0.0 --port=80
-
-    # Run uwsgi development server
-    # NOTE: Omit autoreloader in production
-#    command: uwsgi --http :80 --py-autoreload 1
     command: uwsgi --http :80
-
-    # Infinite loop, to keep it alive, for debugging
-    # MH: this does not start Flask; what does it do?
-#    command: bash -c "while true; do echo 'sleeping...' && sleep 10; done"
