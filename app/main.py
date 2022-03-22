@@ -1,5 +1,4 @@
-from flask import Flask
-import test
+from flask import Flask, render_template
 import sys
 
 import atlas.main
@@ -11,7 +10,8 @@ print("-------------- BEGIN -------------- -------------- --------------", file 
 
 @app.route("/")
 def root():
-    return atlas.main.main("Hoi!")
+    body_content = atlas.main.main("Hoi!")
+    return render_template("index.html", body_content=body_content)
 
 if __name__ == "__main__":
     # Only for debugging while developing

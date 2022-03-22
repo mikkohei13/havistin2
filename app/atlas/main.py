@@ -38,7 +38,7 @@ def get_collections():
 
         html_table += "<tr><td>" + i["aggregateBy"]["document.collectionId"] + "</td>"
         html_table += "<td>" + str(i["count"]) + "</td>"
-        html_table += "<td>" + str((i["count"] / total_obs_count) * 100) + " %</td></tr>"
+        html_table += "<td>" + str(round((i["count"] / total_obs_count) * 100, 1)) + " %</td></tr>"
 #        print(dataDict["results"]["aggregateBy"]["count"], file = sys.stdout)
 
     html_table += "</table>"
