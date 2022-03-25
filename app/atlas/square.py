@@ -19,7 +19,7 @@ def print_debug(data):
     print(str(data), file = sys.stdout)
 
 
-def atlas3_to_dict(square_id):
+def atlas3_square(square_id):
     filename = "./data/atlas3/" + square_id.replace(":", "-") + ".json"   
     f = open(filename)
 
@@ -49,41 +49,55 @@ def atlas4_square(square_id):
     return species_dict, square_info_dict
 
 
-def split_atlascode(atlascode_value):
-    parts = atlascode_value.split(" ")
+def split_atlascode(atlascode_text):
+    parts = atlascode_text.split(" ")
     return parts[0]
     
 
+def convert_atlasclass(atlasclass_raw):
+    if atlasclass_raw == "Epätodennäköinen pesintä" or atlasclass_raw == 1:
+        return "e"
+    elif atlasclass_raw == "Mahdollinen pesintä" or atlasclass_raw == 2:
+        return "M"
+    elif atlasclass_raw == "Todennäköinen pesintä" or atlasclass_raw == 3:
+        return "T"
+    elif atlasclass_raw == "Varma pesintä" or atlasclass_raw == 4:
+        return "V"
+    else:
+        return atlasclass_raw
+
+
 def generate_species_table(atlas3_species_dict, atlas4_species_dict):
 
-    html_table = "<table>"
-    html_table += "<tr><td>Laji</td><td>3. atlas</td><td>4. atlas</td><td>Oma havainto</td></tr>"
+    html_table = "<div id='listwrapper'>"
+    html_table += "<div class='row header'><div class='species'>Laji</div><div class='atlas3'>3.</div><div class='atlas4'>4.</div><div class='own'>Oma</div></div>"
 
     for species in atlas3_species_dict:
         print_r(species)
         speciesFi = species["speciesFi"]
 
-        html_table += "<tr>"
-        html_table += "<td>" + speciesFi + "</td>"
+        html_table += "<div class='row'>"
+        html_table += "<div class='species'>" + speciesFi + "</div>"
 
         # Atlas 3 data
-        html_table += "<td>" + str(species["breedingIndex"]).replace("0", "") + "</td>"
+#        html_table += "<div class='atlas3'>" + str(species["breedingIndex"]).replace("0", "") + "</div>"
+        html_table += "<div class='atlas3'>" + convert_atlasclass(species["breedingCategory"]) + "</div>"
 
         # Atlas 4 data
-        atlas4_class = ""
-        atlas4_code = ""
+        atlas4_class = "&nbsp;"
+        atlas4_code = "&nbsp;"
         if speciesFi in atlas4_species_dict:
-            atlas4_class = str(atlas4_species_dict[speciesFi]["atlasClass"]["value"])
+            atlas4_class = convert_atlasclass(atlas4_species_dict[speciesFi]["atlasClass"]["value"])
             atlas4_code = str(split_atlascode(atlas4_species_dict[speciesFi]["atlasCode"]["value"]))
 
-        html_table += "<td>" + atlas4_code + "</td>"
+        html_table += "<div class='atlas4'>" + atlas4_code + "</div>"
 
         # Own observation
-        html_table += "<td>&nbsp;</td>"
+        html_table += "<div class='own'>&nbsp;</div>"
 
-        html_table += "</tr>"
+        html_table += "</div>"
 
-    html_table += "</table>"
+    html_table += "</div>"
 
     return html_table
 
@@ -94,7 +108,7 @@ def main():
 
     # TODO: sanitize input
 
-    atlas3_species_dict = atlas3_to_dict(square_id)
+    atlas3_species_dict = atlas3_square(square_id)
     print_r(atlas3_species_dict)
 
     atlas4_species_dict, atlas4_square_info_dict = atlas4_square(square_id)

@@ -1,12 +1,44 @@
 body {
     font-family: Roboto, sans-serif;
+    font-size: 80%;
 }
 
-table, tr, td {
-    border: 1px solid #999;
-    border-collapse: collapse;
+h1 {
+    font-size: 120%;
 }
 
-td {
-    padding: 0.2em;
+#listwrapper {
+  columns: 3 200px;
+}
+
+.header {
+    font-weight: bold;
+}
+
+.row {
+    display: block;
+    clear: both;
+}
+
+.row div {
+    border-top: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    padding: 0.1em;
+    display: inline;
+    float: left;
+    width: 20px;
+    overflow: hidden;
+}
+
+.row div.species {
+    border-left: 0;
+    width: 100px;
+}
+
+.row div.own {
+    width: 60px;
+}
+
+.atlas3, .atlas4 {
+    text-align: center;
 }
