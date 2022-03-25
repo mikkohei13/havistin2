@@ -6,7 +6,7 @@
 
 {% block body %}
 
-<h1>Ruutu</h1>
-{{ body_content }}
+{{ html_heading|safe }}
+{{ html_table|safe }}
 
 {% endblock %}

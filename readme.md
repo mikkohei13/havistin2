@@ -27,7 +27,8 @@ docker-compose run web python3 -m pdb main.py
 
 Build:
 
-docker build -t myflask ./
+docker build -t havistin2 .
+
 
 docker-compose up --build -d
 
