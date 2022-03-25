@@ -19,9 +19,8 @@ def save_file(gridCode, data):
 debugLimit = 1000000
 
 # Source data
-filename = "./atlas3-grid-data.txt"
+filename = "./import/atlas3-grid-data.txt"
 
-# Replace NaN values with empty string 
 df = pd.read_csv(filename, sep='\t')
 df = df.replace(np.nan, '', regex=True)
 
@@ -35,6 +34,19 @@ print("Sorted dataframe")
 data = df.to_dict(orient='records')
 
 print("Finished loading into dict")
+
+
+# Name data
+
+filename_names = "./import/species-names.txt"
+
+nameframe = pd.read_csv(filename_names, sep='\t')
+nameframe = nameframe.replace(np.nan, '', regex=True)
+
+names = nameframe.set_index('speciesAbbr').to_dict(orient='index')
+
+print(names) # debug
+
 
 gridCodeMem = ""
 gridSpeciesList = []
@@ -55,9 +67,22 @@ for i, row in enumerate(data):
     row.pop("E", None)
     row.pop("speciesCode", None)
 
+    # Add Finnish name
+
+    # List abbreviations that are missing from name field
+#    if not row["speciesAbbr"] in names:
+#        print(row["speciesAbbr"])
+#        continue
+
+    # Skip species that don't have Finnish name in the species list
+    if names[row["speciesAbbr"]]["speciesFI"]:
+        row["speciesFi"] = names[row["speciesAbbr"]]["speciesFI"].lower()
+    else:
+        continue
+
     gridSpeciesList.append(row)
 
-    step = 100
+    step = 1000
     if i % step == 0:
         print("Done " + str(i) + " rows")
 
