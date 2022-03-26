@@ -45,22 +45,26 @@ nameframe = nameframe.replace(np.nan, '', regex=True)
 
 names = nameframe.set_index('speciesAbbr').to_dict(orient='index')
 
-print(names) # debug
+#print(names) # debug
 
 
 gridCodeMem = ""
-gridSpeciesList = []
+#gridSpeciesList = []
+gridSpeciesDict = dict()
 
-for i, row in enumerate(data): 
+for i, row in enumerate(data):
 
     thisGridCode = str(row["N"]) + ":" + str(row["E"])
+#    thisGridSpeciesDict = dict()
 
     # New grid starts
     if thisGridCode != gridCodeMem:
 
-        save_file(gridCodeMem, gridSpeciesList)
+#        save_file(gridCodeMem, gridSpeciesList)
+        save_file(gridCodeMem, gridSpeciesDict)
         gridCodeMem = thisGridCode
-        gridSpeciesList = []
+#        gridSpeciesList = []
+        gridSpeciesDict = dict()
 
     # Remove unnecessary rows
     row.pop("N", None)
@@ -80,7 +84,9 @@ for i, row in enumerate(data):
     else:
         continue
 
-    gridSpeciesList.append(row)
+#    gridSpeciesList.append(row)
+    gridSpeciesDict[row["speciesFi"]] = row
+
 
     step = 1000
     if i % step == 0:

@@ -1,1 +1,1 @@
-[{"speciesAbbr": "LARMAR", "breedingIndex": 30, "breedingCategory": 2, "speciesFi": "merilokki"}, {"speciesAbbr": "STEAEA", "breedingIndex": 30, "breedingCategory": 2, "speciesFi": "lapintiira"}]
+{"merilokki": {"speciesAbbr": "LARMAR", "breedingIndex": 30, "breedingCategory": 2, "speciesFi": "merilokki"}, "lapintiira": {"speciesAbbr": "STEAEA", "breedingIndex": 30, "breedingCategory": 2, "speciesFi": "lapintiira"}}

@@ -1,0 +1,2002 @@
+{
+    "kyhmyjoutsen": {
+      "speciesFi": "kyhmyjoutsen",
+      "speciesSci": "Cygnus olor",
+      "speciesSv": "knölsvan",
+      "speciesEn": "Mute Swan",
+      "id": "http://tun.fi/MX.26277",
+      "obsCountFi": 34181
+    },
+    "laulujoutsen": {
+      "speciesFi": "laulujoutsen",
+      "speciesSci": "Cygnus cygnus",
+      "speciesSv": "sångsvan",
+      "speciesEn": "Whooper Swan",
+      "id": "http://tun.fi/MX.26280",
+      "obsCountFi": 69393
+    },
+    "metsähanhi": {
+      "speciesFi": "metsähanhi",
+      "speciesSci": "Anser fabalis",
+      "speciesSv": "sädgås",
+      "speciesEn": "Bean Goose",
+      "id": "http://tun.fi/MX.26287",
+      "obsCountFi": 11452
+    },
+    "kiljuhanhi": {
+      "speciesFi": "kiljuhanhi",
+      "speciesSci": "Anser erythropus",
+      "speciesSv": "fjällgås",
+      "speciesEn": "Lesser White-fronted Goose",
+      "id": "http://tun.fi/MX.26290",
+      "obsCountFi": 338
+    },
+    "merihanhi": {
+      "speciesFi": "merihanhi",
+      "speciesSci": "Anser anser",
+      "speciesSv": "grågås",
+      "speciesEn": "Greylag Goose",
+      "id": "http://tun.fi/MX.26291",
+      "obsCountFi": 15336
+    },
+    "kanadanhanhi": {
+      "speciesFi": "kanadanhanhi",
+      "speciesSci": "Branta canadensis",
+      "speciesSv": "kanadagås",
+      "speciesEn": "Canada Goose",
+      "id": "http://tun.fi/MX.26298",
+      "obsCountFi": 12612
+    },
+    "valkoposkihanhi": {
+      "speciesFi": "valkoposkihanhi",
+      "speciesSci": "Branta leucopsis",
+      "speciesSv": "vitkindad gås",
+      "speciesEn": "Barnacle Goose",
+      "id": "http://tun.fi/MX.26299",
+      "obsCountFi": 21116
+    },
+    "ristisorsa": {
+      "speciesFi": "ristisorsa",
+      "speciesSci": "Tadorna tadorna",
+      "speciesSv": "gravand",
+      "speciesEn": "Common Shelduck",
+      "id": "http://tun.fi/MX.26323",
+      "obsCountFi": 4333
+    },
+    "haapana": {
+      "speciesFi": "haapana",
+      "speciesSci": "Anas penelope",
+      "speciesSv": "bläsand",
+      "speciesEn": "Eurasian Wigeon",
+      "id": "http://tun.fi/MX.26360",
+      "obsCountFi": 22697
+    },
+    "harmaasorsa": {
+      "speciesFi": "harmaasorsa",
+      "speciesSci": "Anas strepera",
+      "speciesSv": "snatterand",
+      "speciesEn": "Gadwall",
+      "id": "http://tun.fi/MX.26364",
+      "obsCountFi": 4183
+    },
+    "tavi": {
+      "speciesFi": "tavi",
+      "speciesSci": "Anas crecca",
+      "speciesSv": "kricka",
+      "speciesEn": "Eurasian Teal",
+      "id": "http://tun.fi/MX.26366",
+      "obsCountFi": 29052
+    },
+    "sinisorsa": {
+      "speciesFi": "sinisorsa",
+      "speciesSci": "Anas platyrhynchos",
+      "speciesSv": "gräsand",
+      "speciesEn": "Mallard",
+      "id": "http://tun.fi/MX.26373",
+      "obsCountFi": 83863
+    },
+    "jouhisorsa": {
+      "speciesFi": "jouhisorsa",
+      "speciesSci": "Anas acuta",
+      "speciesSv": "stjärtand",
+      "speciesEn": "Northern Pintail",
+      "id": "http://tun.fi/MX.26382",
+      "obsCountFi": 8880
+    },
+    "heinätavi": {
+      "speciesFi": "heinätavi",
+      "speciesSci": "Anas querquedula",
+      "speciesSv": "årta",
+      "speciesEn": "Garganey",
+      "id": "http://tun.fi/MX.26388",
+      "obsCountFi": 2659
+    },
+    "lapasorsa": {
+      "speciesFi": "lapasorsa",
+      "speciesSci": "Anas clypeata",
+      "speciesSv": "skedand",
+      "speciesEn": "Northern Shoveler",
+      "id": "http://tun.fi/MX.26394",
+      "obsCountFi": 11198
+    },
+    "punasotka": {
+      "speciesFi": "punasotka",
+      "speciesSci": "Aythya ferina",
+      "speciesSv": "brunand",
+      "speciesEn": "Common Pochard",
+      "id": "http://tun.fi/MX.26407",
+      "obsCountFi": 4533
+    },
+    "tukkasotka": {
+      "speciesFi": "tukkasotka",
+      "speciesSci": "Aythya fuligula",
+      "speciesSv": "vigg",
+      "speciesEn": "Tufted Duck",
+      "id": "http://tun.fi/MX.26415",
+      "obsCountFi": 34006
+    },
+    "lapasotka": {
+      "speciesFi": "lapasotka",
+      "speciesSci": "Aythya marila",
+      "speciesSv": "bergand",
+      "speciesEn": "Greater Scaup",
+      "id": "http://tun.fi/MX.26416",
+      "obsCountFi": 3993
+    },
+    "haahka": {
+      "speciesFi": "haahka",
+      "speciesSci": "Somateria mollissima",
+      "speciesSv": "ejder",
+      "speciesEn": "Common Eider",
+      "id": "http://tun.fi/MX.26419",
+      "obsCountFi": 98991
+    },
+    "alli": {
+      "speciesFi": "alli",
+      "speciesSci": "Clangula hyemalis",
+      "speciesSv": "alfågel",
+      "speciesEn": "Long-tailed Duck",
+      "id": "http://tun.fi/MX.26427",
+      "obsCountFi": 12396
+    },
+    "mustalintu": {
+      "speciesFi": "mustalintu",
+      "speciesSci": "Melanitta nigra",
+      "speciesSv": "sjöorre",
+      "speciesEn": "Common Scoter",
+      "id": "http://tun.fi/MX.26429",
+      "obsCountFi": 7122
+    },
+    "pilkkasiipi": {
+      "speciesFi": "pilkkasiipi",
+      "speciesSci": "Melanitta fusca",
+      "speciesSv": "svärta",
+      "speciesEn": "Velvet Scoter",
+      "id": "http://tun.fi/MX.26431",
+      "obsCountFi": 11658
+    },
+    "telkkä": {
+      "speciesFi": "telkkä",
+      "speciesSci": "Bucephala clangula",
+      "speciesSv": "knipa",
+      "speciesEn": "Common Goldeneye",
+      "id": "http://tun.fi/MX.26435",
+      "obsCountFi": 101776
+    },
+    "uivelo": {
+      "speciesFi": "uivelo",
+      "speciesSci": "Mergellus albellus",
+      "speciesSv": "salskrake",
+      "speciesEn": "Smew",
+      "id": "http://tun.fi/MX.26438",
+      "obsCountFi": 16556
+    },
+    "tukkakoskelo": {
+      "speciesFi": "tukkakoskelo",
+      "speciesSci": "Mergus serrator",
+      "speciesSv": "småskrake",
+      "speciesEn": "Red-breasted Merganser",
+      "id": "http://tun.fi/MX.26440",
+      "obsCountFi": 18651
+    },
+    "isokoskelo": {
+      "speciesFi": "isokoskelo",
+      "speciesSci": "Mergus merganser",
+      "speciesSv": "storskrake",
+      "speciesEn": "Common Merganser",
+      "id": "http://tun.fi/MX.26442",
+      "obsCountFi": 49520
+    },
+    "viiriäinen": {
+      "speciesFi": "viiriäinen",
+      "speciesSci": "Coturnix coturnix",
+      "speciesSv": "vaktel",
+      "speciesEn": "Common Quail",
+      "id": "http://tun.fi/MX.27058",
+      "obsCountFi": 712
+    },
+    "pyy": {
+      "speciesFi": "pyy",
+      "speciesSci": "Tetrastes bonasia",
+      "speciesSv": "järpe",
+      "speciesEn": "Hazel Grouse",
+      "id": "http://tun.fi/MX.26931",
+      "obsCountFi": 32142
+    },
+    "riekko": {
+      "speciesFi": "riekko",
+      "speciesSci": "Lagopus lagopus",
+      "speciesSv": "dalripa",
+      "speciesEn": "Willow Ptarmigan",
+      "id": "http://tun.fi/MX.26921",
+      "obsCountFi": 10123
+    },
+    "kiiruna": {
+      "speciesFi": "kiiruna",
+      "speciesSci": "Lagopus muta",
+      "speciesSv": "fjällripa",
+      "speciesEn": "Rock Ptarmigan",
+      "id": "http://tun.fi/MX.26922",
+      "obsCountFi": 740
+    },
+    "teeri": {
+      "speciesFi": "teeri",
+      "speciesSci": "Tetrao tetrix",
+      "speciesSv": "orre",
+      "speciesEn": "Black Grouse",
+      "id": "http://tun.fi/MX.26926",
+      "obsCountFi": 47718
+    },
+    "metso": {
+      "speciesFi": "metso",
+      "speciesSci": "Tetrao urogallus",
+      "speciesSv": "tjäder",
+      "speciesEn": "Western Capercaillie",
+      "id": "http://tun.fi/MX.26928",
+      "obsCountFi": 17914
+    },
+    "peltopyy": {
+      "speciesFi": "peltopyy",
+      "speciesSci": "Perdix perdix",
+      "speciesSv": "rapphöna",
+      "speciesEn": "Grey Partridge",
+      "id": "http://tun.fi/MX.27048",
+      "obsCountFi": 15684
+    },
+    "fasaani": {
+      "speciesFi": "fasaani",
+      "speciesSci": "Phasianus colchicus",
+      "speciesSv": "fasan",
+      "speciesEn": "Common Pheasant",
+      "id": "http://tun.fi/MX.27152",
+      "obsCountFi": 58952
+    },
+    "kaakkuri": {
+      "speciesFi": "kaakkuri",
+      "speciesSci": "Gavia stellata",
+      "speciesSv": "smålom",
+      "speciesEn": "Red-throated Loon",
+      "id": "http://tun.fi/MX.25836",
+      "obsCountFi": 12688
+    },
+    "kuikka": {
+      "speciesFi": "kuikka",
+      "speciesSci": "Gavia arctica",
+      "speciesSv": "storlom",
+      "speciesEn": "Black-throated Loon",
+      "id": "http://tun.fi/MX.25837",
+      "obsCountFi": 17997
+    },
+    "pikku-uikku": {
+      "speciesFi": "pikku-uikku",
+      "speciesSci": "Tachybaptus ruficollis",
+      "speciesSv": "smådopping",
+      "speciesEn": "Little Grebe",
+      "id": "http://tun.fi/MX.25844",
+      "obsCountFi": 722
+    },
+    "silkkiuikku": {
+      "speciesFi": "silkkiuikku",
+      "speciesSci": "Podiceps cristatus",
+      "speciesSv": "skäggdopping",
+      "speciesEn": "Great Crested Grebe",
+      "id": "http://tun.fi/MX.25860",
+      "obsCountFi": 18867
+    },
+    "härkälintu": {
+      "speciesFi": "härkälintu",
+      "speciesSci": "Podiceps grisegena",
+      "speciesSv": "gråhakedopping",
+      "speciesEn": "Red-necked Grebe",
+      "id": "http://tun.fi/MX.25859",
+      "obsCountFi": 6681
+    },
+    "mustakurkku-uikku": {
+      "speciesFi": "mustakurkku-uikku",
+      "speciesSci": "Podiceps auritus",
+      "speciesSv": "svarthakedopping",
+      "speciesEn": "Horned Grebe",
+      "id": "http://tun.fi/MX.25861",
+      "obsCountFi": 4339
+    },
+    "merimetso": {
+      "speciesFi": "merimetso",
+      "speciesSci": "Phalacrocorax carbo",
+      "speciesSv": "storskarv",
+      "speciesEn": "Great Cormorant",
+      "id": "http://tun.fi/MX.26043",
+      "obsCountFi": 66330
+    },
+    "kaulushaikara": {
+      "speciesFi": "kaulushaikara",
+      "speciesSci": "Botaurus stellaris",
+      "speciesSv": "rördrom",
+      "speciesEn": "Eurasian Bittern",
+      "id": "http://tun.fi/MX.26164",
+      "obsCountFi": 5862
+    },
+    "jalohaikara": {
+      "speciesFi": "jalohaikara",
+      "speciesSci": "Egretta alba",
+      "speciesSv": "ägretthäger",
+      "speciesEn": "Great Egret",
+      "id": "http://tun.fi/MX.26105",
+      "obsCountFi": 997
+    },
+    "harmaahaikara": {
+      "speciesFi": "harmaahaikara",
+      "speciesSci": "Ardea cinerea",
+      "speciesSv": "gråhäger",
+      "speciesEn": "Grey Heron",
+      "id": "http://tun.fi/MX.26094",
+      "obsCountFi": 18858
+    },
+    "mehiläishaukka": {
+      "speciesFi": "mehiläishaukka",
+      "speciesSci": "Pernis apivorus",
+      "speciesSv": "bivråk",
+      "speciesEn": "European Honey Buzzard",
+      "id": "http://tun.fi/MX.26488",
+      "obsCountFi": 9789
+    },
+    "haarahaukka": {
+      "speciesFi": "haarahaukka",
+      "speciesSci": "Milvus migrans",
+      "speciesSv": "brun glada",
+      "speciesEn": "Black Kite",
+      "id": "http://tun.fi/MX.26518",
+      "obsCountFi": 601
+    },
+    "merikotka": {
+      "speciesFi": "merikotka",
+      "speciesSci": "Haliaeetus albicilla",
+      "speciesSv": "havsörn",
+      "speciesEn": "White-tailed Sea Eagle",
+      "id": "http://tun.fi/MX.26530",
+      "obsCountFi": 75102
+    },
+    "ruskosuohaukka": {
+      "speciesFi": "ruskosuohaukka",
+      "speciesSci": "Circus aeruginosus",
+      "speciesSv": "brun kärrhök",
+      "speciesEn": "Western Marsh Harrier",
+      "id": "http://tun.fi/MX.26597",
+      "obsCountFi": 18419
+    },
+    "sinisuohaukka": {
+      "speciesFi": "sinisuohaukka",
+      "speciesSci": "Circus cyaneus",
+      "speciesSv": "blå kärrhök",
+      "speciesEn": "Hen Harrier",
+      "id": "http://tun.fi/MX.26592",
+      "obsCountFi": 8914
+    },
+    "arosuohaukka": {
+      "speciesFi": "arosuohaukka",
+      "speciesSci": "Circus macrourus",
+      "speciesSv": "stäpphök",
+      "speciesEn": "Pallid Harrier",
+      "id": "http://tun.fi/MX.26594",
+      "obsCountFi": 599
+    },
+    "niittysuohaukka": {
+      "speciesFi": "niittysuohaukka",
+      "speciesSci": "Circus pygargus",
+      "speciesSv": "ängshök",
+      "speciesEn": "Montagu's Harrier",
+      "id": "http://tun.fi/MX.26596",
+      "obsCountFi": 264
+    },
+    "kanahaukka": {
+      "speciesFi": "kanahaukka",
+      "speciesSci": "Accipiter gentilis",
+      "speciesSv": "duvhök",
+      "speciesEn": "Northern Goshawk",
+      "id": "http://tun.fi/MX.26647",
+      "obsCountFi": 113334
+    },
+    "varpushaukka": {
+      "speciesFi": "varpushaukka",
+      "speciesSci": "Accipiter nisus",
+      "speciesSv": "sparvhök",
+      "speciesEn": "Eurasian Sparrowhawk",
+      "id": "http://tun.fi/MX.26639",
+      "obsCountFi": 105859
+    },
+    "hiirihaukka": {
+      "speciesFi": "hiirihaukka",
+      "speciesSci": "Buteo buteo",
+      "speciesSv": "ormvråk",
+      "speciesEn": "Common Buzzard",
+      "id": "http://tun.fi/MX.26701",
+      "obsCountFi": 41761
+    },
+    "piekana": {
+      "speciesFi": "piekana",
+      "speciesSci": "Buteo lagopus",
+      "speciesSv": "fjällvråk",
+      "speciesEn": "Rough-legged Buzzard",
+      "id": "http://tun.fi/MX.26704",
+      "obsCountFi": 9501
+    },
+    "kiljukotka": {
+      "speciesFi": "kiljukotka",
+      "speciesSci": "Aquila clanga",
+      "speciesSv": "större skrikörn",
+      "speciesEn": "Greater Spotted Eagle",
+      "id": "http://tun.fi/MX.26723",
+      "obsCountFi": 167
+    },
+    "maakotka": {
+      "speciesFi": "maakotka",
+      "speciesSci": "Aquila chrysaetos",
+      "speciesSv": "kungsörn",
+      "speciesEn": "Golden Eagle",
+      "id": "http://tun.fi/MX.26727",
+      "obsCountFi": 15006
+    },
+    "sääksi": {
+      "speciesFi": "sääksi",
+      "speciesSci": "Pandion haliaetus",
+      "speciesSv": "fiskgjuse",
+      "speciesEn": "Osprey",
+      "id": "http://tun.fi/MX.26472",
+      "obsCountFi": 74452
+    },
+    "tuulihaukka": {
+      "speciesFi": "tuulihaukka",
+      "speciesSci": "Falco tinnunculus",
+      "speciesSv": "tornfalk",
+      "speciesEn": "Common Kestrel",
+      "id": "http://tun.fi/MX.26796",
+      "obsCountFi": 276144
+    },
+    "ampuhaukka": {
+      "speciesFi": "ampuhaukka",
+      "speciesSci": "Falco columbarius",
+      "speciesSv": "stenfalk",
+      "speciesEn": "Merlin",
+      "id": "http://tun.fi/MX.26808",
+      "obsCountFi": 8873
+    },
+    "nuolihaukka": {
+      "speciesFi": "nuolihaukka",
+      "speciesSci": "Falco subbuteo",
+      "speciesSv": "lärkfalk",
+      "speciesEn": "Eurasian Hobby",
+      "id": "http://tun.fi/MX.26811",
+      "obsCountFi": 15507
+    },
+    "tunturihaukka": {
+      "speciesFi": "tunturihaukka",
+      "speciesSci": "Falco rusticolus",
+      "speciesSv": "jaktfalk",
+      "speciesEn": "Gyrfalcon",
+      "id": "http://tun.fi/MX.26825",
+      "obsCountFi": ""
+    },
+    "muuttohaukka": {
+      "speciesFi": "muuttohaukka",
+      "speciesSci": "Falco peregrinus",
+      "speciesSv": "pilgrimsfalk",
+      "speciesEn": "Peregrine Falcon",
+      "id": "http://tun.fi/MX.26828",
+      "obsCountFi": 12782
+    },
+    "luhtakana": {
+      "speciesFi": "luhtakana",
+      "speciesSci": "Rallus aquaticus",
+      "speciesSv": "vattenrall",
+      "speciesEn": "Water Rail",
+      "id": "http://tun.fi/MX.27276",
+      "obsCountFi": 2545
+    },
+    "luhtahuitti": {
+      "speciesFi": "luhtahuitti",
+      "speciesSci": "Porzana porzana",
+      "speciesSv": "småfläckig sumphöna",
+      "speciesEn": "Spotted Crake",
+      "id": "http://tun.fi/MX.27345",
+      "obsCountFi": 2183
+    },
+    "pikkuhuitti": {
+      "speciesFi": "pikkuhuitti",
+      "speciesSci": "Porzana parva",
+      "speciesSv": "mindre sumphöna",
+      "speciesEn": "Little Crake",
+      "id": "http://tun.fi/MX.27342",
+      "obsCountFi": 130
+    },
+    "ruisrääkkä": {
+      "speciesFi": "ruisrääkkä",
+      "speciesSci": "Crex crex",
+      "speciesSv": "kornknarr",
+      "speciesEn": "Corn Crake",
+      "id": "http://tun.fi/MX.27328",
+      "obsCountFi": 7726
+    },
+    "liejukana": {
+      "speciesFi": "liejukana",
+      "speciesSci": "Gallinula chloropus",
+      "speciesSv": "rörhöna",
+      "speciesEn": "Common Moorhen",
+      "id": "http://tun.fi/MX.27364",
+      "obsCountFi": 1752
+    },
+    "nokikana": {
+      "speciesFi": "nokikana",
+      "speciesSci": "Fulica atra",
+      "speciesSv": "sothöna",
+      "speciesEn": "Eurasian Coot",
+      "id": "http://tun.fi/MX.27381",
+      "obsCountFi": 10834
+    },
+    "kurki": {
+      "speciesFi": "kurki",
+      "speciesSci": "Grus grus",
+      "speciesSv": "trana",
+      "speciesEn": "Common Crane",
+      "id": "http://tun.fi/MX.27214",
+      "obsCountFi": 48825
+    },
+    "meriharakka": {
+      "speciesFi": "meriharakka",
+      "speciesSci": "Haematopus ostralegus",
+      "speciesSv": "strandskata",
+      "speciesEn": "Eurasian Oystercatcher",
+      "id": "http://tun.fi/MX.27459",
+      "obsCountFi": 18305
+    },
+    "kapustarinta": {
+      "speciesFi": "kapustarinta",
+      "speciesSci": "Pluvialis apricaria",
+      "speciesSv": "ljungpipare",
+      "speciesEn": "European Golden Plover",
+      "id": "http://tun.fi/MX.27553",
+      "obsCountFi": 13688
+    },
+    "töyhtöhyyppä": {
+      "speciesFi": "töyhtöhyyppä",
+      "speciesSci": "Vanellus vanellus",
+      "speciesSv": "tofsvipa",
+      "speciesEn": "Northern Lapwing",
+      "id": "http://tun.fi/MX.27527",
+      "obsCountFi": 72616
+    },
+    "pikkutylli": {
+      "speciesFi": "pikkutylli",
+      "speciesSci": "Charadrius dubius",
+      "speciesSv": "mindre strandpipare",
+      "speciesEn": "Little Ringed Plover",
+      "id": "http://tun.fi/MX.27562",
+      "obsCountFi": 24273
+    },
+    "tylli": {
+      "speciesFi": "tylli",
+      "speciesSci": "Charadrius hiaticula",
+      "speciesSv": "större strandpipare",
+      "speciesEn": "Common Ringed Plover",
+      "id": "http://tun.fi/MX.27559",
+      "obsCountFi": 21876
+    },
+    "keräkurmitsa": {
+      "speciesFi": "keräkurmitsa",
+      "speciesSci": "Charadrius morinellus",
+      "speciesSv": "fjällpipare",
+      "speciesEn": "Eurasian Dotterel",
+      "id": "http://tun.fi/MX.27597",
+      "obsCountFi": 1640
+    },
+    "pikkukuovi": {
+      "speciesFi": "pikkukuovi",
+      "speciesSci": "Numenius phaeopus",
+      "speciesSv": "småspov",
+      "speciesEn": "Whimbrel",
+      "id": "http://tun.fi/MX.27610",
+      "obsCountFi": 11069
+    },
+    "kuovi": {
+      "speciesFi": "kuovi",
+      "speciesSci": "Numenius arquata",
+      "speciesSv": "storspov",
+      "speciesEn": "Eurasian Curlew",
+      "id": "http://tun.fi/MX.27613",
+      "obsCountFi": 54095
+    },
+    "mustapyrstökuiri": {
+      "speciesFi": "mustapyrstökuiri",
+      "speciesSci": "Limosa limosa",
+      "speciesSv": "rödspov",
+      "speciesEn": "Black-tailed Godwit",
+      "id": "http://tun.fi/MX.27603",
+      "obsCountFi": 3065
+    },
+    "punakuiri": {
+      "speciesFi": "punakuiri",
+      "speciesSci": "Limosa lapponica",
+      "speciesSv": "myrspov",
+      "speciesEn": "Bar-tailed Godwit",
+      "id": "http://tun.fi/MX.27605",
+      "obsCountFi": 2538
+    },
+    "karikukko": {
+      "speciesFi": "karikukko",
+      "speciesSci": "Arenaria interpres",
+      "speciesSv": "roskarl",
+      "speciesEn": "Ruddy Turnstone",
+      "id": "http://tun.fi/MX.27642",
+      "obsCountFi": 9565
+    },
+    "suokukko": {
+      "speciesFi": "suokukko",
+      "speciesSci": "Calidris pugnax",
+      "speciesSv": "brushane",
+      "speciesEn": "Ruff",
+      "id": "http://tun.fi/MX.27710",
+      "obsCountFi": 18959
+    },
+    "jänkäsirriäinen": {
+      "speciesFi": "jänkäsirriäinen",
+      "speciesSci": "Calidris falcinellus",
+      "speciesSv": "myrsnäppa",
+      "speciesEn": "Broad-billed Sandpiper",
+      "id": "http://tun.fi/MX.27704",
+      "obsCountFi": 2280
+    },
+    "lapinsirri": {
+      "speciesFi": "lapinsirri",
+      "speciesSci": "Calidris temminckii",
+      "speciesSv": "mosnäppa",
+      "speciesEn": "Temminck's Stint",
+      "id": "http://tun.fi/MX.27689",
+      "obsCountFi": 8434
+    },
+    "suosirri": {
+      "speciesFi": "suosirri",
+      "speciesSci": "Calidris alpina",
+      "speciesSv": "kärrsnäppa",
+      "speciesEn": "Dunlin",
+      "id": "http://tun.fi/MX.27699",
+      "obsCountFi": 56799
+    },
+    "merisirri": {
+      "speciesFi": "merisirri",
+      "speciesSci": "Calidris maritima",
+      "speciesSv": "skärsnäppa",
+      "speciesEn": "Purple Sandpiper",
+      "id": "http://tun.fi/MX.27697",
+      "obsCountFi": 1764
+    },
+    "pikkusirri": {
+      "speciesFi": "pikkusirri",
+      "speciesSci": "Calidris minuta",
+      "speciesSv": "småsnäppa",
+      "speciesEn": "Little Stint",
+      "id": "http://tun.fi/MX.27688",
+      "obsCountFi": 9505
+    },
+    "vesipääsky": {
+      "speciesFi": "vesipääsky",
+      "speciesSci": "Phalaropus lobatus",
+      "speciesSv": "smalnäbbad simsnäppa",
+      "speciesEn": "Red-necked Phalarope",
+      "id": "http://tun.fi/MX.27646",
+      "obsCountFi": 2603
+    },
+    "rantakurvi": {
+      "speciesFi": "rantakurvi",
+      "speciesSci": "Xenus cinereus",
+      "speciesSv": "tereksnäppa",
+      "speciesEn": "Terek Sandpiper",
+      "id": "http://tun.fi/MX.27632",
+      "obsCountFi": 1148
+    },
+    "rantasipi": {
+      "speciesFi": "rantasipi",
+      "speciesSci": "Actitis hypoleucos",
+      "speciesSv": "drillsnäppa",
+      "speciesEn": "Common Sandpiper",
+      "id": "http://tun.fi/MX.27634",
+      "obsCountFi": 32450
+    },
+    "metsäviklo": {
+      "speciesFi": "metsäviklo",
+      "speciesSci": "Tringa ochropus",
+      "speciesSv": "skogssnäppa",
+      "speciesEn": "Green Sandpiper",
+      "id": "http://tun.fi/MX.27626",
+      "obsCountFi": 22195
+    },
+    "mustaviklo": {
+      "speciesFi": "mustaviklo",
+      "speciesSci": "Tringa erythropus",
+      "speciesSv": "svartsnäppa",
+      "speciesEn": "Spotted Redshank",
+      "id": "http://tun.fi/MX.27619",
+      "obsCountFi": 6384
+    },
+    "valkoviklo": {
+      "speciesFi": "valkoviklo",
+      "speciesSci": "Tringa nebularia",
+      "speciesSv": "gluttsnäppa",
+      "speciesEn": "Common Greenshank",
+      "id": "http://tun.fi/MX.27622",
+      "obsCountFi": 21431
+    },
+    "lampiviklo": {
+      "speciesFi": "lampiviklo",
+      "speciesSci": "Tringa stagnatilis",
+      "speciesSv": "dammsnäppa",
+      "speciesEn": "Marsh Sandpiper",
+      "id": "http://tun.fi/MX.27621",
+      "obsCountFi": 199
+    },
+    "liro": {
+      "speciesFi": "liro",
+      "speciesSci": "Tringa glareola",
+      "speciesSv": "grönbena",
+      "speciesEn": "Wood Sandpiper",
+      "id": "http://tun.fi/MX.27628",
+      "obsCountFi": 45023
+    },
+    "punajalkaviklo": {
+      "speciesFi": "punajalkaviklo",
+      "speciesSci": "Tringa totanus",
+      "speciesSv": "rödbena",
+      "speciesEn": "Common Redshank",
+      "id": "http://tun.fi/MX.27620",
+      "obsCountFi": 17098
+    },
+    "jänkäkurppa": {
+      "speciesFi": "jänkäkurppa",
+      "speciesSci": "Lymnocryptes minimus",
+      "speciesSv": "Dvärgbeckasin",
+      "speciesEn": "Jack Snipe",
+      "id": "http://tun.fi/MX.27674",
+      "obsCountFi": 4577
+    },
+    "lehtokurppa": {
+      "speciesFi": "lehtokurppa",
+      "speciesSci": "Scolopax rusticola",
+      "speciesSv": "morkulla",
+      "speciesEn": "Eurasian Woodcock",
+      "id": "http://tun.fi/MX.27649",
+      "obsCountFi": 17582
+    },
+    "taivaanvuohi": {
+      "speciesFi": "taivaanvuohi",
+      "speciesSci": "Gallinago gallinago",
+      "speciesSv": "enkelbeckasin",
+      "speciesEn": "Common Snipe",
+      "id": "http://tun.fi/MX.27666",
+      "obsCountFi": 33587
+    },
+    "heinäkurppa": {
+      "speciesFi": "heinäkurppa",
+      "speciesSci": "Gallinago media",
+      "speciesSv": "dubbelbeckasin",
+      "speciesEn": "Great Snipe",
+      "id": "http://tun.fi/MX.27665",
+      "obsCountFi": 399
+    },
+    "merikihu": {
+      "speciesFi": "merikihu",
+      "speciesSci": "Stercorarius parasiticus",
+      "speciesSv": "kustlabb",
+      "speciesEn": "Parasitic Jaeger",
+      "id": "http://tun.fi/MX.27730",
+      "obsCountFi": 9559
+    },
+    "tunturikihu": {
+      "speciesFi": "tunturikihu",
+      "speciesSci": "Stercorarius longicaudus",
+      "speciesSv": "fjällabb",
+      "speciesEn": "Long-tailed Jaeger",
+      "id": "http://tun.fi/MX.27731",
+      "obsCountFi": 1222
+    },
+    "riskilä": {
+      "speciesFi": "riskilä",
+      "speciesSci": "Cepphus grylle",
+      "speciesSv": "tobisgrissla",
+      "speciesEn": "Black Guillemot",
+      "id": "http://tun.fi/MX.27855",
+      "obsCountFi": 28812
+    },
+    "ruokki": {
+      "speciesFi": "ruokki",
+      "speciesSci": "Alca torda",
+      "speciesSv": "tordmule",
+      "speciesEn": "Razorbill",
+      "id": "http://tun.fi/MX.27850",
+      "obsCountFi": 35107
+    },
+    "etelänkiisla": {
+      "speciesFi": "etelänkiisla",
+      "speciesSci": "Uria aalge",
+      "speciesSv": "sillgrissla",
+      "speciesEn": "Common Murre",
+      "id": "http://tun.fi/MX.27853",
+      "obsCountFi": 2057
+    },
+    "pikkutiira": {
+      "speciesFi": "pikkutiira",
+      "speciesSci": "Sternula albifrons",
+      "speciesSv": "småtärna",
+      "speciesEn": "Little Tern",
+      "id": "http://tun.fi/MX.27821",
+      "obsCountFi": 1938
+    },
+    "räyskä": {
+      "speciesFi": "räyskä",
+      "speciesSci": "Hydroprogne caspia",
+      "speciesSv": "skräntärna",
+      "speciesEn": "Caspian Tern",
+      "id": "http://tun.fi/MX.27797",
+      "obsCountFi": 45129
+    },
+    "mustatiira": {
+      "speciesFi": "mustatiira",
+      "speciesSci": "Chlidonias niger",
+      "speciesSv": "svarttärna",
+      "speciesEn": "Black Tern",
+      "id": "http://tun.fi/MX.27791",
+      "obsCountFi": 735
+    },
+    "kalatiira": {
+      "speciesFi": "kalatiira",
+      "speciesSci": "Sterna hirundo",
+      "speciesSv": "fisktärna",
+      "speciesEn": "Common Tern",
+      "id": "http://tun.fi/MX.27801",
+      "obsCountFi": 132499
+    },
+    "lapintiira": {
+      "speciesFi": "lapintiira",
+      "speciesSci": "Sterna paradisaea",
+      "speciesSv": "silvertärna",
+      "speciesEn": "Arctic Tern",
+      "id": "http://tun.fi/MX.27802",
+      "obsCountFi": 95964
+    },
+    "pikkulokki": {
+      "speciesFi": "pikkulokki",
+      "speciesSci": "Hydrocoloeus minutus",
+      "speciesSv": "dvärgmås",
+      "speciesEn": "Little Gull",
+      "id": "http://tun.fi/MX.27777",
+      "obsCountFi": 16786
+    },
+    "naurulokki": {
+      "speciesFi": "naurulokki",
+      "speciesSci": "Larus ridibundus",
+      "speciesSv": "skrattmås",
+      "speciesEn": "Black-headed Gull",
+      "id": "http://tun.fi/MX.27774",
+      "obsCountFi": 341044
+    },
+    "kalalokki": {
+      "speciesFi": "kalalokki",
+      "speciesSci": "Larus canus",
+      "speciesSv": "fiskmås",
+      "speciesEn": "Mew Gull",
+      "id": "http://tun.fi/MX.27748",
+      "obsCountFi": 180674
+    },
+    "selkälokki": {
+      "speciesFi": "selkälokki",
+      "speciesSci": "Larus fuscus",
+      "speciesSv": "silltrut",
+      "speciesEn": "Lesser Black-backed Gull",
+      "id": "http://tun.fi/MX.27753",
+      "obsCountFi": 179269
+    },
+    "harmaalokki": {
+      "speciesFi": "harmaalokki",
+      "speciesSci": "Larus argentatus",
+      "speciesSv": "gråtrut",
+      "speciesEn": "European Herring Gull",
+      "id": "http://tun.fi/MX.27750",
+      "obsCountFi": 479845
+    },
+    "merilokki": {
+      "speciesFi": "merilokki",
+      "speciesSci": "Larus marinus",
+      "speciesSv": "havstrut",
+      "speciesEn": "Great Black-backed Gull",
+      "id": "http://tun.fi/MX.27759",
+      "obsCountFi": 51996
+    },
+    "kalliokyyhky": {
+      "speciesFi": "kalliokyyhky",
+      "speciesSci": "Columba livia",
+      "speciesSv": "klippduva",
+      "speciesEn": "Rock Dove",
+      "id": "http://tun.fi/MX.27903",
+      "obsCountFi": 47948
+    },
+    "uuttukyyhky": {
+      "speciesFi": "uuttukyyhky",
+      "speciesSci": "Columba oenas",
+      "speciesSv": "skogsduva",
+      "speciesEn": "Stock Dove",
+      "id": "http://tun.fi/MX.27908",
+      "obsCountFi": 27120
+    },
+    "sepelkyyhky": {
+      "speciesFi": "sepelkyyhky",
+      "speciesSci": "Columba palumbus",
+      "speciesSv": "ringduva",
+      "speciesEn": "Common Wood Pigeon",
+      "id": "http://tun.fi/MX.27911",
+      "obsCountFi": 78014
+    },
+    "turkinkyyhky": {
+      "speciesFi": "turkinkyyhky",
+      "speciesSci": "Streptopelia decaocto",
+      "speciesSv": "turkduva",
+      "speciesEn": "Eurasian Collared Dove",
+      "id": "http://tun.fi/MX.27960",
+      "obsCountFi": 3100
+    },
+    "turturikyyhky": {
+      "speciesFi": "turturikyyhky",
+      "speciesSci": "Streptopelia turtur",
+      "speciesSv": "turturduva",
+      "speciesEn": "European Turtle Dove",
+      "id": "http://tun.fi/MX.27955",
+      "obsCountFi": 372
+    },
+    "käki": {
+      "speciesFi": "käki",
+      "speciesSci": "Cuculus canorus",
+      "speciesSv": "gök",
+      "speciesEn": "Common Cuckoo",
+      "id": "http://tun.fi/MX.28715",
+      "obsCountFi": 60295
+    },
+    "huuhkaja": {
+      "speciesFi": "huuhkaja",
+      "speciesSci": "Bubo bubo",
+      "speciesSv": "berguv",
+      "speciesEn": "Eurasian Eagle-owl",
+      "id": "http://tun.fi/MX.28965",
+      "obsCountFi": 27091
+    },
+    "tunturipöllö": {
+      "speciesFi": "tunturipöllö",
+      "speciesSci": "Bubo scandiacus",
+      "speciesSv": "fjälluggla",
+      "speciesEn": "Snowy Owl",
+      "id": "http://tun.fi/MX.28987",
+      "obsCountFi": ""
+    },
+    "hiiripöllö": {
+      "speciesFi": "hiiripöllö",
+      "speciesSci": "Surnia ulula",
+      "speciesSv": "hökuggla",
+      "speciesEn": "Northern Hawk-Owl",
+      "id": "http://tun.fi/MX.29008",
+      "obsCountFi": 8272
+    },
+    "varpuspöllö": {
+      "speciesFi": "varpuspöllö",
+      "speciesSci": "Glaucidium passerinum",
+      "speciesSv": "sparvuggla",
+      "speciesEn": "Eurasian Pygmy Owl",
+      "id": "http://tun.fi/MX.29011",
+      "obsCountFi": 76630
+    },
+    "lehtopöllö": {
+      "speciesFi": "lehtopöllö",
+      "speciesSci": "Strix aluco",
+      "speciesSv": "kattuggla",
+      "speciesEn": "Tawny Owl",
+      "id": "http://tun.fi/MX.28998",
+      "obsCountFi": 78049
+    },
+    "viirupöllö": {
+      "speciesFi": "viirupöllö",
+      "speciesSci": "Strix uralensis",
+      "speciesSv": "slaguggla",
+      "speciesEn": "Ural Owl",
+      "id": "http://tun.fi/MX.29003",
+      "obsCountFi": 102238
+    },
+    "lapinpöllö": {
+      "speciesFi": "lapinpöllö",
+      "speciesSci": "Strix nebulosa",
+      "speciesSv": "lappuggla",
+      "speciesEn": "Great Grey Owl",
+      "id": "http://tun.fi/MX.29004",
+      "obsCountFi": 6205
+    },
+    "sarvipöllö": {
+      "speciesFi": "sarvipöllö",
+      "speciesSci": "Asio otus",
+      "speciesSv": "hornuggla",
+      "speciesEn": "Long-eared Owl",
+      "id": "http://tun.fi/MX.29068",
+      "obsCountFi": 23843
+    },
+    "suopöllö": {
+      "speciesFi": "suopöllö",
+      "speciesSci": "Asio flammeus",
+      "speciesSv": "jorduggla",
+      "speciesEn": "Short-eared Owl",
+      "id": "http://tun.fi/MX.29072",
+      "obsCountFi": 11837
+    },
+    "helmipöllö": {
+      "speciesFi": "helmipöllö",
+      "speciesSci": "Aegolius funereus",
+      "speciesSv": "pärluggla",
+      "speciesEn": "Boreal Owl",
+      "id": "http://tun.fi/MX.29038",
+      "obsCountFi": 154285
+    },
+    "kehrääjä": {
+      "speciesFi": "kehrääjä",
+      "speciesSci": "Caprimulgus europaeus",
+      "speciesSv": "nattskärra",
+      "speciesEn": "European Nightjar",
+      "id": "http://tun.fi/MX.29172",
+      "obsCountFi": 9977
+    },
+    "tervapääsky": {
+      "speciesFi": "tervapääsky",
+      "speciesSci": "Apus apus",
+      "speciesSv": "tornseglare",
+      "speciesEn": "Common Swift",
+      "id": "http://tun.fi/MX.29324",
+      "obsCountFi": 75763
+    },
+    "kuningaskalastaja": {
+      "speciesFi": "kuningaskalastaja",
+      "speciesSci": "Alcedo atthis",
+      "speciesSv": "kungsfiskare",
+      "speciesEn": "Common Kingfisher",
+      "id": "http://tun.fi/MX.29860",
+      "obsCountFi": 595
+    },
+    "käenpiika": {
+      "speciesFi": "käenpiika",
+      "speciesSci": "Jynx torquilla",
+      "speciesSv": "göktyta",
+      "speciesEn": "Eurasian Wryneck",
+      "id": "http://tun.fi/MX.30333",
+      "obsCountFi": 33380
+    },
+    "harmaapäätikka": {
+      "speciesFi": "harmaapäätikka",
+      "speciesSci": "Picus canus",
+      "speciesSv": "gråspett",
+      "speciesEn": "Grey-headed Woodpecker",
+      "id": "http://tun.fi/MX.30530",
+      "obsCountFi": 22750
+    },
+    "palokärki": {
+      "speciesFi": "palokärki",
+      "speciesSci": "Dryocopus martius",
+      "speciesSv": "spillkråka",
+      "speciesEn": "Black Woodpecker",
+      "id": "http://tun.fi/MX.30504",
+      "obsCountFi": 54967
+    },
+    "käpytikka": {
+      "speciesFi": "käpytikka",
+      "speciesSci": "Dendrocopos major",
+      "speciesSv": "större hackspett",
+      "speciesEn": "Great Spotted Woodpecker",
+      "id": "http://tun.fi/MX.30443",
+      "obsCountFi": 210654
+    },
+    "valkoselkätikka": {
+      "speciesFi": "valkoselkätikka",
+      "speciesSci": "Dendrocopos leucotos",
+      "speciesSv": "vitryggig hackspett",
+      "speciesEn": "White-backed Woodpecker",
+      "id": "http://tun.fi/MX.30438",
+      "obsCountFi": 8760
+    },
+    "pikkutikka": {
+      "speciesFi": "pikkutikka",
+      "speciesSci": "Dendrocopos minor",
+      "speciesSv": "mindre hackspett",
+      "speciesEn": "Lesser Spotted Woodpecker",
+      "id": "http://tun.fi/MX.30428",
+      "obsCountFi": 17372
+    },
+    "pohjantikka": {
+      "speciesFi": "pohjantikka",
+      "speciesSci": "Picoides tridactylus",
+      "speciesSv": "tretåig hackspett",
+      "speciesEn": "Eurasian Three-toed Woodpecker",
+      "id": "http://tun.fi/MX.30453",
+      "obsCountFi": 10066
+    },
+    "kangaskiuru": {
+      "speciesFi": "kangaskiuru",
+      "speciesSci": "Lullula arborea",
+      "speciesSv": "trädlärka",
+      "speciesEn": "Woodlark",
+      "id": "http://tun.fi/MX.32063",
+      "obsCountFi": 6380
+    },
+    "kiuru": {
+      "speciesFi": "kiuru",
+      "speciesSci": "Alauda arvensis",
+      "speciesSv": "sånglärka",
+      "speciesEn": "Eurasian Skylark",
+      "id": "http://tun.fi/MX.32065",
+      "obsCountFi": 45986
+    },
+    "tunturikiuru": {
+      "speciesFi": "tunturikiuru",
+      "speciesSci": "Eremophila alpestris",
+      "speciesSv": "berglärka",
+      "speciesEn": "Horned Lark",
+      "id": "http://tun.fi/MX.32076",
+      "obsCountFi": 513
+    },
+    "törmäpääsky": {
+      "speciesFi": "törmäpääsky",
+      "speciesSci": "Riparia riparia",
+      "speciesSv": "backsvala",
+      "speciesEn": "Sand Martin",
+      "id": "http://tun.fi/MX.32120",
+      "obsCountFi": 91696
+    },
+    "haarapääsky": {
+      "speciesFi": "haarapääsky",
+      "speciesSci": "Hirundo rustica",
+      "speciesSv": "ladusvala",
+      "speciesEn": "Barn Swallow",
+      "id": "http://tun.fi/MX.32132",
+      "obsCountFi": 380450
+    },
+    "räystäspääsky": {
+      "speciesFi": "räystäspääsky",
+      "speciesSci": "Delichon urbicum",
+      "speciesSv": "hussvala",
+      "speciesEn": "Common House Martin",
+      "id": "http://tun.fi/MX.32163",
+      "obsCountFi": 46767
+    },
+    "nummikirvinen": {
+      "speciesFi": "nummikirvinen",
+      "speciesSci": "Anthus campestris",
+      "speciesSv": "fältpiplärka",
+      "speciesEn": "Tawny Pipit",
+      "id": "http://tun.fi/MX.32207",
+      "obsCountFi": 54
+    },
+    "metsäkirvinen": {
+      "speciesFi": "metsäkirvinen",
+      "speciesSci": "Anthus trivialis",
+      "speciesSv": "trädpiplärka",
+      "speciesEn": "Tree Pipit",
+      "id": "http://tun.fi/MX.32214",
+      "obsCountFi": 140980
+    },
+    "niittykirvinen": {
+      "speciesFi": "niittykirvinen",
+      "speciesSci": "Anthus pratensis",
+      "speciesSv": "ängspiplärka",
+      "speciesEn": "Meadow Pipit",
+      "id": "http://tun.fi/MX.32213",
+      "obsCountFi": 57967
+    },
+    "lapinkirvinen": {
+      "speciesFi": "lapinkirvinen",
+      "speciesSci": "Anthus cervinus",
+      "speciesSv": "rödstrupig piplärka",
+      "speciesEn": "Red-throated Pipit",
+      "id": "http://tun.fi/MX.32217",
+      "obsCountFi": 2334
+    },
+    "luotokirvinen": {
+      "speciesFi": "luotokirvinen",
+      "speciesSci": "Anthus petrosus",
+      "speciesSv": "skärpiplärka",
+      "speciesEn": "Eurasian Rock Pipit",
+      "id": "http://tun.fi/MX.32221",
+      "obsCountFi": 3427
+    },
+    "keltavästäräkki": {
+      "speciesFi": "keltavästäräkki",
+      "speciesSci": "Motacilla flava",
+      "speciesSv": "gulärla",
+      "speciesEn": "Western Yellow Wagtail",
+      "id": "http://tun.fi/MX.32180",
+      "obsCountFi": 53434
+    },
+    "sitruunavästäräkki": {
+      "speciesFi": "sitruunavästäräkki",
+      "speciesSci": "Motacilla citreola",
+      "speciesSv": "citronärla",
+      "speciesEn": "Citrine Wagtail",
+      "id": "http://tun.fi/MX.32181",
+      "obsCountFi": 323
+    },
+    "virtavästäräkki": {
+      "speciesFi": "virtavästäräkki",
+      "speciesSci": "Motacilla cinerea",
+      "speciesSv": "forsärla",
+      "speciesEn": "Grey Wagtail",
+      "id": "http://tun.fi/MX.32182",
+      "obsCountFi": 767
+    },
+    "västäräkki": {
+      "speciesFi": "västäräkki",
+      "speciesSci": "Motacilla alba",
+      "speciesSv": "sädesärla",
+      "speciesEn": "White Wagtail",
+      "id": "http://tun.fi/MX.32183",
+      "obsCountFi": 132909
+    },
+    "tilhi": {
+      "speciesFi": "tilhi",
+      "speciesSci": "Bombycilla garrulus",
+      "speciesSv": "sidensvans",
+      "speciesEn": "Bohemian Waxwing",
+      "id": "http://tun.fi/MX.32608",
+      "obsCountFi": 143410
+    },
+    "koskikara": {
+      "speciesFi": "koskikara",
+      "speciesSci": "Cinclus cinclus",
+      "speciesSv": "strömstare",
+      "speciesEn": "White-throated Dipper",
+      "id": "http://tun.fi/MX.32625",
+      "obsCountFi": 41767
+    },
+    "peukaloinen": {
+      "speciesFi": "peukaloinen",
+      "speciesSci": "Troglodytes troglodytes",
+      "speciesSv": "gärdsmyg",
+      "speciesEn": "Eurasian Wren",
+      "id": "http://tun.fi/MX.32696",
+      "obsCountFi": 42946
+    },
+    "rautiainen": {
+      "speciesFi": "rautiainen",
+      "speciesSci": "Prunella modularis",
+      "speciesSv": "järnsparv",
+      "speciesEn": "Dunnock",
+      "id": "http://tun.fi/MX.32772",
+      "obsCountFi": 210924
+    },
+    "punarinta": {
+      "speciesFi": "punarinta",
+      "speciesSci": "Erithacus rubecula",
+      "speciesSv": "rödhake",
+      "speciesEn": "European Robin",
+      "id": "http://tun.fi/MX.32801",
+      "obsCountFi": 550509
+    },
+    "satakieli": {
+      "speciesFi": "satakieli",
+      "speciesSci": "Luscinia luscinia",
+      "speciesSv": "näktergal",
+      "speciesEn": "Thrush Nightingale",
+      "id": "http://tun.fi/MX.32819",
+      "obsCountFi": 28581
+    },
+    "sinirinta": {
+      "speciesFi": "sinirinta",
+      "speciesSci": "Luscinia svecica",
+      "speciesSv": "blåhake",
+      "speciesEn": "Bluethroat",
+      "id": "http://tun.fi/MX.32821",
+      "obsCountFi": 47376
+    },
+    "sinipyrstö": {
+      "speciesFi": "sinipyrstö",
+      "speciesSci": "Tarsiger cyanurus",
+      "speciesSv": "blåstjärt",
+      "speciesEn": "Red-flanked Bluetail",
+      "id": "http://tun.fi/MX.32816",
+      "obsCountFi": 1713
+    },
+    "mustaleppälintu": {
+      "speciesFi": "mustaleppälintu",
+      "speciesSci": "Phoenicurus ochruros",
+      "speciesSv": "svart rödstjärt",
+      "speciesEn": "Black Redstart",
+      "id": "http://tun.fi/MX.32894",
+      "obsCountFi": 933
+    },
+    "leppälintu": {
+      "speciesFi": "leppälintu",
+      "speciesSci": "Phoenicurus phoenicurus",
+      "speciesSv": "rödstjärt",
+      "speciesEn": "Common Redstart",
+      "id": "http://tun.fi/MX.32895",
+      "obsCountFi": 157496
+    },
+    "pensastasku": {
+      "speciesFi": "pensastasku",
+      "speciesSci": "Saxicola rubetra",
+      "speciesSv": "buskskvätta",
+      "speciesEn": "Whinchat",
+      "id": "http://tun.fi/MX.32949",
+      "obsCountFi": 58900
+    },
+    "sepeltasku": {
+      "speciesFi": "sepeltasku",
+      "speciesSci": "Saxicola maurus",
+      "speciesSv": "vitgumpad buskskvätta",
+      "speciesEn": "Siberian Stonechat",
+      "id": "http://tun.fi/MX.200001",
+      "obsCountFi": 86
+    },
+    "kivitasku": {
+      "speciesFi": "kivitasku",
+      "speciesSci": "Oenanthe oenanthe",
+      "speciesSv": "stenskvätta",
+      "speciesEn": "Northern Wheatear",
+      "id": "http://tun.fi/MX.32966",
+      "obsCountFi": 28381
+    },
+    "sepelrastas": {
+      "speciesFi": "sepelrastas",
+      "speciesSci": "Turdus torquatus",
+      "speciesSv": "ringtrast",
+      "speciesEn": "Ring Ouzel",
+      "id": "http://tun.fi/MX.33104",
+      "obsCountFi": 845
+    },
+    "mustarastas": {
+      "speciesFi": "mustarastas",
+      "speciesSci": "Turdus merula",
+      "speciesSv": "koltrast",
+      "speciesEn": "Common Blackbird",
+      "id": "http://tun.fi/MX.33106",
+      "obsCountFi": 204406
+    },
+    "räkättirastas": {
+      "speciesFi": "räkättirastas",
+      "speciesSci": "Turdus pilaris",
+      "speciesSv": "björktrast",
+      "speciesEn": "Fieldfare",
+      "id": "http://tun.fi/MX.33117",
+      "obsCountFi": 234234
+    },
+    "laulurastas": {
+      "speciesFi": "laulurastas",
+      "speciesSci": "Turdus philomelos",
+      "speciesSv": "taltrast",
+      "speciesEn": "Song Thrush",
+      "id": "http://tun.fi/MX.33119",
+      "obsCountFi": 158080
+    },
+    "punakylkirastas": {
+      "speciesFi": "punakylkirastas",
+      "speciesSci": "Turdus iliacus",
+      "speciesSv": "rödvingetrast",
+      "speciesEn": "Redwing",
+      "id": "http://tun.fi/MX.33118",
+      "obsCountFi": 230286
+    },
+    "kulorastas": {
+      "speciesFi": "kulorastas",
+      "speciesSci": "Turdus viscivorus",
+      "speciesSv": "dubbeltrast",
+      "speciesEn": "Mistle Thrush",
+      "id": "http://tun.fi/MX.33121",
+      "obsCountFi": 23564
+    },
+    "pensassirkkalintu": {
+      "speciesFi": "pensassirkkalintu",
+      "speciesSci": "Locustella naevia",
+      "speciesSv": "gräshoppsångare",
+      "speciesEn": "Common Grasshopper Warbler",
+      "id": "http://tun.fi/MX.33630",
+      "obsCountFi": 7209
+    },
+    "viitasirkkalintu": {
+      "speciesFi": "viitasirkkalintu",
+      "speciesSci": "Locustella fluviatilis",
+      "speciesSv": "flodsångare",
+      "speciesEn": "River Warbler",
+      "id": "http://tun.fi/MX.33634",
+      "obsCountFi": 2537
+    },
+    "ruokosirkkalintu": {
+      "speciesFi": "ruokosirkkalintu",
+      "speciesSci": "Locustella luscinioides",
+      "speciesSv": "vassångare",
+      "speciesEn": "Savi's Warbler",
+      "id": "http://tun.fi/MX.33635",
+      "obsCountFi": 230
+    },
+    "pikkukultarinta": {
+      "speciesFi": "pikkukultarinta",
+      "speciesSci": "Iduna caligata",
+      "speciesSv": "stäppsångare",
+      "speciesEn": "Booted Warbler",
+      "id": "http://tun.fi/MX.33671",
+      "obsCountFi": 231
+    },
+    "kultarinta": {
+      "speciesFi": "kultarinta",
+      "speciesSci": "Hippolais icterina",
+      "speciesSv": "härmsångare",
+      "speciesEn": "Icterine Warbler",
+      "id": "http://tun.fi/MX.33676",
+      "obsCountFi": 12524
+    },
+    "ruokokerttunen": {
+      "speciesFi": "ruokokerttunen",
+      "speciesSci": "Acrocephalus schoenobaenus",
+      "speciesSv": "sävsångare",
+      "speciesEn": "Sedge Warbler",
+      "id": "http://tun.fi/MX.33641",
+      "obsCountFi": 433693
+    },
+    "viitakerttunen": {
+      "speciesFi": "viitakerttunen",
+      "speciesSci": "Acrocephalus dumetorum",
+      "speciesSv": "busksångare",
+      "speciesEn": "Blyth's Reed Warbler",
+      "id": "http://tun.fi/MX.33650",
+      "obsCountFi": 19245
+    },
+    "luhtakerttunen": {
+      "speciesFi": "luhtakerttunen",
+      "speciesSci": "Acrocephalus palustris",
+      "speciesSv": "kärrsångare",
+      "speciesEn": "Marsh Warbler",
+      "id": "http://tun.fi/MX.33649",
+      "obsCountFi": 16125
+    },
+    "rytikerttunen": {
+      "speciesFi": "rytikerttunen",
+      "speciesSci": "Acrocephalus scirpaceus",
+      "speciesSv": "rörsångare",
+      "speciesEn": "Common Reed Warbler",
+      "id": "http://tun.fi/MX.33646",
+      "obsCountFi": 65581
+    },
+    "rastaskerttunen": {
+      "speciesFi": "rastaskerttunen",
+      "speciesSci": "Acrocephalus arundinaceus",
+      "speciesSv": "trastsångare",
+      "speciesEn": "Great Reed Warbler",
+      "id": "http://tun.fi/MX.33651",
+      "obsCountFi": 1464
+    },
+    "kirjokerttu": {
+      "speciesFi": "kirjokerttu",
+      "speciesSci": "Sylvia nisoria",
+      "speciesSv": "höksångare",
+      "speciesEn": "Barred Warbler",
+      "id": "http://tun.fi/MX.33939",
+      "obsCountFi": 2958
+    },
+    "hernekerttu": {
+      "speciesFi": "hernekerttu",
+      "speciesSci": "Sylvia curruca",
+      "speciesSv": "ärtsångare",
+      "speciesEn": "Lesser Whitethroat",
+      "id": "http://tun.fi/MX.33937",
+      "obsCountFi": 98011
+    },
+    "pensaskerttu": {
+      "speciesFi": "pensaskerttu",
+      "speciesSci": "Sylvia communis",
+      "speciesSv": "törnsångare",
+      "speciesEn": "Common Whitethroat",
+      "id": "http://tun.fi/MX.33936",
+      "obsCountFi": 86063
+    },
+    "lehtokerttu": {
+      "speciesFi": "lehtokerttu",
+      "speciesSci": "Sylvia borin",
+      "speciesSv": "trädgårdssångare",
+      "speciesEn": "Garden Warbler",
+      "id": "http://tun.fi/MX.33935",
+      "obsCountFi": 146930
+    },
+    "mustapääkerttu": {
+      "speciesFi": "mustapääkerttu",
+      "speciesSci": "Sylvia atricapilla",
+      "speciesSv": "svarthätta",
+      "speciesEn": "Eurasian Blackcap",
+      "id": "http://tun.fi/MX.33934",
+      "obsCountFi": 62728
+    },
+    "idänuunilintu": {
+      "speciesFi": "idänuunilintu",
+      "speciesSci": "Phylloscopus trochiloides",
+      "speciesSv": "lundsångare",
+      "speciesEn": "Greenish Warbler",
+      "id": "http://tun.fi/MX.33891",
+      "obsCountFi": 3726
+    },
+    "lapinuunilintu": {
+      "speciesFi": "lapinuunilintu",
+      "speciesSci": "Phylloscopus borealis",
+      "speciesSv": "nordsångare",
+      "speciesEn": "Arctic Warbler",
+      "id": "http://tun.fi/MX.33890",
+      "obsCountFi": 381
+    },
+    "sirittäjä": {
+      "speciesFi": "sirittäjä",
+      "speciesSci": "Phylloscopus sibilatrix",
+      "speciesSv": "grönsångare",
+      "speciesEn": "Wood Warbler",
+      "id": "http://tun.fi/MX.33878",
+      "obsCountFi": 39516
+    },
+    "tiltaltti": {
+      "speciesFi": "tiltaltti",
+      "speciesSci": "Phylloscopus collybita",
+      "speciesSv": "gransångare",
+      "speciesEn": "Common Chiffchaff",
+      "id": "http://tun.fi/MX.33874",
+      "obsCountFi": 94426
+    },
+    "pajulintu": {
+      "speciesFi": "pajulintu",
+      "speciesSci": "Phylloscopus trochilus",
+      "speciesSv": "lövsångare",
+      "speciesEn": "Willow Warbler",
+      "id": "http://tun.fi/MX.33873",
+      "obsCountFi": 928774
+    },
+    "hippiäinen": {
+      "speciesFi": "hippiäinen",
+      "speciesSci": "Regulus regulus",
+      "speciesSv": "kungsfågel",
+      "speciesEn": "Goldcrest",
+      "id": "http://tun.fi/MX.33954",
+      "obsCountFi": 606935
+    },
+    "tulipäähippiäinen": {
+      "speciesFi": "tulipäähippiäinen",
+      "speciesSci": "Regulus ignicapilla",
+      "speciesSv": "brandkronad kungsfågel",
+      "speciesEn": "Common Firecrest",
+      "id": "http://tun.fi/MX.33952",
+      "obsCountFi": 124
+    },
+    "harmaasieppo": {
+      "speciesFi": "harmaasieppo",
+      "speciesSci": "Muscicapa striata",
+      "speciesSv": "grå flugsnappare",
+      "speciesEn": "Spotted Flycatcher",
+      "id": "http://tun.fi/MX.33989",
+      "obsCountFi": 108882
+    },
+    "pikkusieppo": {
+      "speciesFi": "pikkusieppo",
+      "speciesSci": "Ficedula parva",
+      "speciesSv": "mindre flugsnappare",
+      "speciesEn": "Red-breasted Flycatcher",
+      "id": "http://tun.fi/MX.34029",
+      "obsCountFi": 6112
+    },
+    "kirjosieppo": {
+      "speciesFi": "kirjosieppo",
+      "speciesSci": "Ficedula hypoleuca",
+      "speciesSv": "svartvit flugsnappare",
+      "speciesEn": "European Pied Flycatcher",
+      "id": "http://tun.fi/MX.34021",
+      "obsCountFi": 679745
+    },
+    "viiksitimali": {
+      "speciesFi": "viiksitimali",
+      "speciesSci": "Panurus biarmicus",
+      "speciesSv": "skäggmes",
+      "speciesEn": "Bearded Reedling",
+      "id": "http://tun.fi/MX.33492",
+      "obsCountFi": 10012
+    },
+    "pyrstötiainen": {
+      "speciesFi": "pyrstötiainen",
+      "speciesSci": "Aegithalos caudatus",
+      "speciesSv": "stjärtmes",
+      "speciesEn": "Long-tailed Tit",
+      "id": "http://tun.fi/MX.34505",
+      "obsCountFi": 135551
+    },
+    "sinitiainen": {
+      "speciesFi": "sinitiainen",
+      "speciesSci": "Cyanistes caeruleus",
+      "speciesSv": "blåmes",
+      "speciesEn": "Eurasian Blue Tit",
+      "id": "http://tun.fi/MX.34574",
+      "obsCountFi": 1036422
+    },
+    "talitiainen": {
+      "speciesFi": "talitiainen",
+      "speciesSci": "Parus major",
+      "speciesSv": "talgoxe",
+      "speciesEn": "Great Tit",
+      "id": "http://tun.fi/MX.34567",
+      "obsCountFi": 1581875
+    },
+    "kuusitiainen": {
+      "speciesFi": "kuusitiainen",
+      "speciesSci": "Periparus ater",
+      "speciesSv": "svartmes",
+      "speciesEn": "Coal Tit",
+      "id": "http://tun.fi/MX.34549",
+      "obsCountFi": 215657
+    },
+    "töyhtötiainen": {
+      "speciesFi": "töyhtötiainen",
+      "speciesSci": "Lophophanes cristatus",
+      "speciesSv": "tofsmes",
+      "speciesEn": "European Crested Tit",
+      "id": "http://tun.fi/MX.34553",
+      "obsCountFi": 107787
+    },
+    "hömötiainen": {
+      "speciesFi": "hömötiainen",
+      "speciesSci": "Poecile montanus",
+      "speciesSv": "talltita",
+      "speciesEn": "Willow Tit",
+      "id": "http://tun.fi/MX.34535",
+      "obsCountFi": 348736
+    },
+    "lapintiainen": {
+      "speciesFi": "lapintiainen",
+      "speciesSci": "Poecile cinctus",
+      "speciesSv": "lappmes",
+      "speciesEn": "Siberian Tit",
+      "id": "http://tun.fi/MX.34542",
+      "obsCountFi": 35052
+    },
+    "pähkinänakkeli": {
+      "speciesFi": "pähkinänakkeli",
+      "speciesSci": "Sitta europaea",
+      "speciesSv": "nötväcka",
+      "speciesEn": "Eurasian Nuthatch",
+      "id": "http://tun.fi/MX.34586",
+      "obsCountFi": 6793
+    },
+    "puukiipijä": {
+      "speciesFi": "puukiipijä",
+      "speciesSci": "Certhia familiaris",
+      "speciesSv": "trädkrypare",
+      "speciesEn": "Eurasian Treecreeper",
+      "id": "http://tun.fi/MX.34616",
+      "obsCountFi": 150973
+    },
+    "pussitiainen": {
+      "speciesFi": "pussitiainen",
+      "speciesSci": "Remiz pendulinus",
+      "speciesSv": "pungmes",
+      "speciesEn": "Eurasian Penduline Tit",
+      "id": "http://tun.fi/MX.34517",
+      "obsCountFi": 203
+    },
+    "kuhankeittäjä": {
+      "speciesFi": "kuhankeittäjä",
+      "speciesSci": "Oriolus oriolus",
+      "speciesSv": "sommargylling",
+      "speciesEn": "Eurasian Golden Oriole",
+      "id": "http://tun.fi/MX.36871",
+      "obsCountFi": 2218
+    },
+    "pikkulepinkäinen": {
+      "speciesFi": "pikkulepinkäinen",
+      "speciesSci": "Lanius collurio",
+      "speciesSv": "törnskata",
+      "speciesEn": "Red-backed Shrike",
+      "id": "http://tun.fi/MX.32561",
+      "obsCountFi": 44224
+    },
+    "isolepinkäinen": {
+      "speciesFi": "isolepinkäinen",
+      "speciesSci": "Lanius excubitor",
+      "speciesSv": "varfågel",
+      "speciesEn": "Great Grey Shrike",
+      "id": "http://tun.fi/MX.32570",
+      "obsCountFi": 15582
+    },
+    "närhi": {
+      "speciesFi": "närhi",
+      "speciesSci": "Garrulus glandarius",
+      "speciesSv": "nötskrika",
+      "speciesEn": "Eurasian Jay",
+      "id": "http://tun.fi/MX.37090",
+      "obsCountFi": 135058
+    },
+    "kuukkeli": {
+      "speciesFi": "kuukkeli",
+      "speciesSci": "Perisoreus infaustus",
+      "speciesSv": "lavskrika",
+      "speciesEn": "Siberian Jay",
+      "id": "http://tun.fi/MX.37095",
+      "obsCountFi": 37655
+    },
+    "harakka": {
+      "speciesFi": "harakka",
+      "speciesSci": "Pica pica",
+      "speciesSv": "skata",
+      "speciesEn": "Eurasian Magpie",
+      "id": "http://tun.fi/MX.37122",
+      "obsCountFi": 211580
+    },
+    "pähkinähakki": {
+      "speciesFi": "pähkinähakki",
+      "speciesSci": "Nucifraga caryocatactes",
+      "speciesSv": "nötkråka",
+      "speciesEn": "Spotted Nutcracker",
+      "id": "http://tun.fi/MX.37135",
+      "obsCountFi": 26930
+    },
+    "naakka": {
+      "speciesFi": "naakka",
+      "speciesSci": "Corvus monedula",
+      "speciesSv": "kaja",
+      "speciesEn": "Western Jackdaw",
+      "id": "http://tun.fi/MX.37142",
+      "obsCountFi": 141171
+    },
+    "mustavaris": {
+      "speciesFi": "mustavaris",
+      "speciesSci": "Corvus frugilegus",
+      "speciesSv": "råka",
+      "speciesEn": "Rook",
+      "id": "http://tun.fi/MX.37156",
+      "obsCountFi": 10024
+    },
+    "varis": {
+      "speciesFi": "varis",
+      "speciesSci": "Corvus corone",
+      "speciesSv": "kråka",
+      "speciesEn": "Carrion Crow",
+      "id": "http://tun.fi/MX.73566",
+      "obsCountFi": 203809
+    },
+    "korppi": {
+      "speciesFi": "korppi",
+      "speciesSci": "Corvus corax",
+      "speciesSv": "korp",
+      "speciesEn": "Northern Raven",
+      "id": "http://tun.fi/MX.37178",
+      "obsCountFi": 100927
+    },
+    "kottarainen": {
+      "speciesFi": "kottarainen",
+      "speciesSci": "Sturnus vulgaris",
+      "speciesSv": "stare",
+      "speciesEn": "Common Starling",
+      "id": "http://tun.fi/MX.36817",
+      "obsCountFi": 194189
+    },
+    "varpunen": {
+      "speciesFi": "varpunen",
+      "speciesSci": "Passer domesticus",
+      "speciesSv": "gråsparv",
+      "speciesEn": "House Sparrow",
+      "id": "http://tun.fi/MX.36573",
+      "obsCountFi": 164207
+    },
+    "pikkuvarpunen": {
+      "speciesFi": "pikkuvarpunen",
+      "speciesSci": "Passer montanus",
+      "speciesSv": "pilfink",
+      "speciesEn": "Eurasian Tree Sparrow",
+      "id": "http://tun.fi/MX.36589",
+      "obsCountFi": 104210
+    },
+    "peippo": {
+      "speciesFi": "peippo",
+      "speciesSci": "Fringilla coelebs",
+      "speciesSv": "bofink",
+      "speciesEn": "Common Chaffinch",
+      "id": "http://tun.fi/MX.36237",
+      "obsCountFi": 471936
+    },
+    "järripeippo": {
+      "speciesFi": "järripeippo",
+      "speciesSci": "Fringilla montifringilla",
+      "speciesSv": "bergfink",
+      "speciesEn": "Brambling",
+      "id": "http://tun.fi/MX.36239",
+      "obsCountFi": 148755
+    },
+    "keltahemppo": {
+      "speciesFi": "keltahemppo",
+      "speciesSci": "Serinus serinus",
+      "speciesSv": "gulhämpling",
+      "speciesEn": "European Serin",
+      "id": "http://tun.fi/MX.36242",
+      "obsCountFi": 202
+    },
+    "viherpeippo": {
+      "speciesFi": "viherpeippo",
+      "speciesSci": "Carduelis chloris",
+      "speciesSv": "grönfink",
+      "speciesEn": "European Greenfinch",
+      "id": "http://tun.fi/MX.36283",
+      "obsCountFi": 420368
+    },
+    "tikli": {
+      "speciesFi": "tikli",
+      "speciesSci": "Carduelis carduelis",
+      "speciesSv": "steglits",
+      "speciesEn": "European Goldfinch",
+      "id": "http://tun.fi/MX.36306",
+      "obsCountFi": 29369
+    },
+    "vihervarpunen": {
+      "speciesFi": "vihervarpunen",
+      "speciesSci": "Carduelis spinus",
+      "speciesSv": "grönsiska",
+      "speciesEn": "Eurasian Siskin",
+      "id": "http://tun.fi/MX.36287",
+      "obsCountFi": 307459
+    },
+    "hemppo": {
+      "speciesFi": "hemppo",
+      "speciesSci": "Carduelis cannabina",
+      "speciesSv": "hämpling",
+      "speciesEn": "Common Linnet",
+      "id": "http://tun.fi/MX.36310",
+      "obsCountFi": 16785
+    },
+    "vuorihemppo": {
+      "speciesFi": "vuorihemppo",
+      "speciesSci": "Carduelis flavirostris",
+      "speciesSv": "Vinterhämpling",
+      "speciesEn": "Twite",
+      "id": "http://tun.fi/MX.36309",
+      "obsCountFi": 913
+    },
+    "urpiainen": {
+      "speciesFi": "urpiainen",
+      "speciesSci": "Carduelis flammea",
+      "speciesSv": "gråsiska",
+      "speciesEn": "Common Redpoll",
+      "id": "http://tun.fi/MX.36308",
+      "obsCountFi": 493847
+    },
+    "tundraurpiainen": {
+      "speciesFi": "tundraurpiainen",
+      "speciesSci": "Carduelis hornemanni",
+      "speciesSv": "snösiska",
+      "speciesEn": "Arctic Redpoll",
+      "id": "http://tun.fi/MX.73545",
+      "obsCountFi": 19997
+    },
+    "kirjosiipikäpylintu": {
+      "speciesFi": "kirjosiipikäpylintu",
+      "speciesSci": "Loxia leucoptera",
+      "speciesSv": "bändelkorsnäbb",
+      "speciesEn": "Two-barred Crossbill",
+      "id": "http://tun.fi/MX.36359",
+      "obsCountFi": 2626
+    },
+    "pikkukäpylintu": {
+      "speciesFi": "pikkukäpylintu",
+      "speciesSci": "Loxia curvirostra",
+      "speciesSv": "mindre korsnäbb",
+      "speciesEn": "Red Crossbill",
+      "id": "http://tun.fi/MX.36358",
+      "obsCountFi": 46395
+    },
+    "isokäpylintu": {
+      "speciesFi": "isokäpylintu",
+      "speciesSci": "Loxia pytyopsittacus",
+      "speciesSv": "större korsnäbb",
+      "speciesEn": "Parrot Crossbill",
+      "id": "http://tun.fi/MX.36356",
+      "obsCountFi": 9137
+    },
+    "punavarpunen": {
+      "speciesFi": "punavarpunen",
+      "speciesSci": "Carpodacus erythrinus",
+      "speciesSv": "rosenfink",
+      "speciesEn": "Common Rosefinch",
+      "id": "http://tun.fi/MX.36331",
+      "obsCountFi": 50793
+    },
+    "taviokuurna": {
+      "speciesFi": "taviokuurna",
+      "speciesSci": "Pinicola enucleator",
+      "speciesSv": "tallbit",
+      "speciesEn": "Pine Grosbeak",
+      "id": "http://tun.fi/MX.36351",
+      "obsCountFi": 19507
+    },
+    "punatulkku": {
+      "speciesFi": "punatulkku",
+      "speciesSci": "Pyrrhula pyrrhula",
+      "speciesSv": "domherre",
+      "speciesEn": "Eurasian Bullfinch",
+      "id": "http://tun.fi/MX.36366",
+      "obsCountFi": 322017
+    },
+    "nokkavarpunen": {
+      "speciesFi": "nokkavarpunen",
+      "speciesSci": "Coccothraustes coccothraustes",
+      "speciesSv": "stenknäck",
+      "speciesEn": "Hawfinch",
+      "id": "http://tun.fi/MX.36368",
+      "obsCountFi": 6913
+    },
+    "lapinsirkku": {
+      "speciesFi": "lapinsirkku",
+      "speciesSci": "Calcarius lapponicus",
+      "speciesSv": "lappsparv",
+      "speciesEn": "Lapland Longspur",
+      "id": "http://tun.fi/MX.35185",
+      "obsCountFi": 5047
+    },
+    "pulmunen": {
+      "speciesFi": "pulmunen",
+      "speciesSci": "Plectrophenax nivalis",
+      "speciesSv": "snösparv",
+      "speciesEn": "Snow Bunting",
+      "id": "http://tun.fi/MX.35189",
+      "obsCountFi": 9932
+    },
+    "keltasirkku": {
+      "speciesFi": "keltasirkku",
+      "speciesSci": "Emberiza citrinella",
+      "speciesSv": "gulsparv",
+      "speciesEn": "Yellowhammer",
+      "id": "http://tun.fi/MX.35146",
+      "obsCountFi": 245796
+    },
+    "peltosirkku": {
+      "speciesFi": "peltosirkku",
+      "speciesSci": "Emberiza hortulana",
+      "speciesSv": "ortolansparv",
+      "speciesEn": "Ortolan Bunting",
+      "id": "http://tun.fi/MX.35154",
+      "obsCountFi": 8655
+    },
+    "pohjansirkku": {
+      "speciesFi": "pohjansirkku",
+      "speciesSci": "Emberiza rustica",
+      "speciesSv": "videsparv",
+      "speciesEn": "Rustic Bunting",
+      "id": "http://tun.fi/MX.35167",
+      "obsCountFi": 17289
+    },
+    "pikkusirkku": {
+      "speciesFi": "pikkusirkku",
+      "speciesSci": "Emberiza pusilla",
+      "speciesSv": "dvärgsparv",
+      "speciesEn": "Little Bunting",
+      "id": "http://tun.fi/MX.35165",
+      "obsCountFi": 1949
+    },
+    "pajusirkku": {
+      "speciesFi": "pajusirkku",
+      "speciesSci": "Emberiza schoeniclus",
+      "speciesSv": "sävsparv",
+      "speciesEn": "Common Reed Bunting",
+      "id": "http://tun.fi/MX.35182",
+      "obsCountFi": 194655
+    }
+  }
