@@ -80,6 +80,10 @@ for i, row in enumerate(data):
 
     # Skip species that don't have Finnish name in the species list
     if names[row["speciesAbbr"]]["speciesFI"]:
+        # Untested: change names to match 2022 names
+        if "kesykyyhky" == names[row["speciesAbbr"]]["speciesFI"]:
+            names[row["speciesAbbr"]]["speciesFI"] = "kalliokyyhky"
+
         row["speciesFi"] = names[row["speciesAbbr"]]["speciesFI"].lower()
     else:
         continue
