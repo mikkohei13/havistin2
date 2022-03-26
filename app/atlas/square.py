@@ -1,12 +1,13 @@
 import requests
 import json
+import sys
+import re
 
+from datetime import datetime, date, timedelta
 from flask import request
 
-import json
-import sys
-
 import app_secrets
+import finnish_species
 
 def print_r(dict):
     print("DICT:", file = sys.stdout)
@@ -19,7 +20,98 @@ def print_debug(data):
     print(str(data), file = sys.stdout)
 
 
-def all_species():
+def count_sum(species_list):
+    count_sum = 0
+    for species in species_list:
+        count_sum = count_sum + species["count"]
+    
+    return count_sum
+
+
+def valid_square_id(square_id):
+    pattern = r'[6-7][0-9][0-9]:[3-3][0-7][0-9]'
+    match = re.fullmatch(pattern, square_id)
+
+    if match is not None:
+        return square_id
+    else:
+        exit("Ruudun koordinaattien pitää olla muodossa nnn:eee (esim. 668:338), sekä Suomen alueella.")
+
+
+def make_coordinates_param(square_id):
+    intersect_ratio = 0.1   # decimal 0-1
+    shift = 3               # integer >= 1
+
+    square_pieces = square_id.split(":")
+
+    N = int(square_pieces[0])
+    E = int(square_pieces[1])
+
+    N_min = N - shift
+    N_max = N + shift
+    E_min = E - shift
+    E_max = E + shift
+
+    coordinates_param = f"{N_min}:{N_max}:{E_min}:{E_max}:YKJ:{intersect_ratio}"
+
+    return coordinates_param
+
+
+def make_season_param():
+    shift = 14
+
+    date_now = date.today()
+    season_start = (date_now - timedelta(days = shift)).strftime('%m%d')
+    season_end = (date_now + timedelta(days = shift)).strftime('%m%d')
+
+#    print(date_now, season_start, season_end) # debug
+
+    return f"{season_start}/{season_end}"
+
+
+def adaptive_species(square_id):
+    limit = 250
+
+    coordinates_param = make_coordinates_param(square_id)
+    season_param = make_season_param()
+
+    # TODO: get date from param & validate
+    #date = datetime.strptime("2022-01-01", '%Y-%m-%d')
+
+    # Both probable and confirmed breeders
+    url = f"https://laji.fi/api/warehouse/query/unit/aggregate?target=MX.37580&countryId=ML.206&collectionId=HR.1747,HR.3691,HR.4412,HR.4471,HR.3211&typeOfOccurrenceId=MX.typeOfOccurrenceBirdLifeCategoryA,MX.typeOfOccurrenceBirdLifeCategoryC&coordinates={coordinates_param}&aggregateBy=unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesNameFinnish&selected=unit.linkings.taxon.speciesNameFinnish&cache=true&page=1&pageSize={limit}&season={season_param}&geoJSON=false&onlyCount=true" + app_secrets.finbif_api_token
+
+    req = requests.get(url)
+    data_dict = req.json()
+
+    #exit(url)
+
+    species_count_sum = count_sum(data_dict["results"])
+
+    print(f"Sum: {species_count_sum}")
+
+    species_count_dict = dict()
+
+    for species in data_dict["results"]:
+        speciesFi = species["aggregateBy"]["unit.linkings.taxon.speciesNameFinnish"]
+        count = species["count"]
+
+        if count > (species_count_sum * 0.001):
+            species_count_dict[speciesFi] = count
+#        else:
+#            print(f"left out {speciesFi} with count {count}", file = sys.stdout)
+
+    #species_count_dict = map(to_simple_dict, data_dict["results"])
+
+#    print(species_count_dict)
+
+    #for species in data_dict['results']:
+    #    breeding_species_list.append(species["aggregateBy"]["unit.linkings.originalTaxon.speciesNameFinnish"])
+
+    return species_count_dict
+
+
+def atlas_species():
     filename = "./data/atlas-species.json"
     f = open(filename)       
 
@@ -102,69 +194,74 @@ def convert_atlasclass(atlasclass_raw):
         return atlasclass_raw
 
 
-def generate_species_table(all_species_dict, atlas3_species_dict, atlas4_species_dict, breeding_species_list):
+def generate_species_table(species_to_show_dict, atlas3_species_dict, atlas4_species_dict, breeding_species_list):
 
     html_table = "<div id='listwrapper'>"
     html_table += "<div class='row header'><div class='species'>Laji</div><div class='atlas3'>3.</div><div class='atlas4'>4.</div><div class='own'>Oma</div></div>"
 
-    for speciesFi in all_species_dict:
+#    for speciesFi in all_species_dict:
+    for speciesFi in finnish_species.list:
         # all_species_dict['speciesFi']
 
-        row_class = ""
+        if speciesFi in species_to_show_dict:
 
-        # Atlas 3 data
-        atlas3_class = "&nbsp;"
-        atlas3_code = "&nbsp;"
-        if speciesFi in atlas3_species_dict:
-            atlas3_class = convert_atlasclass(atlas3_species_dict[speciesFi]["breedingCategory"])
-            atlas3_code = str(atlas3_species_dict[speciesFi]["breedingIndex"]).replace("0", "")
+            row_class = ""
 
-        row_class += " atlas3_class_" + atlas3_class
+            # Atlas 3 data
+            atlas3_class = "&nbsp;"
+            atlas3_code = "&nbsp;"
+            if speciesFi in atlas3_species_dict:
+                atlas3_class = convert_atlasclass(atlas3_species_dict[speciesFi]["breedingCategory"])
+                atlas3_code = str(atlas3_species_dict[speciesFi]["breedingIndex"]).replace("0", "")
 
-        # Atlas 4 data
-        atlas4_class = "&nbsp;"
-        atlas4_code = "&nbsp;"
-        if speciesFi in atlas4_species_dict:
-            atlas4_class = convert_atlasclass(atlas4_species_dict[speciesFi]["atlasClass"]["value"])
-            atlas4_code = str(split_atlascode(atlas4_species_dict[speciesFi]["atlasCode"]["value"]))
+            row_class += " atlas3_class_" + atlas3_class
 
-        row_class += " atlas4_class_" + atlas4_class
+            # Atlas 4 data
+            atlas4_class = "&nbsp;"
+            atlas4_code = "&nbsp;"
+            if speciesFi in atlas4_species_dict:
+                atlas4_class = convert_atlasclass(atlas4_species_dict[speciesFi]["atlasClass"]["value"])
+                atlas4_code = str(split_atlascode(atlas4_species_dict[speciesFi]["atlasCode"]["value"]))
 
-        # Breeding species
-        if speciesFi in breeding_species_list:
-            row_class += " breeding_now"
-        else:
-            row_class += " "
+            row_class += " atlas4_class_" + atlas4_class
 
-        # HTML
-        html_table += "<div class='row " + row_class + "'>"
-        html_table += "<div class='species'>" + speciesFi + "</div>"
+            # Breeding species
+            if speciesFi in breeding_species_list:
+                row_class += " breeding_now"
+            else:
+                row_class += " "
 
-        html_table += "<div class='atlas3'>" + atlas3_class + "</div>"
+            # HTML
+            html_table += "<div class='row " + row_class + "'>"
+            html_table += "<div class='species'>" + speciesFi + "</div>"
 
-        html_table += "<div class='atlas4'>" + atlas4_code + "</div>"
+            html_table += "<div class='atlas3'>" + atlas3_class + "</div>"
 
-        html_table += "<div class='own'>&nbsp;</div>"
+            html_table += "<div class='atlas4'>" + atlas4_code + "</div>"
 
-        html_table += "</div>"
+            html_table += "<div class='own'>&nbsp;</div>"
+
+            html_table += "</div>"
 
     html_table += "</div>"
 
     return html_table
 
 
-
 def main():
-    square_id = request.args.get("id", default="", type=str)
+    square_id_untrusted = request.args.get("id", default="", type=str)
+    show_untrusted = request.args.get("show", default="", type=str)
 
-    # TODO: sanitize input
+    square_id = valid_square_id(square_id_untrusted)
 
-    # Species
-    all_species_dict = all_species()
+    if "adaptive" == show_untrusted:
+        species_to_show_dict = adaptive_species(square_id)
+    else:
+        species_to_show_dict = atlas_species()
 
     # Atlas 3
     atlas3_species_dict = atlas3_square(square_id)
-    print_r(atlas3_species_dict)
+#    print_r(atlas3_species_dict)
 #    exit() # debug
 
     # Atlas 4
@@ -174,10 +271,11 @@ def main():
     breeding_species_list = atlas4_breeding()
 
     # HTML
-    html_table = generate_species_table(all_species_dict, atlas3_species_dict, atlas4_species_dict, breeding_species_list)
+    html_table = generate_species_table(species_to_show_dict, atlas3_species_dict, atlas4_species_dict, breeding_species_list)
 
     html_heading = ""
     html_heading += "<h1>" + atlas4_square_info_dict["coordinates"] + " " + atlas4_square_info_dict["name"] + "</h1>"
     html_heading += "<p>" + atlas4_square_info_dict["birdAssociationArea"]["value"] + "</p>"
 
     return html_table, html_heading
+

@@ -4,6 +4,8 @@ import sys
 import atlas.main
 import atlas.square
 
+#import app_secrets
+
 app = Flask(__name__)
 
 print("-------------- BEGIN -------------- -------------- --------------", file = sys.stdout)
