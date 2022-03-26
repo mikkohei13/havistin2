@@ -1,4 +1,6 @@
 
+# Havistin 2
+Tools to view and manage biodiversity data (with Python)
 
 # Notes
 
@@ -38,3 +40,7 @@ https://trstringer.com/python-flask-debug-docker-compose/
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
+
+
+DAMN ! worker 1 (pid: 89) died :( trying respawn ..
+https://github.com/unbit/uwsgi/issues/1779
