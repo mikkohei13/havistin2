@@ -22,6 +22,11 @@ Also:
 
 Try Gunicorn instead?
 
+# Ideas
+
+One grid observation count or breeding index graph
+
+
 ## Misc
 
 

@@ -18,8 +18,8 @@ def root():
 
 @app.route("/square", methods=['GET'])
 def square():
-    html_table, html_heading = atlas.square.main()
-    return render_template("square.html", html_table=html_table, html_heading=html_heading)
+    html_table, html_heading, info_top, info_bottom = atlas.square.main()
+    return render_template("square.html", html_table=html_table, html_heading=html_heading, info_top=info_top, info_bottom=info_bottom)
 
 
 if __name__ == "__main__":

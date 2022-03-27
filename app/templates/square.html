@@ -1,13 +1,36 @@
 {% extends "base.html" %}
 
 {% block head %}
-<title>Ruutu</title>
+    <title>Ruutu</title>
 {% endblock %}
 
 {% block body %}
 
-{{ html_heading|safe }}
+    <div id="heading">
+    {{ html_heading|safe }}
+    </div>
 
-{{ html_table|safe }}
+    <div id="info_top">
+        <div id="info">
+            {{ info_top|safe }}
+        </div>
+        <div id="fillable">
+            <span id="paikka">Paikka:</span>
+            <span id="pvm">Pvm:</span>
+            <span id="havainnoijat">Havainnoijat:</span>
+            <span id="taydellinen">Täydellinen lista <strong>☐</strong></span>
+            <span id="tallennettu">Tallennettu: Vihko / Tiira / iNaturalist</span>
+        </div>
+    </div>
+
+    <div id="species_table">
+        {{ html_table|safe }}
+    </div>
+
+    <div id="info_bottom">
+    {{ info_bottom|safe }}
+    </div>
 
 {% endblock %}
+
+

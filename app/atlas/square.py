@@ -124,15 +124,23 @@ def atlas_species():
 def atlas3_square(square_id):
     filename = "./data/atlas3/" + square_id.replace(":", "-") + ".json"   
 
-    # ABBA !!! TEMP
-#    filename = "./data/" + square_id.replace(":", "-") + ".json"   
-
     f = open(filename)
 
     species_dict = json.load(f)
     
     f.close()
     return species_dict
+
+
+def get_breeding_number(atlas_class_key):
+    if "MY.atlasClassEnumA" == atlas_class_key:
+        return 0
+    if "MY.atlasClassEnumB" == atlas_class_key:
+        return 1
+    if "MY.atlasClassEnumC" == atlas_class_key:
+        return 2
+    if "MY.atlasClassEnumD" == atlas_class_key:
+        return 3
 
 
 def atlas4_square(square_id):
@@ -148,9 +156,13 @@ def atlas4_square(square_id):
 
     # Species dict with fi name as key
     species_dict = dict().copy()
+    breeding_sum_counter = 0
 
     for species in data_dict["data"]:
         species_dict[species["speciesName"]] = species
+        breeding_sum_counter = breeding_sum_counter + get_breeding_number(species["atlasClass"]["key"])
+
+    square_info_dict["breeding_sum"] = breeding_sum_counter
 
     return species_dict, square_info_dict
 
@@ -248,6 +260,31 @@ def generate_species_table(species_to_show_dict, atlas3_species_dict, atlas4_spe
     return html_table
 
 
+def generate_info_top(atlas4_square_info_dict):
+
+    level2 = round(atlas4_square_info_dict['level2'], 1)
+    level3 = round(atlas4_square_info_dict['level3'], 1)
+    level4 = round(atlas4_square_info_dict['level4'], 1)
+    level5 = round(atlas4_square_info_dict['level5'], 1)
+
+    square_id = atlas4_square_info_dict["coordinates"]
+
+    html = ""
+    html += f"<p id='paragraph1' class='noprint'>Näytä: <a href='/square?id={square_id}'>Suomen pesimälajit</a> / <a href='/square?id={square_id}&show=adaptive'>ruudulla tähän aikaan havaitut lajit</a></p>"
+    html += f"<p id='paragraph2'>{atlas4_square_info_dict['birdAssociationArea']['value']}</p>"
+    html += f"<p id='paragraph3'>Selvitysastesumma: {atlas4_square_info_dict['breeding_sum']}, selvitysasterajat: välttävä {level2}, tyydyttävä {level3}, hyvä {level4}, erinomainen {level5}</p>"
+
+    return html
+
+
+def generate_info_bottom(show_untrusted, species_count = 250):
+    html = ""
+    if "adaptive" == show_untrusted:
+        html += f"Tällä lomakkeella on {species_count} yleisimmin tällä alueella tähän vuodenaikaan havaittua lajia. Jos teet täydellisen listan, muista merkitä muistiin myös harvinaisemmat lajit."
+    else:
+        html += f"Tällä lomakkeella on {species_count} pesimälintulajia. Jos teet täydellisen listan, muista merkitä muistiin myös muut lajit, kuten läpimuuttajat ja harvinaisuudet."
+    return html
+
 def main():
     square_id_untrusted = request.args.get("id", default="", type=str)
     show_untrusted = request.args.get("show", default="", type=str)
@@ -267,6 +304,8 @@ def main():
     # Atlas 4
     atlas4_species_dict, atlas4_square_info_dict = atlas4_square(square_id)
 
+#    print_r(atlas4_species_dict)
+
     # Breeding species
     breeding_species_list = atlas4_breeding()
 
@@ -275,7 +314,14 @@ def main():
 
     html_heading = ""
     html_heading += "<h1>" + atlas4_square_info_dict["coordinates"] + " " + atlas4_square_info_dict["name"] + "</h1>"
-    html_heading += "<p>" + atlas4_square_info_dict["birdAssociationArea"]["value"] + "</p>"
 
-    return html_table, html_heading
+    info_top = generate_info_top(atlas4_square_info_dict)
 
+    info_bottom = generate_info_bottom(show_untrusted, len(species_to_show_dict))
+
+    return html_table, html_heading, info_top, info_bottom
+
+
+    # TODO: Title with grid id and name, for printing PDF
+    # TODO: Kaikki lintuaineistot mukaan, pl. TIPU
+    # TODO: Lajit yleisyysjärjestyksessä, tai ainakin rarimmat myös

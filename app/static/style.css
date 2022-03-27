@@ -7,6 +7,13 @@ h1 {
     font-size: 120%;
 }
 
+/* Species table */
+
+#species_table {
+    clear: both;
+    padding-top: 1em;
+}
+
 #listwrapper {
   columns: 3 200px;
 }
@@ -50,3 +57,67 @@ h1 {
 }
 
 
+/* Info texts */
+
+#info_top {
+    margin: 0;
+}
+
+#info_top #info p {
+    margin: 0;
+}
+
+#info_top #info #paragraph1 {
+    margin: 1em 0;
+    font-weight: bold;
+}
+
+#fillable {
+    margin-top: 1em;
+    height: 2em;
+    line-height: 150%;;
+}
+
+#fillable span {
+    display: block;
+    float: left;
+    margin-right: 2em;
+}
+
+#paikka {
+    width: 14em;
+}
+
+#pvm {
+    width: 8em;
+}
+
+#havainnoijat {
+    width: 16em;
+}
+
+#fillable #taydellinen {
+    margin-right: 1em;
+}
+
+#taydellinen strong {
+    font-weight: normal;
+    letter-spacing: 0.2em;
+}
+
+#pvm {
+    width: 8em;
+}
+
+
+#info_bottom {
+    margin: 1em 0 0 0;
+}
+
+@media print {
+
+    .noprint {
+      display: none;
+    }
+  
+  }
