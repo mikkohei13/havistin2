@@ -309,13 +309,13 @@ def generate_info_bottom(show_untrusted, species_count = 250):
         html += f"Tällä lomakkeella on {species_count} pesimälintulajia. Jos teet täydellisen listan, muista merkitä muistiin myös muut lajit, kuten läpimuuttajat ja harvinaisuudet."
     return html
 
-def main():
-    square_id_untrusted = request.args.get("id", default="", type=str)
-    show_untrusted = request.args.get("show", default="", type=str)
+def main(square_id_untrusted, show_untrusted):
+#    square_id_untrusted = request.args.get("id", default="", type=str)
+#    show_untrusted = request.args.get("show", default="", type=str)
 
     square_id = valid_square_id(square_id_untrusted)
 
-    if "adaptive" == show_untrusted:
+    if "mukautuva" == show_untrusted:
         species_to_show_dict = adaptive_species(square_id)
     else:
         species_to_show_dict = atlas_species()

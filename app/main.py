@@ -17,9 +17,9 @@ def root():
     body_content = atlas.main.main("Hoi!")
     return render_template("index.html", body_content=body_content)
 
-@app.route("/square", methods=['GET'])
-def square():
-    html_table, html_title, html_heading, info_top, info_bottom = atlas.square.main()
+@app.route("/ruutulomake/<string:square_id_untrusted>/<string:show_untrusted>")
+def square(square_id_untrusted, show_untrusted):
+    html_table, html_title, html_heading, info_top, info_bottom = atlas.square.main(square_id_untrusted, show_untrusted)
     return render_template("square.html", html_title=html_title, html_table=html_table, html_heading=html_heading, info_top=info_top, info_bottom=info_bottom)
 
 @app.errorhandler(HTTPException)
