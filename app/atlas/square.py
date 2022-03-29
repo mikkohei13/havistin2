@@ -80,8 +80,8 @@ def adaptive_species(square_id):
     # TODO: get date from param & validate
     #date = datetime.strptime("2022-01-01", '%Y-%m-%d')
 
-    # Both probable and confirmed breeders
-    url = f"https://laji.fi/api/warehouse/query/unit/aggregate?target=MX.37580&countryId=ML.206&collectionId=HR.1747,HR.3691,HR.4412,HR.4471,HR.3211&typeOfOccurrenceId=MX.typeOfOccurrenceBirdLifeCategoryA,MX.typeOfOccurrenceBirdLifeCategoryC&coordinates={coordinates_param}&aggregateBy=unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesNameFinnish&selected=unit.linkings.taxon.speciesNameFinnish&cache=true&page=1&pageSize={limit}&season={season_param}&geoJSON=false&onlyCount=true" + app_secrets.finbif_api_token
+    # All bird data except TIPU
+    url = f"https://laji.fi/api/warehouse/query/unit/aggregate?target=MX.37580&countryId=ML.206&collectionIdNot=HR.48&typeOfOccurrenceId=MX.typeOfOccurrenceBirdLifeCategoryA,MX.typeOfOccurrenceBirdLifeCategoryC&coordinates={coordinates_param}&aggregateBy=unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesNameFinnish&selected=unit.linkings.taxon.speciesNameFinnish&cache=true&page=1&pageSize={limit}&season={season_param}&geoJSON=false&onlyCount=true" + app_secrets.finbif_api_token
 
     req = requests.get(url)
     data_dict = req.json()
@@ -174,13 +174,19 @@ def atlas4_square(square_id):
 
 def atlas4_breeding():
 
+    # Todo: make a neraby search instead, if there's more data. Use c. 200 km radius.
+    # Todo maybe: Make a season search instead, in 2023 when there's data from multiple years. More data and also from future eeks, but not customized for this year.
+
     number_of_species = "25"
 
     # Only confirmed breeders
 #    url = "https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=unit.linkings.originalTaxon.speciesNameFinnish&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=" + number_of_species + "&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&time=-14%2F0&atlasClass=MY.atlasClassEnumD&access_token=" + app_secrets.finbif_api_token
 
     # Both probable and confirmed breeders
-    url = "https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=unit.linkings.originalTaxon.speciesNameFinnish&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=" + number_of_species + "&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&time=-14%2F0&atlasClass=MY.atlasClassEnumC,atlasClass=MY.atlasClassEnumD&access_token=" + app_secrets.finbif_api_token
+#    url = "https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=unit.linkings.originalTaxon.speciesNameFinnish&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=" + number_of_species + "&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&time=-14%2F0&atlasClass=MY.atlasClassEnumC,atlasClass=MY.atlasClassEnumD&access_token=" + app_secrets.finbif_api_token
+
+    # Both probable and confirmed breeders, but not 4 & 5, using atlasCode
+    url = "https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=unit.linkings.originalTaxon.speciesNameFinnish&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=" + number_of_species + "&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&time=-14%2F0&atlasCode=MY.atlasCodeEnum6,MY.atlasCodeEnum61,MY.atlasCodeEnum62,MY.atlasCodeEnum63,MY.atlasCodeEnum64,MY.atlasCodeEnum65,MY.atlasCodeEnum66,MY.atlasCodeEnum7,MY.atlasCodeEnum71,MY.atlasCodeEnum72,MY.atlasCodeEnum73,MY.atlasCodeEnum74,MY.atlasCodeEnum75,MY.atlasCodeEnum8,MY.atlasCodeEnum81,MY.atlasCodeEnum82&access_token=" + app_secrets.finbif_api_token
 
     req = requests.get(url)
     data_dict = req.json()
@@ -288,7 +294,7 @@ def generate_info_top(atlas4_square_info_dict):
     square_id = atlas4_square_info_dict["coordinates"]
 
     html = ""
-    html += f"<p id='paragraph1' class='noprint'>Näytä: <a href='/square?id={square_id}'>Suomen pesimälajit</a> / <a href='/square?id={square_id}&show=adaptive'>ruudulla tähän aikaan havaitut lajit</a></p>"
+    html += f"<p id='paragraph1' class='noprint'>Näytä: <a href='/square?id={square_id}'>Suomen pesimälajit</a> / <a href='/square?id={square_id}&show=adaptive'>seudulla tähän vuodenaikaan havaitut lajit</a></p>"
 #    html += f"<p id='paragraph2'></p>"
     html += f"<p id='paragraph3'>Selvitysaste: {current_level}, summa: {atlas4_square_info_dict['breeding_sum']} (rajat: välttävä {level2}, tyydyttävä {level3}, hyvä {level4}, erinomainen {level5})</p>"
 

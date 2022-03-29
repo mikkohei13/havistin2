@@ -54,8 +54,9 @@ https://github.com/unbit/uwsgi/issues/1779
 
 ## Must
 
+- Check worker dying problem triggered by exit?
+- Deployment
 - Linkki ohjeisiin ja pääsivulle
-- Kaikki lintuaineistot mukaan, pl. TIPU
 
 ## Nice
 
