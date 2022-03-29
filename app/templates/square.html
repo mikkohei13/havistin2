@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block head %}
-    <title>Ruutu</title>
+    <title>{{ html_title }} - Lintuatlas (biomi.org)</title>
 {% endblock %}
 
 {% block body %}
@@ -16,10 +16,11 @@
         </div>
         <div id="fillable">
             <span id="paikka">Paikka:</span>
+            <span id="taydellinen"><strong>☐</strong> Täydellinen lista</span>
+            <span id="tallennettu">Tallennettu: <strong>☐</strong> Vihko <strong>☐</strong> Tiira <strong>☐</strong> iNaturalist</span>
             <span id="pvm">Pvm:</span>
+            <span id="klo">klo (alku & loppu):</span>
             <span id="havainnoijat">Havainnoijat:</span>
-            <span id="taydellinen">Täydellinen lista <strong>☐</strong></span>
-            <span id="tallennettu">Tallennettu: Vihko / Tiira / iNaturalist</span>
         </div>
     </div>
 
@@ -28,9 +29,13 @@
     </div>
 
     <div id="info_bottom">
-    {{ info_bottom|safe }}
+    <p>
+        {{ info_bottom|safe }}
+        <strong>Lihavoituna</strong> lajit, joista on tehty eniten todennäköisiä tai varmistettuja pesintöjä viime aikoina. Havaintojen tallennusohjeet: <a href="https://lintuatlas.fi/havaintojen-tallentaminen">lintuatlas.fi/havaintojen-tallentaminen</a>
+    </p>
+    <p id ="version">
+        Havistin/<a href="https://biomi.org">biomi.org</a>, versio 20220328, palaute hiha(ät))biomi.org</p>
     </div>
 
 {% endblock %}
-
 

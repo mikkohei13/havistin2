@@ -49,3 +49,14 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 DAMN ! worker 1 (pid: 89) died :( trying respawn ..
 https://github.com/unbit/uwsgi/issues/1779
+
+# Todo
+
+## Must
+
+- Linkki ohjeisiin ja pääsivulle
+- Kaikki lintuaineistot mukaan, pl. TIPU
+
+## Nice
+
+- Lajit yleisyysjärjestyksessä, tai ainakin rarimmat myös

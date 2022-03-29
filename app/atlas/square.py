@@ -10,7 +10,7 @@ import app_secrets
 import finnish_species
 
 def print_r(dict):
-    print("DICT:", file = sys.stdout)
+#    print("DICT:", file = sys.stdout)
 #    print(*dict.items(), sep="\n", file = sys.stdout)
     print(dict, sep="\n", file = sys.stdout)
 
@@ -35,7 +35,9 @@ def valid_square_id(square_id):
     if match is not None:
         return square_id
     else:
-        exit("Ruudun koordinaattien pitää olla muodossa nnn:eee (esim. 668:338), sekä Suomen alueella.")
+        print_r("ERROR: Coordinates invalid.")
+        raise ValueError
+#        exit("Ruudun koordinaattien pitää olla muodossa nnn:eee (esim. 668:338), sekä Suomen alueella.")
 
 
 def make_coordinates_param(square_id):
@@ -124,7 +126,10 @@ def atlas_species():
 def atlas3_square(square_id):
     filename = "./data/atlas3/" + square_id.replace(":", "-") + ".json"   
 
-    f = open(filename)
+    try:
+        f = open(filename)
+    except FileNotFoundError:
+        print_r("ERROR: Square file not found.")
 
     species_dict = json.load(f)
     
@@ -267,12 +272,25 @@ def generate_info_top(atlas4_square_info_dict):
     level4 = round(atlas4_square_info_dict['level4'], 1)
     level5 = round(atlas4_square_info_dict['level5'], 1)
 
+    if atlas4_square_info_dict['breeding_sum'] >= atlas4_square_info_dict['level5']:
+        current_level = "erinomainen"
+    elif atlas4_square_info_dict['breeding_sum'] >= atlas4_square_info_dict['level4']:
+        current_level = "hyvä"
+    elif atlas4_square_info_dict['breeding_sum'] >= atlas4_square_info_dict['level3']:
+        current_level = "tyydyttävä"
+    elif atlas4_square_info_dict['breeding_sum'] >= atlas4_square_info_dict['level2']:
+        current_level = "välttävä"
+    elif atlas4_square_info_dict['breeding_sum'] >= atlas4_square_info_dict['level1']:
+        current_level = "satunnaishavaintoja"
+    else:
+        current_level = "ei havaintoja"
+    
     square_id = atlas4_square_info_dict["coordinates"]
 
     html = ""
     html += f"<p id='paragraph1' class='noprint'>Näytä: <a href='/square?id={square_id}'>Suomen pesimälajit</a> / <a href='/square?id={square_id}&show=adaptive'>ruudulla tähän aikaan havaitut lajit</a></p>"
-    html += f"<p id='paragraph2'>{atlas4_square_info_dict['birdAssociationArea']['value']}</p>"
-    html += f"<p id='paragraph3'>Selvitysastesumma: {atlas4_square_info_dict['breeding_sum']}, selvitysasterajat: välttävä {level2}, tyydyttävä {level3}, hyvä {level4}, erinomainen {level5}</p>"
+#    html += f"<p id='paragraph2'></p>"
+    html += f"<p id='paragraph3'>Selvitysaste: {current_level}, summa: {atlas4_square_info_dict['breeding_sum']} (rajat: välttävä {level2}, tyydyttävä {level3}, hyvä {level4}, erinomainen {level5})</p>"
 
     return html
 
@@ -310,18 +328,17 @@ def main():
     breeding_species_list = atlas4_breeding()
 
     # HTML
+    html_title = f"Atlasruutu {atlas4_square_info_dict['coordinates']}"
+
     html_table = generate_species_table(species_to_show_dict, atlas3_species_dict, atlas4_species_dict, breeding_species_list)
 
     html_heading = ""
-    html_heading += "<h1>" + atlas4_square_info_dict["coordinates"] + " " + atlas4_square_info_dict["name"] + "</h1>"
+    html_heading += f"<h1>{atlas4_square_info_dict['coordinates']} {atlas4_square_info_dict['name']} <span> - {atlas4_square_info_dict['birdAssociationArea']['value']}</span></h1>"
 
     info_top = generate_info_top(atlas4_square_info_dict)
 
     info_bottom = generate_info_bottom(show_untrusted, len(species_to_show_dict))
 
-    return html_table, html_heading, info_top, info_bottom
+    return html_table, html_title, html_heading, info_top, info_bottom
 
 
-    # TODO: Title with grid id and name, for printing PDF
-    # TODO: Kaikki lintuaineistot mukaan, pl. TIPU
-    # TODO: Lajit yleisyysjärjestyksessä, tai ainakin rarimmat myös

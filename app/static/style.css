@@ -7,6 +7,11 @@ h1 {
     font-size: 120%;
 }
 
+h1 span {
+    font-size: 100%;
+    font-weight: normal;
+}
+
 /* Species table */
 
 #species_table {
@@ -75,13 +80,13 @@ h1 {
 #fillable {
     margin-top: 1em;
     height: 2em;
-    line-height: 150%;;
+    line-height: 150%;
 }
 
 #fillable span {
     display: block;
     float: left;
-    margin-right: 2em;
+    margin-right: 3em;
 }
 
 #paikka {
@@ -93,25 +98,29 @@ h1 {
 }
 
 #havainnoijat {
-    width: 16em;
+    
 }
 
 #fillable #taydellinen {
     margin-right: 1em;
 }
 
-#taydellinen strong {
+#info_top strong {
     font-weight: normal;
     letter-spacing: 0.2em;
 }
 
-#pvm {
-    width: 8em;
+#klo {
+    width: 12em;
 }
-
 
 #info_bottom {
     margin: 1em 0 0 0;
+}
+
+#version {
+    margin-top: -1em;
+    font-size: 70%;
 }
 
 @media print {
