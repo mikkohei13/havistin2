@@ -1,12 +1,17 @@
 {% extends "base.html" %}
 
 {% block head %}
-<title>Lintuatlas-tilastoja</title>
+<title>Lintuatlaksen tilastoja (biomi.org)</title>
+{% endblock %}
+
+{% block breadcrumb %}
+    &raquo; Lintuatlas
 {% endblock %}
 
 {% block body %}
 
-<h1>Lintuatlaksen tilastoja 2</h1>
+<h1>Lintuatlaksen tilastoja</h1>
+
 {{ body_content|safe }}
 
 {% endblock %}

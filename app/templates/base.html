@@ -23,7 +23,20 @@
     </head>
     <body>
 
-        {% block body %}{% endblock %}
+        <div id="navi">
+            <p>
+                <strong>
+                    <a href="https://biomi.org/">biomi.org</a>
+
+                    {% block breadcrumb %}{% endblock %}
+                    
+                </strong>
+            </p>
+        </div>    
+
+        <div id="content">
+            {% block body %}{% endblock %}
+        </div>
 
     </body>
 </html>

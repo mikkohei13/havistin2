@@ -4,6 +4,10 @@
     <title>{{ html_title }} - Lintuatlas (biomi.org)</title>
 {% endblock %}
 
+{% block breadcrumb %}
+    &raquo; <a href="../../">Lintuatlas</a> &raquo; Ruutulomake
+{% endblock %}
+
 {% block body %}
 
     <div id="heading">
@@ -29,12 +33,13 @@
     </div>
 
     <div id="info_bottom">
-    <p>
-        {{ info_bottom|safe }}
-        <strong>Lihavoituna</strong> lajit, joista on tehty eniten todennäköisiä tai varmistettuja pesintöjä viime aikoina. Havaintojen tallennusohjeet: <a href="https://lintuatlas.fi/havaintojen-tallentaminen">lintuatlas.fi/havaintojen-tallentaminen</a>
-    </p>
-    <p id ="version">
-        Havistin/<a href="https://biomi.org">biomi.org</a>, versio 20220328, palaute hiha(ät))biomi.org</p>
+        <p>
+            {{ info_bottom|safe }}
+            <strong>Lihavoituna</strong> lajit, joista on tehty eniten todennäköisiä tai varmistettuja pesintöjä viime aikoina. Havaintojen tallennusohjeet: <a href="https://lintuatlas.fi/havaintojen-tallentaminen">lintuatlas.fi/havaintojen-tallentaminen</a>
+        </p>
+        <p id ="version">
+            Havistin/<a href="https://biomi.org/">biomi.org</a>, versio 20220328, palaute hiha(ät))biomi.org
+        </p>
     </div>
 
 {% endblock %}
