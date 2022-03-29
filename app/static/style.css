@@ -4,7 +4,7 @@ body {
 }
 
 h1 {
-    font-size: 120%;
+    font-size: 150%;
 }
 
 h1 span {
@@ -27,7 +27,7 @@ h1 span {
     color: #8ff4ff;
 }
 
-/* Species table */
+/* Species checklist */
 
 #species_table {
     clear: both;
@@ -138,10 +138,52 @@ h1 span {
     font-size: 70%;
 }
 
+/* Generic tables */
+/* https://dev.to/dcodeyt/creating-beautiful-html-tables-with-css-428l */
+.styled-table {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    min-width: 400px;
+        min-width: 30em;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+        box-shadow: none;
+}
+.styled-table thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
+}
+.styled-table th,
+.styled-table td {
+    padding: 12px 15px;
+        padding: 0.7em 0.9em;
+}
+.styled-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+        border-bottom: 0;
+}
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+.styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid #009879;
+}
+.styled-table tbody tr.active-row {
+    font-weight: bold;
+    color: #009879;
+}
+
+/* Printer */
+
 @media print {
 
     .noprint, #navi {
       display: none;
     }
+
+    h1 {
+        font-size: 120%;
+    }    
   
   }
