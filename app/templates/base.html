@@ -18,6 +18,17 @@
         </script>
         -->
 
+        <script type="text/javascript">
+            window.onload = function(){
+                var form = document.getElementById("squareselection");
+                form.onsubmit = function(){
+                    var square = document.getElementById("square");
+                    window.location = "/ruutulomake/" + square.value + "/vakio";
+                    return false;
+                };          
+            };
+        </script>
+
         {% block head %}{% endblock %}
 
     </head>

@@ -19,8 +19,8 @@ def root():
 
 @app.route("/ruutulomake/<string:square_id_untrusted>/<string:show_untrusted>")
 def square(square_id_untrusted, show_untrusted):
-    html_table, html_title, html_heading, info_top, info_bottom = atlas.square.main(square_id_untrusted, show_untrusted)
-    return render_template("square.html", html_title=html_title, html_table=html_table, html_heading=html_heading, info_top=info_top, info_bottom=info_bottom)
+    html_table, html_title, html_heading, html_showselection, info_top, info_bottom = atlas.square.main(square_id_untrusted, show_untrusted)
+    return render_template("square.html", html_title=html_title, html_table=html_table, html_heading=html_heading, html_showselection=html_showselection, info_top=info_top, info_bottom=info_bottom)
 
 @app.errorhandler(HTTPException)
 def handle_exception(e):

@@ -16,7 +16,8 @@ h1 span {
     margin: -10px -10px 20px -10px;
     padding: 15px 10px;
     color: #fff;
-    background-color: #005f6a;
+    background-color: #005f6a; /* random petrol */
+    background-color: #009879;
 }
 
 #navi p {
@@ -24,8 +25,24 @@ h1 span {
 }
 
 #navi a {
-    color: #8ff4ff;
+    color: #8ff4ff; /* random verylight */
+    color: #80ffe5;
 }
+
+#subnavi {
+    background-color: #cfece7;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+#subnavi p {
+    margin: 0 0 1em 0;
+}
+
+#subnavi input {
+    width: 5em;
+}
+
 
 /* Species checklist */
 
@@ -113,7 +130,8 @@ h1 span {
 }
 
 #havainnoijat {
-    
+    clear: left;
+    width: 18em;
 }
 
 #fillable #taydellinen {
@@ -178,7 +196,7 @@ h1 span {
 
 @media print {
 
-    .noprint, #navi {
+    .noprint, #navi, #subnavi {
       display: none;
     }
 

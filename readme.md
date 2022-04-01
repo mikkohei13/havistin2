@@ -54,10 +54,9 @@ https://github.com/unbit/uwsgi/issues/1779
 
 ## Must
 
-- Check worker dying problem triggered by exit?
 - Deployment
-- Linkki ohjeisiin ja pääsivulle
 
 ## Nice
 
+- Refactor templating & separate html from code
 - Lajit yleisyysjärjestyksessä, tai ainakin rarimmat myös

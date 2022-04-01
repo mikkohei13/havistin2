@@ -220,7 +220,7 @@ def convert_atlasclass(atlasclass_raw):
 def generate_species_table(species_to_show_dict, atlas3_species_dict, atlas4_species_dict, breeding_species_list):
 
     html_table = "<div id='listwrapper'>"
-    html_table += "<div class='row header'><div class='species'>Laji</div><div class='atlas3'>3.</div><div class='atlas4'>4.</div><div class='own'>Oma</div></div>"
+    html_table += "<div class='row header'><div class='species'>Laji</div><div class='atlas3'>3.</div><div class='atlas4'>4.</div><div class='own'>Oma hav.</div></div>"
 
 #    for speciesFi in all_species_dict:
     for speciesFi in finnish_species.list:
@@ -294,20 +294,27 @@ def generate_info_top(atlas4_square_info_dict):
     square_id = atlas4_square_info_dict["coordinates"]
 
     html = ""
-    html += f"<p id='paragraph1' class='noprint'>Näytä: <a href='/square?id={square_id}'>Suomen pesimälajit</a> / <a href='/square?id={square_id}&show=adaptive'>seudulla tähän vuodenaikaan havaitut lajit</a></p>"
 #    html += f"<p id='paragraph2'></p>"
     html += f"<p id='paragraph3'>Selvitysaste: {current_level}, summa: {atlas4_square_info_dict['breeding_sum']} (rajat: välttävä {level2}, tyydyttävä {level3}, hyvä {level4}, erinomainen {level5})</p>"
 
     return html
 
 
+def generate_showselection(square_id):
+
+    html = f"<p>Näytä: <a href='./vakio'>Suomen pesimälajit</a> / <a href='./mukautuva'>seudulla tähän vuodenaikaan havaitut lajit</a></p>"
+
+    return html
+
+
 def generate_info_bottom(show_untrusted, species_count = 250):
     html = ""
-    if "adaptive" == show_untrusted:
+    if "mukautuva" == show_untrusted:
         html += f"Tällä lomakkeella on {species_count} yleisimmin tällä alueella tähän vuodenaikaan havaittua lajia. Jos teet täydellisen listan, muista merkitä muistiin myös harvinaisemmat lajit."
     else:
         html += f"Tällä lomakkeella on {species_count} pesimälintulajia. Jos teet täydellisen listan, muista merkitä muistiin myös muut lajit, kuten läpimuuttajat ja harvinaisuudet."
     return html
+
 
 def main(square_id_untrusted, show_untrusted):
 #    square_id_untrusted = request.args.get("id", default="", type=str)
@@ -342,9 +349,10 @@ def main(square_id_untrusted, show_untrusted):
     html_heading += f"<h1>{atlas4_square_info_dict['coordinates']} {atlas4_square_info_dict['name']} <span> - {atlas4_square_info_dict['birdAssociationArea']['value']}</span></h1>"
 
     info_top = generate_info_top(atlas4_square_info_dict)
+    html_showselection = generate_showselection(atlas4_square_info_dict["coordinates"])
 
     info_bottom = generate_info_bottom(show_untrusted, len(species_to_show_dict))
 
-    return html_table, html_title, html_heading, info_top, info_bottom
+    return html_table, html_title, html_heading, html_showselection, info_top, info_bottom
 
 
