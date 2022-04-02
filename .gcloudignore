@@ -1,0 +1,12 @@
+
+# This file defines which files will not be deployed to Cloud Run
+
+export/
+import/
+test*
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
