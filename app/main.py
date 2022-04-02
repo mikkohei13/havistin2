@@ -27,8 +27,10 @@ def handle_exception(e):
     return 'Virhe tai sivua ei löydy (404)', 404
 
 
-if __name__ == "__main__":
+#if __name__ == "__main__":
     # Only for debugging while developing
-    app.run(host="localhost", debug=True, port=80)
+#    app.run(host="localhost", debug=True, port=80)
+
+    # For production
 #    app.run()
 

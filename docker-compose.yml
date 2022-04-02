@@ -3,14 +3,17 @@ version: '3'
 services:
   web:
     build: ./
-    image: havistin2
+    image: havistin2-gunicorn:latest
     volumes:
       - ./app:/app
     ports:
       - "80:80"
     environment:
       # Development server settings
-      - FLASK_APP=main.py
-      - FLASK_DEBUG=0 # FLASK_DEBUG=0 -> server will be reloaded when code changes
+#      - FLASK_APP=main.py
+      - FLASK_DEBUG=1
 
-    command: uwsgi --http :80
+    # Override entrypoint with -chdir; without doing this module main cannot be found
+    entrypoint: gunicorn --chdir /app main:app -w 2 --threads 2 -b 0.0.0.0:80
+
+

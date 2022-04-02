@@ -1,5 +1,9 @@
 Dockerfile
 readme.md
+.git
+.gitignore
+docker-compose.tml
+
 *.pyc
 *.pyo
 *.pyd

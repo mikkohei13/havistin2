@@ -6,35 +6,36 @@ Tools to view and manage biodiversity data (with Python)
 
 ## Running in production
 
-Settings in docker-compose are for developing the app. When deploying, you should somehow set
+Build:
 
-- Production uWSGI server. This is included in the docker image
-- FLASK_DEBUG=1 -> does not reload changes automatically
-- IP address
+docker build -t havistin2-gunicorn:0.1 -t havistin2-gunicorn:latest .
 
-Also:
+Run with docker run
 
-- Remove autoloader from uwsgi.ini
-- Remove debug=True on main.py
+docker run -ti -p 80:80 havistin2-gunicorn:latest
 
+Or run with docker-compose
 
-## Gunicorn
+## Todo:
 
-Try Gunicorn instead?
+Define static name for the container
 
 # Ideas
 
 One grid observation count or breeding index graph
 
+Try Gunicorn instead?
+
 
 ## Misc
-
-
-docker-compose run web python3 -m pdb main.py
 
 Build:
 
 docker build -t havistin2 .
+
+
+
+docker-compose run web python3 -m pdb main.py
 
 
 docker-compose up --build -d
@@ -54,7 +55,12 @@ https://github.com/unbit/uwsgi/issues/1779
 
 ## Must
 
-- Deployment
+- Deployment:`
+- Test without docker-compose
+    - Secrets as env variable?
+    - Settings as en variable?
+- Gunicorn?
+
 
 ## Nice
 
