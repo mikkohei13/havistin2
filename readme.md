@@ -31,12 +31,25 @@ Deploy:
      OR
      gcloud run deploy --port=80 --source .
 
-
 https://havistin2-k4otrvyhmq-lz.a.run.app
 
-TODO: Either include secrets file (see https://cloud.google.com/sdk/gcloud/reference/topic/gcloudignore) *OR* manage secrets with secret manager (https://cloud.google.com/run/docs/configuring/secrets).
+## Google Cloud Run notes:
 
-### Notes:
+Three ways to handle secrets:
+
+- Recommended: using  secret manager (https://cloud.google.com/run/docs/configuring/secrets)
+- Using environment variables, but they can be seen by all project users
+- Using local secrets file, which is excluded from Git but included in the cloud. You can ot do continuous integration with this option.
+
+Five ways (at least) to deploy:
+
+- From source files (some langs)
+- Fron source Dockerfile (any lang)
+- From Docker Hub
+- From Artifact Registry
+- Continuous integration with Github
+
+Cloud build page: https://console.cloud.google.com/cloud-build
 
 Set project:
 
@@ -50,20 +63,34 @@ Set default region:
 
     gcloud config set run/region europe-north1
 
+List repositories:
+
+    gcloud artifacts repositories list
+
+Build image from Dockerfile:
+
+    gcloud config get-value project
+    gcloud builds submit --tag europe-north1-docker.pkg.dev/PROJECT-ID/havistin/havistin2:0.1example
+
 
 # Todo
 
 ## Must
 
-- Autoreload with gunicor, also templates
 - Define static name for the container
 - manage secrets with secret manager (https://cloud.google.com/run/docs/configuring/secrets).
-- Set billing limit?
+
+## Should
+
+- Optimize gunicorn & dockerfile?
+- Port as env var, instead of setting on deploy-time or using default (8080?)
+- Secret management
 
 ## Nice
 
 - Refactor templating & separate html from code
 - Lajit yleisyysjärjestyksessä, tai ainakin rarimmat myös
+- Reloading with inotify, see https://docs.gunicorn.org/en/stable/settings.html
 
 ## Ideas
 

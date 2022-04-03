@@ -1,19 +1,23 @@
 
 version: '3'
+
+# This file defines development setting, e.g. debugging & realoading
+
 services:
   web:
     build: ./
     image: havistin2-gunicorn:latest
     volumes:
-      - ./app:/app
+      - ./app:/havistin2/app
     ports:
       - "80:80"
     environment:
-      # Development server settings
-#      - FLASK_APP=main.py
       - FLASK_DEBUG=1
 
-    # Override entrypoint with -chdir; without doing this module main cannot be found
-    entrypoint: gunicorn --chdir /app main:app -w 2 --threads 2 -b 0.0.0.0:80
+    entrypoint: >
+      gunicorn --chdir /havistin2/app main:app -w 2 --threads 2 -b 0.0.0.0:80 --reload
+      --reload-extra-file /havistin2/app/templates/base.html
+      --reload-extra-file /havistin2/app/templates/index.html
+      --reload-extra-file /havistin2/app/templates/square.html
 
 
