@@ -77,11 +77,12 @@ Build image from Dockerfile:
 
 ## Must
 
-- Custom domain
+- Define static name for the container
 
 ## Should
 
-- Define static name for the container
+- Refactor names: get, generate ...
+- Refactor: data generation into shared module
 - manage secrets with secret manager (https://cloud.google.com/run/docs/configuring/secrets).
 - Optimize gunicorn & dockerfile?
 - Port as env var, instead of setting on deploy-time or using default (8080?)

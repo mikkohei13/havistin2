@@ -14,8 +14,8 @@ print("-------------- BEGIN -------------- -------------- --------------", file 
 
 @app.route("/")
 def root():
-    body_content = atlas.main.main("Hoi")
-    return render_template("index.html", body_content=body_content)
+    html = atlas.main.main()
+    return render_template("index.html", html=html)
 
 @app.route("/ruutulomake/<string:square_id_untrusted>/<string:show_untrusted>")
 def square(square_id_untrusted, show_untrusted):

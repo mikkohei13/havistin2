@@ -1,26 +1,51 @@
 {% extends "base.html" %}
 
 {% block head %}
-<title>Lintuatlaksen tilastoja (biomi.org)</title>
-{% endblock %}
+    <title>Lintuatlaksen tilastoja (biomi.org)</title>
 
-{% block breadcrumb %}
-    &raquo; Lintuatlas
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    {% endblock %}
+
+    {% block breadcrumb %}
+        &raquo; Lintuatlas
+
 {% endblock %}
 
 {% block body %}
 
-<h1>Lintuatlaksen tilastoja</h1>
+    <h1>Lintuatlaksen tilastoja ja apuvälineitä</h1>
 
-{{ body_content|safe }}
+    <h3>Tulostettava atlasruudun maastolomake</h3>
+    <form id="squareselection" action="" method="get">
+        <label id="square-label">
+            Ruutu:
+            <input type="text" id="square" name="square" placeholder="668:338">
+        </label>
+        <input type="submit" value="Valitse">
+    </form>
 
-<h4>Tulostettava atlasruudun maastolomake</h4>
-<form id="squareselection" action="" method="get">
-    <label id="square-label">
-        Ruutu:
-        <input type="text" id="square" name="square" placeholder="668:338">
-    </label>
-    <input type="submit" value="Valitse">
-</form>
+    {{ html["collections_table"]|safe }}
+
+    <div>
+    <canvas id="myChart" style="width: 800px; height: 400px; border: 1px solid red;"></canvas>
+    </div>
+
+    <script type="text/javascript">
+
+        const data = {
+            datasets: [{ 
+                data: {{ html["datechart_data"]|safe }},
+                borderColor: '#d00'
+            }]
+        };
+        const config = {
+            type: 'line',
+            data: data,
+            options: {}
+        };
+        
+        const ctx = document.getElementById('myChart');
+        const myChart = new Chart(ctx, config);
+    </script>
 
 {% endblock %}
