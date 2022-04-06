@@ -77,11 +77,12 @@ Build image from Dockerfile:
 
 ## Must
 
-- Define static name for the container
-- manage secrets with secret manager (https://cloud.google.com/run/docs/configuring/secrets).
+- Custom domain
 
 ## Should
 
+- Define static name for the container
+- manage secrets with secret manager (https://cloud.google.com/run/docs/configuring/secrets).
 - Optimize gunicorn & dockerfile?
 - Port as env var, instead of setting on deploy-time or using default (8080?)
 - Secret management
@@ -93,6 +94,11 @@ Build image from Dockerfile:
 - Reloading with inotify, see https://docs.gunicorn.org/en/stable/settings.html
 
 ## Ideas
+
+- Ruutulomake
+   - link to map
+- Chart with record per day (B, C, D) from each obs system & total.
+- Geographic center of observations, day by day, on a xy-chart with Finnish border 
 
 - One grid observation count or breeding index graph
 - Better debug https://trstringer.com/python-flask-debug-docker-compose/

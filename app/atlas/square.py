@@ -81,7 +81,7 @@ def adaptive_species(square_id):
     #date = datetime.strptime("2022-01-01", '%Y-%m-%d')
 
     # All bird data except TIPU
-    url = f"https://laji.fi/api/warehouse/query/unit/aggregate?target=MX.37580&countryId=ML.206&collectionIdNot=HR.48&typeOfOccurrenceId=MX.typeOfOccurrenceBirdLifeCategoryA,MX.typeOfOccurrenceBirdLifeCategoryC&coordinates={coordinates_param}&aggregateBy=unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesNameFinnish&selected=unit.linkings.taxon.speciesNameFinnish&cache=true&page=1&pageSize={limit}&season={season_param}&geoJSON=false&onlyCount=true" + app_secrets.finbif_api_token
+    url = f"https://laji.fi/api/warehouse/query/unit/aggregate?target=MX.37580&countryId=ML.206&collectionIdNot=HR.48&typeOfOccurrenceId=MX.typeOfOccurrenceBirdLifeCategoryA,MX.typeOfOccurrenceBirdLifeCategoryC&coordinates={coordinates_param}&aggregateBy=unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesNameFinnish&selected=unit.linkings.taxon.speciesNameFinnish&cache=true&page=1&pageSize={limit}&season={season_param}&geoJSON=false&onlyCount=true{app_secrets.finbif_api_token}"
 
     req = requests.get(url)
     data_dict = req.json()
@@ -124,7 +124,8 @@ def atlas_species():
 
 
 def atlas3_square(square_id):
-    filename = "./data/atlas3/" + square_id.replace(":", "-") + ".json"   
+    square_id_text = square_id.replace(":", "-")
+    filename = f"./data/atlas3/{square_id_text}.json"   
 
     try:
         f = open(filename)
@@ -150,7 +151,7 @@ def get_breeding_number(atlas_class_key):
 
 def atlas4_square(square_id):
     square_id = square_id.replace(":", "%3A")
-    url = "https://atlas-api.rahtiapp.fi/api/v1/grid/" + square_id + "/atlas"
+    url = f"https://atlas-api.rahtiapp.fi/api/v1/grid/{square_id}/atlas"
 
     req = requests.get(url)
     data_dict = req.json()
@@ -186,7 +187,7 @@ def atlas4_breeding():
 #    url = "https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=unit.linkings.originalTaxon.speciesNameFinnish&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=" + number_of_species + "&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&time=-14%2F0&atlasClass=MY.atlasClassEnumC,atlasClass=MY.atlasClassEnumD&access_token=" + app_secrets.finbif_api_token
 
     # Both probable and confirmed breeders, but not 4 & 5, using atlasCode
-    url = "https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=unit.linkings.originalTaxon.speciesNameFinnish&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=" + number_of_species + "&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&time=-14%2F0&atlasCode=MY.atlasCodeEnum6,MY.atlasCodeEnum61,MY.atlasCodeEnum62,MY.atlasCodeEnum63,MY.atlasCodeEnum64,MY.atlasCodeEnum65,MY.atlasCodeEnum66,MY.atlasCodeEnum7,MY.atlasCodeEnum71,MY.atlasCodeEnum72,MY.atlasCodeEnum73,MY.atlasCodeEnum74,MY.atlasCodeEnum75,MY.atlasCodeEnum8,MY.atlasCodeEnum81,MY.atlasCodeEnum82&access_token=" + app_secrets.finbif_api_token
+    url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=unit.linkings.originalTaxon.speciesNameFinnish&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize={number_of_species}&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&time=-14%2F0&atlasCode=MY.atlasCodeEnum6,MY.atlasCodeEnum61,MY.atlasCodeEnum62,MY.atlasCodeEnum63,MY.atlasCodeEnum64,MY.atlasCodeEnum65,MY.atlasCodeEnum66,MY.atlasCodeEnum7,MY.atlasCodeEnum71,MY.atlasCodeEnum72,MY.atlasCodeEnum73,MY.atlasCodeEnum74,MY.atlasCodeEnum75,MY.atlasCodeEnum8,MY.atlasCodeEnum81,MY.atlasCodeEnum82&access_token={app_secrets.finbif_api_token}"
 
     req = requests.get(url)
     data_dict = req.json()
@@ -237,7 +238,7 @@ def generate_species_table(species_to_show_dict, atlas3_species_dict, atlas4_spe
                 atlas3_class = convert_atlasclass(atlas3_species_dict[speciesFi]["breedingCategory"])
                 atlas3_code = str(atlas3_species_dict[speciesFi]["breedingIndex"]).replace("0", "")
 
-            row_class += " atlas3_class_" + atlas3_class
+            row_class += f" atlas3_class_{atlas3_class}"
 
             # Atlas 4 data
             atlas4_class = "&nbsp;"
@@ -246,7 +247,7 @@ def generate_species_table(species_to_show_dict, atlas3_species_dict, atlas4_spe
                 atlas4_class = convert_atlasclass(atlas4_species_dict[speciesFi]["atlasClass"]["value"])
                 atlas4_code = str(split_atlascode(atlas4_species_dict[speciesFi]["atlasCode"]["value"]))
 
-            row_class += " atlas4_class_" + atlas4_class
+            row_class += f" atlas4_class_{atlas4_class}"
 
             # Breeding species
             if speciesFi in breeding_species_list:
@@ -255,12 +256,12 @@ def generate_species_table(species_to_show_dict, atlas3_species_dict, atlas4_spe
                 row_class += " "
 
             # HTML
-            html_table += "<div class='row " + row_class + "'>"
-            html_table += "<div class='species'>" + speciesFi + "</div>"
+            html_table += f"<div class='row {row_class}'>"
+            html_table += f"<div class='species'>{speciesFi}</div>"
 
-            html_table += "<div class='atlas3'>" + atlas3_class + "</div>"
+            html_table += f"<div class='atlas3'>{atlas3_class}</div>"
 
-            html_table += "<div class='atlas4'>" + atlas4_code + "</div>"
+            html_table += f"<div class='atlas4'>{atlas4_code}</div>"
 
             html_table += "<div class='own'>&nbsp;</div>"
 
@@ -320,6 +321,8 @@ def main(square_id_untrusted, show_untrusted):
 #    square_id_untrusted = request.args.get("id", default="", type=str)
 #    show_untrusted = request.args.get("show", default="", type=str)
 
+    html = dict()
+
     square_id = valid_square_id(square_id_untrusted)
 
     if "mukautuva" == show_untrusted:
@@ -341,18 +344,17 @@ def main(square_id_untrusted, show_untrusted):
     breeding_species_list = atlas4_breeding()
 
     # HTML
-    html_title = f"Atlasruutu {atlas4_square_info_dict['coordinates']}"
+    html["title"] = f"Atlasruutu {atlas4_square_info_dict['coordinates']}"
 
-    html_table = generate_species_table(species_to_show_dict, atlas3_species_dict, atlas4_species_dict, breeding_species_list)
+    html["species"] = generate_species_table(species_to_show_dict, atlas3_species_dict, atlas4_species_dict, breeding_species_list)
 
-    html_heading = ""
-    html_heading += f"<h1>{atlas4_square_info_dict['coordinates']} {atlas4_square_info_dict['name']} <span> - {atlas4_square_info_dict['birdAssociationArea']['value']}</span></h1>"
+    html["heading"] = f"<h1>{atlas4_square_info_dict['coordinates']} {atlas4_square_info_dict['name']} <span> - {atlas4_square_info_dict['birdAssociationArea']['value']}</span></h1>"
 
-    info_top = generate_info_top(atlas4_square_info_dict)
-    html_showselection = generate_showselection(atlas4_square_info_dict["coordinates"])
+    html["info_top"] = generate_info_top(atlas4_square_info_dict)
+    html["showselection"] = generate_showselection(atlas4_square_info_dict["coordinates"])
 
-    info_bottom = generate_info_bottom(show_untrusted, len(species_to_show_dict))
+    html["info_bottom"] = generate_info_bottom(show_untrusted, len(species_to_show_dict))
 
-    return html_table, html_title, html_heading, html_showselection, info_top, info_bottom
+    return html
 
 

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block head %}
-    <title>{{ html_title }} - Lintuatlas (biomi.org)</title>
+    <title>{{ html["title"] }} - Lintuatlas (biomi.org)</title>
 {% endblock %}
 
 {% block breadcrumb %}
@@ -11,7 +11,7 @@
 {% block body %}
 
     <div id="subnavi">
-        {{ html_showselection|safe }}
+        {{ html["showselection"]|safe }}
         <form id="squareselection" action="" method="get">
             <label id="square-label">
                 Ruutu:
@@ -22,12 +22,12 @@
     </div>
 
     <div id="heading">
-    {{ html_heading|safe }}
+    {{ html["heading"]|safe }}
     </div>
 
     <div id="info_top">
         <div id="info">
-            {{ info_top|safe }}
+            {{ html["info_top"]|safe }}
         </div>
         <div id="fillable">
             <span id="paikka">Paikka:</span>
@@ -40,12 +40,12 @@
     </div>
 
     <div id="species_table">
-        {{ html_table|safe }}
+        {{ html["species"]|safe }}
     </div>
 
     <div id="info_bottom">
         <p>
-            {{ info_bottom|safe }}
+            {{ html["info_bottom"]|safe }}
             <strong>Lihavoituna</strong> lajit, joista on tehty eniten todennäköisiä tai varmistettuja pesintöjä viime aikoina. V=varma, T=todennäköinen, M=mahdollinen, e=epätodennäköinen. Havainnot on tallennettava sähköiseksi itse, ohjeet: <a href="https://lintuatlas.fi/havaintojen-tallentaminen">lintuatlas.fi/havaintojen-tallentaminen</a> ja <a href="https://lintuatlas.fi/taydelliset-lajilistat/">lintuatlas.fi/taydelliset-lajilistat</a>
         </p>
         <p id ="version">
