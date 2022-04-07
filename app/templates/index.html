@@ -27,28 +27,47 @@
     {{ html["collections_table"]|safe }}
 
     <div>
-    <canvas id="myChart" style="width: 800px; height: 400px; border: 1px solid red;"></canvas>
+    <canvas id="myChart" style="width: 95%; height: 400px;"></canvas>
     </div>
 
     <script type="text/javascript">
-        json_data = '{{ html["datechart_data"]|safe }}';
-        object_data = JSON.parse(json_data);
+        json = '{{ html["datechart_data_birdatlas"]|safe }}';
+        birdatlas_data = JSON.parse(json);
+
+        json = '{{ html["datechart_data_trip"]|safe }}';
+        trip_data = JSON.parse(json);
+
+        json = '{{ html["datechart_data_tiira"]|safe }}';
+        tiira_data = JSON.parse(json);
+
+        json = '{{ html["datechart_data_inat"]|safe }}';
+        inat_data = JSON.parse(json);
 
         const data = {
-            datasets: [{ 
-                data: object_data,
-                borderColor: '#d00'
-            }]
+            datasets: [
+                { 
+                    data: birdatlas_data,
+                    borderColor: '#FA5428',
+                    label: "Vihko, lintuatlaslomake"
+                },
+                { 
+                    data: trip_data,
+                    borderColor: '#2691D9',
+                    label: "Vihko, retkilomake"
+                },
+                { 
+                    data: tiira_data,
+                    borderColor: '#99019C',
+                    label: "Tiira"
+                },
+                { 
+                    data: inat_data,
+                    borderColor: '#74AC00',
+                    label: "iNaturalist"
+                }
+            ]
         };
 
-        /*
-        const data = {
-            datasets: [{ 
-                data: {{ html["datechart_data"]|safe }},
-                borderColor: '#d00'
-            }]
-        };
-        */
         const config = {
             type: 'line',
             data: data,
