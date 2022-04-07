@@ -84,7 +84,8 @@ def datechart_data(collection_id):
         data_by_days[item["aggregateBy"]["document.firstLoadDate"]] = item["count"]
 
     # Loop all dates so far, to generate chart.js data list.
-    start_date = date(2022, 2, 15)
+    # If this date is changed, all observations before that are discarded.
+    start_date = date(2022, 1, 1)
 
     cumulative_count = 0
     chartsj_data = []

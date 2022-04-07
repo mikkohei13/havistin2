@@ -27,7 +27,7 @@
     {{ html["collections_table"]|safe }}
 
     <div>
-    <canvas id="myChart" style="width: 95%; height: 400px;"></canvas>
+    <canvas id="cumulative_chart"></canvas>
     </div>
 
     <script type="text/javascript">
@@ -71,11 +71,20 @@
         const config = {
             type: 'line',
             data: data,
-            options: {}
+            /*
+            // Stacked, but without unique filler colors
+            options: {
+                scales: {
+                    yAxes: {
+                        stacked: true
+                    }
+                }
+            }
+            */
+           options: {}
         };
         
-        const ctx = document.getElementById('myChart');
-        const myChart = new Chart(ctx, config);
+        const myChart = new Chart(document.getElementById('cumulative_chart'), config);
     </script>
 
 {% endblock %}
