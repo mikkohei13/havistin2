@@ -69,6 +69,8 @@ def daterange(start_date):
         yield start_date + timedelta(n)
 
 
+
+
 def datechart_data():
 
     # Get daily data from api. This lacks dates with zero count.
@@ -91,7 +93,6 @@ def datechart_data():
 
     cumulative_count = 0
     chartsj_data = []
-    chartjs_data_str = ""
 
     for single_date in daterange(start_date):
 
@@ -102,17 +103,13 @@ def datechart_data():
 
         cumulative_count = cumulative_count + count
 
-        # TODO: Better way to deliver data to js
-        chartjs_data_str = chartjs_data_str + "{x: '" + single_date.strftime("%Y-%m-%d") + "', y: " + str(cumulative_count) + "},"
+        # JSON
+        daily = dict(x = single_date.strftime("%Y-%m-%d"), y = str(cumulative_count))
+        chartsj_data.append(daily)
 
-#        daily = dict(x = single_date.strftime("%Y-%m-%d"), y = str(cumulative_count))
-#        chartsj_data.append(daily)
+    json_data = json.dumps(chartsj_data)
 
-
-#    json_data = json.dumps(chartsj_data)
-#    print(json_data, file = sys.stdout)
-
-    return "[" + chartjs_data_str.rstrip(", ") + "]"
+    return json_data
 
 
 def main():

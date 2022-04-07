@@ -31,13 +31,24 @@
     </div>
 
     <script type="text/javascript">
+        json_data = '{{ html["datechart_data"]|safe }}';
+        object_data = JSON.parse(json_data);
 
+        const data = {
+            datasets: [{ 
+                data: object_data,
+                borderColor: '#d00'
+            }]
+        };
+
+        /*
         const data = {
             datasets: [{ 
                 data: {{ html["datechart_data"]|safe }},
                 borderColor: '#d00'
             }]
         };
+        */
         const config = {
             type: 'line',
             data: data,
