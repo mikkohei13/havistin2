@@ -1,7 +1,9 @@
 
 # Havistin 2
 
-Tools to view and manage biodiversity data (with Python)
+Tools to view and manage biodiversity data and Finnish bird atlas.
+
+Uses Python, Flask, Docker & Docker-Compose and Chart.js, and is deployed with Google Cloud Run.
 
 # Setup
 
@@ -9,15 +11,15 @@ Based on https://medium.com/thedevproject/setup-flask-project-using-docker-and-g
 
 ## Running in development
 
-First build the image:
+First build the image, and tag it with a version number and/or as latest:
 
-    docker build -t havistin2-gunicorn:0.1 -t havistin2-gunicorn:latest .
+    docker build -t havistin2-gunicorn:VERSIONNUMBER -t havistin2-gunicorn:latest .
 
-Run with docker-compose
+Run in development mode with docker-compose. This serves the app on localhost and auto-reloads changes to script files, and to other files (like templates) defined on docker-compose.yml.
 
     docker-compose up; docker-compose down;
 
-## Running in production
+## Running in production with Google Cloud run
 
 First build the image, see above. 
 
@@ -27,11 +29,9 @@ Test running with docker run:
 
 Deploy:
 
-     gcloud run deploy --port=80
-     OR
-     gcloud run deploy --port=80 --source .
+    gcloud run deploy havistin2 --port=80 --max-instances=4 --concurrency=10 --memory=256Mi --timeout=30 --source .
 
-https://havistin2-k4otrvyhmq-lz.a.run.app
+Redeploy from Google Console (https://console.cloud.google.com/run) if you want to set more options there.
 
 ## Google Cloud Run notes:
 
@@ -77,7 +77,8 @@ Build image from Dockerfile:
 
 ## Must
 
-- Define static name for the container
+- Command to deploy version other than latest
+- Refactor structure, separate html from data
 
 ## Should
 

@@ -43,6 +43,9 @@ h1 span {
     width: 5em;
 }
 
+h1, h2, h3, h3 {
+    margin: 1.5em 0 0.5em 0;
+}
 
 /* Species checklist */
 
@@ -193,8 +196,13 @@ h1 span {
 }
 
 #cumulative_chart {
-    width: 95%;
+    width: 800px;
     min-height: 400px;
+}
+
+.horizontal_bar {
+    background-color: #80c9ba;
+    display: block;
 }
 
 /* Printer */
