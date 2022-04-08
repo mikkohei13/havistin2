@@ -1,10 +1,10 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template
 from werkzeug.exceptions import HTTPException
 
 import sys
 
-import atlas.main
-import atlas.square
+import atlas.atlas
+import atlas.squareform
 
 #import app_secrets
 
@@ -14,23 +14,14 @@ print("-------------- BEGIN -------------- -------------- --------------", file 
 
 @app.route("/")
 def root():
-    html = atlas.main.main()
+    html = atlas.atlas.main()
     return render_template("index.html", html=html)
 
 @app.route("/ruutulomake/<string:square_id_untrusted>/<string:show_untrusted>")
 def square(square_id_untrusted, show_untrusted):
-    html = atlas.square.main(square_id_untrusted, show_untrusted)
-    return render_template("square.html", html=html)
+    html = atlas.squareform.main(square_id_untrusted, show_untrusted)
+    return render_template("squareform.html", html=html)
 
 @app.errorhandler(HTTPException)
 def handle_exception(e):
     return 'Virhe tai sivua ei löydy (404)', 404
-
-
-#if __name__ == "__main__":
-    # Only for debugging while developing
-#    app.run(host="localhost", debug=True, port=80)
-
-    # For production
-#    app.run()
-

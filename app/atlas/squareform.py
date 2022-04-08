@@ -9,18 +9,12 @@ from flask import request
 import app_secrets
 import finnish_species
 
-def print_r(dict):
-#    print("DICT:", file = sys.stdout)
-#    print(*dict.items(), sep="\n", file = sys.stdout)
+
+def print_log(dict):
     print(dict, sep="\n", file = sys.stdout)
 
 
-def print_debug(data):
-    print("DEBUG:", file = sys.stdout)
-    print(str(data), file = sys.stdout)
-
-
-def count_sum(species_list):
+def count_species_sum(species_list):
     count_sum = 0
     for species in species_list:
         count_sum = count_sum + species["count"]
@@ -35,7 +29,7 @@ def valid_square_id(square_id):
     if match is not None:
         return square_id
     else:
-        print_r("ERROR: Coordinates invalid.")
+        print_log("ERROR: Coordinates invalid.")
         raise ValueError
 #        exit("Ruudun koordinaattien pitää olla muodossa nnn:eee (esim. 668:338), sekä Suomen alueella.")
 
@@ -88,7 +82,7 @@ def adaptive_species(square_id):
 
     #exit(url)
 
-    species_count_sum = count_sum(data_dict["results"])
+    species_count_sum = count_species_sum(data_dict["results"])
 
     print(f"Sum: {species_count_sum}")
 
@@ -130,7 +124,7 @@ def atlas3_square(square_id):
     try:
         f = open(filename)
     except FileNotFoundError:
-        print_r("ERROR: Square file not found.")
+        print_log("ERROR: Square file not found.")
 
     species_dict = json.load(f)
     
@@ -138,7 +132,7 @@ def atlas3_square(square_id):
     return species_dict
 
 
-def get_breeding_number(atlas_class_key):
+def convert_breeding_number(atlas_class_key):
     if "MY.atlasClassEnumA" == atlas_class_key:
         return 0
     if "MY.atlasClassEnumB" == atlas_class_key:
@@ -166,7 +160,7 @@ def atlas4_square(square_id):
 
     for species in data_dict["data"]:
         species_dict[species["speciesName"]] = species
-        breeding_sum_counter = breeding_sum_counter + get_breeding_number(species["atlasClass"]["key"])
+        breeding_sum_counter = breeding_sum_counter + convert_breeding_number(species["atlasClass"]["key"])
 
     square_info_dict["breeding_sum"] = breeding_sum_counter
 
@@ -218,10 +212,10 @@ def convert_atlasclass(atlasclass_raw):
         return atlasclass_raw
 
 
-def generate_species_table(species_to_show_dict, atlas3_species_dict, atlas4_species_dict, breeding_species_list):
+def species_html(species_to_show_dict, atlas3_species_dict, atlas4_species_dict, breeding_species_list):
 
-    html_table = "<div id='listwrapper'>"
-    html_table += "<div class='row header'><div class='species'>Laji</div><div class='atlas3'>3.</div><div class='atlas4'>4.</div><div class='own'>Oma hav.</div></div>"
+    html = "<div id='listwrapper'>"
+    html += "<div class='row header'><div class='species'>Laji</div><div class='atlas3'>3.</div><div class='atlas4'>4.</div><div class='own'>Oma hav.</div></div>"
 
 #    for speciesFi in all_species_dict:
     for speciesFi in finnish_species.list:
@@ -256,23 +250,23 @@ def generate_species_table(species_to_show_dict, atlas3_species_dict, atlas4_spe
                 row_class += " "
 
             # HTML
-            html_table += f"<div class='row {row_class}'>"
-            html_table += f"<div class='species'>{speciesFi}</div>"
+            html += f"<div class='row {row_class}'>"
+            html += f"<div class='species'>{speciesFi}</div>"
 
-            html_table += f"<div class='atlas3'>{atlas3_class}</div>"
+            html += f"<div class='atlas3'>{atlas3_class}</div>"
 
-            html_table += f"<div class='atlas4'>{atlas4_code}</div>"
+            html += f"<div class='atlas4'>{atlas4_code}</div>"
 
-            html_table += "<div class='own'>&nbsp;</div>"
+            html += "<div class='own'>&nbsp;</div>"
 
-            html_table += "</div>"
+            html += "</div>"
 
-    html_table += "</div>"
+    html += "</div>"
 
-    return html_table
+    return html
 
 
-def generate_info_top(atlas4_square_info_dict):
+def info_top_html(atlas4_square_info_dict):
 
     level2 = round(atlas4_square_info_dict['level2'], 1)
     level3 = round(atlas4_square_info_dict['level3'], 1)
@@ -301,14 +295,14 @@ def generate_info_top(atlas4_square_info_dict):
     return html
 
 
-def generate_showselection(square_id):
+def showselection_html(square_id):
 
     html = f"<p>Näytä: <a href='./vakio'>Suomen pesimälajit</a> / <a href='./mukautuva'>seudulla tähän vuodenaikaan havaitut lajit</a></p>"
 
     return html
 
 
-def generate_info_bottom(show_untrusted, species_count = 250):
+def info_bottom_html(show_untrusted, species_count = 250):
     html = ""
     if "mukautuva" == show_untrusted:
         html += f"Tällä lomakkeella on {species_count} yleisimmin tällä alueella tähän vuodenaikaan havaittua lajia. Jos teet täydellisen listan, muista merkitä muistiin myös harvinaisemmat lajit."
@@ -346,14 +340,14 @@ def main(square_id_untrusted, show_untrusted):
     # HTML
     html["title"] = f"Atlasruutu {atlas4_square_info_dict['coordinates']}"
 
-    html["species"] = generate_species_table(species_to_show_dict, atlas3_species_dict, atlas4_species_dict, breeding_species_list)
+    html["species"] = species_html(species_to_show_dict, atlas3_species_dict, atlas4_species_dict, breeding_species_list)
 
     html["heading"] = f"<h1>{atlas4_square_info_dict['coordinates']} {atlas4_square_info_dict['name']} <span> - {atlas4_square_info_dict['birdAssociationArea']['value']}</span></h1>"
 
-    html["info_top"] = generate_info_top(atlas4_square_info_dict)
-    html["showselection"] = generate_showselection(atlas4_square_info_dict["coordinates"])
+    html["info_top"] = info_top_html(atlas4_square_info_dict)
+    html["showselection"] = showselection_html(atlas4_square_info_dict["coordinates"])
 
-    html["info_bottom"] = generate_info_bottom(show_untrusted, len(species_to_show_dict))
+    html["info_bottom"] = info_bottom_html(show_untrusted, len(species_to_show_dict))
 
     return html
 

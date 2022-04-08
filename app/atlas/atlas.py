@@ -6,15 +6,8 @@ import sys
 
 import app_secrets
 
-def print_r(dict):
-    print("DICT:", file = sys.stdout)
-    print(*dict.items(), sep="\n", file = sys.stdout)
 
-def print_debug(data):
-    print("DEBUG:", file = sys.stdout)
-    print(str(data), file = sys.stdout)
-
-def get_collection_name(id):
+def convert_collection_name(id):
     if "http://tun.fi/HR.4412" == id:
         return "Tiira"
     elif  "http://tun.fi/HR.4471" == id:
@@ -27,15 +20,12 @@ def get_collection_name(id):
         return "Muu"
 
 
-def get_collections():
+def collections_data():
     api_url = "https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=document.collectionId&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=100&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&access_token=" + app_secrets.finbif_api_token
 
     r = requests.get(api_url)
     dataJson = r.text
     dataDict = json.loads(dataJson)
-
-#    print_debug(type(dataDict))
-#    print_r(dataDict)
 
     total_obs_count = 0
     for i in dataDict["results"]:
@@ -47,9 +37,7 @@ def get_collections():
     collections_table += "<tbody>"
 
     for i in dataDict["results"]:
-        print_debug(i)
-
-        collections_table += "<tr><td>" + get_collection_name(i["aggregateBy"]["document.collectionId"]) + "</td>"
+        collections_table += "<tr><td>" + convert_collection_name(i["aggregateBy"]["document.collectionId"]) + "</td>"
         collections_table += "<td>" + str(i["count"]) + "</td>"
         collections_table += "<td>" + str(round((i["count"] / total_obs_count) * 100, 1)) + " %</td></tr>"
 #        print(dataDict["results"]["aggregateBy"]["count"], file = sys.stdout)
@@ -110,7 +98,7 @@ def coordinate_accuracy_data():
     return accuracy_dict, total_count
 
 
-def coordinate_accuracy_table(accuracy_dict, total_count):
+def coordinate_accuracy_html(accuracy_dict, total_count):
 
     accuracy_table = "\n\n<h3>Havaintojen tarkkuus</h3>\n"
     accuracy_table += "<p>Mitä tarkempi havainnon paikka on, sitä paremmin sitä voidaan hyödyntää esim suojelutyössä. Tiirasta atlakseen tulee vain 10 km tasolle karkeistettuja havaintoja.</p>\n"
@@ -199,9 +187,9 @@ def main():
     html = dict()
 
     accuracy_data, total_count = coordinate_accuracy_data()
-    html["accuracy_table"] = coordinate_accuracy_table(accuracy_data, total_count)
+    html["accuracy_table"] = coordinate_accuracy_html(accuracy_data, total_count)
 
-    html["collections_table"] = get_collections()
+    html["collections_table"] = collections_data()
 
     html["datechart_data_birdatlas"] = datechart_data("HR.4471")
     html["datechart_data_trip"] = datechart_data("HR.1747")

@@ -78,10 +78,10 @@ Build image from Dockerfile:
 ## Must
 
 - Command to deploy version other than latest
-- Refactor structure, separate html from data
 
 ## Should
 
+- Keep vakio/adaptive selection when switching square (add variable to base.hrml?)
 - Refactor names: get, generate ...
 - Refactor: data generation into shared module
 - manage secrets with secret manager (https://cloud.google.com/run/docs/configuring/secrets).
