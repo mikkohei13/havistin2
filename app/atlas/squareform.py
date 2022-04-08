@@ -31,7 +31,6 @@ def valid_square_id(square_id):
     else:
         print_log("ERROR: Coordinates invalid.")
         raise ValueError
-#        exit("Ruudun koordinaattien pitää olla muodossa nnn:eee (esim. 668:338), sekä Suomen alueella.")
 
 
 def make_coordinates_param(square_id):
@@ -59,7 +58,6 @@ def make_season_param():
     date_now = date.today()
     season_start = (date_now - timedelta(days = shift)).strftime('%m%d')
     season_end = (date_now + timedelta(days = shift)).strftime('%m%d')
-
 #    print(date_now, season_start, season_end) # debug
 
     return f"{season_start}/{season_end}"
@@ -71,16 +69,11 @@ def adaptive_species(square_id):
     coordinates_param = make_coordinates_param(square_id)
     season_param = make_season_param()
 
-    # TODO: get date from param & validate
-    #date = datetime.strptime("2022-01-01", '%Y-%m-%d')
-
     # All bird data except TIPU
     url = f"https://laji.fi/api/warehouse/query/unit/aggregate?target=MX.37580&countryId=ML.206&collectionIdNot=HR.48&typeOfOccurrenceId=MX.typeOfOccurrenceBirdLifeCategoryA,MX.typeOfOccurrenceBirdLifeCategoryC&coordinates={coordinates_param}&aggregateBy=unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesNameFinnish&selected=unit.linkings.taxon.speciesNameFinnish&cache=true&page=1&pageSize={limit}&season={season_param}&geoJSON=false&onlyCount=true{app_secrets.finbif_api_token}"
 
     req = requests.get(url)
     data_dict = req.json()
-
-    #exit(url)
 
     species_count_sum = count_species_sum(data_dict["results"])
 
@@ -94,15 +87,6 @@ def adaptive_species(square_id):
 
         if count > (species_count_sum * 0.001):
             species_count_dict[speciesFi] = count
-#        else:
-#            print(f"left out {speciesFi} with count {count}", file = sys.stdout)
-
-    #species_count_dict = map(to_simple_dict, data_dict["results"])
-
-#    print(species_count_dict)
-
-    #for species in data_dict['results']:
-    #    breeding_species_list.append(species["aggregateBy"]["unit.linkings.originalTaxon.speciesNameFinnish"])
 
     return species_count_dict
 
@@ -252,11 +236,8 @@ def species_html(species_to_show_dict, atlas3_species_dict, atlas4_species_dict,
             # HTML
             html += f"<div class='row {row_class}'>"
             html += f"<div class='species'>{speciesFi}</div>"
-
             html += f"<div class='atlas3'>{atlas3_class}</div>"
-
             html += f"<div class='atlas4'>{atlas4_code}</div>"
-
             html += "<div class='own'>&nbsp;</div>"
 
             html += "</div>"
@@ -289,7 +270,6 @@ def info_top_html(atlas4_square_info_dict):
     square_id = atlas4_square_info_dict["coordinates"]
 
     html = ""
-#    html += f"<p id='paragraph2'></p>"
     html += f"<p id='paragraph3'>Selvitysaste: {current_level}, summa: {atlas4_square_info_dict['breeding_sum']} (rajat: välttävä {level2}, tyydyttävä {level3}, hyvä {level4}, erinomainen {level5})</p>"
 
     return html
@@ -312,9 +292,6 @@ def info_bottom_html(show_untrusted, species_count = 250):
 
 
 def main(square_id_untrusted, show_untrusted):
-#    square_id_untrusted = request.args.get("id", default="", type=str)
-#    show_untrusted = request.args.get("show", default="", type=str)
-
     html = dict()
 
     square_id = valid_square_id(square_id_untrusted)
@@ -339,14 +316,12 @@ def main(square_id_untrusted, show_untrusted):
 
     # HTML
     html["title"] = f"Atlasruutu {atlas4_square_info_dict['coordinates']}"
-
     html["species"] = species_html(species_to_show_dict, atlas3_species_dict, atlas4_species_dict, breeding_species_list)
 
     html["heading"] = f"<h1>{atlas4_square_info_dict['coordinates']} {atlas4_square_info_dict['name']} <span> - {atlas4_square_info_dict['birdAssociationArea']['value']}</span></h1>"
-
+    
     html["info_top"] = info_top_html(atlas4_square_info_dict)
     html["showselection"] = showselection_html(atlas4_square_info_dict["coordinates"])
-
     html["info_bottom"] = info_bottom_html(show_untrusted, len(species_to_show_dict))
 
     return html
