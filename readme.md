@@ -25,6 +25,8 @@ First build the image, see above.
 
 Test running with docker run:
 
+TODO: Name the container, so that a dangling container is not created every time?
+
     docker run -ti -p 80:80 havistin2-gunicorn:latest
 
 Deploy:
@@ -77,13 +79,17 @@ Build image from Dockerfile:
 
 ## Must
 
-- Command to deploy version other than latest
+- Command to deploy version other than latest. First submit to Articat Registry, then deploy from there using --image option.
 
 ## Should
 
-- Keep vakio/adaptive selection when switching square (add variable to base.hrml?)
-- Refactor names: get, generate ...
-- Refactor: data generation into shared module
+- Squareform
+    - Keep vakio/adaptive selection when switching square (add variable to base.html?)
+    - Link to heatmap, printable map, result service
+ 
+- People lists:
+    - People with complete lists from most squares: https://ebird.org/atlasny/top100?region=New+York&locInfo.regionCode=US-NY&rankedBy=blocks_with_complete
+- Refactor? data generation into shared module
 - manage secrets with secret manager (https://cloud.google.com/run/docs/configuring/secrets).
 - Optimize gunicorn & dockerfile?
 - Port as env var, instead of setting on deploy-time or using default (8080?)

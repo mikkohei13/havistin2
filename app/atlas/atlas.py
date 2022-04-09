@@ -20,6 +20,7 @@ def convert_collection_name(id):
         return "Muu"
 
 
+# TODO: separate data & html
 def collections_data():
     api_url = "https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=document.collectionId&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=100&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&access_token=" + app_secrets.finbif_api_token
 
@@ -45,6 +46,53 @@ def collections_data():
     collections_table += "</tbody></table>"
 
     return collections_table
+
+
+def breeding_data(atlas_class):
+
+    if "D" == atlas_class:
+        atlas_class = "MY.atlasClassEnumD"
+    elif "C" == atlas_class:
+        atlas_class = "MY.atlasClassEnumC"
+    # TODO: exception for other cases
+        
+
+    api_url = "https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=unit.linkings.originalTaxon.speciesNameFinnish&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=20&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&time=-14%2F0&atlasClass=" + atlas_class + "&access_token=" + app_secrets.finbif_api_token
+
+    r = requests.get(api_url)
+    dataJson = r.text
+    dataDict = json.loads(dataJson)
+
+#    print(dataDict)
+
+    breeding_dict = dict()
+    for item in dataDict["results"]:
+        breeding_dict[item["aggregateBy"]["unit.linkings.originalTaxon.speciesNameFinnish"]] = item["count"]
+
+#    print(breeding_dict)
+    return breeding_dict
+
+
+def breeding_html(dataDict, atlas_class):
+
+    if "D" == atlas_class:
+        heading = "Varmat pesinnät"
+    elif "C" == atlas_class:
+        heading = "Todennäköiset pesinnät"
+    # TODO: exception for other cases
+
+    html = f"<h3>{heading} (top 20)</h3>"
+    html += "<p>Näistä lajeista on tehty eniten havaintoja viimeisen kahden viikon aikana, eli niitä kannattaa erityisesti tarkkailla. Arkaluontoiset havainnot eivät ole tässä taulukossa mukana.</p>"
+    html += "<table class='styled-table'>"
+    html += "<thead><tr><th>Laji</th><th>Havaintoja</th></tr></thead>"
+    html += "<tbody>"
+
+    for key, value in dataDict.items():
+        html += "<tr><td>" + key + "</td>"
+        html += "<td>" + str(value) + "</td>"
+
+    html += "</tbody></table>"
+    return html
 
 
 def daterange(start_date):
@@ -183,6 +231,8 @@ def datechart_data(collection_id):
     return json_data
 
 
+
+
 def main():
     html = dict()
 
@@ -190,6 +240,12 @@ def main():
     html["accuracy_table"] = coordinate_accuracy_html(accuracy_data, total_count)
 
     html["collections_table"] = collections_data()
+
+    breeding_data_dict = breeding_data("D")
+    html["breeding_certain"] = breeding_html(breeding_data_dict, "D")
+
+    breeding_data_dict = breeding_data("C")
+    html["breeding_probable"] = breeding_html(breeding_data_dict, "C")
 
     html["datechart_data_birdatlas"] = datechart_data("HR.4471")
     html["datechart_data_trip"] = datechart_data("HR.1747")

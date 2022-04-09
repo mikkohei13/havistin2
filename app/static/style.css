@@ -4,7 +4,8 @@ body {
 }
 
 h1 {
-    font-size: 150%;
+    font-size: 165%;
+    margin-bottom: 1em;
 }
 
 h1 span {
@@ -35,6 +36,10 @@ h1 span {
     border-radius: 5px;
 }
 
+#subnavi h3 {
+    margin: 0 0 0.5em 0;
+}
+
 #subnavi p {
     margin: 0 0 1em 0;
 }
@@ -43,8 +48,8 @@ h1 span {
     width: 5em;
 }
 
-h1, h2, h3, h3 {
-    margin: 1.5em 0 0.5em 0;
+h2, h3, h3 {
+    margin: 1.7em 0 0.5em 0;
 }
 
 /* Species checklist */
@@ -196,8 +201,9 @@ h1, h2, h3, h3 {
 }
 
 #cumulative_chart {
-    width: 800px;
-    min-height: 400px;
+    max-width: 1000px;
+    min-height: 300px;
+    max-height: 600px;
 }
 
 .horizontal_bar {

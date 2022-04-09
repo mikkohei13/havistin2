@@ -77,7 +77,7 @@ def adaptive_species(square_id):
 
     species_count_sum = count_species_sum(data_dict["results"])
 
-    print(f"Sum: {species_count_sum}")
+#    print(f"Sum: {species_count_sum}")
 
     species_count_dict = dict()
 
