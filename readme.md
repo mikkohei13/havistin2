@@ -84,11 +84,11 @@ Build image from Dockerfile:
 ## Should
 
 - Squareform
-    - Keep vakio/adaptive selection when switching square (add variable to base.html?)
     - Link to heatmap, printable map, result service
  
 - People lists:
     - People with complete lists from most squares: https://ebird.org/atlasny/top100?region=New+York&locInfo.regionCode=US-NY&rankedBy=blocks_with_complete
+        - needs complete checklist search
 - Refactor? data generation into shared module
 - manage secrets with secret manager (https://cloud.google.com/run/docs/configuring/secrets).
 - Optimize gunicorn & dockerfile?
@@ -105,7 +105,6 @@ Build image from Dockerfile:
 
 - Ruutulomake
    - link to map
-- Chart with record per day (B, C, D) from each obs system & total.
 - Geographic center of observations, day by day, on a xy-chart with Finnish border 
 
 - One grid observation count or breeding index graph

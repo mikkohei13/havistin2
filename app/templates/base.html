@@ -20,10 +20,16 @@
 
         <script type="text/javascript">
             window.onload = function(){
-                var form = document.getElementById("squareselection");
+                const form = document.getElementById("squareselection");
                 form.onsubmit = function(){
-                    var square = document.getElementById("square");
-                    window.location = "/ruutulomake/" + square.value + "/vakio";
+                    const square = document.getElementById("square");
+                    const currentUrlPath = window.location.pathname
+                    if (currentUrlPath.includes("mukautuva")) {
+                        window.location = "/ruutulomake/" + square.value + "/mukautuva";
+                    }
+                    else {
+                        window.location = "/ruutulomake/" + square.value + "/vakio";
+                    }
                     return false;
                 };          
             };
