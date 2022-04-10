@@ -95,6 +95,45 @@ def breeding_html(dataDict, atlas_class):
     return html
 
 
+def square_data():
+
+    api_url = "https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=gathering.conversions.ykj10km.lat%2Cgathering.conversions.ykj10km.lon&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=10&page=1&cache=false&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&access_token=" + "bOzxQvW7EppFyAww5nskaGFxGgIdh4olBF1RmQvd8tAZPbMYsA9bUTaWYu2WFeZR"
+
+    print(api_url)
+
+    r = requests.get(api_url)
+    dataJson = r.text
+    dataDict = json.loads(dataJson)
+
+    print(dataDict)
+
+    square_dict = dict()
+    for item in dataDict["results"]:
+        lat = item["aggregateBy"]["gathering.conversions.ykj10km.lat"][0:3]
+        lon = item["aggregateBy"]["gathering.conversions.ykj10km.lon"][0:3]
+        square_id = str(lat) + ":" + str(lon)
+        square_dict[square_id] = item["count"]
+
+#    print(breeding_dict)
+    return square_dict
+
+
+def square_html(dataDict):
+
+    html = f"<h3>Atlasruudut, joista eniten havaintoja (top 10)</h3>"
+    html += "<table class='styled-table'>"
+    html += "<thead><tr><th>Ruutu</th><th>Havaintoja</th></tr></thead>"
+    html += "<tbody>"
+
+    for key, value in dataDict.items():
+        html += "<tr><td>" + key + "</td>"
+        html += "<td>" + str(value) + "</td>"
+
+    html += "</tbody></table>"
+    return html
+
+
+
 def daterange(start_date):
     end_date = date.today()
 
@@ -246,6 +285,9 @@ def main():
 
     breeding_data_dict = breeding_data("C")
     html["breeding_probable"] = breeding_html(breeding_data_dict, "C")
+
+    square_data_dict = square_data()
+    html["squares"] = square_html(square_data_dict)
 
     html["datechart_data_birdatlas"] = datechart_data("HR.4471")
     html["datechart_data_trip"] = datechart_data("HR.1747")
