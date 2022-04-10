@@ -9,6 +9,8 @@ Uses Python, Flask, Docker & Docker-Compose and Chart.js, and is deployed with G
 
 Based on https://medium.com/thedevproject/setup-flask-project-using-docker-and-gunicorn-4dcaaa829620
 
+Flush cache: root-URL/flush
+
 ## Running in development
 
 First build the image, and tag it with a version number and/or as latest:
