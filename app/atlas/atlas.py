@@ -2,9 +2,14 @@
 import requests
 from datetime import timedelta, date
 import json
-import sys
 
 import app_secrets
+
+def fetch_api(api_url):
+    api_url = api_url + app_secrets.finbif_api_token
+    r = requests.get(api_url)
+    dataJson = r.text
+    return json.loads(dataJson)
 
 
 def convert_collection_name(id):
@@ -22,11 +27,9 @@ def convert_collection_name(id):
 
 # TODO: separate data & html
 def collections_data():
-    api_url = "https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=document.collectionId&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=100&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&access_token=" + app_secrets.finbif_api_token
+    api_url = "https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=document.collectionId&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=100&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&access_token="
 
-    r = requests.get(api_url)
-    dataJson = r.text
-    dataDict = json.loads(dataJson)
+    dataDict = fetch_api(api_url)
 
     total_obs_count = 0
     for i in dataDict["results"]:
@@ -55,21 +58,15 @@ def breeding_data(atlas_class):
     elif "C" == atlas_class:
         atlas_class = "MY.atlasClassEnumC"
     # TODO: exception for other cases
-        
 
-    api_url = "https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=unit.linkings.originalTaxon.speciesNameFinnish&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=20&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&time=-14%2F0&atlasClass=" + atlas_class + "&access_token=" + app_secrets.finbif_api_token
+    api_url = "https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=unit.linkings.originalTaxon.speciesNameFinnish&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=20&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&time=-14%2F0&atlasClass=" + atlas_class + "&access_token="
 
-    r = requests.get(api_url)
-    dataJson = r.text
-    dataDict = json.loads(dataJson)
-
-#    print(dataDict)
+    dataDict = fetch_api(api_url)
 
     breeding_dict = dict()
     for item in dataDict["results"]:
         breeding_dict[item["aggregateBy"]["unit.linkings.originalTaxon.speciesNameFinnish"]] = item["count"]
 
-#    print(breeding_dict)
     return breeding_dict
 
 
@@ -97,15 +94,9 @@ def breeding_html(dataDict, atlas_class):
 
 def square_data():
 
-    api_url = "https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=gathering.conversions.ykj10km.lat%2Cgathering.conversions.ykj10km.lon&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=10&page=1&cache=false&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&access_token=" + "bOzxQvW7EppFyAww5nskaGFxGgIdh4olBF1RmQvd8tAZPbMYsA9bUTaWYu2WFeZR"
+    api_url = "https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=gathering.conversions.ykj10km.lat%2Cgathering.conversions.ykj10km.lon&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=10&page=1&cache=false&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&access_token="
 
-    print(api_url)
-
-    r = requests.get(api_url)
-    dataJson = r.text
-    dataDict = json.loads(dataJson)
-
-    print(dataDict)
+    dataDict = fetch_api(api_url)
 
     square_dict = dict()
     for item in dataDict["results"]:
@@ -114,7 +105,6 @@ def square_data():
         square_id = str(lat) + ":" + str(lon)
         square_dict[square_id] = item["count"]
 
-#    print(breeding_dict)
     return square_dict
 
 
@@ -133,7 +123,6 @@ def square_html(dataDict):
     return html
 
 
-
 def daterange(start_date):
     end_date = date.today()
 
@@ -145,11 +134,9 @@ def daterange(start_date):
 
 
 def coordinate_accuracy_data():
-    api_url = "https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=gathering.interpretations.coordinateAccuracy&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=100&page=1&cache=false&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&access_token=" + app_secrets.finbif_api_token
+    api_url = "https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=gathering.interpretations.coordinateAccuracy&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=100&page=1&cache=false&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&access_token="
 
-    r = requests.get(api_url)
-    dataJson = r.text
-    dataDict = json.loads(dataJson)
+    dataDict = fetch_api(api_url)
 
     accuracy_dict = dict()
     total_count = 0
@@ -234,11 +221,9 @@ def coordinate_accuracy_html(accuracy_dict, total_count):
 def datechart_data(collection_id):
 
     # Get daily data from api. This lacks dates with zero count.
-    api_url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=document.firstLoadDate&orderBy=document.firstLoadDate&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=365&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&collectionId=http%3A%2F%2Ftun.fi%2F{collection_id}&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&access_token=" + app_secrets.finbif_api_token
+    api_url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=document.firstLoadDate&orderBy=document.firstLoadDate&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=365&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&collectionId=http%3A%2F%2Ftun.fi%2F{collection_id}&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&access_token="
 
-    r = requests.get(api_url)
-    dataJson = r.text
-    dataDict = json.loads(dataJson)
+    dataDict = fetch_api(api_url)
 
     # Use day as key in dict
     data_by_days = dict()

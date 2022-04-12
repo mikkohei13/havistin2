@@ -35,7 +35,7 @@ def flush_cache():
     return render_template("simple.html", content="Cache flushed")
 
 @app.route("/ruutulomake/<string:square_id_untrusted>/<string:show_untrusted>")
-@cache.cached()
+@cache.cached(timeout=86400) # 24 h
 def square(square_id_untrusted, show_untrusted):
     html = atlas.squareform.main(square_id_untrusted, show_untrusted)
     return render_template("squareform.html", html=html)
