@@ -107,7 +107,7 @@ def atlas3_square(square_id):
 
     try:
         f = open(filename)
-    except FileNotFoundError:
+    except ValueError:
         print_log("ERROR: Square file not found.")
 
     species_dict = json.load(f)

@@ -1,15 +1,32 @@
 
 import requests
 from datetime import timedelta, date
+import time
 import json
+import sys
 
 import app_secrets
 
 def fetch_api(api_url):
     api_url = api_url + app_secrets.finbif_api_token
-    r = requests.get(api_url)
+#    print(api_url, file = sys.stdout)
+
+    try:
+        r = requests.get(api_url)
+    except ConnectionError:
+        print("ERROR: api.laji.fi complete error.", file = sys.stdout)
+
+#    r.encoding = encoding
     dataJson = r.text
-    return json.loads(dataJson)
+    dataDict = json.loads(dataJson)
+
+    if "status" in dataDict:
+        if 403 == dataDict["status"]:
+            print("ERROR: api.laji.fi 403 error.", file = sys.stdout)
+            raise ConnectionError
+
+#    print(dataDict, file = sys.stdout)
+    return dataDict
 
 
 def convert_collection_name(id):
@@ -25,7 +42,6 @@ def convert_collection_name(id):
         return "Muu"
 
 
-# TODO: separate data & html
 def collections_data():
     api_url = "https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=document.collectionId&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=100&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&access_token="
 
@@ -50,7 +66,7 @@ def collections_data():
 
     return collections_table
 
-
+'''
 def breeding_data(atlas_class):
 
     if "D" == atlas_class:
@@ -68,15 +84,17 @@ def breeding_data(atlas_class):
         breeding_dict[item["aggregateBy"]["unit.linkings.originalTaxon.speciesNameFinnish"]] = item["count"]
 
     return breeding_dict
+'''
 
+def breeding_html(atlas_class):
 
-def breeding_html(dataDict, atlas_class):
-
-    if "D" == atlas_class:
+    if "MY.atlasClassEnumD" == atlas_class:
         heading = "Varmat pesinnät"
-    elif "C" == atlas_class:
+    elif "MY.atlasClassEnumC" == atlas_class:
         heading = "Todennäköiset pesinnät"
     # TODO: exception for other cases
+
+    data = fetch_api("https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=unit.linkings.originalTaxon.speciesNameFinnish&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=20&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&time=-14%2F0&atlasClass=" + atlas_class + "&access_token=")
 
     html = f"<h3>{heading} (top 20)</h3>"
     html += "<p>Näistä lajeista on tehty eniten havaintoja viimeisen kahden viikon aikana, eli niitä kannattaa erityisesti tarkkailla. Arkaluontoiset havainnot eivät ole tässä taulukossa mukana.</p>"
@@ -84,9 +102,59 @@ def breeding_html(dataDict, atlas_class):
     html += "<thead><tr><th>Laji</th><th>Havaintoja</th></tr></thead>"
     html += "<tbody>"
 
-    for key, value in dataDict.items():
-        html += "<tr><td>" + key + "</td>"
-        html += "<td>" + str(value) + "</td>"
+    for item in data["results"]:
+        aggregate_by = item["aggregateBy"]["unit.linkings.originalTaxon.speciesNameFinnish"]
+        count = str(item["count"])
+        html += "<tr><td>" + aggregate_by + "</td>"
+        html += "<td>" + count + "</td>"
+
+    html += "</tbody></table>"
+    return html
+
+
+def recent_observers():
+    # observations loaded to FinBIF during last 48 hours, excluding Tiira
+    # 48 h: 172800
+    timestamp = int(time.time()) -172800
+
+    url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=gathering.team.memberName&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=20&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&firstLoadedSameOrAfter={timestamp}&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumA%2CMY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&collectionIdNot=HR.4412&access_token="
+
+    data = fetch_api(url)
+
+    html = f"<h3>Aktiiviset havainnoijat 2 vrk aikana (top 20)</h3>"
+    html += "<p>Eniten havaintoja viimeisen 48 tunnin aikana tehneet henkilöt niistä havainnoista, joissa on julkinen nimitieto Lajitietokeskuksen tietovarastossa. Laskennassa ei ole mukana arkaluontoisia havaintoja, ja käyttäjä on voinut myös itse salata nimensä Vihkossa havaintoeräkohtaisesti. Lisää havainnoijatilastoja <a href='https://digitalis.fi/lintuatlas/havainnoijat/'>Digitaliksen sivuilla</a>.</p>"
+    html += "<table class='styled-table'>"
+    html += "<thead><tr><th>Havainnoija</th><th>Havaintoja</th></tr></thead>"
+    html += "<tbody>"
+
+    for item in data["results"]:
+        aggregate_by = item["aggregateBy"]["gathering.team.memberName"]
+        count = str(item["count"])
+        html += "<tr><td>" + aggregate_by + "</td>"
+        html += "<td>" + count + "</td>"
+
+    html += "</tbody></table>"
+    return html
+
+
+def societies():
+    # TODO: All observations per society, requires new api endpoint from laji.fi
+    # Tiira observations
+    url = "https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=gathering.team.memberName&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=50&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumA%2CMY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&collectionId=HR.4412&access_token="
+
+    data = fetch_api(url)
+
+    html = f"<h3>Tiiran havainnot yhdistyksittäin</h3>"
+    html += "<p>Tiirasta tulevissa atlashavainnoissa havainnoijan nimenä on paikallinen lintuyhdistys. HUOM: Yhdistysten nimet tulevat Tiirasta tuntemattomalla merkistökoodauksella, jonka takia ääkköset eivät toistaiseksi näy oikein.</p>"
+    html += "<table class='styled-table'>"
+    html += "<thead><tr><th>Yhdistys</th><th>Havaintoja</th></tr></thead>"
+    html += "<tbody>"
+
+    for item in data["results"]:
+        aggregate_by = item["aggregateBy"]["gathering.team.memberName"]
+        count = str(item["count"])
+        html += "<tr><td>" + aggregate_by + "</td>"
+        html += "<td>" + count + "</td>"
 
     html += "</tbody></table>"
     return html
@@ -174,8 +242,8 @@ def coordinate_accuracy_data():
 
 def coordinate_accuracy_html(accuracy_dict, total_count):
 
-    accuracy_table = "\n\n<h3>Havaintojen tarkkuus</h3>\n"
-    accuracy_table += "<p>Mitä tarkempi havainnon paikka on, sitä paremmin sitä voidaan hyödyntää esim suojelutyössä. Tiirasta atlakseen tulee vain 10 km tasolle karkeistettuja havaintoja.</p>\n"
+    accuracy_table = "\n\n<h3>Havaintojen julkinen tarkkuus</h3>\n"
+    accuracy_table += "<p>Mitä tarkempi havainnon paikka on, sitä paremmin sitä voidaan hyödyntää esim suojelutyössä. Tiirasta atlakseen tulee vain 10 km tasolle karkeistettuja havaintoja. Muista lähteistä arkaluontoiset sekä käyttäjien karkeistamat havainnot näkyvät tässä karkeistettuina, mutta suojelu- ym. käytössä ne ovat käytettävissä tarkkana.</p>\n"
     accuracy_table += "<table class='styled-table'>\n"
     accuracy_table += "<thead>\n<tr><th>Tarkkuus</th><th>Havaintoja</th><th>%</th><th> </th></tr>\n</thead>\n"
     accuracy_table += "<tbody>\n"
@@ -265,14 +333,17 @@ def main():
 
     html["collections_table"] = collections_data()
 
-    breeding_data_dict = breeding_data("D")
-    html["breeding_certain"] = breeding_html(breeding_data_dict, "D")
+#    breeding_data_dict = breeding_data("D")
+    html["breeding_certain"] = breeding_html("MY.atlasClassEnumD")
 
-    breeding_data_dict = breeding_data("C")
-    html["breeding_probable"] = breeding_html(breeding_data_dict, "C")
+#    breeding_data_dict = breeding_data("C")
+    html["breeding_probable"] = breeding_html("MY.atlasClassEnumC")
 
     square_data_dict = square_data()
     html["squares"] = square_html(square_data_dict)
+
+    html["recent_observers"] = recent_observers()
+    html["societies"] = societies()
 
     html["datechart_data_birdatlas"] = datechart_data("HR.4471")
     html["datechart_data_trip"] = datechart_data("HR.1747")

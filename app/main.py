@@ -1,5 +1,5 @@
 from flask import Flask, render_template
-from werkzeug.exceptions import HTTPException
+#from werkzeug.exceptions import HTTPException
 from flask_caching import Cache
 
 import sys
@@ -40,6 +40,11 @@ def square(square_id_untrusted, show_untrusted):
     html = atlas.squareform.main(square_id_untrusted, show_untrusted)
     return render_template("squareform.html", html=html)
 
-@app.errorhandler(HTTPException)
+@app.errorhandler(ValueError)
 def handle_exception(e):
-    return 'Virhe tai sivua ei löydy (404)', 404
+    return 'Tarkista antamasi ruudun numero tai lajin nimi. Haettua sivua ei löydy (404)', 404
+
+# Todo: why does not catch the error?
+@app.errorhandler(ConnectionError)
+def handle_bad_request(e):
+    return 'Lajitietokeskuksen rajapinta ei juuri nyt toimi, yritä myöhemmin uudelleen (503)', 503
