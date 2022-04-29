@@ -23,9 +23,9 @@ cache = Cache(app)
 print("-------------- BEGIN -------------- -------------- --------------", file = sys.stdout)
 
 @app.route("/")
-#@cache.cached()
-async def root():
-    html = await atlas.atlas.main()
+@cache.cached()
+def root():
+    html = atlas.atlas.main()
     return render_template("index.html", html=html)
 
 @app.route("/flush")
@@ -39,12 +39,6 @@ def flush_cache():
 def square(square_id_untrusted, show_untrusted):
     html = atlas.squareform.main(square_id_untrusted, show_untrusted)
     return render_template("squareform.html", html=html)
-
-@app.route("/kartta/<string:square_id_untrusted>")
-@cache.cached(timeout=1)
-def square(square_id_untrusted):
-    html = atlas.squareform.main(square_id_untrusted, show_untrusted)
-    return render_template("squaremap.html", html=html)
 
 @app.errorhandler(ValueError)
 def handle_exception(e):
