@@ -4,12 +4,14 @@ from datetime import timedelta, date
 import time
 import json
 import sys
+import asyncio
+
 
 import app_secrets
 
 def fetch_api(api_url):
     api_url = api_url + app_secrets.finbif_api_token
-#    print(api_url, file = sys.stdout)
+    print(api_url, file = sys.stdout) # debug
 
     try:
         r = requests.get(api_url)
@@ -42,7 +44,7 @@ def convert_collection_name(id):
         return "Muu"
 
 
-def collections_data():
+async def collections_data():
     api_url = "https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=document.collectionId&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=100&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&access_token="
 
     dataDict = fetch_api(api_url)
@@ -86,7 +88,7 @@ def breeding_data(atlas_class):
     return breeding_dict
 '''
 
-def breeding_html(atlas_class):
+async def breeding_html(atlas_class):
 
     if "MY.atlasClassEnumD" == atlas_class:
         heading = "Varmat pesinnät"
@@ -112,7 +114,7 @@ def breeding_html(atlas_class):
     return html
 
 
-def recent_observers():
+async def recent_observers():
     # observations loaded to FinBIF during last 48 hours, excluding Tiira
     # 48 h: 172800
     timestamp = int(time.time()) -172800
@@ -137,7 +139,7 @@ def recent_observers():
     return html
 
 
-def societies():
+async def societies():
     # TODO: All observations per society, requires new api endpoint from laji.fi
     # Tiira observations
     url = "https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=gathering.team.memberName&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=50&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumA%2CMY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&collectionId=HR.4412&access_token="
@@ -145,7 +147,7 @@ def societies():
     data = fetch_api(url)
 
     html = f"<h3>Tiiran havainnot yhdistyksittäin</h3>"
-    html += "<p>Tiirasta tulevissa atlashavainnoissa havainnoijan nimenä on paikallinen lintuyhdistys. HUOM: Yhdistysten nimet tulevat Tiirasta tuntemattomalla merkistökoodauksella, jonka takia ääkköset eivät toistaiseksi näy oikein.</p>"
+    html += "<p>Tiirasta tulevissa atlashavainnoissa havainnoijan nimenä on paikallinen lintuyhdistys.</p>"
     html += "<table class='styled-table'>"
     html += "<thead><tr><th>Yhdistys</th><th>Havaintoja</th></tr></thead>"
     html += "<tbody>"
@@ -286,7 +288,7 @@ def coordinate_accuracy_html(accuracy_dict, total_count):
 
 
 
-def datechart_data(collection_id):
+async def datechart_data(collection_id):
 
     # Get daily data from api. This lacks dates with zero count.
     api_url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=document.firstLoadDate&orderBy=document.firstLoadDate&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=365&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&collectionId=http%3A%2F%2Ftun.fi%2F{collection_id}&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&access_token="
@@ -325,29 +327,50 @@ def datechart_data(collection_id):
 
 
 
-def main():
+async def main():
     html = dict()
+
+#    breeding_data_dict = breeding_data("D")
+#    html["breeding_certain"] = breeding_html("MY.atlasClassEnumD")
+
+#    breeding_data_dict = breeding_data("C")
+
+    task_collections_data = asyncio.create_task(collections_data())
+    html["collections_table"] = await task_collections_data
+
+    task_breeding_certain = asyncio.create_task(breeding_html("MY.atlasClassEnumD"))
+    html["breeding_certain"] = await task_breeding_certain
+
+    task_breeding_probable = asyncio.create_task(breeding_html("MY.atlasClassEnumC"))
+    html["breeding_probable"] = await task_breeding_probable
+
+    task_recent_observers = asyncio.create_task(recent_observers())
+    html["recent_observers"] = await task_recent_observers
+
+    task_societies = asyncio.create_task(societies())
+    html["societies"] = await task_societies
+
+
+#    html["recent_observers"] = recent_observers()
+#    html["societies"] = societies()
+
+    task_datechart_1 = asyncio.create_task(datechart_data("HR.4471"))
+    html["datechart_data_birdatlas"] = await task_datechart_1
+
+    task_datechart_2 = asyncio.create_task(datechart_data("HR.1747"))
+    html["datechart_data_trip"] = await task_datechart_2
+
+    task_datechart_3 = asyncio.create_task(datechart_data("HR.4412"))
+    html["datechart_data_tiira"] = await task_datechart_3
+
+    task_datechart_4 = asyncio.create_task(datechart_data("HR.3211"))
+    html["datechart_data_inat"] = await task_datechart_4
+
 
     accuracy_data, total_count = coordinate_accuracy_data()
     html["accuracy_table"] = coordinate_accuracy_html(accuracy_data, total_count)
 
-    html["collections_table"] = collections_data()
-
-#    breeding_data_dict = breeding_data("D")
-    html["breeding_certain"] = breeding_html("MY.atlasClassEnumD")
-
-#    breeding_data_dict = breeding_data("C")
-    html["breeding_probable"] = breeding_html("MY.atlasClassEnumC")
-
     square_data_dict = square_data()
     html["squares"] = square_html(square_data_dict)
-
-    html["recent_observers"] = recent_observers()
-    html["societies"] = societies()
-
-    html["datechart_data_birdatlas"] = datechart_data("HR.4471")
-    html["datechart_data_trip"] = datechart_data("HR.1747")
-    html["datechart_data_tiira"] = datechart_data("HR.4412")
-    html["datechart_data_inat"] = datechart_data("HR.3211")
 
     return html

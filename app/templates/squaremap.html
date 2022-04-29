@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <title>{{ html["title"] }} - Lintuatlas (biomi.org)</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+   crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+    <script src="/static/leaflet-heat.js"></script>
+{% endblock %}
+
+{% block breadcrumb %}
+    &raquo; <a href="../../">Lintuatlas</a> &raquo; Ruutukartta
+{% endblock %}
+
+{% block body %}
+
+    <div id="subnavi">
+        {{ html["showselection"]|safe }}
+        <form id="squareselection" action="" method="get">
+            <label id="square-label">
+                Ruutu:
+                <input type="text" id="square" name="square">
+            </label>
+            <input type="submit" value="Valitse"> <span>(esim. 668:338)</span>
+        </form>
+    </div>
+
+    <div id="heading">
+    {{ html["heading"]|safe }}
+    </div>
+
+    <div id="info_top">
+        <div id="info">
+            {{ html["info_top"]|safe }}
+        </div>
+    </div>
+
+    <div id="map"></div>
+
+    <div id="info_bottom">
+        <p>
+            {{ html["info_bottom"]|safe }}
+        </p>
+    </div>
+
+{% endblock %}
+

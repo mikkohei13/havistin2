@@ -81,6 +81,8 @@ Build image from Dockerfile:
 
 ## Must
 
+- Links from squareform to a) printable map, b) to heatmap, maybe forsyt on the PHP pages under biomi.org. 
+- Decide whether to use caching (fast load when going back to front page) or async/await (semi-fast load anytime). Which one is better when there are more services, and some bird atlas stats are on subpages?
 - Command to deploy version other than latest. First submit to Articat Registry, then deploy from there using --image option.
 
 ## Should
