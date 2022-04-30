@@ -8,11 +8,7 @@ from flask import request
 
 import app_secrets
 import finnish_species
-
-
-def print_log(dict):
-    print(dict, sep="\n", file = sys.stdout)
-
+import atlas.common as common
 
 def count_species_sum(species_list):
     count_sum = 0
@@ -20,18 +16,6 @@ def count_species_sum(species_list):
         count_sum = count_sum + species["count"]
     
     return count_sum
-
-
-def valid_square_id(square_id):
-    pattern = r'[6-7][0-9][0-9]:[3-3][0-7][0-9]'
-    match = re.fullmatch(pattern, square_id)
-
-    if match is not None:
-        return square_id
-    else:
-        print_log("ERROR: Coordinates invalid.")
-        raise ValueError
-
 
 def make_coordinates_param(square_id):
     intersect_ratio = 0.1   # decimal 0-1
@@ -108,7 +92,7 @@ def atlas3_square(square_id):
     try:
         f = open(filename)
     except ValueError:
-        print_log("ERROR: Square file not found.")
+        common.print_log("ERROR: Square file not found.")
 
     species_dict = json.load(f)
     
@@ -294,12 +278,14 @@ def info_bottom_html(show_untrusted, species_count = 250):
 def main(square_id_untrusted, show_untrusted):
     html = dict()
 
-    square_id = valid_square_id(square_id_untrusted)
+    square_id = common.valid_square_id(square_id_untrusted)
 
     if "mukautuva" == show_untrusted:
         species_to_show_dict = adaptive_species(square_id)
     else:
         species_to_show_dict = atlas_species()
+
+    print(variable2)
 
     # Atlas 3
     atlas3_species_dict = atlas3_square(square_id)

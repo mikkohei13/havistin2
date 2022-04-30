@@ -164,6 +164,12 @@ h2, h3, h3 {
     font-size: 70%;
 }
 
+#map {
+    border: 1px solid red;
+    width: 900px;
+    height: 500px;
+}
+
 /* Generic tables */
 /* https://dev.to/dcodeyt/creating-beautiful-html-tables-with-css-428l */
 .styled-table {

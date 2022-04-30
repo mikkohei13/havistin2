@@ -6,6 +6,7 @@ import sys
 
 import atlas.atlas
 import atlas.squareform
+import atlas.squaremap
 
 #import app_secrets
 
@@ -36,9 +37,15 @@ def flush_cache():
 
 @app.route("/ruutulomake/<string:square_id_untrusted>/<string:show_untrusted>")
 @cache.cached(timeout=86400) # 24 h
-def square(square_id_untrusted, show_untrusted):
+def squareform(square_id_untrusted, show_untrusted):
     html = atlas.squareform.main(square_id_untrusted, show_untrusted)
     return render_template("squareform.html", html=html)
+
+@app.route("/ruutukartta/<string:square_id_untrusted>")
+@cache.cached(timeout=1)
+def squaremap(square_id_untrusted):
+    html = atlas.squaremap.main(square_id_untrusted)
+    return render_template("squaremap.html", html=html)
 
 @app.errorhandler(ValueError)
 def handle_exception(e):
