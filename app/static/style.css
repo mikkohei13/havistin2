@@ -31,6 +31,7 @@ h1 span {
 }
 
 #subnavi {
+    max-width: 600px;
     background-color: #cfece7;
     padding: 10px;
     border-radius: 5px;
@@ -48,6 +49,13 @@ h1 span {
     width: 5em;
 }
 
+#heading #links {
+    margin: -0.7em -10px 1.5em;
+    font-weight: bold;
+    padding: 0.5em 1em;
+    border-left: 10px solid #009879;
+}
+
 h2, h3, h3 {
     margin: 1.7em 0 0.5em 0;
 }
@@ -61,10 +69,6 @@ h2, h3, h3 {
 
 #listwrapper {
   columns: 3 200px;
-}
-
-.header {
-    font-weight: bold;
 }
 
 .row {
@@ -164,10 +168,15 @@ h2, h3, h3 {
     font-size: 70%;
 }
 
+#mapwrapper {
+    justify-content: center;
+}
+
 #map {
-    border: 1px solid red;
-    width: 900px;
-    height: 500px;
+    margin: 1em auto;
+    width: 99%;
+    height: 630px;
+    border-radius: 5px; 
 }
 
 /* Generic tables */
@@ -221,7 +230,7 @@ h2, h3, h3 {
 
 @media print {
 
-    .noprint, #navi, #subnavi {
+    .noprint, #navi, #subnavi, #links {
       display: none;
     }
 

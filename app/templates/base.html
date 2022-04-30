@@ -19,19 +19,25 @@
         -->
 
         <script type="text/javascript">
-            window.onload = function(){
-                const form = document.getElementById("squareselection");
-                form.onsubmit = function(){
-                    const square = document.getElementById("square");
-                    const currentUrlPath = window.location.pathname
-                    if (currentUrlPath.includes("mukautuva")) {
-                        window.location = "/ruutulomake/" + square.value + "/mukautuva";
+            window.onload = function() {
+                const squareselection = document.getElementById("squareselection");
+                squareselection.onsubmit = function() {
+                    const mode = document.getElementById("mode").value
+                    const square = document.getElementById("square").value;
+                    if ("squareform" == mode) {
+                        const currentUrlPath = window.location.pathname
+                        if (currentUrlPath.includes("mukautuva")) {
+                            window.location = "/ruutulomake/" + square + "/mukautuva";
+                        }
+                        else {
+                            window.location = "/ruutulomake/" + square + "/vakio";
+                        }
                     }
-                    else {
-                        window.location = "/ruutulomake/" + square.value + "/vakio";
+                    else if ("squaremap" == mode) {
+                        window.location = "/ruutu/" + square;
                     }
                     return false;
-                };          
+                };
             };
         </script>
 

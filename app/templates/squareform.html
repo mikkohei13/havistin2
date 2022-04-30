@@ -13,6 +13,7 @@
     <div id="subnavi">
         {{ html["showselection"]|safe }}
         <form id="squareselection" action="" method="get">
+            <input id="mode" type="hidden" value="squareform">
             <label id="square-label">
                 Ruutu:
                 <input type="text" id="square" name="square">
@@ -22,7 +23,8 @@
     </div>
 
     <div id="heading">
-    {{ html["heading"]|safe }}
+        <h1>{{ html["heading"]|safe }}</h1>
+        <p id="links"><a href="/ruutu/{{ html["square_id"] }}">Ruudun havaintokartta</a></p>
     </div>
 
     <div id="info_top">

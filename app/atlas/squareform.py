@@ -285,8 +285,6 @@ def main(square_id_untrusted, show_untrusted):
     else:
         species_to_show_dict = atlas_species()
 
-    print(variable2)
-
     # Atlas 3
     atlas3_species_dict = atlas3_square(square_id)
 #    print_r(atlas3_species_dict)
@@ -301,10 +299,11 @@ def main(square_id_untrusted, show_untrusted):
     breeding_species_list = atlas4_breeding()
 
     # HTML
+    html["square_id"] = square_id
     html["title"] = f"Atlasruutu {atlas4_square_info_dict['coordinates']}"
     html["species"] = species_html(species_to_show_dict, atlas3_species_dict, atlas4_species_dict, breeding_species_list)
 
-    html["heading"] = f"<h1>{atlas4_square_info_dict['coordinates']} {atlas4_square_info_dict['name']} <span> - {atlas4_square_info_dict['birdAssociationArea']['value']}</span></h1>"
+    html["heading"] = f"{atlas4_square_info_dict['coordinates']} {atlas4_square_info_dict['name']} <span> - {atlas4_square_info_dict['birdAssociationArea']['value']}</span>"
     
     html["info_top"] = info_top_html(atlas4_square_info_dict)
     html["showselection"] = showselection_html(atlas4_square_info_dict["coordinates"])
