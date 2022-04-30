@@ -6,7 +6,7 @@ import json
 def observation_coordinates(square_id):
     url = f"https://api.laji.fi/v0/warehouse/query/unit/list?selected=gathering.conversions.wgs84CenterPoint.lat%2Cgathering.conversions.wgs84CenterPoint.lon%2Cgathering.coordinatesVerbatim&pageSize=1000&page=1&cache=false&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&time=2022%2F2025&individualCountMin=1&coordinates={square_id}%3AYKJ&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumA%2CMY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&coordinateAccuracyMax=1000&access_token=";
 
-    data_dict = common.fetch_finbif_api(url, True)
+    data_dict = common.fetch_finbif_api(url, False)
 
     coord_string = ""
     for obs in data_dict["results"]:
@@ -54,7 +54,7 @@ def main(square_id_untrusted):
     html = dict()
 
     html["square_id"] = square_id
-    
+
     # Todo: Make heading the same way as on squareform
     html["heading"] = f"{square_id} {square_name}"
 

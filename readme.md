@@ -17,6 +17,10 @@ First build the image, and tag it with a version number and/or as latest:
 
     docker build -t havistin2-gunicorn:VERSIONNUMBER -t havistin2-gunicorn:latest .
 
+Check which version numbers have been used:
+
+    docker image ls
+
 Run in development mode with docker-compose. This serves the app on localhost and auto-reloads changes to script files, and to other files (like templates) defined on docker-compose.yml.
 
     docker-compose up; docker-compose down;
