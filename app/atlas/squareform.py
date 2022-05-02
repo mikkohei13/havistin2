@@ -277,11 +277,17 @@ def main(square_id_untrusted, show_untrusted):
     html = dict()
 
     square_id = common.valid_square_id(square_id_untrusted)
+    html["square_id"] = square_id
+
+    neighbour_ids = common.neighbour_ids(square_id)
+    html["neighbour_ids"] = neighbour_ids
 
     if "mukautuva" == show_untrusted:
         species_to_show_dict = adaptive_species(square_id)
+        html["show"] = "mukautuva"
     else:
         species_to_show_dict = atlas_species()
+        html["show"] = "vakio"
 
     # Atlas 3
     atlas3_species_dict = atlas3_square(square_id)
@@ -296,8 +302,6 @@ def main(square_id_untrusted, show_untrusted):
     # Breeding species
     breeding_species_list = atlas4_breeding()
 
-    # HTML
-    html["square_id"] = square_id
     html["title"] = f"Atlasruutu {atlas4_square_info_dict['coordinates']}"
     html["species"] = species_html(species_to_show_dict, atlas3_species_dict, atlas4_species_dict, breeding_species_list)
 

@@ -28,7 +28,18 @@
 
     <div id="heading">
         <h1>{{ html["heading"]|safe }}</h1>
-        <p id="links"><a href="/ruutulomake/{{ html["square_id"] }}/vakio">Ruudun maastolomake</a></p>
+        <p id="links">
+            <span>
+                <a href="/ruutulomake/{{ html["square_id"] }}/vakio">Ruudun maastolomake</a>
+            </span>
+            <span>
+                Naapuriruudut:
+                <a href="/ruutu/{{ html["neighbour_ids"]["w"] }}">&laquo; W</a>
+                <a href="/ruutu/{{ html["neighbour_ids"]["n"] }}">N</a>
+                <a href="/ruutu/{{ html["neighbour_ids"]["s"] }}">S</a>
+                <a href="/ruutu/{{ html["neighbour_ids"]["e"] }}">E &raquo;</a>
+            </span>
+        </p>
         <p>Tämä kartta näyttää ruudun atlashavainnot, joiden paikka on tiedossa Lajitietokeskuksessa noin 1 km tai paremmalla tarkkuudella.</p>
     </div>
 

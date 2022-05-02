@@ -9,6 +9,16 @@ def print_log(dict):
     print(dict, sep="\n", file = sys.stdout)
 
 
+def neighbour_ids(square_id):
+    links = dict()
+    latlon = square_id.split(":")
+    links["n"] = str(int(latlon[0]) + 1) + ":" + latlon[1]
+    links["e"] = latlon[0] + ":" + str(int(latlon[1]) + 1)
+    links["s"] = str(int(latlon[0]) -1) + ":" + latlon[1]
+    links["w"] = latlon[0] + ":" + str(int(latlon[1]) - 1)
+
+    return links
+
 def valid_square_id(square_id):
     pattern = r'[6-7][0-9][0-9]:[3-3][0-7][0-9]'
     match = re.fullmatch(pattern, square_id)

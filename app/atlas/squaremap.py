@@ -46,14 +46,16 @@ def square_info(square_id):
 
 
 def main(square_id_untrusted):
+    html = dict()
+
     square_id = common.valid_square_id(square_id_untrusted)
+    html["square_id"] = square_id
+
+    neighbour_ids = common.neighbour_ids(square_id)
+    html["neighbour_ids"] = neighbour_ids
 
     coordinates = observation_coordinates(square_id)
     square_name, centerpoint, cornerpoints = square_info(square_id)
-
-    html = dict()
-
-    html["square_id"] = square_id
 
     # Todo: Make heading the same way as on squareform
     html["heading"] = f"{square_id} {square_name}"

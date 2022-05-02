@@ -49,11 +49,19 @@ h1 span {
     width: 5em;
 }
 
-#heading #links {
+#links {
     margin: -0.7em -10px 1.5em;
-    font-weight: bold;
     padding: 0.5em 1em;
     border-left: 10px solid #009879;
+}
+
+#links span {
+    padding-left: 1em;
+    font-weight: bold;
+}
+
+#links a {
+
 }
 
 h2, h3, h3 {
