@@ -41,7 +41,11 @@
 
     {{ html["accuracy_table"]|safe }}
 
+    <h3>Atlasruudut, joista eniten havaintoja (top 10)</h3>
     {{ html["squares"]|safe }}
+
+    <h3>Atlasruudut, joista eniten tarkkoja havaintoja (top 10, tarkkuus < 1000 m)</h3>
+    {{ html["accurate_squares"]|safe }}
 
     <div>
         <canvas id="cumulative_chart"></canvas>

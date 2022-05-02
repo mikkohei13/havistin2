@@ -138,9 +138,9 @@ def societies():
     return html
 
 
-def square_data():
+def square_data(accuracy = 10000):
 
-    api_url = "https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=gathering.conversions.ykj10km.lat%2Cgathering.conversions.ykj10km.lon&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=10&page=1&cache=false&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&access_token="
+    api_url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=gathering.conversions.ykj10km.lat%2Cgathering.conversions.ykj10km.lon&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=10&page=1&cache=false&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&coordinateAccuracyMax={accuracy}&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&access_token="
 
     data_dict = common.fetch_finbif_api(api_url)
 
@@ -156,8 +156,7 @@ def square_data():
 
 def square_html(data_dict):
 
-    html = "<h3>Atlasruudut, joista eniten havaintoja (top 10)</h3>"
-    html += "<table class='styled-table'>"
+    html = "<table class='styled-table'>"
     html += "<thead><tr><th>Ruutu</th><th>Havaintoja</th></tr></thead>"
     html += "<tbody>"
 
@@ -282,6 +281,9 @@ def main():
 
     square_data_dict = square_data()
     html["squares"] = square_html(square_data_dict)
+
+    accurate_square_data_dict = square_data(1000)
+    html["accurate_squares"] = square_html(accurate_square_data_dict)
 
     html["recent_observers"] = recent_observers()
     html["societies"] = societies()
