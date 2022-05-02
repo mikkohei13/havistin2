@@ -95,12 +95,12 @@ def recent_observers():
     # 48 h: 172800
     timestamp = int(time.time()) -172800
 
-    url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=gathering.team.memberName&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=20&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&firstLoadedSameOrAfter={timestamp}&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumA%2CMY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&collectionIdNot=HR.4412&access_token="
+    url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=gathering.team.memberName&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=20&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&firstLoadedSameOrAfter={timestamp}&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&collectionIdNot=HR.4412&access_token="
 
     data = common.fetch_finbif_api(url)
 
     html = f"<h3>Aktiiviset havainnoijat 2 vrk aikana (top 20)</h3>"
-    html += "<p>Eniten havaintoja viimeisen 48 tunnin aikana tehneet henkilöt niistä havainnoista, joissa on julkinen nimitieto Lajitietokeskuksen tietovarastossa. Laskennassa ei ole mukana arkaluontoisia havaintoja, ja käyttäjä on voinut myös itse salata nimensä Vihkossa havaintoeräkohtaisesti. Lisää havainnoijatilastoja <a href='https://digitalis.fi/lintuatlas/havainnoijat/'>Digitaliksen sivuilla</a>.</p>"
+    html += "<p>Eniten havaintoja viimeisen 48 tunnin aikana tehneet henkilöt niistä havainnoista, joissa on julkinen nimitieto Lajitietokeskuksen tietovarastossa. Laskennassa ei ole mukana arkaluontoisia havaintoja, ja käyttäjä on voinut myös itse salata nimensä Vihkossa havaintoeräkohtaisesti. <strong>Lisää havainnoijatilastoja <a href='https://digitalis.fi/lintuatlas/havainnoijat/'>Digitaliksen sivuilla</a></strong>.</p>"
     html += "<table class='styled-table'>"
     html += "<thead><tr><th>Havainnoija</th><th>Havaintoja</th></tr></thead>"
     html += "<tbody>"
@@ -118,7 +118,7 @@ def recent_observers():
 def societies():
     # TODO: All observations per society, requires new api endpoint from laji.fi
     # Tiira observations
-    url = "https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=gathering.team.memberName&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=50&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumA%2CMY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&collectionId=HR.4412&access_token="
+    url = "https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=gathering.team.memberName&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=50&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&collectionId=HR.4412&access_token="
 
     data = common.fetch_finbif_api(url)
 
@@ -156,14 +156,16 @@ def square_data():
 
 def square_html(data_dict):
 
-    html = f"<h3>Atlasruudut, joista eniten havaintoja (top 10)</h3>"
+    html = "<h3>Atlasruudut, joista eniten havaintoja (top 10)</h3>"
     html += "<table class='styled-table'>"
     html += "<thead><tr><th>Ruutu</th><th>Havaintoja</th></tr></thead>"
     html += "<tbody>"
 
     for key, value in data_dict.items():
-        html += "<tr><td>" + key + "</td>"
+        html += "<tr>"
+        html += "<td><a href='/ruutu/" + key + "'>" + key + "</a></td>"
         html += "<td>" + str(value) + "</td>"
+        html += "</tr>"
 
     html += "</tbody></table>"
     return html
@@ -179,45 +181,6 @@ def daterange(start_date):
         yield start_date + timedelta(n)
 
 
-def coordinate_accuracy_data():
-    api_url = "https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=gathering.interpretations.coordinateAccuracy&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=100&page=1&cache=false&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&access_token="
-
-    data_dict = common.fetch_finbif_api(api_url)
-
-    accuracy_dict = dict()
-    total_count = 0
-    for item in data_dict["results"]:
-        accuracy_text = ""        
-        accuracy = int(item["aggregateBy"]["gathering.interpretations.coordinateAccuracy"])
-        count = item["count"]
-        total_count = total_count + count
-
-        if accuracy == 1:
-            accuracy_text = "unk"
-        elif accuracy <= 10:
-            accuracy_text = "10"
-        elif accuracy <= 100:
-            accuracy_text = "100"
-        elif accuracy <= 1000:
-            accuracy_text = "1000"
-        elif accuracy <= 5000:
-            accuracy_text = "5000"
-        elif accuracy <= 10000:
-            accuracy_text = "10000"
-        elif accuracy <= 25000:
-            accuracy_text = "25000"
-        else:
-            accuracy_text = "over"
-
-        # Todo: better way to do this?    
-        if accuracy_text in accuracy_dict:
-            accuracy_dict[accuracy_text] = accuracy_dict[accuracy_text] + count
-        else:
-            accuracy_dict[accuracy_text] = count
-
-    return accuracy_dict, total_count
-
-
 def coordinate_accuracy_html(accuracy_dict, total_count):
 
     accuracy_table = "\n\n<h3>Havaintojen julkinen tarkkuus</h3>\n"
@@ -225,6 +188,10 @@ def coordinate_accuracy_html(accuracy_dict, total_count):
     accuracy_table += "<table class='styled-table'>\n"
     accuracy_table += "<thead>\n<tr><th>Tarkkuus</th><th>Havaintoja</th><th>%</th><th> </th></tr>\n</thead>\n"
     accuracy_table += "<tbody>\n"
+
+    percentage = round(accuracy_dict['1']/total_count*100, 1)
+    accuracy_table += f"<tr><td>1 m tai tuntematon</td><td>{accuracy_dict['1']}</td><td>{percentage} %</td>\n"
+    accuracy_table += "<td><span class='horizontal_bar' style='width: " + str(round(percentage)) + "px'>&nbsp;</span></td></tr>\n"
 
     percentage = round(accuracy_dict['10']/total_count*100, 1)
     accuracy_table += f"<tr><td>10 m</td><td>{accuracy_dict['10']}</td><td>{percentage} %</td>\n"
@@ -251,11 +218,7 @@ def coordinate_accuracy_html(accuracy_dict, total_count):
     accuracy_table += "<td><span class='horizontal_bar' style='width: " + str(round(percentage)) + "px'>&nbsp;</span></td></tr>\n"
 
     percentage = round(accuracy_dict['over']/total_count*100, 1)
-    accuracy_table += f"<tr><td>yli 25 m</td><td>{accuracy_dict['over']}</td><td>{percentage} %</td>\n"
-    accuracy_table += "<td><span class='horizontal_bar' style='width: " + str(round(percentage)) + "px'>&nbsp;</span></td></tr>\n"
-
-    percentage = round(accuracy_dict['unk']/total_count*100, 1)
-    accuracy_table += f"<tr><td>tuntematon</td><td>{accuracy_dict['unk']}</td><td>{percentage} %</td>\n"
+    accuracy_table += f"<tr><td>yli 25 km</td><td>{accuracy_dict['over']}</td><td>{percentage} %</td>\n"
     accuracy_table += "<td><span class='horizontal_bar' style='width: " + str(round(percentage)) + "px'>&nbsp;</span></td></tr>\n"
 
     accuracy_table += "</tbody></table>\n"
@@ -306,7 +269,7 @@ def datechart_data(collection_id):
 def main():
     html = dict()
 
-    accuracy_data, total_count = coordinate_accuracy_data()
+    accuracy_data, total_count = common.coordinate_accuracy_data()
     html["accuracy_table"] = coordinate_accuracy_html(accuracy_data, total_count)
 
     html["collections_table"] = collections_data()

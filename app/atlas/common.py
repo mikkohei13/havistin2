@@ -26,7 +26,7 @@ def valid_square_id(square_id):
     if match is not None:
         return square_id
     else:
-        print_log("ERROR: Coordinates invalid.")
+        print_log("ERROR: Coordinates invalid: " + square_id)
         raise ValueError
 
 
@@ -53,3 +53,47 @@ def fetch_finbif_api(api_url, log = False):
 
 #    print(dataDict, file = sys.stdout)
     return dataDict
+
+
+def coordinate_accuracy_data(square_id = False):
+    if square_id:
+        coordinates = f"&coordinates={square_id}%3AYKJ"
+    else:
+        coordinates = ""
+    
+    api_url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=gathering.interpretations.coordinateAccuracy{coordinates}&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=100&page=1&cache=false&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&access_token="
+
+    data_dict = fetch_finbif_api(api_url, False)
+
+    accuracy_dict = dict()
+    total_count = 0
+    for item in data_dict["results"]:
+        accuracy_text = ""        
+        accuracy = int(item["aggregateBy"]["gathering.interpretations.coordinateAccuracy"])
+        count = item["count"]
+        total_count = total_count + count
+
+        if accuracy == 1:
+            accuracy_text = "1"
+        elif accuracy <= 10:
+            accuracy_text = "10"
+        elif accuracy <= 100:
+            accuracy_text = "100"
+        elif accuracy <= 1000:
+            accuracy_text = "1000"
+        elif accuracy <= 5000:
+            accuracy_text = "5000"
+        elif accuracy <= 10000:
+            accuracy_text = "10000"
+        elif accuracy <= 25000:
+            accuracy_text = "25000"
+        else:
+            accuracy_text = "over"
+
+        # Todo: better way to do this?    
+        if accuracy_text in accuracy_dict:
+            accuracy_dict[accuracy_text] = accuracy_dict[accuracy_text] + count
+        else:
+            accuracy_dict[accuracy_text] = count
+
+    return accuracy_dict, total_count

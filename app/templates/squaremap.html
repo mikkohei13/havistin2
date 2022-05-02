@@ -43,13 +43,15 @@
                 <a href="https://laji.fi/map?gridsquare={{ html["square_id"] }}&layers=maastokartta,atlasGrid&print=true">Tulostettava kartta</a>
             </span>
         </p>
-        <p>Tämä kartta näyttää ruudun atlashavainnot, joiden paikka on tiedossa Lajitietokeskuksessa noin 1 km tai paremmalla tarkkuudella.</p>
+        <p>Tämä kartta näyttää ne ruudun atlashavainnot, joiden paikka on tiedossa Lajitietokeskuksessa noin 5 km tai paremmalla tarkkuudella.</p>
     </div>
+
+    <p>{{ html["accuracies"]|safe }}</p>
 
     <div id="map"></div>
     
     <script>
-        var map = L.map('map').setView([{{ html["centerpoint"]|safe }}], 12);
+        var map = L.map('map').setView([{{ html["centerpoint"]|safe }}], 11);
         
         // Set max zoom, since too much zooming gives wrong impression of inaccurate obs locations.
         // But: this affects heat map calculations!

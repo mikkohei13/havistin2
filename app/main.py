@@ -3,6 +3,7 @@ from flask import Flask, render_template
 from flask_caching import Cache
 
 import sys
+import traceback
 
 import atlas.atlas
 import atlas.squareform
@@ -49,9 +50,11 @@ def squaremap(square_id_untrusted):
 
 @app.errorhandler(ValueError)
 def handle_exception(e):
+    print(traceback.format_exc(), sep="\n", file = sys.stdout)
     return 'Tarkista antamasi ruudun numero tai lajin nimi. Haettua sivua ei löydy (404)', 404
 
 # Todo: why does not catch the error?
 @app.errorhandler(ConnectionError)
 def handle_bad_request(e):
+    print(traceback.format_exc(), sep="\n", file = sys.stdout)
     return 'Lajitietokeskuksen rajapinta ei juuri nyt toimi, yritä myöhemmin uudelleen (503)', 503
