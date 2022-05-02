@@ -1,32 +1,10 @@
 
-import requests
+
 from datetime import timedelta, date
 import time
 import json
-import sys
 
-import app_secrets
-
-def fetch_api(api_url):
-    api_url = api_url + app_secrets.finbif_api_token
-#    print(api_url, file = sys.stdout)
-
-    try:
-        r = requests.get(api_url)
-    except ConnectionError:
-        print("ERROR: api.laji.fi complete error.", file = sys.stdout)
-
-#    r.encoding = encoding
-    dataJson = r.text
-    dataDict = json.loads(dataJson)
-
-    if "status" in dataDict:
-        if 403 == dataDict["status"]:
-            print("ERROR: api.laji.fi 403 error.", file = sys.stdout)
-            raise ConnectionError
-
-#    print(dataDict, file = sys.stdout)
-    return dataDict
+import atlas.common as common
 
 
 def convert_collection_name(id):
@@ -45,10 +23,10 @@ def convert_collection_name(id):
 def collections_data():
     api_url = "https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=document.collectionId&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=100&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&access_token="
 
-    dataDict = fetch_api(api_url)
+    data_dict = common.fetch_finbif_api(api_url)
 
     total_obs_count = 0
-    for i in dataDict["results"]:
+    for i in data_dict["results"]:
         total_obs_count = total_obs_count + i["count"]
 
     collections_table = "<h3>Havaintolähteet</h3>"
@@ -56,11 +34,11 @@ def collections_data():
     collections_table += "<thead><tr><th>Järjestelmä</th><th>Havaintoja</th><th>%</th></tr></thead>"
     collections_table += "<tbody>"
 
-    for i in dataDict["results"]:
+    for i in data_dict["results"]:
         collections_table += "<tr><td>" + convert_collection_name(i["aggregateBy"]["document.collectionId"]) + "</td>"
         collections_table += "<td>" + str(i["count"]) + "</td>"
         collections_table += "<td>" + str(round((i["count"] / total_obs_count) * 100, 1)) + " %</td></tr>"
-#        print(dataDict["results"]["aggregateBy"]["count"], file = sys.stdout)
+#        print(data_dict["results"]["aggregateBy"]["count"], file = sys.stdout)
 
     collections_table += "</tbody></table>"
 
@@ -77,10 +55,10 @@ def breeding_data(atlas_class):
 
     api_url = "https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=unit.linkings.originalTaxon.speciesNameFinnish&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=20&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&time=-14%2F0&atlasClass=" + atlas_class + "&access_token="
 
-    dataDict = fetch_api(api_url)
+    data_dict = common.fetch_finbif_api(api_url)
 
     breeding_dict = dict()
-    for item in dataDict["results"]:
+    for item in data_dict["results"]:
         breeding_dict[item["aggregateBy"]["unit.linkings.originalTaxon.speciesNameFinnish"]] = item["count"]
 
     return breeding_dict
@@ -94,7 +72,7 @@ def breeding_html(atlas_class):
         heading = "Todennäköiset pesinnät"
     # TODO: exception for other cases
 
-    data = fetch_api("https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=unit.linkings.originalTaxon.speciesNameFinnish&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=20&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&time=-14%2F0&atlasClass=" + atlas_class + "&access_token=")
+    data = common.fetch_finbif_api("https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=unit.linkings.originalTaxon.speciesNameFinnish&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=20&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&time=-14%2F0&atlasClass=" + atlas_class + "&access_token=")
 
     html = f"<h3>{heading} (top 20)</h3>"
     html += "<p>Näistä lajeista on tehty eniten havaintoja viimeisen kahden viikon aikana, eli niitä kannattaa erityisesti tarkkailla. Arkaluontoiset havainnot eivät ole tässä taulukossa mukana.</p>"
@@ -119,7 +97,7 @@ def recent_observers():
 
     url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=gathering.team.memberName&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=20&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&firstLoadedSameOrAfter={timestamp}&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumA%2CMY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&collectionIdNot=HR.4412&access_token="
 
-    data = fetch_api(url)
+    data = common.fetch_finbif_api(url)
 
     html = f"<h3>Aktiiviset havainnoijat 2 vrk aikana (top 20)</h3>"
     html += "<p>Eniten havaintoja viimeisen 48 tunnin aikana tehneet henkilöt niistä havainnoista, joissa on julkinen nimitieto Lajitietokeskuksen tietovarastossa. Laskennassa ei ole mukana arkaluontoisia havaintoja, ja käyttäjä on voinut myös itse salata nimensä Vihkossa havaintoeräkohtaisesti. Lisää havainnoijatilastoja <a href='https://digitalis.fi/lintuatlas/havainnoijat/'>Digitaliksen sivuilla</a>.</p>"
@@ -142,7 +120,7 @@ def societies():
     # Tiira observations
     url = "https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=gathering.team.memberName&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=50&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumA%2CMY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&collectionId=HR.4412&access_token="
 
-    data = fetch_api(url)
+    data = common.fetch_finbif_api(url)
 
     html = f"<h3>Tiiran havainnot yhdistyksittäin</h3>"
     html += "<p>Tiirasta tulevissa atlashavainnoissa havainnoijan nimenä on paikallinen lintuyhdistys. HUOM: Yhdistysten nimet tulevat Tiirasta tuntemattomalla merkistökoodauksella, jonka takia ääkköset eivät toistaiseksi näy oikein.</p>"
@@ -164,10 +142,10 @@ def square_data():
 
     api_url = "https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=gathering.conversions.ykj10km.lat%2Cgathering.conversions.ykj10km.lon&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=10&page=1&cache=false&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&access_token="
 
-    dataDict = fetch_api(api_url)
+    data_dict = common.fetch_finbif_api(api_url)
 
     square_dict = dict()
-    for item in dataDict["results"]:
+    for item in data_dict["results"]:
         lat = item["aggregateBy"]["gathering.conversions.ykj10km.lat"][0:3]
         lon = item["aggregateBy"]["gathering.conversions.ykj10km.lon"][0:3]
         square_id = str(lat) + ":" + str(lon)
@@ -176,14 +154,14 @@ def square_data():
     return square_dict
 
 
-def square_html(dataDict):
+def square_html(data_dict):
 
     html = f"<h3>Atlasruudut, joista eniten havaintoja (top 10)</h3>"
     html += "<table class='styled-table'>"
     html += "<thead><tr><th>Ruutu</th><th>Havaintoja</th></tr></thead>"
     html += "<tbody>"
 
-    for key, value in dataDict.items():
+    for key, value in data_dict.items():
         html += "<tr><td>" + key + "</td>"
         html += "<td>" + str(value) + "</td>"
 
@@ -204,11 +182,11 @@ def daterange(start_date):
 def coordinate_accuracy_data():
     api_url = "https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=gathering.interpretations.coordinateAccuracy&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=100&page=1&cache=false&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&access_token="
 
-    dataDict = fetch_api(api_url)
+    data_dict = common.fetch_finbif_api(api_url)
 
     accuracy_dict = dict()
     total_count = 0
-    for item in dataDict["results"]:
+    for item in data_dict["results"]:
         accuracy_text = ""        
         accuracy = int(item["aggregateBy"]["gathering.interpretations.coordinateAccuracy"])
         count = item["count"]
@@ -291,11 +269,11 @@ def datechart_data(collection_id):
     # Get daily data from api. This lacks dates with zero count.
     api_url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=document.firstLoadDate&orderBy=document.firstLoadDate&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=365&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&collectionId=http%3A%2F%2Ftun.fi%2F{collection_id}&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&access_token="
 
-    dataDict = fetch_api(api_url)
+    data_dict = common.fetch_finbif_api(api_url)
 
     # Use day as key in dict
     data_by_days = dict()
-    for item in dataDict["results"]:
+    for item in data_dict["results"]:
         data_by_days[item["aggregateBy"]["document.firstLoadDate"]] = item["count"]
 
     # Loop all dates so far, to generate chart.js data list.
