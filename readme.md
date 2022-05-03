@@ -85,6 +85,8 @@ Build image from Dockerfile:
 
 ## Must
 
+- robots.txt, forbid all but front page
+- Move pages to subdirs, make a redirect from ruutulomake
 - Paginate fetching mappable observations of a square. Must do this before top square has less than 1000 mappable observations.
 - Birds of prey on adjusted form
 - Command to deploy version other than latest. First submit to Articat Registry, then deploy from there using --image option.

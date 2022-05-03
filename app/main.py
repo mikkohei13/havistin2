@@ -25,7 +25,7 @@ cache = Cache(app)
 print("-------------- BEGIN -------------- -------------- --------------", file = sys.stdout)
 
 @app.route("/")
-@cache.cached()
+@cache.cached(timeout=3600) # 1 h
 def root():
     html = atlas.atlas.main()
     return render_template("index.html", html=html)
@@ -43,7 +43,7 @@ def squareform(square_id_untrusted, show_untrusted):
     return render_template("squareform.html", html=html)
 
 @app.route("/ruutu/<string:square_id_untrusted>")
-@cache.cached(timeout=1)
+@cache.cached(timeout=3600) # 1 h
 def squaremap(square_id_untrusted):
     html = atlas.squaremap.main(square_id_untrusted)
     return render_template("squaremap.html", html=html)

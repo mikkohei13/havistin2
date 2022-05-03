@@ -5,7 +5,7 @@ import json
 
 
 def observation_coordinates(square_id):
-    url = f"https://api.laji.fi/v0/warehouse/query/unit/list?selected=gathering.conversions.wgs84CenterPoint.lat%2Cgathering.conversions.wgs84CenterPoint.lon%2Cgathering.coordinatesVerbatim&pageSize=1000&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&time=2022%2F2025&individualCountMin=1&coordinates={square_id}%3AYKJ&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&coordinateAccuracyMax=1000&access_token=";
+    url = f"https://api.laji.fi/v0/warehouse/query/unit/list?selected=gathering.conversions.wgs84CenterPoint.lat%2Cgathering.conversions.wgs84CenterPoint.lon%2Cgathering.coordinatesVerbatim&pageSize=1000&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&time=2022%2F2025&individualCountMin=1&coordinates={square_id}%3AYKJ&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&coordinateAccuracyMax=5000&access_token=";
 
     data_dict = common.fetch_finbif_api(url, True)
 
@@ -73,11 +73,11 @@ def coordinate_accuracy_html(data):
     mappable_percentage = round(mappable / total * 100, 1)
 
     html = f"Kartalla näytetään <strong>{mappable_percentage} %</strong> ruudun <strong>{total} havainnosta</strong>. Havaintojen määrä eri tarkkuusluokissa: "
-    html = html + "yli 10000 m: " + str(over10000) + ", "
-    html = html + "5000 m: " + str(under10000) + ", "
-    html = html + "1000 m: " + str(under1000) + ", "
-    html = html + "100 m: " + str(under100) + ", "
-    html = html + "alle 10 m: " + str(under10) + ", "
+    html = html + "<strong>yli 10000 m</strong>: " + str(over10000) + ", "
+    html = html + "<strong>5000 m</strong>: " + str(under10000) + ", "
+    html = html + "<strong>1000 m</strong>: " + str(under1000) + ", "
+    html = html + "<strong>100 m</strong>: " + str(under100) + ", "
+    html = html + "<strong>alle 10 m</strong>: " + str(under10) + ", "
 
     return html[0:-2]
 
