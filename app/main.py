@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect
 #from werkzeug.exceptions import HTTPException
 from flask_caching import Cache
 
@@ -41,6 +41,10 @@ def flush_cache():
 def squareform(square_id_untrusted, show_untrusted):
     html = atlas.squareform.main(square_id_untrusted, show_untrusted)
     return render_template("squareform.html", html=html)
+
+@app.route("/ruutu/<string:square_id_untrusted>")
+def squaremap_redirect(square_id_untrusted):
+    return redirect('/atlas/ruutu/' + square_id_untrusted)
 
 @app.route("/atlas/ruutu/<string:square_id_untrusted>")
 @cache.cached(timeout=3600) # 1 h
