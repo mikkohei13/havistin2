@@ -55,6 +55,37 @@ def fetch_finbif_api(api_url, log = False):
     return dataDict
 
 
+# This fixes data that's in string format in the json file
+def str2decimal(str):
+    str = str.replace(",", ".")
+    return str
+
+
+def square_info(square_id):
+    with open("data/atlas-grids.json") as f:
+        data = json.load(f)
+
+    # Todo: streamline, use file per square?
+    # Todo: validate that square exists. Test case: 677:377
+    d = data[square_id]
+
+    name = d["kunta"] + ", " + d["nimi"]
+
+    society = d["yhd"]
+
+    centerpoint = str2decimal(d["c-n"]) + "," + str2decimal(d["c-e"])
+
+    cornerpoints = "[" + str(d["sw-n"]) + "," + str(d["sw-e"]) + "], [" + str(d["nw-n"]) + "," + str(d["nw-e"]) + "], [" + str(d["ne-n"]) + "," + str(d["ne-e"]) + "], [" + str(d["se-n"]) + "," + str(d["se-e"]) + "], [" + str(d["sw-n"]) + "," + str(d["sw-e"]) + "]"
+
+    return name, society, centerpoint, cornerpoints
+
+
+def square_name(square_id):
+    # Todo: simplify?
+    name, society, centerpoint, cornerpoints = square_info(square_id)
+    return name
+
+
 def coordinate_accuracy_data(square_id = False):
     if square_id:
         coordinates = f"&coordinates={square_id}%3AYKJ"

@@ -22,32 +22,6 @@ def observation_coordinates(square_id):
     return coord_string, obs_count
 
 
-# This fixes data that's in string format in the json file
-def str2decimal(str):
-    str = str.replace(",", ".")
-    return str
-
-
-def square_info(square_id):
-    with open("data/atlas-grids.json") as f:
-        data = json.load(f)
-
-    # Todo: streamline, use file per square?
-    # Todo: validate that square exists. Test case: 677:377
-    d = data[square_id]
-
-    square_name = d["kunta"] + ", " + d["nimi"]
-
-    centerpoint = str2decimal(d["c-n"]) + "," + str2decimal(d["c-e"])
-
-    cornerpoints = "[" + str(d["sw-n"]) + "," + str(d["sw-e"]) + "], [" + str(d["nw-n"]) + "," + str(d["nw-e"]) + "], [" + str(d["ne-n"]) + "," + str(d["ne-e"]) + "], [" + str(d["se-n"]) + "," + str(d["se-e"]) + "], [" + str(d["sw-n"]) + "," + str(d["sw-e"]) + "]"
-
-    return square_name, centerpoint, cornerpoints
-
-    # read 
-# $gCenter = commaToPoint($g['c-n']) . ", " . commaToPoint($g['c-e']);
-# $thisGridPoly = "[ [" . $g['sw-n'] . "," . $g['sw-e'] . "], [" . $g['nw-n'] . "," . $g['nw-e'] . "], [" . $g['ne-n'] . "," . $g['ne-e'] . "], [" . $g['se-n'] . "," . $g['se-e'] . "], [" . $g['sw-n'] . "," . $g['sw-e'] . "] ]";
-
 def coordinate_accuracy_html_loop(data):
     html = ""
     for accuracy, count in data.items():
@@ -100,7 +74,7 @@ def main(square_id_untrusted):
 
 #    html["total_obs_count"] = collection_counts(square_id)
 
-    square_name, centerpoint, cornerpoints = square_info(square_id)
+    square_name, society, centerpoint, cornerpoints = common.square_info(square_id)
     # Todo: Make heading the same way as on squareform
     html["heading"] = f"{square_id} {square_name}"
     html["centerpoint"] = centerpoint
