@@ -37,6 +37,10 @@ def flush_cache():
     return render_template("simple.html", content="Cache flushed")
 
 @app.route("/ruutulomake/<string:square_id_untrusted>/<string:show_untrusted>")
+def squareform_redirect(square_id_untrusted, show_untrusted):
+    return redirect('/atlas/ruutulomake/' + square_id_untrusted + "/" + show_untrusted)
+
+@app.route("/atlas/ruutulomake/<string:square_id_untrusted>/<string:show_untrusted>")
 @cache.cached(timeout=86400) # 24 h
 def squareform(square_id_untrusted, show_untrusted):
     html = atlas.squareform.main(square_id_untrusted, show_untrusted)

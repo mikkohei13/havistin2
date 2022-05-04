@@ -47,11 +47,11 @@ def coordinate_accuracy_html(data):
     mappable_percentage = round(mappable / total * 100, 1)
 
     html = f"Kartalla näytetään <strong>{mappable_percentage} %</strong> ruudun <strong>{total} havainnosta</strong>. Havaintojen määrä eri tarkkuusluokissa: "
-    html = html + "<strong>yli 10000 m</strong>: " + str(over10000) + ", "
-    html = html + "<strong>5000 m</strong>: " + str(under10000) + ", "
-    html = html + "<strong>1000 m</strong>: " + str(under1000) + ", "
-    html = html + "<strong>100 m</strong>: " + str(under100) + ", "
-    html = html + "<strong>alle 10 m</strong>: " + str(under10) + ", "
+    html = html + "yli 10000 m: <strong>" + str(over10000) + "</strong>, "
+    html = html + "5000 m: <strong>" + str(under10000) + "</strong>, "
+    html = html + "1000 m: <strong>" + str(under1000) + "</strong>, "
+    html = html + "100 m: <strong>" + str(under100) + "</strong>, "
+    html = html + "alle 10 m: <strong>" + str(under10) + "</strong>, "
 
     return html[0:-2]
 

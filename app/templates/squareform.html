@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block breadcrumb %}
-    &raquo; <a href="../../">Lintuatlas</a> &raquo; Ruutulomake
+    &raquo; <a href="../../../">Lintuatlas</a> &raquo; Ruutulomake
 {% endblock %}
 
 {% block body %}
@@ -30,10 +30,10 @@
             </span>
             <span>
                 Naapuriruudut:
-                <a href="/ruutulomake/{{ html["neighbour_ids"]["w"] }}/{{ html["show"] }}">&laquo; W</a>
-                <a href="/ruutulomake/{{ html["neighbour_ids"]["n"] }}/{{ html["show"] }}">N</a>
-                <a href="/ruutulomake/{{ html["neighbour_ids"]["s"] }}/{{ html["show"] }}">S</a>
-                <a href="/ruutulomake/{{ html["neighbour_ids"]["e"] }}/{{ html["show"] }}">E &raquo;</a>
+                <a href="/atlas/ruutulomake/{{ html["neighbour_ids"]["w"] }}/{{ html["show"] }}">&laquo; W</a>
+                <a href="/atlas/ruutulomake/{{ html["neighbour_ids"]["n"] }}/{{ html["show"] }}">N</a>
+                <a href="/atlas/ruutulomake/{{ html["neighbour_ids"]["s"] }}/{{ html["show"] }}">S</a>
+                <a href="/atlas/ruutulomake/{{ html["neighbour_ids"]["e"] }}/{{ html["show"] }}">E &raquo;</a>
             </span>
             <span>
                 <a href="https://laji.fi/map?gridsquare={{ html["square_id"] }}&layers=maastokartta,atlasGrid&print=true">Tulostettava kartta</a>
