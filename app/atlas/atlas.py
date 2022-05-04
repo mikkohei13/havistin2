@@ -40,6 +40,7 @@ def collections_data():
         collections_table += "<td>" + str(round((i["count"] / total_obs_count) * 100, 1)) + " %</td></tr>"
 #        print(data_dict["results"]["aggregateBy"]["count"], file = sys.stdout)
 
+    collections_table += f"<tr><td>Yhteensä</td><td>{total_obs_count}</td></tr>"
     collections_table += "</tbody></table>"
 
     return collections_table
