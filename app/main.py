@@ -42,7 +42,7 @@ def squareform(square_id_untrusted, show_untrusted):
     html = atlas.squareform.main(square_id_untrusted, show_untrusted)
     return render_template("squareform.html", html=html)
 
-@app.route("/ruutu/<string:square_id_untrusted>")
+@app.route("/atlas/ruutu/<string:square_id_untrusted>")
 @cache.cached(timeout=3600) # 1 h
 def squaremap(square_id_untrusted):
     html = atlas.squaremap.main(square_id_untrusted)

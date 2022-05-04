@@ -164,7 +164,7 @@ def square_html(data_dict):
     for key, value in data_dict.items():
         name = common.square_name(key) 
         html += "<tr>"
-        html += "<td><a href='/ruutu/" + key + "'>" + key + " " + name + "</a></td>"
+        html += "<td><a href='/atlas/ruutu/" + key + "'>" + key + " " + name + "</a></td>"
         html += "<td>" + str(value) + "</td>"
         html += "</tr>"
 
