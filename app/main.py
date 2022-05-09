@@ -30,6 +30,11 @@ def root():
     html = atlas.atlas.main()
     return render_template("index.html", html=html)
 
+@app.route("/robots.txt")
+@cache.cached(timeout=36000) # 10 h
+def robots():
+    return render_template("robots.txt")
+
 @app.route("/flush")
 def flush_cache():
     with app.app_context():
