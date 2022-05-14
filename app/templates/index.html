@@ -52,16 +52,16 @@
     </div>
 
     <script type="text/javascript">
-        json = '{{ html["datechart_data_birdatlas"]|safe }}';
+        json = '{{ html["cumulative_datechart_data_birdatlas"]|safe }}';
         birdatlas_data = JSON.parse(json);
 
-        json = '{{ html["datechart_data_trip"]|safe }}';
+        json = '{{ html["cumulative_datechart_data_trip"]|safe }}';
         trip_data = JSON.parse(json);
 
-        json = '{{ html["datechart_data_tiira"]|safe }}';
+        json = '{{ html["cumulative_datechart_data_tiira"]|safe }}';
         tiira_data = JSON.parse(json);
 
-        json = '{{ html["datechart_data_inat"]|safe }}';
+        json = '{{ html["cumulative_datechart_data_inat"]|safe }}';
         inat_data = JSON.parse(json);
 
         const data = {

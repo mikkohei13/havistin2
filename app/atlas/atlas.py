@@ -124,7 +124,7 @@ def societies():
     data = common.fetch_finbif_api(url)
 
     html = f"<h3>Tiiran havainnot yhdistyksittäin</h3>"
-    html += "<p>Tiirasta tulevissa atlashavainnoissa havainnoijan nimenä on paikallinen lintuyhdistys. HUOM: Yhdistysten nimet tulevat Tiirasta tuntemattomalla merkistökoodauksella, jonka takia ääkköset eivät toistaiseksi näy oikein.</p>"
+    html += "<p>Tiirasta tulevissa atlashavainnoissa havainnoijan nimenä on paikallinen lintuyhdistys.</p>"
     html += "<table class='styled-table'>"
     html += "<thead><tr><th>Yhdistys</th><th>Havaintoja</th></tr></thead>"
     html += "<tbody>"
@@ -245,7 +245,9 @@ def datechart_data(collection_id):
     start_date = date(2022, 1, 1)
 
     cumulative_count = 0
-    chartsj_data = []
+    daily_count = 0
+    cumulative_chartsj_data = []
+    daily_chartsj_data = []
 
     for single_date in daterange(start_date):
 
@@ -255,14 +257,13 @@ def datechart_data(collection_id):
             count = 0
 
         cumulative_count = cumulative_count + count
+        daily_count = count # obs per day
 
         # JSON
-        daily = dict(x = single_date.strftime("%Y-%m-%d"), y = str(cumulative_count))
-        chartsj_data.append(daily)
+        cumulative_chartsj_data.append(dict(x = single_date.strftime("%Y-%m-%d"), y = str(cumulative_count)))
+        daily_chartsj_data.append(dict(x = single_date.strftime("%Y-%m-%d"), y = str(daily_count)))
 
-    json_data = json.dumps(chartsj_data)
-
-    return json_data
+    return json.dumps(cumulative_chartsj_data), json.dumps(daily_chartsj_data)
 
 
 
@@ -290,9 +291,9 @@ def main():
     html["recent_observers"] = recent_observers()
     html["societies"] = societies()
 
-    html["datechart_data_birdatlas"] = datechart_data("HR.4471")
-    html["datechart_data_trip"] = datechart_data("HR.1747")
-    html["datechart_data_tiira"] = datechart_data("HR.4412")
-    html["datechart_data_inat"] = datechart_data("HR.3211")
+    html["cumulative_datechart_data_birdatlas"], html["daily_datechart_data_birdatlas"] = datechart_data("HR.4471")
+    html["cumulative_datechart_data_trip"], html["daily_datechart_data_trip"] = datechart_data("HR.1747")
+    html["cumulative_datechart_data_tiira"], html["daily_datechart_data_tiira"] = datechart_data("HR.4412")
+    html["cumulative_datechart_data_inat"], html["daily_datechart_data_inat"] = datechart_data("HR.3211")
 
     return html
