@@ -1,18 +1,20 @@
 
 import atlas.common as common
 
-def breeding_html(atlas_class):
+def breeding_html(probablility):
 
-    if "MY.atlasClassEnumD" == atlas_class:
-        heading = "Varmat pesinnät"
-    elif "MY.atlasClassEnumC" == atlas_class:
-        heading = "Todennäköiset pesinnät"
+    if "certain" == probablility:
+        filters = "atlasClass=MY.atlasClassEnumD"
+    elif "probable_6" == probablility:
+        heading = "Todennäköiset pesinnät, vain indeksi 6-66"
+        filters = "atlasCode=MY.atlasCodeEnum6%2CMY.atlasCodeEnum61%2CMY.atlasCodeEnum62%2CMY.atlasCodeEnum63%2CMY.atlasCodeEnum64%2CMY.atlasCodeEnum65%2CMY.atlasCodeEnum66"
+    elif "probable" == probablility:
+        filters = "atlasClass=MY.atlasClassEnumC"
     # TODO: exception for other cases
 
-    data = common.fetch_finbif_api("https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=unit.linkings.originalTaxon.speciesNameFinnish&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=30&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&time=-14%2F0&atlasClass=" + atlas_class + "&access_token=")
+    data = common.fetch_finbif_api("https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=unit.linkings.originalTaxon.speciesNameFinnish&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=30&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&time=-14%2F0&" + filters + "&access_token=")
 
-    html = f"<h3>{heading} (top 20)</h3>"
-    html += "<p>Näistä lajeista on tehty eniten havaintoja viimeisen kahden viikon aikana, eli niitä kannattaa erityisesti tarkkailla. Arkaluontoiset havainnot eivät ole tässä taulukossa mukana.</p>"
+    html = ""
     html += "<table class='styled-table'>"
     html += "<thead><tr><th>Laji</th><th>Havaintoja</th></tr></thead>"
     html += "<tbody>"
@@ -30,10 +32,10 @@ def breeding_html(atlas_class):
 def main():
     html = dict()
 
-#    breeding_data_dict = breeding_data("D")
-    html["breeding_certain"] = breeding_html("MY.atlasClassEnumD")
+    html["breeding_certain"] = breeding_html("certain")
 
-#    breeding_data_dict = breeding_data("C")
-    html["breeding_probable"] = breeding_html("MY.atlasClassEnumC")
+    html["breeding_probable_6"] = breeding_html("probable_6")
+
+    html["breeding_probable"] = breeding_html("probable")
 
     return html

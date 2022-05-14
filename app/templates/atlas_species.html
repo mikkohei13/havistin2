@@ -15,8 +15,17 @@
 
     <p>Tällä sivustolla on Lintuatlaksen tuoreita tilastoja, perustuen Lajitietokeskuksen rajapintaan ja avoimeen dataan. <a href='../'>Lue lisää etusivulta</a>.</p>
 
+    <h3>Varmat pesinnät (top 30)</h3>
+    <p>Näistä lajeista on tehty eniten varmoja pesimähavaintoja viimeisen kahden viikon aikana.</p>
     {{ html["breeding_certain"]|safe }}
 
+    <h3>Todennäköiset pesinnät, vain indeksit 6-66 (top 30)</h3>
+    <p>Näistä lajeista on tehty eniten todennäköisiä pesimähavaintoja viimeisen kahden viikon aikana, mutta <strong>ilman havaintoja pysyvistä reviireistä</strong> (indeksit 4-5).</p>
+    {{ html["breeding_probable_6"]|safe }}
+
+    <h3>Todennäköiset pesinnät (top 30)</h3>
+    <p>Näistä lajeista on tehty eniten todennäköisesti havaintoja viimeisen kahden viikon aikana, mukaan lukien havainnot pysyvistä reviireistä (indeksit 4-5).</p>
     {{ html["breeding_probable"]|safe }}
+    
 
 {% endblock %}

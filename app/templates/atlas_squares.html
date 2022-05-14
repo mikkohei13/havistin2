@@ -15,10 +15,10 @@
 
     <p>Tällä sivustolla on Lintuatlaksen tuoreita tilastoja, perustuen Lajitietokeskuksen rajapintaan ja avoimeen dataan. <a href='../'>Lue lisää etusivulta</a>.</p>
 
-    <h3>Atlasruudut, joista eniten havaintoja (top 10)</h3>
+    <h3>Atlasruudut, joista eniten havaintoja (top 30)</h3>
     {{ html["squares"]|safe }}
 
-    <h3>Atlasruudut, joista eniten tarkkoja havaintoja (top 10, tarkkuus < 1000 m)</h3>
+    <h3>Atlasruudut, joista eniten tarkkoja havaintoja (top 30, tarkkuus < 1000 m)</h3>
     {{ html["accurate_squares"]|safe }}
 
 {% endblock %}
