@@ -2,13 +2,11 @@
 
 {% block head %}
     <title>Lintuatlaksen tilastoja (biomi.org)</title>
-
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    {% endblock %}
+{% endblock %}
 
-    {% block breadcrumb %}
-        &raquo; Lintuatlas
-
+{% block breadcrumb %}
+    &raquo; Lintuatlas
 {% endblock %}
 
 {% block body %}
@@ -29,23 +27,19 @@
         </form>
     </div>
 
+    <h3><a href='/atlas/lajit'>Lajitilastoja</a></h3>
+    <p>Mistä lajeista on tehty pesimähavaintoja viime aikoina?</p>
+
+    <h3><a href='/atlas/ruudut'>Ruututilastoja</a></h3>
+    <p>Aktiivisimmin kartoitettuja ruutuja</p>
+
     {{ html["collections_table"]|safe }}
-
-    {{ html["breeding_certain"]|safe }}
-
-    {{ html["breeding_probable"]|safe }}
 
     {{ html["recent_observers"]|safe }}
 
     {{ html["societies"]|safe }}
 
     {{ html["accuracy_table"]|safe }}
-
-    <h3>Atlasruudut, joista eniten havaintoja (top 10)</h3>
-    {{ html["squares"]|safe }}
-
-    <h3>Atlasruudut, joista eniten tarkkoja havaintoja (top 10, tarkkuus < 1000 m)</h3>
-    {{ html["accurate_squares"]|safe }}
 
     <div>
         <canvas id="cumulative_chart"></canvas>

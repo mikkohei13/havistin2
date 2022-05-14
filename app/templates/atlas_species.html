@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <title>Lintuatlaksen tilastoja (biomi.org)</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block breadcrumb %}
+    &raquo; <a href="../../../">Lintuatlas</a> &raquo; Lajitilastoja
+{% endblock %}
+
+{% block body %}
+
+    <h1>Lintuatlaksen lajitilastoja</h1>
+
+    <p>Tällä sivustolla on Lintuatlaksen tuoreita tilastoja, perustuen Lajitietokeskuksen rajapintaan ja avoimeen dataan. <a href='../'>Lue lisää etusivulta</a>.</p>
+
+    {{ html["breeding_certain"]|safe }}
+
+    {{ html["breeding_probable"]|safe }}
+
+{% endblock %}

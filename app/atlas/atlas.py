@@ -65,32 +65,6 @@ def breeding_data(atlas_class):
     return breeding_dict
 '''
 
-def breeding_html(atlas_class):
-
-    if "MY.atlasClassEnumD" == atlas_class:
-        heading = "Varmat pesinnät"
-    elif "MY.atlasClassEnumC" == atlas_class:
-        heading = "Todennäköiset pesinnät"
-    # TODO: exception for other cases
-
-    data = common.fetch_finbif_api("https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=unit.linkings.originalTaxon.speciesNameFinnish&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=20&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&time=-14%2F0&atlasClass=" + atlas_class + "&access_token=")
-
-    html = f"<h3>{heading} (top 20)</h3>"
-    html += "<p>Näistä lajeista on tehty eniten havaintoja viimeisen kahden viikon aikana, eli niitä kannattaa erityisesti tarkkailla. Arkaluontoiset havainnot eivät ole tässä taulukossa mukana.</p>"
-    html += "<table class='styled-table'>"
-    html += "<thead><tr><th>Laji</th><th>Havaintoja</th></tr></thead>"
-    html += "<tbody>"
-
-    for item in data["results"]:
-        aggregate_by = item["aggregateBy"]["unit.linkings.originalTaxon.speciesNameFinnish"]
-        count = str(item["count"])
-        html += "<tr><td>" + aggregate_by + "</td>"
-        html += "<td>" + count + "</td>"
-
-    html += "</tbody></table>"
-    return html
-
-
 def recent_observers():
     # observations loaded to FinBIF during last 48 hours, excluding Tiira
     # 48 h: 172800
@@ -134,39 +108,6 @@ def societies():
         count = str(item["count"])
         html += "<tr><td>" + aggregate_by + "</td>"
         html += "<td>" + count + "</td>"
-
-    html += "</tbody></table>"
-    return html
-
-
-def square_data(accuracy = 10000):
-
-    api_url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=gathering.conversions.ykj10km.lat%2Cgathering.conversions.ykj10km.lon&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=20&page=1&cache=false&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&coordinateAccuracyMax={accuracy}&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&access_token="
-
-    data_dict = common.fetch_finbif_api(api_url)
-
-    square_dict = dict()
-    for item in data_dict["results"]:
-        lat = item["aggregateBy"]["gathering.conversions.ykj10km.lat"][0:3]
-        lon = item["aggregateBy"]["gathering.conversions.ykj10km.lon"][0:3]
-        square_id = str(lat) + ":" + str(lon)
-        square_dict[square_id] = item["count"]
-
-    return square_dict
-
-
-def square_html(data_dict):
-
-    html = "<table class='styled-table'>"
-    html += "<thead><tr><th>Ruutu</th><th>Havaintoja</th></tr></thead>"
-    html += "<tbody>"
-
-    for key, value in data_dict.items():
-        name = common.square_name(key) 
-        html += "<tr>"
-        html += "<td><a href='/atlas/ruutu/" + key + "'>" + key + " " + name + "</a></td>"
-        html += "<td>" + str(value) + "</td>"
-        html += "</tr>"
 
     html += "</tbody></table>"
     return html
@@ -275,18 +216,6 @@ def main():
     html["accuracy_table"] = coordinate_accuracy_html(accuracy_data, total_count)
 
     html["collections_table"] = collections_data()
-
-#    breeding_data_dict = breeding_data("D")
-    html["breeding_certain"] = breeding_html("MY.atlasClassEnumD")
-
-#    breeding_data_dict = breeding_data("C")
-    html["breeding_probable"] = breeding_html("MY.atlasClassEnumC")
-
-    square_data_dict = square_data()
-    html["squares"] = square_html(square_data_dict)
-
-    accurate_square_data_dict = square_data(1000)
-    html["accurate_squares"] = square_html(accurate_square_data_dict)
 
     html["recent_observers"] = recent_observers()
     html["societies"] = societies()

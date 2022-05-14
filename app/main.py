@@ -8,6 +8,8 @@ import traceback
 import atlas.atlas
 import atlas.squareform
 import atlas.squaremap
+import atlas.species
+import atlas.squares
 
 #import app_secrets
 
@@ -60,6 +62,18 @@ def squaremap_redirect(square_id_untrusted):
 def squaremap(square_id_untrusted):
     html = atlas.squaremap.main(square_id_untrusted)
     return render_template("squaremap.html", html=html)
+
+@app.route("/atlas/lajit")
+@cache.cached(timeout=1)
+def atlas_species():
+    html = atlas.species.main()
+    return render_template("atlas_species.html", html=html)
+
+@app.route("/atlas/ruudut")
+@cache.cached(timeout=1)
+def atlas_squares():
+    html = atlas.squares.main()
+    return render_template("atlas_squares.html", html=html)
 
 @app.errorhandler(ValueError)
 def handle_exception(e):
