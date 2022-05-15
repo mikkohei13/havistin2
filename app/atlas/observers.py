@@ -1,0 +1,80 @@
+import time
+
+import atlas.common as common
+
+def complete_lists():
+    api_url = "https://api.laji.fi/v0/warehouse/query/document/aggregate?aggregateBy=document.editorUserIds&onlyCount=true&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=30&page=1&cache=true&qualityIssues=NO_ISSUES&completeListTaxonId=MX.37580&completeListType=MY.completeListTypeCompleteWithBreedingStatus%2CMY.completeListTypeComplete&access_token="
+
+    data = common.fetch_finbif_api(api_url)
+
+    html = ""
+    html += "<table class='styled-table'>"
+    html += "<thead><tr><th>Havainnoija</th><th>Listoja</th></tr></thead>"
+    html += "<tbody>"
+
+    for item in data["results"]:
+        aggregate_by = item["aggregateBy"]["document.editorUserIds"]
+        count = str(item["count"])
+        html += "<tr><td>" + aggregate_by + "</td>"
+        html += "<td>" + count + "</td>"
+
+    html += "</tbody></table>"
+    return html
+
+
+def recent_observers():
+    # observations loaded to FinBIF during last 48 hours, excluding Tiira
+    # 48 h: 172800
+    timestamp = int(time.time()) -172800
+
+    url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=gathering.team.memberName&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=30&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&firstLoadedSameOrAfter={timestamp}&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&collectionIdNot=HR.4412&access_token="
+
+    data = common.fetch_finbif_api(url)
+
+    html = ""
+    html += "<table class='styled-table'>"
+    html += "<thead><tr><th>Havainnoija</th><th>Havaintoja</th></tr></thead>"
+    html += "<tbody>"
+
+    for item in data["results"]:
+        aggregate_by = item["aggregateBy"]["gathering.team.memberName"]
+        count = str(item["count"])
+        html += "<tr><td>" + aggregate_by + "</td>"
+        html += "<td>" + count + "</td>"
+
+    html += "</tbody></table>"
+    return html
+
+
+def societies():
+    # TODO: All observations per society, requires new api endpoint from laji.fi
+    # Tiira observations
+    url = "https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=gathering.team.memberName&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=50&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&collectionId=HR.4412&access_token="
+
+    data = common.fetch_finbif_api(url)
+
+    html = ""
+    html += "<table class='styled-table'>"
+    html += "<thead><tr><th>Yhdistys</th><th>Havaintoja</th></tr></thead>"
+    html += "<tbody>"
+
+    for item in data["results"]:
+        aggregate_by = item["aggregateBy"]["gathering.team.memberName"]
+        count = str(item["count"])
+        html += "<tr><td>" + aggregate_by + "</td>"
+        html += "<td>" + count + "</td>"
+
+    html += "</tbody></table>"
+    return html
+
+
+def main():
+    html = dict()
+
+    html["complete_lists"] = complete_lists()
+
+    html["recent_observers"] = recent_observers()
+
+    html["societies"] = societies()
+
+    return html

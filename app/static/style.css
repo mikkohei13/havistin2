@@ -223,7 +223,7 @@ h2, h3, h3 {
     color: #009879;
 }
 
-#cumulative_chart {
+#cumulative_chart, #daily_chart {
     max-width: 1000px;
     min-height: 300px;
     max-height: 600px;

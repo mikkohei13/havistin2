@@ -33,16 +33,22 @@
     <h3><a href='/atlas/ruudut'>Ruututilastoja</a></h3>
     <p>Aktiivisimmin kartoitettuja ruutuja</p>
 
+    <h3><a href='/atlas/havainnoijat'>Havainnoijatilastoja</a></h3>
+    <p>Aktiivisimpia havainnoijia</p>
+
     {{ html["collections_table"]|safe }}
-
-    {{ html["recent_observers"]|safe }}
-
-    {{ html["societies"]|safe }}
 
     {{ html["accuracy_table"]|safe }}
 
+    <h3>Havaintojen kertyminen</h3>
+    <p>Huomaa että Tiiran havainnot tulevat Lajitietokeskukseen tallennusta seuraavana aamuna, joten esim. sunnuntaina tallennetut havainnot näkyvät tässä maanantain kohdalla.</p>
+
     <div>
         <canvas id="cumulative_chart"></canvas>
+    </div>
+
+    <div>
+        <canvas id="daily_chart"></canvas>
     </div>
 
     <script type="text/javascript">
@@ -100,6 +106,63 @@
         };
         
         const myChart = new Chart(document.getElementById('cumulative_chart'), config);
+    </script>
+
+    <script type="text/javascript">
+        json = '{{ html["daily_datechart_data_birdatlas"]|safe }}';
+        birdatlas_data = JSON.parse(json);
+
+        json = '{{ html["daily_datechart_data_trip"]|safe }}';
+        trip_data = JSON.parse(json);
+
+        json = '{{ html["daily_datechart_data_tiira"]|safe }}';
+        tiira_data = JSON.parse(json);
+
+        json = '{{ html["daily_datechart_data_inat"]|safe }}';
+        inat_data = JSON.parse(json);
+
+        const daily_data = {
+            datasets: [
+                { 
+                    data: birdatlas_data,
+                    borderColor: '#FA5428',
+                    label: "Vihko, lintuatlaslomake"
+                },
+                { 
+                    data: trip_data,
+                    borderColor: '#2691D9',
+                    label: "Vihko, retkilomake"
+                },
+                { 
+                    data: tiira_data,
+                    borderColor: '#99019C',
+                    label: "Tiira"
+                },
+                { 
+                    data: inat_data,
+                    borderColor: '#74AC00',
+                    label: "iNaturalist"
+                }
+            ]
+        };
+
+        const daily_config = {
+            type: 'line',
+            data: daily_data,
+            /*
+            // Stacked, but without unique filler colors
+            options: {
+                scales: {
+                    yAxes: {
+                        stacked: true
+                    }
+                }
+            }
+            */
+            options: {}
+        };
+        
+        const daily_myChart = new Chart(document.getElementById('daily_chart'), daily_config);
     </script>
 
 {% endblock %}

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <title>Lintuatlaksen tilastoja (biomi.org)</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block breadcrumb %}
+    &raquo; <a href="../../../">Lintuatlas</a> &raquo; Havainnoijatilastoja
+{% endblock %}
+
+{% block body %}
+
+    <h1>Lintuatlaksen havainnoijatilastoja</h1>
+
+    <p>Tällä sivustolla on Lintuatlaksen tuoreita tilastoja, perustuen Lajitietokeskuksen rajapintaan ja avoimeen dataan. <a href='../'>Lue lisää etusivulta</a>.</p>
+
+    <p><strong>Lisää havainnoijatilastoja <a href='https://digitalis.fi/lintuatlas/havainnoijat/'>Digitaliksen sivuilla</a></strong>.</p>
+
+    <h3>Täydelliset listat (top 30)</h3>
+    <p>Eniten täydellisiä listoja tallentaneet. Tässä ei ole mukana muita havainnoijia kuin tallentaja.</p>
+    {{ html["complete_lists"]|safe }}
+
+    <h3>Aktiiviset havainnoijat 2 vrk aikana (top 30)</h3>
+    <p>Eniten havaintoja viimeisen 48 tunnin aikana tehneet henkilöt niistä havainnoista, joissa on julkinen nimitieto Lajitietokeskuksen tietovarastossa. Laskennassa ei ole mukana arkaluontoisia havaintoja, ja käyttäjä on voinut myös itse salata nimensä Vihkossa havaintoeräkohtaisesti.</p>
+    {{ html["recent_observers"]|safe }}
+
+    <h3>Tiiran havainnot yhdistyksittäin</h3>
+    <p>Tiirasta tulevissa atlashavainnoissa havainnoijan nimenä on paikallinen lintuyhdistys.</p>
+    {{ html["societies"]|safe }}
+
+
+
+
+{% endblock %}

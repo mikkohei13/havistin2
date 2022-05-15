@@ -87,7 +87,6 @@ Build image from Dockerfile:
 
 - Empty atlasform PDF (somehow)
 - robots.txt, forbid all but front page (now all forbidden)
-- Move pages to subdirs, make a redirect from ruutulomake
 - Paginate fetching mappable observations of a square. Must do this before top square has less than 1000 mappable observations.
 - Birds of prey on adjusted form
 - Command to deploy version other than latest. First submit to Articat Registry, then deploy from there using --image option.
@@ -96,9 +95,7 @@ Build image from Dockerfile:
 
 ## Should
 
-- Squareform
-    - Link to heatmap, printable map, result service
- 
+- Species page
 - People lists:
     - People with complete lists from most squares: https://ebird.org/atlasny/top100?region=New+York&locInfo.regionCode=US-NY&rankedBy=blocks_with_complete
         - needs complete checklist search

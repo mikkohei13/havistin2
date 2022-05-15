@@ -1,7 +1,6 @@
 
 
 from datetime import timedelta, date
-import time
 import json
 
 import atlas.common as common
@@ -64,53 +63,6 @@ def breeding_data(atlas_class):
 
     return breeding_dict
 '''
-
-def recent_observers():
-    # observations loaded to FinBIF during last 48 hours, excluding Tiira
-    # 48 h: 172800
-    timestamp = int(time.time()) -172800
-
-    url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=gathering.team.memberName&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=20&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&firstLoadedSameOrAfter={timestamp}&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&collectionIdNot=HR.4412&access_token="
-
-    data = common.fetch_finbif_api(url)
-
-    html = f"<h3>Aktiiviset havainnoijat 2 vrk aikana (top 20)</h3>"
-    html += "<p>Eniten havaintoja viimeisen 48 tunnin aikana tehneet henkilöt niistä havainnoista, joissa on julkinen nimitieto Lajitietokeskuksen tietovarastossa. Laskennassa ei ole mukana arkaluontoisia havaintoja, ja käyttäjä on voinut myös itse salata nimensä Vihkossa havaintoeräkohtaisesti. <strong>Lisää havainnoijatilastoja <a href='https://digitalis.fi/lintuatlas/havainnoijat/'>Digitaliksen sivuilla</a></strong>.</p>"
-    html += "<table class='styled-table'>"
-    html += "<thead><tr><th>Havainnoija</th><th>Havaintoja</th></tr></thead>"
-    html += "<tbody>"
-
-    for item in data["results"]:
-        aggregate_by = item["aggregateBy"]["gathering.team.memberName"]
-        count = str(item["count"])
-        html += "<tr><td>" + aggregate_by + "</td>"
-        html += "<td>" + count + "</td>"
-
-    html += "</tbody></table>"
-    return html
-
-
-def societies():
-    # TODO: All observations per society, requires new api endpoint from laji.fi
-    # Tiira observations
-    url = "https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=gathering.team.memberName&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=50&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&collectionId=HR.4412&access_token="
-
-    data = common.fetch_finbif_api(url)
-
-    html = f"<h3>Tiiran havainnot yhdistyksittäin</h3>"
-    html += "<p>Tiirasta tulevissa atlashavainnoissa havainnoijan nimenä on paikallinen lintuyhdistys.</p>"
-    html += "<table class='styled-table'>"
-    html += "<thead><tr><th>Yhdistys</th><th>Havaintoja</th></tr></thead>"
-    html += "<tbody>"
-
-    for item in data["results"]:
-        aggregate_by = item["aggregateBy"]["gathering.team.memberName"]
-        count = str(item["count"])
-        html += "<tr><td>" + aggregate_by + "</td>"
-        html += "<td>" + count + "</td>"
-
-    html += "</tbody></table>"
-    return html
 
 
 def daterange(start_date):
@@ -207,8 +159,6 @@ def datechart_data(collection_id):
     return json.dumps(cumulative_chartsj_data), json.dumps(daily_chartsj_data)
 
 
-
-
 def main():
     html = dict()
 
@@ -216,9 +166,6 @@ def main():
     html["accuracy_table"] = coordinate_accuracy_html(accuracy_data, total_count)
 
     html["collections_table"] = collections_data()
-
-    html["recent_observers"] = recent_observers()
-    html["societies"] = societies()
 
     html["cumulative_datechart_data_birdatlas"], html["daily_datechart_data_birdatlas"] = datechart_data("HR.4471")
     html["cumulative_datechart_data_trip"], html["daily_datechart_data_trip"] = datechart_data("HR.1747")

@@ -10,6 +10,7 @@ import atlas.squareform
 import atlas.squaremap
 import atlas.species
 import atlas.squares
+import atlas.observers
 
 #import app_secrets
 
@@ -24,26 +25,19 @@ app = Flask(__name__)
 app.config.from_mapping(config)
 cache = Cache(app)
 
-print("-------------- BEGIN -------------- -------------- --------------", file = sys.stdout)
+print("-------------- BEGIN -------------- --------------", file = sys.stdout)
+
+
+# Pages
 
 @app.route("/")
-@cache.cached(timeout=3600) # 1 h
+@cache.cached(timeout=1) # 3600 = 1 h
 def root():
     html = atlas.atlas.main()
     return render_template("index.html", html=html)
 
-@app.route("/robots.txt")
-@cache.cached(timeout=36000) # 10 h
-def robots():
-    return render_template("robots.txt")
-
-@app.route("/flush")
-def flush_cache():
-    with app.app_context():
-        cache.clear()
-    return render_template("simple.html", content="Cache flushed")
-
 @app.route("/ruutulomake/<string:square_id_untrusted>/<string:show_untrusted>")
+# Redirect
 def squareform_redirect(square_id_untrusted, show_untrusted):
     return redirect('/atlas/ruutulomake/' + square_id_untrusted + "/" + show_untrusted)
 
@@ -54,6 +48,7 @@ def squareform(square_id_untrusted, show_untrusted):
     return render_template("squareform.html", html=html)
 
 @app.route("/ruutu/<string:square_id_untrusted>")
+# Redirect
 def squaremap_redirect(square_id_untrusted):
     return redirect('/atlas/ruutu/' + square_id_untrusted)
 
@@ -74,6 +69,26 @@ def atlas_species():
 def atlas_squares():
     html = atlas.squares.main()
     return render_template("atlas_squares.html", html=html)
+
+@app.route("/atlas/havainnoijat")
+@cache.cached(timeout=1)
+def atlas_observers():
+    html = atlas.observers.main()
+    return render_template("atlas_observers.html", html=html)
+
+
+# Tools
+
+@app.route("/robots.txt")
+@cache.cached(timeout=36000) # 10 h
+def robots():
+    return render_template("robots.txt")
+
+@app.route("/flush")
+def flush_cache():
+    with app.app_context():
+        cache.clear()
+    return render_template("simple.html", content="Cache flushed")
 
 @app.errorhandler(ValueError)
 def handle_exception(e):
