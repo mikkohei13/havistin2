@@ -4,6 +4,7 @@ app_secrets.py
 export/
 import/
 test*
+cache/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
