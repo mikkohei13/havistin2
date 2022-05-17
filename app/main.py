@@ -37,12 +37,6 @@ def root():
     html = atlas.atlas.main()
     return render_template("index.html", html=html)
 
-@app.route("/atlas/api/user/<string:id_untrusted>")
-@cache.cached(timeout=3600000) # todo: long cache?
-def atlas_api_user(id_untrusted):
-    response = atlas.api_user.main(id_untrusted)
-    return response
-
 @app.route("/ruutulomake/<string:square_id_untrusted>/<string:show_untrusted>")
 # Redirect
 def squareform_redirect(square_id_untrusted, show_untrusted):
