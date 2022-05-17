@@ -11,7 +11,6 @@ import atlas.squaremap
 import atlas.species
 import atlas.squares
 import atlas.observers
-import atlas.api_user
 
 #import app_secrets
 
@@ -32,7 +31,7 @@ print("-------------- BEGIN -------------- --------------", file = sys.stdout)
 # Pages
 
 @app.route("/")
-@cache.cached(timeout=1) # 3600 = 1 h
+@cache.cached(timeout=3600) # 3600 = 1 h
 def root():
     html = atlas.atlas.main()
     return render_template("index.html", html=html)
@@ -43,7 +42,7 @@ def squareform_redirect(square_id_untrusted, show_untrusted):
     return redirect('/atlas/ruutulomake/' + square_id_untrusted + "/" + show_untrusted)
 
 @app.route("/atlas/ruutulomake/<string:square_id_untrusted>/<string:show_untrusted>")
-@cache.cached(timeout=86400) # 24 h
+@cache.cached(timeout=86400) # 86400 = 24 h
 def squareform(square_id_untrusted, show_untrusted):
     html = atlas.squareform.main(square_id_untrusted, show_untrusted)
     return render_template("squareform.html", html=html)
@@ -60,19 +59,19 @@ def squaremap(square_id_untrusted):
     return render_template("squaremap.html", html=html)
 
 @app.route("/atlas/lajit")
-@cache.cached(timeout=1)
+@cache.cached(timeout=3600)
 def atlas_species():
     html = atlas.species.main()
     return render_template("atlas_species.html", html=html)
 
 @app.route("/atlas/ruudut")
-@cache.cached(timeout=1)
+@cache.cached(timeout=3600)
 def atlas_squares():
     html = atlas.squares.main()
     return render_template("atlas_squares.html", html=html)
 
 @app.route("/atlas/havainnoijat")
-@cache.cached(timeout=1)
+@cache.cached(timeout=3600)
 def atlas_observers():
     html = atlas.observers.main()
     return render_template("atlas_observers.html", html=html)
@@ -81,7 +80,7 @@ def atlas_observers():
 # Tools
 
 @app.route("/robots.txt")
-@cache.cached(timeout=36000) # 10 h
+@cache.cached(timeout=86400)
 def robots():
     return render_template("robots.txt")
 

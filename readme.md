@@ -21,19 +21,15 @@ Check which version numbers have been used:
 
     docker image ls
 
-Run in development mode with docker-compose. This serves the app on localhost and auto-reloads changes to script files, and to other files (like templates) defined on docker-compose.yml.
+Run in development mode with Docker-compose. This serves the app on localhost and auto-reloads changes to script files, and to other files (like templates) defined on docker-compose.yml.
 
     docker-compose up; docker-compose down;
 
-## Running in production with Google Cloud run
-
-First build the image, see above. 
-
-Test running with docker run:
-
-TODO: Name the container, so that a dangling container is not created every time?
+To run without Docker-compose:
 
     docker run -ti -p 80:80 havistin2-gunicorn:latest
+
+## Running in production with Google Cloud run
 
 Deploy:
 
