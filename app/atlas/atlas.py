@@ -15,6 +15,8 @@ def convert_collection_name(id):
         return "Vihko, retkilomake"
     elif  "http://tun.fi/HR.3211" == id:
         return "iNaturalist Suomi"
+    elif  "http://tun.fi/HR.157" == id:
+        return "Maalintujen pistelaskennat"
     else:
         return "Muu"
 

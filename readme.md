@@ -81,6 +81,7 @@ Build image from Dockerfile:
 
 ## Must
 
+- Add CC-license, https://lintuatlas.fi/api/
 - Empty atlasform PDF (somehow)
 - robots.txt, forbid all but front page (now all forbidden)
 - Paginate fetching mappable observations of a square. Must do this before top square has less than 1000 mappable observations.
