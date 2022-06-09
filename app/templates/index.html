@@ -62,8 +62,8 @@
         json = '{{ html["cumulative_datechart_data_tiira"]|safe }}';
         tiira_data = JSON.parse(json);
 
-        json = '{{ html["cumulative_datechart_data_inat"]|safe }}';
-        inat_data = JSON.parse(json);
+//        json = '{{ html["cumulative_datechart_data_inat"]|safe }}';
+//        inat_data = JSON.parse(json);
 
         const data = {
             datasets: [
@@ -81,12 +81,12 @@
                     data: tiira_data,
                     borderColor: '#99019C',
                     label: "Tiira"
-                },
+                }/*,
                 { 
                     data: inat_data,
                     borderColor: '#74AC00',
                     label: "iNaturalist"
-                }
+                }*/
             ]
         };
 
@@ -119,8 +119,8 @@
         json = '{{ html["daily_datechart_data_tiira"]|safe }}';
         tiira_data = JSON.parse(json);
 
-        json = '{{ html["daily_datechart_data_inat"]|safe }}';
-        inat_data = JSON.parse(json);
+//        json = '{{ html["daily_datechart_data_inat"]|safe }}';
+//        inat_data = JSON.parse(json);
 
         const daily_data = {
             datasets: [
@@ -138,12 +138,12 @@
                     data: tiira_data,
                     borderColor: '#99019C',
                     label: "Tiira"
-                },
+                }/*,
                 { 
                     data: inat_data,
                     borderColor: '#74AC00',
                     label: "iNaturalist"
-                }
+                }*/
             ]
         };
 

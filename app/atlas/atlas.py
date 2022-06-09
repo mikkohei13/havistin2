@@ -9,16 +9,19 @@ import atlas.common as common
 def convert_collection_name(id):
     if "http://tun.fi/HR.4412" == id:
         return "Tiira"
-    elif  "http://tun.fi/HR.4471" == id:
+    if  "http://tun.fi/HR.4471" == id:
         return "Vihko, lintuatlaslomake"
-    elif  "http://tun.fi/HR.1747" == id:
+    if  "http://tun.fi/HR.1747" == id:
         return "Vihko, retkilomake"
-    elif  "http://tun.fi/HR.3211" == id:
+    if  "http://tun.fi/HR.3211" == id:
         return "iNaturalist Suomi"
-    elif  "http://tun.fi/HR.157" == id:
+    if  "http://tun.fi/HR.157" == id:
         return "Maalintujen pistelaskennat"
-    else:
-        return "Muu"
+    if  "http://tun.fi/HR.61" == id:
+        return "Maalintujen linjalaskennat vakiolinjoilla"
+    if  "http://tun.fi/HR.2691" == id:
+        return "Maalintujen pistelaskennat ei-vakiolinjoilla"
+    return "Muu (" + id + ")"
 
 
 def collections_data():
@@ -32,7 +35,7 @@ def collections_data():
 
     collections_table = "<h3>Havaintolähteet</h3>"
     collections_table += "<table class='styled-table'>"
-    collections_table += "<thead><tr><th>Järjestelmä</th><th>Havaintoja</th><th>%</th></tr></thead>"
+    collections_table += "<thead><tr><th>Tietolähde</th><th>Havaintoja</th><th>%</th></tr></thead>"
     collections_table += "<tbody>"
 
     for i in data_dict["results"]:
@@ -172,6 +175,6 @@ def main():
     html["cumulative_datechart_data_birdatlas"], html["daily_datechart_data_birdatlas"] = datechart_data("HR.4471")
     html["cumulative_datechart_data_trip"], html["daily_datechart_data_trip"] = datechart_data("HR.1747")
     html["cumulative_datechart_data_tiira"], html["daily_datechart_data_tiira"] = datechart_data("HR.4412")
-    html["cumulative_datechart_data_inat"], html["daily_datechart_data_inat"] = datechart_data("HR.3211")
+#    html["cumulative_datechart_data_inat"], html["daily_datechart_data_inat"] = datechart_data("HR.3211")
 
     return html
