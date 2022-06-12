@@ -1,27 +1,33 @@
 {% extends "base.html" %}
 
 {% block head %}
-    <title>{{ html["species_name"] }} - Lintuatlaksen tilastoja (biomi.org)</title>
+    <title>{{ html["species_name"].capitalize() }} - Lintuatlaksen tilastoja (biomi.org)</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 {% endblock %}
 
 {% block breadcrumb %}
-    &raquo; <a href="../../../">Lintuatlas</a> &raquo; Laji 
+    &raquo; <a href="../../../">Lintuatlas</a> &raquo; {{ html["species_name"].capitalize() }} 
 {% endblock %}
 
 {% block body %}
 
-    <h1>{{ html["species_name"] }}</h1>
+    <h1>{{ html["species_name"].capitalize() }}</h1>
 
     <p>Pesimäkanta keskimäärin {{ html["species_pairs"] }} paria (2010)</p>
-    <p>Habitaatit {{ html["habitats"] }}</p>
-    <p>Uhanalaisuusluokka {{ html["redlist"] }}</p>
+    <p>Habitaatit: {{ html["habitats"] }}</p>
+    <p>Uhanalaisuusluokka: {{ html["redlist"] }}</p>
 
-    {{ html["atlas_classes"] }}
-    
-    {{ html["confirmed_atlas_codes"] }}
+    <h3>Atlashavaintojen määrä (4. atlas)</h3>
 
-    <p>Atlashavaintoja suhteessa parimäärään {{ html["proportion"] }}</p>
+    {{ html["atlas_classes_html"] | safe }}
+
+    Yhteensä {{ html["observations_total"] }} havaintoa.
+
+    <p>Atlashavaintoja (varma, todennäköinen, mahdollinen) suhteessa parimäärään: {{ html["proportion"] }}</p>
+
+    <h3>Miten pesinnät on varmistettu (3. ja 4 atlas)</h3>
+    {{ html["confirmed_atlas_codes_html"] | safe }}
+
 
 
 {% endblock %}

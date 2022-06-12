@@ -33,12 +33,23 @@ def get_confirmed_atlascode_counts(taxon_id):
     data_dict = common.fetch_finbif_api(url)
     common.print_log(data_dict) # debug
 
-    atlas_codes = dict()
+    html = "<table class='styled-table'>"
+    html += "<thead><tr><th>Pesimävarmuusindeksi</th><th>Havaintoja kpl</th></tr></thead>"
 
     for item in data_dict["results"]:
-        atlas_codes[item["aggregateBy"]["unit.atlasCode"]] = item["count"]
+        atlas_code = item["aggregateBy"]["unit.atlasCode"]
 
-    return atlas_codes
+        # Skip inaccurate atlas code's
+        if "http://tun.fi/MY.atlasCodeEnum7" == atlas_code:
+            continue
+        if "http://tun.fi/MY.atlasCodeEnum8" == atlas_code:
+            continue
+
+        html += "\n<tr><td>" + common.atlas_code_to_text(atlas_code) + "</td>"
+        html += "<td>" + str(item["count"]) + "</td></tr>"
+
+    html += "</table>"
+    return html
 
 
 def get_atlasclass_counts(taxon_id):
@@ -47,23 +58,27 @@ def get_atlasclass_counts(taxon_id):
 
     data_dict = common.fetch_finbif_api(url)
 
-    atlas_classes = dict()
+    html = "<table class='styled-table'>"
+    html += "<thead><tr><th>Pesimävarmuusluokka</th><th>Havaintoja kpl</th></tr></thead>"
     total = 0
 
     for item in data_dict["results"]:
         if "http://tun.fi/MY.atlasClassEnumB" == item["aggregateBy"]["unit.atlasClass"]:
-            atlas_classes["possible"] = item["count"]
+            html += "<tr><td>Mahdollinen</td>"
+            html += "<td>" + str(item["count"]) + "</td></tr>"
             total = total + item["count"]
         elif "http://tun.fi/MY.atlasClassEnumC" == item["aggregateBy"]["unit.atlasClass"]:
-            atlas_classes["probable"] = item["count"]
+            html += "<tr><td>Todennäköinen</td>"
+            html += "<td>" + str(item["count"]) + "</td></tr>"
             total = total + item["count"]
         elif "http://tun.fi/MY.atlasClassEnumD" == item["aggregateBy"]["unit.atlasClass"]:
-            atlas_classes["confirmed"] = item["count"]
+            html += "<tr><td>Varma</td>"
+            html += "<td>" + str(item["count"]) + "</td></tr>"
             total = total + item["count"]
 
-    atlas_classes["total"] = total
+    html += "</table>"
 
-    return atlas_classes
+    return html, total
 
 
 def main(species_name_untrusted):
@@ -77,14 +92,18 @@ def main(species_name_untrusted):
         raise ValueError
 
     all_species_pairs = read_json_to_dict("species-pairs.json")
-    species_pairs = all_species_pairs.get(species_name, { "pareja": 0 })
+    species_pairs_dict = all_species_pairs.get(species_name, { "pareja": 0 })
+    species_pairs = species_pairs_dict["pareja"]
 
-    atlas_classes = get_atlasclass_counts(species_data["id"])
+    if not isinstance(species_pairs, int):
+        species_pairs = int(float(species_pairs.replace(",", ".")))
+
+    atlas_classes_html, observations_total = get_atlasclass_counts(species_data["id"])
 
     if 0 == species_pairs:
         proportion = "(ei voi laskea)"
     else:
-        proportion = round(atlas_classes["total"] / species_pairs["pareja"], 4)
+        proportion = round(observations_total / species_pairs, 4)
 
 #    common.print_log(species_data) # debug
 
@@ -92,12 +111,13 @@ def main(species_name_untrusted):
 
     html = dict()
     html["species_name"] = species_name
-    html["species_pairs"] = species_pairs["pareja"]
+    html["species_pairs"] = species_pairs
     html["redlist"] = species_data["redlist"]
     html["habitats"] = species_data["habitats"]
-    html["atlas_classes"] = atlas_classes
+    html["atlas_classes_html"] = atlas_classes_html
+    html["observations_total"] = observations_total
     html["proportion"] = proportion
-    html["confirmed_atlas_codes"] = confirmed_atlas_codes
+    html["confirmed_atlas_codes_html"] = confirmed_atlas_codes
 
     
 

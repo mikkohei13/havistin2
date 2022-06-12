@@ -151,3 +151,29 @@ def coordinate_accuracy_data(square_id = False):
             accuracy_dict[accuracy_text] = count
 
     return accuracy_dict, total_count
+
+def atlas_code_to_text(atlas_code):
+    atlas_code_dict = dict()
+    atlas_code_dict["http://tun.fi/MY.atlasCodeEnum1"] = "1 Epätodennäköinen pesintä: havaittu lajin yksilö, havainto ei viittaa pesintään."
+    atlas_code_dict["http://tun.fi/MY.atlasCodeEnum2"] = "2 Mahdollinen pesintä: yksittäinen lintu kerran, on sopivaa pesimäympäristöä."
+    atlas_code_dict["http://tun.fi/MY.atlasCodeEnum3"] = "3 Mahdollinen pesintä: pari kerran, on sopivaa pesimäympäristöä."
+    atlas_code_dict["http://tun.fi/MY.atlasCodeEnum4"] = "4 Todennäköinen pesintä: koiras reviirillä (esim. laulaa) eri päivinä."
+    atlas_code_dict["http://tun.fi/MY.atlasCodeEnum5"] = "5 Todennäköinen pesintä: naaras tai pari reviirillä eri päivinä."
+    atlas_code_dict["http://tun.fi/MY.atlasCodeEnum6"] = "6 Todennäköinen pesintä: linnun tai parin havainto viittaa vahvasti pesintään."
+    atlas_code_dict["http://tun.fi/MY.atlasCodeEnum61"] = "61 Todennäköinen pesintä: lintu tai pari käy usein todennäköisellä pesäpaikalla."
+    atlas_code_dict["http://tun.fi/MY.atlasCodeEnum62"] = "62 Todennäköinen pesintä: lintu tai pari rakentaa pesää tai vie pesämateriaalia."
+    atlas_code_dict["http://tun.fi/MY.atlasCodeEnum63"] = "63 Todennäköinen pesintä: lintu tai pari varoittelee ehkä pesästä tai poikueesta."
+    atlas_code_dict["http://tun.fi/MY.atlasCodeEnum64"] = "64 Todennäköinen pesintä: lintu tai pari houkuttelee pois ehkä pesältä / poikueelta."
+    atlas_code_dict["http://tun.fi/MY.atlasCodeEnum65"] = "65 Todennäköinen pesintä: lintu tai pari hyökkäilee, lähellä ehkä pesä / poikue."
+    atlas_code_dict["http://tun.fi/MY.atlasCodeEnum66"] = "66 Todennäköinen pesintä: nähty pesä, jossa samanvuotista rakennusmateriaalia tai ravintojätettä, ei kuitenkaan varmaa todistetta munista tai poikasista"
+    atlas_code_dict["http://tun.fi/MY.atlasCodeEnum7"] = "7 Varma pesintä: havaittu epäsuora todiste varmasta pesinnästä."
+    atlas_code_dict["http://tun.fi/MY.atlasCodeEnum71"] = "71 Varma pesintä: nähty pesässä saman vuoden munia, kuoria, jäänteitä. Voi olla epäonnistunut."
+    atlas_code_dict["http://tun.fi/MY.atlasCodeEnum72"] = "72 Varma pesintä: käy pesällä pesintään viittaavasti. Munia / poikasia ei havaita (kolo tms.)."
+    atlas_code_dict["http://tun.fi/MY.atlasCodeEnum73"] = "73 Varma pesintä: juuri lentokykyiset poikaset tai untuvikot oletettavasti ruudulta."
+    atlas_code_dict["http://tun.fi/MY.atlasCodeEnum74"] = "74 Varma pesintä: emo kantaa ruokaa tai poikasten ulosteita, pesintä oletettavasti ruudulla."
+    atlas_code_dict["http://tun.fi/MY.atlasCodeEnum75"] = "75 Varma pesintä: nähty pesässä hautova emo"
+    atlas_code_dict["http://tun.fi/MY.atlasCodeEnum8"] = "8 Varma pesintä: havaittu suora todiste varmasta pesinnästä."
+    atlas_code_dict["http://tun.fi/MY.atlasCodeEnum81"] = "81 Varma pesintä: kuultu poikasten ääntelyä pesässä (kolo / pesä korkealla)."
+    atlas_code_dict["http://tun.fi/MY.atlasCodeEnum82"] = "82 Varma pesintä: nähty pesässä munia tai poikasia."
+
+    return atlas_code_dict[atlas_code]
