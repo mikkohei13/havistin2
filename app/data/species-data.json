@@ -1,0 +1,2437 @@
+{
+    "kyhmyjoutsen": {
+      "id": "MX.26277",
+      "habitats": "Vi - Itämeri; Vsr - rehevät järvet ja lammet",
+      "redlist": "LC (2019)"
+    },
+    "pikkujoutsen": {
+      "id": "MX.26282",
+      "habitats": "",
+      "redlist": ""
+    },
+    "laulujoutsen": {
+      "id": "MX.26280",
+      "habitats": "Vs - järvet ja lammet; Vi - Itämeri; Iv - viljelymaat",
+      "redlist": "LC (2019)"
+    },
+    "metsähanhi": {
+      "id": "MX.26287",
+      "habitats": "Sr - rämeet; Vsk - karut järvet ja lammet; Iv - viljelymaat",
+      "redlist": "VU (2015)"
+    },
+    "lyhytnokkahanhi": {
+      "id": "MX.26288",
+      "habitats": "",
+      "redlist": ""
+    },
+    "tundrahanhi": {
+      "id": "MX.26289",
+      "habitats": "",
+      "redlist": ""
+    },
+    "kiljuhanhi": {
+      "id": "MX.26290",
+      "habitats": "Ts - paljakan suot; Rj - järven- ja joenrannat; Rin - niittyrannat; S - Suot",
+      "redlist": "CR (2019)"
+    },
+    "merihanhi": {
+      "id": "MX.26291",
+      "habitats": "Vi - Itämeri; Vs - järvet ja lammet; Iv - viljelymaat",
+      "redlist": "LC (2019)"
+    },
+    "tiibetinhanhi": {
+      "id": "MX.26292",
+      "habitats": "",
+      "redlist": ""
+    },
+    "lumihanhi": {
+      "id": "MX.26293",
+      "habitats": "",
+      "redlist": "NA (2019)"
+    },
+    "kanadanhanhi": {
+      "id": "MX.26298",
+      "habitats": "Vs - järvet ja lammet; Vi - Itämeri",
+      "redlist": "NA (2019)"
+    },
+    "pikkukanadanhanhi": {
+      "id": "MX.232253",
+      "habitats": "",
+      "redlist": ""
+    },
+    "valkoposkihanhi": {
+      "id": "MX.26299",
+      "habitats": "Vi - Itämeri; Vs - järvet ja lammet; Iv - viljelymaat",
+      "redlist": "LC (2019)"
+    },
+    "sepelhanhi": {
+      "id": "MX.26300",
+      "habitats": "",
+      "redlist": ""
+    },
+    "punakaulahanhi": {
+      "id": "MX.26301",
+      "habitats": "",
+      "redlist": ""
+    },
+    "ruostesorsa": {
+      "id": "MX.26319",
+      "habitats": "",
+      "redlist": ""
+    },
+    "ristisorsa": {
+      "id": "MX.26323",
+      "habitats": "Vi - Itämeri; Rih - hietikkorannat; Ris - sora-, somerikko- ja kivikkorannat",
+      "redlist": "VU (2019)"
+    },
+    "mandariinisorsa": {
+      "id": "MX.26348",
+      "habitats": "",
+      "redlist": ""
+    },
+    "haapana": {
+      "id": "MX.26360",
+      "habitats": "Vs - järvet ja lammet; Vi - Itämeri",
+      "redlist": "VU (2019)"
+    },
+    "amerikanhaapana": {
+      "id": "MX.26361",
+      "habitats": "",
+      "redlist": ""
+    },
+    "harmaasorsa": {
+      "id": "MX.26364",
+      "habitats": "Vi - Itämeri; Vsr - rehevät järvet ja lammet",
+      "redlist": "LC (2019)"
+    },
+    "siperiantavi": {
+      "id": "MX.26365",
+      "habitats": "",
+      "redlist": ""
+    },
+    "tavi": {
+      "id": "MX.26366",
+      "habitats": "Vs - järvet ja lammet; Vi - Itämeri; Va - lampareet ja allikot (myös rimmet); S - Suot; Io - ojat ja muut kaivannot",
+      "redlist": "LC (2019)"
+    },
+    "amerikantavi": {
+      "id": "MX.73540",
+      "habitats": "",
+      "redlist": ""
+    },
+    "sinisorsa": {
+      "id": "MX.26373",
+      "habitats": "Vs - järvet ja lammet; Vi - Itämeri; Va - lampareet ja allikot (myös rimmet); S - Suot; Io - ojat ja muut kaivannot",
+      "redlist": "LC (2019)"
+    },
+    "nokisorsa": {
+      "id": "MX.26374",
+      "habitats": "",
+      "redlist": ""
+    },
+    "jouhisorsa": {
+      "id": "MX.26382",
+      "habitats": "Vs - järvet ja lammet; Va - lampareet ja allikot (myös rimmet); Vi - Itämeri",
+      "redlist": "VU (2019)"
+    },
+    "heinätavi": {
+      "id": "MX.26388",
+      "habitats": "Vsr - rehevät järvet ja lammet; Vi - Itämeri",
+      "redlist": "VU (2019)"
+    },
+    "sinisiipitavi": {
+      "id": "MX.26389",
+      "habitats": "",
+      "redlist": ""
+    },
+    "lapasorsa": {
+      "id": "MX.26394",
+      "habitats": "Vsr - rehevät järvet ja lammet; Vi - Itämeri",
+      "redlist": "LC (2019)"
+    },
+    "punapäänarsku": {
+      "id": "MX.26402",
+      "habitats": "",
+      "redlist": ""
+    },
+    "punasotka": {
+      "id": "MX.26407",
+      "habitats": "Vsr - rehevät järvet ja lammet",
+      "redlist": "CR (2019)"
+    },
+    "amerikantukkasotka": {
+      "id": "MX.26409",
+      "habitats": "",
+      "redlist": ""
+    },
+    "ruskosotka": {
+      "id": "MX.26412",
+      "habitats": "",
+      "redlist": ""
+    },
+    "tukkasotka": {
+      "id": "MX.26415",
+      "habitats": "Vs - järvet ja lammet; Vi - Itämeri",
+      "redlist": "EN (2019)"
+    },
+    "lapasotka": {
+      "id": "MX.26416",
+      "habitats": "Vi - Itämeri; Vsk - karut järvet ja lammet",
+      "redlist": "EN (2019)"
+    },
+    "pikkulapasotka": {
+      "id": "MX.26417",
+      "habitats": "",
+      "redlist": ""
+    },
+    "haahka": {
+      "id": "MX.26419",
+      "habitats": "Vi - Itämeri",
+      "redlist": "EN (2019)"
+    },
+    "kyhmyhaahka": {
+      "id": "MX.26420",
+      "habitats": "",
+      "redlist": ""
+    },
+    "allihaahka": {
+      "id": "MX.26423",
+      "habitats": "",
+      "redlist": ""
+    },
+    "virta-alli": {
+      "id": "MX.26425",
+      "habitats": "",
+      "redlist": ""
+    },
+    "alli": {
+      "id": "MX.26427",
+      "habitats": "Va - lampareet ja allikot (myös rimmet); Vsk - karut järvet ja lammet; Ts - paljakan suot; Vi - Itämeri",
+      "redlist": "NT (2019)"
+    },
+    "mustalintu": {
+      "id": "MX.26429",
+      "habitats": "Vsk - karut järvet ja lammet; Vi - Itämeri",
+      "redlist": "LC (2019)"
+    },
+    "amerikanmustalintu": {
+      "id": "MX.73587",
+      "habitats": "",
+      "redlist": ""
+    },
+    "pilkkaniska": {
+      "id": "MX.26430",
+      "habitats": "",
+      "redlist": ""
+    },
+    "pilkkasiipi": {
+      "id": "MX.26431",
+      "habitats": "Vi - Itämeri; Vsk - karut järvet ja lammet",
+      "redlist": "VU (2019)"
+    },
+    "kyhmypilkkasiipi": {
+      "id": "MX.73588",
+      "habitats": "",
+      "redlist": ""
+    },
+    "telkkä": {
+      "id": "MX.26435",
+      "habitats": "Vs - järvet ja lammet; Vi - Itämeri; Vj - joet",
+      "redlist": "LC (2019)"
+    },
+    "uivelo": {
+      "id": "MX.26438",
+      "habitats": "Vsk - karut järvet ja lammet; Vi - Itämeri",
+      "redlist": "LC (2019)"
+    },
+    "tukkakoskelo": {
+      "id": "MX.26440",
+      "habitats": "Vsk - karut järvet ja lammet; Vi - Itämeri",
+      "redlist": "NT (2019)"
+    },
+    "isokoskelo": {
+      "id": "MX.26442",
+      "habitats": "Vsk - karut järvet ja lammet; Vi - Itämeri",
+      "redlist": "NT (2019)"
+    },
+    "kuparisorsa": {
+      "id": "MX.26447",
+      "habitats": "",
+      "redlist": ""
+    },
+    "viiriäinen": {
+      "id": "MX.27058",
+      "habitats": "Iv - viljelymaat",
+      "redlist": "EN (2019)"
+    },
+    "pyy": {
+      "id": "MX.26931",
+      "habitats": "M - Metsät",
+      "redlist": "VU (2019)"
+    },
+    "riekko": {
+      "id": "MX.26921",
+      "habitats": "Sr - rämeet; Mk - kangasmetsät; Mt - tunturikoivikot (pois lukien tunturikoivulehdot); Ts - paljakan suot; Vi - Itämeri",
+      "redlist": "VU (2019)"
+    },
+    "kiiruna": {
+      "id": "MX.26922",
+      "habitats": "Tl - paljakan kalliot ja kivikot",
+      "redlist": "LC (2019)"
+    },
+    "teeri": {
+      "id": "MX.26926",
+      "habitats": "Mk - kangasmetsät",
+      "redlist": "LC (2019)"
+    },
+    "metso": {
+      "id": "MX.26928",
+      "habitats": "Mk - kangasmetsät",
+      "redlist": "LC (2019)"
+    },
+    "peltopyy": {
+      "id": "MX.27048",
+      "habitats": "Iv - viljelymaat; Ip - puistot, pihamaat ja puutarhat",
+      "redlist": "NT (2019)"
+    },
+    "fasaani": {
+      "id": "MX.27152",
+      "habitats": "Iv - viljelymaat; Ip - puistot, pihamaat ja puutarhat; Iu - uuselinympäristöt",
+      "redlist": "NA (2019)"
+    },
+    "kaakkuri": {
+      "id": "MX.25836",
+      "habitats": "Vsk - karut järvet ja lammet; Va - lampareet ja allikot (myös rimmet); Sn - nevat; Vi - Itämeri",
+      "redlist": "LC (2019)"
+    },
+    "kuikka": {
+      "id": "MX.25837",
+      "habitats": "Vsk - karut järvet ja lammet; Vi - Itämeri",
+      "redlist": "LC (2019)"
+    },
+    "tundrakuikka": {
+      "id": "MX.25838",
+      "habitats": "",
+      "redlist": ""
+    },
+    "amerikanjääkuikka": {
+      "id": "MX.25839",
+      "habitats": "",
+      "redlist": ""
+    },
+    "jääkuikka": {
+      "id": "MX.25840",
+      "habitats": "",
+      "redlist": ""
+    },
+    "pikku-uikku": {
+      "id": "MX.25844",
+      "habitats": "Vsr - rehevät järvet ja lammet",
+      "redlist": "CR (2019)"
+    },
+    "silkkiuikku": {
+      "id": "MX.25860",
+      "habitats": "Vsr - rehevät järvet ja lammet; Vi - Itämeri",
+      "redlist": "NT (2019)"
+    },
+    "härkälintu": {
+      "id": "MX.25859",
+      "habitats": "Vsr - rehevät järvet ja lammet",
+      "redlist": "NT (2019)"
+    },
+    "mustakurkku-uikku": {
+      "id": "MX.25861",
+      "habitats": "Vsr - rehevät järvet ja lammet; Vi - Itämeri",
+      "redlist": "EN (2019)"
+    },
+    "mustakaulauikku": {
+      "id": "MX.25862",
+      "habitats": "",
+      "redlist": ""
+    },
+    "myrskylintu": {
+      "id": "MX.25892",
+      "habitats": "",
+      "redlist": ""
+    },
+    "nokiliitäjä": {
+      "id": "MX.25963",
+      "habitats": "",
+      "redlist": ""
+    },
+    "pikkuliitäjä": {
+      "id": "MX.25967",
+      "habitats": "",
+      "redlist": ""
+    },
+    "merikeiju": {
+      "id": "MX.25988",
+      "habitats": "",
+      "redlist": ""
+    },
+    "myrskykeiju": {
+      "id": "MX.25994",
+      "habitats": "",
+      "redlist": ""
+    },
+    "madeirankeiju": {
+      "id": "MX.25993",
+      "habitats": "",
+      "redlist": ""
+    },
+    "suula": {
+      "id": "MX.26027",
+      "habitats": "",
+      "redlist": ""
+    },
+    "merimetso": {
+      "id": "MX.26043",
+      "habitats": "Vi - Itämeri",
+      "redlist": "LC (2019)"
+    },
+    "karimetso": {
+      "id": "MX.26051",
+      "habitats": "",
+      "redlist": ""
+    },
+    "pelikaani": {
+      "id": "MX.26017",
+      "habitats": "",
+      "redlist": ""
+    },
+    "kaulushaikara": {
+      "id": "MX.26164",
+      "habitats": "Vsr - rehevät järvet ja lammet; Ri - Itämeren rannat",
+      "redlist": "LC (2019)"
+    },
+    "pikkuhaikara": {
+      "id": "MX.26155",
+      "habitats": "",
+      "redlist": ""
+    },
+    "yöhaikara": {
+      "id": "MX.26133",
+      "habitats": "",
+      "redlist": ""
+    },
+    "rääkkähaikara": {
+      "id": "MX.26121",
+      "habitats": "",
+      "redlist": ""
+    },
+    "lehmähaikara": {
+      "id": "MX.26119",
+      "habitats": "",
+      "redlist": ""
+    },
+    "silkkihaikara": {
+      "id": "MX.26115",
+      "habitats": "",
+      "redlist": ""
+    },
+    "jalohaikara": {
+      "id": "MX.26105",
+      "habitats": "",
+      "redlist": ""
+    },
+    "harmaahaikara": {
+      "id": "MX.26094",
+      "habitats": "Vsr - rehevät järvet ja lammet; Vi - Itämeri; Rim - rantametsät",
+      "redlist": "LC (2019)"
+    },
+    "ruskohaikara": {
+      "id": "MX.26103",
+      "habitats": "",
+      "redlist": ""
+    },
+    "mustahaikara": {
+      "id": "MX.26182",
+      "habitats": "",
+      "redlist": ""
+    },
+    "kattohaikara": {
+      "id": "MX.26187",
+      "habitats": "",
+      "redlist": ""
+    },
+    "pronssi-iibis": {
+      "id": "MX.26234",
+      "habitats": "",
+      "redlist": ""
+    },
+    "kapustahaikara": {
+      "id": "MX.26240",
+      "habitats": "",
+      "redlist": ""
+    },
+    "mehiläishaukka": {
+      "id": "MX.26488",
+      "habitats": "Mk - kangasmetsät; Ml - lehdot (myös kuusivaltaiset)",
+      "redlist": "EN (2019)"
+    },
+    "haarahaukka": {
+      "id": "MX.26518",
+      "habitats": "Mk - kangasmetsät; Rjm - rantametsät",
+      "redlist": "CR (2019)"
+    },
+    "isohaarahaukka": {
+      "id": "MX.26519",
+      "habitats": "",
+      "redlist": ""
+    },
+    "aromerikotka": {
+      "id": "MX.26528",
+      "habitats": "",
+      "redlist": ""
+    },
+    "merikotka": {
+      "id": "MX.26530",
+      "habitats": "Vi - Itämeri; Vs - järvet ja lammet",
+      "redlist": "LC (2019)"
+    },
+    "pikkukorppikotka": {
+      "id": "MX.26551",
+      "habitats": "",
+      "redlist": ""
+    },
+    "hanhikorppikotka": {
+      "id": "MX.26543",
+      "habitats": "",
+      "redlist": ""
+    },
+    "munkkikorppikotka": {
+      "id": "MX.26536",
+      "habitats": "",
+      "redlist": ""
+    },
+    "käärmekotka": {
+      "id": "MX.26557",
+      "habitats": "",
+      "redlist": ""
+    },
+    "ruskosuohaukka": {
+      "id": "MX.26597",
+      "habitats": "Vsr - rehevät järvet ja lammet; Rin - niittyrannat; Rjn - niittyrannat",
+      "redlist": "LC (2019)"
+    },
+    "sinisuohaukka": {
+      "id": "MX.26592",
+      "habitats": "S - Suot; Iv - viljelymaat; Mk - kangasmetsät",
+      "redlist": "VU (2019)"
+    },
+    "arosuohaukka": {
+      "id": "MX.26594",
+      "habitats": "Sr - rämeet; Iv - viljelymaat",
+      "redlist": "EN (2019)"
+    },
+    "niittysuohaukka": {
+      "id": "MX.26596",
+      "habitats": "Rin - niittyrannat; Iv - viljelymaat; Rjn - niittyrannat",
+      "redlist": "CR (2019)"
+    },
+    "kanahaukka": {
+      "id": "MX.26647",
+      "habitats": "Mk - kangasmetsät",
+      "redlist": "NT (2019)"
+    },
+    "varpushaukka": {
+      "id": "MX.26639",
+      "habitats": "Mk - kangasmetsät; Ml - lehdot (myös kuusivaltaiset); Sk - korvet; Sr - rämeet",
+      "redlist": "LC (2019)"
+    },
+    "hiirihaukka": {
+      "id": "MX.26701",
+      "habitats": "Mk - kangasmetsät",
+      "redlist": "VU (2019)"
+    },
+    "arohiirihaukka": {
+      "id": "MX.26705",
+      "habitats": "",
+      "redlist": ""
+    },
+    "piekana": {
+      "id": "MX.26704",
+      "habitats": "Tk - tunturikankaat; K - Kalliot ja kivikot; Mk - kangasmetsät",
+      "redlist": "EN (2019)"
+    },
+    "kiljukotka": {
+      "id": "MX.26723",
+      "habitats": "Rj - järven- ja joenrannat; Mk - kangasmetsät",
+      "redlist": "CR (2019)"
+    },
+    "pikkukiljukotka": {
+      "id": "MX.26722",
+      "habitats": "",
+      "redlist": ""
+    },
+    "pikkukotka": {
+      "id": "MX.26734",
+      "habitats": "",
+      "redlist": ""
+    },
+    "maakotka": {
+      "id": "MX.26727",
+      "habitats": "Mk - kangasmetsät; S - Suot",
+      "redlist": "VU (2019)"
+    },
+    "arokotka": {
+      "id": "MX.73542",
+      "habitats": "",
+      "redlist": ""
+    },
+    "keisarikotka": {
+      "id": "MX.26725",
+      "habitats": "",
+      "redlist": ""
+    },
+    "sääksi": {
+      "id": "MX.26472",
+      "habitats": "Vsr - rehevät järvet ja lammet; Vi - Itämeri; M - Metsät",
+      "redlist": "LC (2019)"
+    },
+    "pikkutuulihaukka": {
+      "id": "MX.26792",
+      "habitats": "",
+      "redlist": ""
+    },
+    "tuulihaukka": {
+      "id": "MX.26796",
+      "habitats": "Iv - viljelymaat; S - Suot; R - Rannat",
+      "redlist": "LC (2019)"
+    },
+    "punajalkahaukka": {
+      "id": "MX.26805",
+      "habitats": "S - Suot",
+      "redlist": "NA (2019)"
+    },
+    "ampuhaukka": {
+      "id": "MX.26808",
+      "habitats": "Mk - kangasmetsät; S - Suot; Mt - tunturikoivikot (pois lukien tunturikoivulehdot)",
+      "redlist": "LC (2019)"
+    },
+    "nuolihaukka": {
+      "id": "MX.26811",
+      "habitats": "Rj - järven- ja joenrannat; Ri - Itämeren rannat",
+      "redlist": "LC (2019)"
+    },
+    "välimerenhaukka": {
+      "id": "MX.26815",
+      "habitats": "",
+      "redlist": ""
+    },
+    "aavikkohaukka": {
+      "id": "MX.26824",
+      "habitats": "",
+      "redlist": ""
+    },
+    "tunturihaukka": {
+      "id": "MX.26825",
+      "habitats": "Tk - tunturikankaat",
+      "redlist": "CR (2019)"
+    },
+    "muuttohaukka": {
+      "id": "MX.26828",
+      "habitats": "Sn - nevat; K - Kalliot ja kivikot",
+      "redlist": "VU (2019)"
+    },
+    "luhtakana": {
+      "id": "MX.27276",
+      "habitats": "Rjn - niittyrannat; Vsr - rehevät järvet ja lammet; Rin - niittyrannat",
+      "redlist": "LC (2019)"
+    },
+    "luhtahuitti": {
+      "id": "MX.27345",
+      "habitats": "Rjn - niittyrannat; Vsr - rehevät järvet ja lammet; Rin - niittyrannat",
+      "redlist": "LC (2019)"
+    },
+    "pikkuhuitti": {
+      "id": "MX.27342",
+      "habitats": "Rjn - niittyrannat; Vsr - rehevät järvet ja lammet; Rjn - niittyrannat",
+      "redlist": "EN (2019)"
+    },
+    "kääpiöhuitti": {
+      "id": "MX.27343",
+      "habitats": "",
+      "redlist": ""
+    },
+    "ruisrääkkä": {
+      "id": "MX.27328",
+      "habitats": "Iv - viljelymaat; Ik - kosteat niityt (muut kuin rantaniityt); In - kuivat niityt, kedot ja nummet; It - tuoreet niityt",
+      "redlist": "LC (2019)"
+    },
+    "liejukana": {
+      "id": "MX.27364",
+      "habitats": "Vsr - rehevät järvet ja lammet; Vi - Itämeri",
+      "redlist": "VU (2019)"
+    },
+    "kurnuliejukana": {
+      "id": "MX.27368",
+      "habitats": "",
+      "redlist": ""
+    },
+    "nokikana": {
+      "id": "MX.27381",
+      "habitats": "Vsr - rehevät järvet ja lammet; Vi - Itämeri",
+      "redlist": "EN (2019)"
+    },
+    "kurki": {
+      "id": "MX.27214",
+      "habitats": "Sn - nevat; Sr - rämeet; Rjn - niittyrannat; Rjm - rantametsät; Rin - niittyrannat",
+      "redlist": "LC (2019)"
+    },
+    "hietakurki": {
+      "id": "MX.27217",
+      "habitats": "",
+      "redlist": ""
+    },
+    "neitokurki": {
+      "id": "MX.27227",
+      "habitats": "",
+      "redlist": ""
+    },
+    "pikkutrappi": {
+      "id": "MX.27403",
+      "habitats": "",
+      "redlist": ""
+    },
+    "idänkaulustrappi": {
+      "id": "MX.73562",
+      "habitats": "",
+      "redlist": ""
+    },
+    "isotrappi": {
+      "id": "MX.27418",
+      "habitats": "",
+      "redlist": ""
+    },
+    "paksujalka": {
+      "id": "MX.27492",
+      "habitats": "",
+      "redlist": ""
+    },
+    "pitkäjalka": {
+      "id": "MX.27475",
+      "habitats": "",
+      "redlist": ""
+    },
+    "avosetti": {
+      "id": "MX.27486",
+      "habitats": "",
+      "redlist": ""
+    },
+    "meriharakka": {
+      "id": "MX.27459",
+      "habitats": "Ri - Itämeren rannat; Iv - viljelymaat; Ir - rakennukset ja rakenteet; Iu - uuselinympäristöt",
+      "redlist": "LC (2019)"
+    },
+    "siperiankurmitsa": {
+      "id": "MX.27555",
+      "habitats": "",
+      "redlist": ""
+    },
+    "amerikankurmitsa": {
+      "id": "MX.27554",
+      "habitats": "",
+      "redlist": ""
+    },
+    "kapustarinta": {
+      "id": "MX.27553",
+      "habitats": "Sn - nevat; Tk - tunturikankaat; Sr - rämeet; Iv - viljelymaat",
+      "redlist": "LC (2019)"
+    },
+    "tundrakurmitsa": {
+      "id": "MX.27556",
+      "habitats": "",
+      "redlist": ""
+    },
+    "arohyyppä": {
+      "id": "MX.27540",
+      "habitats": "",
+      "redlist": ""
+    },
+    "suohyyppä": {
+      "id": "MX.27541",
+      "habitats": "",
+      "redlist": ""
+    },
+    "töyhtöhyyppä": {
+      "id": "MX.27527",
+      "habitats": "Iv - viljelymaat; Rjn - niittyrannat; Rin - niittyrannat; Sn - nevat; Sr - rämeet; Ik - kosteat niityt (muut kuin rantaniityt)",
+      "redlist": "LC (2019)"
+    },
+    "pikkutylli": {
+      "id": "MX.27562",
+      "habitats": "Io - ojat ja muut kaivannot; Iu - uuselinympäristöt; Rj - järven- ja joenrannat; Ri - Itämeren rannat",
+      "redlist": "NT (2019)"
+    },
+    "tylli": {
+      "id": "MX.27559",
+      "habitats": "Rj - järven- ja joenrannat; Ri - Itämeren rannat; Ts - paljakan suot; Iu - uuselinympäristöt",
+      "redlist": "LC (2019)"
+    },
+    "mustajalkatylli": {
+      "id": "MX.27570",
+      "habitats": "",
+      "redlist": ""
+    },
+    "ylänkötylli": {
+      "id": "MX.27580",
+      "habitats": "",
+      "redlist": ""
+    },
+    "aavikkotylli": {
+      "id": "MX.27581",
+      "habitats": "",
+      "redlist": ""
+    },
+    "kaspiantylli": {
+      "id": "MX.27582",
+      "habitats": "",
+      "redlist": ""
+    },
+    "gobintylli": {
+      "id": "MX.27583",
+      "habitats": "",
+      "redlist": ""
+    },
+    "keräkurmitsa": {
+      "id": "MX.27597",
+      "habitats": "Tk - tunturikankaat",
+      "redlist": "VU (2019)"
+    },
+    "preeriakahlaaja": {
+      "id": "MX.27617",
+      "habitats": "",
+      "redlist": ""
+    },
+    "taigakuovi": {
+      "id": "MX.27608",
+      "habitats": "",
+      "redlist": ""
+    },
+    "pikkukuovi": {
+      "id": "MX.27610",
+      "habitats": "Sn - nevat; Mkk - kuivahkot ja sitä karummat kankaat; Sr - rämeet; Tk - tunturikankaat; Ts - paljakan suot; Mt - tunturikoivikot (pois lukien tunturikoivulehdot); Iv - viljelymaat",
+      "redlist": "LC (2019)"
+    },
+    "kuovi": {
+      "id": "MX.27613",
+      "habitats": "Iv - viljelymaat; Rjn - niittyrannat; Rin - niittyrannat; Sn - nevat; Sr - rämeet; Ik - kosteat niityt (muut kuin rantaniityt)",
+      "redlist": "NT (2019)"
+    },
+    "mustapyrstökuiri": {
+      "id": "MX.27603",
+      "habitats": "Rin - niittyrannat; Iv - viljelymaat; Rjn - niittyrannat; Ik - kosteat niityt (muut kuin rantaniityt); Sn - nevat",
+      "redlist": "VU (2019)"
+    },
+    "punakuiri": {
+      "id": "MX.27605",
+      "habitats": "Ts - paljakan suot; Sn - nevat",
+      "redlist": "NT (2019)"
+    },
+    "karikukko": {
+      "id": "MX.27642",
+      "habitats": "Ri - Itämeren rannat",
+      "redlist": "EN (2019)"
+    },
+    "isosirri": {
+      "id": "MX.27682",
+      "habitats": "",
+      "redlist": ""
+    },
+    "suokukko": {
+      "id": "MX.27710",
+      "habitats": "Sn - nevat; Rin - niittyrannat; Rjn - niittyrannat",
+      "redlist": "CR (2019)"
+    },
+    "suippopyrstösirri": {
+      "id": "MX.27695",
+      "habitats": "",
+      "redlist": ""
+    },
+    "jänkäsirriäinen": {
+      "id": "MX.27704",
+      "habitats": "Sn - nevat; Ts - paljakan suot; Va - lampareet ja allikot (myös rimmet)",
+      "redlist": "NT (2019)"
+    },
+    "kuovisirri": {
+      "id": "MX.27700",
+      "habitats": "",
+      "redlist": ""
+    },
+    "pitkäkoipisirri": {
+      "id": "MX.27706",
+      "habitats": "",
+      "redlist": ""
+    },
+    "rusokaulasirri": {
+      "id": "MX.27687",
+      "habitats": "",
+      "redlist": ""
+    },
+    "siperiansirri": {
+      "id": "MX.27690",
+      "habitats": "",
+      "redlist": ""
+    },
+    "lapinsirri": {
+      "id": "MX.27689",
+      "habitats": "Rjn - niittyrannat; Tk - tunturikankaat; Ts - paljakan suot; Rjn - niittyrannat; Sn - nevat; Iu - uuselinympäristöt; Rin - niittyrannat",
+      "redlist": "EN (2019)"
+    },
+    "pulmussirri": {
+      "id": "MX.27684",
+      "habitats": "",
+      "redlist": ""
+    },
+    "suosirri": {
+      "id": "MX.27699",
+      "habitats": "",
+      "redlist": ""
+    },
+    "merisirri": {
+      "id": "MX.27697",
+      "habitats": "Tk - tunturikankaat; Ts - paljakan suot; Ri - Itämeren rannat",
+      "redlist": "EN (2019)"
+    },
+    "eskimosirri": {
+      "id": "MX.27693",
+      "habitats": "",
+      "redlist": ""
+    },
+    "pikkusirri": {
+      "id": "MX.27688",
+      "habitats": "Tk - tunturikankaat; Ts - paljakan suot",
+      "redlist": "CR (2019)"
+    },
+    "valkoperäsirri": {
+      "id": "MX.27692",
+      "habitats": "",
+      "redlist": ""
+    },
+    "amerikansirri": {
+      "id": "MX.27691",
+      "habitats": "",
+      "redlist": ""
+    },
+    "tundravikla": {
+      "id": "MX.27708",
+      "habitats": "",
+      "redlist": ""
+    },
+    "palsasirri": {
+      "id": "MX.27694",
+      "habitats": "",
+      "redlist": ""
+    },
+    "amerikanvesipääsky": {
+      "id": "MX.27645",
+      "habitats": "",
+      "redlist": ""
+    },
+    "vesipääsky": {
+      "id": "MX.27646",
+      "habitats": "Sn - nevat; Ts - paljakan suot; Va - lampareet ja allikot (myös rimmet); Ri - Itämeren rannat",
+      "redlist": "VU (2019)"
+    },
+    "isovesipääsky": {
+      "id": "MX.27647",
+      "habitats": "",
+      "redlist": ""
+    },
+    "rantakurvi": {
+      "id": "MX.27632",
+      "habitats": "Iu - uuselinympäristöt; Ri - Itämeren rannat",
+      "redlist": "CR (2019)"
+    },
+    "rantasipi": {
+      "id": "MX.27634",
+      "habitats": "Rj - järven- ja joenrannat; Ri - Itämeren rannat",
+      "redlist": "LC (2019)"
+    },
+    "amerikansipi": {
+      "id": "MX.27635",
+      "habitats": "",
+      "redlist": ""
+    },
+    "metsäviklo": {
+      "id": "MX.27626",
+      "habitats": "Sk - korvet; Vp - purot ja norot; Sr - rämeet; Mlk - kosteat lehdot; Va - lampareet ja allikot (myös rimmet); Rjn - niittyrannat",
+      "redlist": "LC (2019)"
+    },
+    "mustaviklo": {
+      "id": "MX.27619",
+      "habitats": "Sn - nevat; Mkk - kuivahkot ja sitä karummat kankaat; Ts - paljakan suot",
+      "redlist": "NT (2019)"
+    },
+    "valkoviklo": {
+      "id": "MX.27622",
+      "habitats": "Sn - nevat; Sr - rämeet; Mkk - kuivahkot ja sitä karummat kankaat; Rin - niittyrannat; Rjn - niittyrannat; Tk - tunturikankaat; Ts - paljakan suot; Mt - tunturikoivikot (pois lukien tunturikoivulehdot)",
+      "redlist": "NT (2019)"
+    },
+    "keltajalkaviklo": {
+      "id": "MX.27625",
+      "habitats": "",
+      "redlist": ""
+    },
+    "preeriaviklo": {
+      "id": "MX.27630",
+      "habitats": "",
+      "redlist": ""
+    },
+    "lampiviklo": {
+      "id": "MX.27621",
+      "habitats": "Rjn - niittyrannat; Rin - niittyrannat",
+      "redlist": "EN (2019)"
+    },
+    "liro": {
+      "id": "MX.27628",
+      "habitats": "Sn - nevat; Sr - rämeet; Rjn - niittyrannat; Ik - kosteat niityt (muut kuin rantaniityt)",
+      "redlist": "NT (2019)"
+    },
+    "punajalkaviklo": {
+      "id": "MX.27620",
+      "habitats": "Ri - Itämeren rannat; Rjn - niittyrannat; Ik - kosteat niityt (muut kuin rantaniityt); Sr - rämeet; Sn - nevat; Ts - paljakan suot",
+      "redlist": "NT (2019)"
+    },
+    "jänkäkurppa": {
+      "id": "MX.27674",
+      "habitats": "Sn - nevat; Rjn - niittyrannat; Rin - niittyrannat",
+      "redlist": "LC (2019)"
+    },
+    "tundrakurppelo": {
+      "id": "MX.27677",
+      "habitats": "",
+      "redlist": ""
+    },
+    "lehtokurppa": {
+      "id": "MX.27649",
+      "habitats": "Mkt - tuoreet ja lehtomaiset kankaat; Mk - kangasmetsät; Ml - lehdot (myös kuusivaltaiset); Rjm - rantametsät; Sk - korvet",
+      "redlist": "LC (2019)"
+    },
+    "taivaanvuohi": {
+      "id": "MX.27666",
+      "habitats": "Sn - nevat; Rjn - niittyrannat; Rin - niittyrannat; Sr - rämeet; Ik - kosteat niityt (muut kuin rantaniityt); Va - lampareet ja allikot (myös rimmet)",
+      "redlist": "NT (2019)"
+    },
+    "amerikantaivaanvuohi": {
+      "id": "MX.73576",
+      "habitats": "",
+      "redlist": ""
+    },
+    "heinäkurppa": {
+      "id": "MX.27665",
+      "habitats": "Iv - viljelymaat; Ik - kosteat niityt (muut kuin rantaniityt); Rjn - niittyrannat",
+      "redlist": "CR (2019)"
+    },
+    "siperiankurppa": {
+      "id": "MX.27662",
+      "habitats": "",
+      "redlist": ""
+    },
+    "pääskykahlaaja": {
+      "id": "MX.27518",
+      "habitats": "",
+      "redlist": ""
+    },
+    "aasianpääskykahlaaja": {
+      "id": "MX.27519",
+      "habitats": "",
+      "redlist": ""
+    },
+    "aropääskykahlaaja": {
+      "id": "MX.27520",
+      "habitats": "",
+      "redlist": ""
+    },
+    "aavikkojuoksija": {
+      "id": "MX.27506",
+      "habitats": "",
+      "redlist": ""
+    },
+    "leveäpyrstökihu": {
+      "id": "MX.27729",
+      "habitats": "",
+      "redlist": ""
+    },
+    "merikihu": {
+      "id": "MX.27730",
+      "habitats": "Vi - Itämeri; Ri - Itämeren rannat",
+      "redlist": "LC (2019)"
+    },
+    "tunturikihu": {
+      "id": "MX.27731",
+      "habitats": "Tk - tunturikankaat",
+      "redlist": "NT (2019)"
+    },
+    "isokihu": {
+      "id": "MX.27724",
+      "habitats": "",
+      "redlist": ""
+    },
+    "lunni": {
+      "id": "MX.27877",
+      "habitats": "",
+      "redlist": ""
+    },
+    "riskilä": {
+      "id": "MX.27855",
+      "habitats": "Vi - Itämeri; K - Kalliot ja kivikot",
+      "redlist": "VU (2019)"
+    },
+    "mustakurkkumurri": {
+      "id": "MX.27864",
+      "habitats": "",
+      "redlist": ""
+    },
+    "ruokki": {
+      "id": "MX.27850",
+      "habitats": "Vi - Itämeri; K - Kalliot ja kivikot",
+      "redlist": "LC (2019)"
+    },
+    "pikkuruokki": {
+      "id": "MX.27848",
+      "habitats": "",
+      "redlist": ""
+    },
+    "etelänkiisla": {
+      "id": "MX.27853",
+      "habitats": "Vi - Itämeri; K - Kalliot ja kivikot",
+      "redlist": "EN (2019)"
+    },
+    "pohjankiisla": {
+      "id": "MX.27852",
+      "habitats": "",
+      "redlist": ""
+    },
+    "pikkutiira": {
+      "id": "MX.27821",
+      "habitats": "Vi - Itämeri; Rih - hietikkorannat",
+      "redlist": "EN (2019)"
+    },
+    "hietatiira": {
+      "id": "MX.27795",
+      "habitats": "",
+      "redlist": ""
+    },
+    "räyskä": {
+      "id": "MX.27797",
+      "habitats": "Vi - Itämeri; Ri - Itämeren rannat",
+      "redlist": "LC (2019)"
+    },
+    "valkoposkitiira": {
+      "id": "MX.27789",
+      "habitats": "",
+      "redlist": ""
+    },
+    "mustatiira": {
+      "id": "MX.27791",
+      "habitats": "Vsr - rehevät järvet ja lammet",
+      "redlist": "CR (2019)"
+    },
+    "valkosiipitiira": {
+      "id": "MX.27790",
+      "habitats": "",
+      "redlist": ""
+    },
+    "riuttatiira": {
+      "id": "MX.27830",
+      "habitats": "",
+      "redlist": ""
+    },
+    "kalatiira": {
+      "id": "MX.27801",
+      "habitats": "Vs - järvet ja lammet; Rj - järven- ja joenrannat; Vi - Itämeri; Ri - Itämeren rannat; Sn - nevat; Ir - rakennukset ja rakenteet",
+      "redlist": "LC (2019)"
+    },
+    "lapintiira": {
+      "id": "MX.27802",
+      "habitats": "Vi - Itämeri; Ri - Itämeren rannat; Vs - järvet ja lammet; Rj - järven- ja joenrannat; Sn - nevat; Ts - paljakan suot; Iu - uuselinympäristöt",
+      "redlist": "LC (2019)"
+    },
+    "pikkulokki": {
+      "id": "MX.27777",
+      "habitats": "Vsr - rehevät järvet ja lammet; Rjn - niittyrannat; Vi - Itämeri; Ri - Itämeren rannat; Sn - nevat",
+      "redlist": "LC (2019)"
+    },
+    "ruusulokki": {
+      "id": "MX.27780",
+      "habitats": "",
+      "redlist": ""
+    },
+    "jäälokki": {
+      "id": "MX.27737",
+      "habitats": "",
+      "redlist": ""
+    },
+    "tiiralokki": {
+      "id": "MX.27787",
+      "habitats": "",
+      "redlist": ""
+    },
+    "pikkukajava": {
+      "id": "MX.27782",
+      "habitats": "",
+      "redlist": ""
+    },
+    "kaitanokkalokki": {
+      "id": "MX.27775",
+      "habitats": "",
+      "redlist": ""
+    },
+    "naurulokki": {
+      "id": "MX.27774",
+      "habitats": "Vi - Itämeri; Ri - Itämeren rannat; Vsr - rehevät järvet ja lammet; Vsk - karut järvet ja lammet; Sn - nevat; Va - lampareet ja allikot (myös rimmet); Rjn - niittyrannat; Iu - uuselinympäristöt",
+      "redlist": "VU (2019)"
+    },
+    "nokisiipilokki": {
+      "id": "MX.27764",
+      "habitats": "",
+      "redlist": ""
+    },
+    "preerianaurulokki": {
+      "id": "MX.27768",
+      "habitats": "",
+      "redlist": ""
+    },
+    "välimerenlokki": {
+      "id": "MX.27746",
+      "habitats": "",
+      "redlist": ""
+    },
+    "mustanmerenlokki": {
+      "id": "MX.27770",
+      "habitats": "",
+      "redlist": ""
+    },
+    "kalalokki": {
+      "id": "MX.27748",
+      "habitats": "Vi - Itämeri; Ri - Itämeren rannat; Vs - järvet ja lammet; Rj - järven- ja joenrannat; Sn - nevat; Sr - rämeet; Ir - rakennukset ja rakenteet",
+      "redlist": "LC (2019)"
+    },
+    "selkälokki": {
+      "id": "MX.27753",
+      "habitats": "Vsk - karut järvet ja lammet; Rj - järven- ja joenrannat; Vi - Itämeri; Ri - Itämeren rannat",
+      "redlist": "EN (2019)"
+    },
+    "harmaalokki": {
+      "id": "MX.27750",
+      "habitats": "Vi - Itämeri; Ri - Itämeren rannat; Vsk - karut järvet ja lammet; Rj - järven- ja joenrannat; Sn - nevat; Ir - rakennukset ja rakenteet; Vsr - rehevät järvet ja lammet",
+      "redlist": "VU (2019)"
+    },
+    "aroharmaalokki": {
+      "id": "MX.73583",
+      "habitats": "",
+      "redlist": ""
+    },
+    "etelänharmaalokki": {
+      "id": "MX.73584",
+      "habitats": "",
+      "redlist": ""
+    },
+    "ohotanlokki": {
+      "id": "MX.27758",
+      "habitats": "",
+      "redlist": ""
+    },
+    "grönlanninlokki": {
+      "id": "MX.27762",
+      "habitats": "",
+      "redlist": ""
+    },
+    "isolokki": {
+      "id": "MX.27761",
+      "habitats": "",
+      "redlist": ""
+    },
+    "merilokki": {
+      "id": "MX.27759",
+      "habitats": "Vi - Itämeri; Ri - Itämeren rannat; Sn - nevat; Vsk - karut järvet ja lammet; Rj - järven- ja joenrannat; Ir - rakennukset ja rakenteet",
+      "redlist": "VU (2019)"
+    },
+    "arokyyhky": {
+      "id": "MX.27885",
+      "habitats": "",
+      "redlist": ""
+    },
+    "kalliokyyhky": {
+      "id": "MX.27903",
+      "habitats": "",
+      "redlist": ""
+    },
+    "uuttukyyhky": {
+      "id": "MX.27908",
+      "habitats": "Ml - lehdot (myös kuusivaltaiset); Mk - kangasmetsät; Iv - viljelymaat; Ip - puistot, pihamaat ja puutarhat",
+      "redlist": "LC (2019)"
+    },
+    "sepelkyyhky": {
+      "id": "MX.27911",
+      "habitats": "Mkt - tuoreet ja lehtomaiset kankaat; Ml - lehdot (myös kuusivaltaiset); Iv - viljelymaat; Ip - puistot, pihamaat ja puutarhat",
+      "redlist": "LC (2019)"
+    },
+    "turkinkyyhky": {
+      "id": "MX.27960",
+      "habitats": "Ip - puistot, pihamaat ja puutarhat",
+      "redlist": "EN (2019)"
+    },
+    "turturikyyhky": {
+      "id": "MX.27955",
+      "habitats": "Iv - viljelymaat; Ml - lehdot (myös kuusivaltaiset); Mk - kangasmetsät; Ip - puistot, pihamaat ja puutarhat",
+      "redlist": "CR (2019)"
+    },
+    "idänturturikyyhky": {
+      "id": "MX.27958",
+      "habitats": "",
+      "redlist": ""
+    },
+    "harakkakäki": {
+      "id": "MX.28699",
+      "habitats": "",
+      "redlist": ""
+    },
+    "käki": {
+      "id": "MX.28715",
+      "habitats": "Mk - kangasmetsät; Sr - rämeet; Ml - lehdot (myös kuusivaltaiset); Mt - tunturikoivikot (pois lukien tunturikoivulehdot)",
+      "redlist": "LC (2019)"
+    },
+    "idänkäki": {
+      "id": "MX.5006517",
+      "habitats": "",
+      "redlist": ""
+    },
+    "tornipöllö": {
+      "id": "MX.28881",
+      "habitats": "",
+      "redlist": ""
+    },
+    "kyläpöllönen": {
+      "id": "MX.28914",
+      "habitats": "",
+      "redlist": ""
+    },
+    "huuhkaja": {
+      "id": "MX.28965",
+      "habitats": "K - Kalliot ja kivikot; Mk - kangasmetsät",
+      "redlist": "EN (2019)"
+    },
+    "tunturipöllö": {
+      "id": "MX.28987",
+      "habitats": "Tk - tunturikankaat; Iv - viljelymaat; Vi - Itämeri",
+      "redlist": "CR (2019)"
+    },
+    "hiiripöllö": {
+      "id": "MX.29008",
+      "habitats": "Mk - kangasmetsät; Sk - korvet; Mk - kangasmetsät; Mt - tunturikoivikot (pois lukien tunturikoivulehdot)",
+      "redlist": "LC (2019)"
+    },
+    "varpuspöllö": {
+      "id": "MX.29011",
+      "habitats": "M - Metsät",
+      "redlist": "VU (2019)"
+    },
+    "minervanpöllö": {
+      "id": "MX.29033",
+      "habitats": "",
+      "redlist": ""
+    },
+    "lehtopöllö": {
+      "id": "MX.28998",
+      "habitats": "Ml - lehdot (myös kuusivaltaiset); Mk - kangasmetsät; Ip - puistot, pihamaat ja puutarhat",
+      "redlist": "LC (2019)"
+    },
+    "viirupöllö": {
+      "id": "MX.29003",
+      "habitats": "Mk - kangasmetsät; Ml - lehdot (myös kuusivaltaiset)",
+      "redlist": "LC (2019)"
+    },
+    "lapinpöllö": {
+      "id": "MX.29004",
+      "habitats": "Mk - kangasmetsät; Sk - korvet; Ml - lehdot (myös kuusivaltaiset)",
+      "redlist": "LC (2019)"
+    },
+    "sarvipöllö": {
+      "id": "MX.29068",
+      "habitats": "Mk - kangasmetsät; Ml - lehdot (myös kuusivaltaiset); Ip - puistot, pihamaat ja puutarhat; Iv - viljelymaat",
+      "redlist": "LC (2019)"
+    },
+    "suopöllö": {
+      "id": "MX.29072",
+      "habitats": "Sn - nevat; Iv - viljelymaat; Mt - tunturikoivikot (pois lukien tunturikoivulehdot); Rin - niittyrannat; Rjn - niittyrannat",
+      "redlist": "LC (2019)"
+    },
+    "helmipöllö": {
+      "id": "MX.29038",
+      "habitats": "Mk - kangasmetsät; Sk - korvet; Sr - rämeet; Ml - lehdot (myös kuusivaltaiset)",
+      "redlist": "NT (2019)"
+    },
+    "kehrääjä": {
+      "id": "MX.29172",
+      "habitats": "Mk - kangasmetsät; Mk - kangasmetsät; Sr - rämeet",
+      "redlist": "LC (2019)"
+    },
+    "piikkipyrstökiitäjä": {
+      "id": "MX.29286",
+      "habitats": "",
+      "redlist": ""
+    },
+    "tervapääsky": {
+      "id": "MX.29324",
+      "habitats": "Ir - rakennukset ja rakenteet; Mk - kangasmetsät; Ml - lehdot (myös kuusivaltaiset)",
+      "redlist": "EN (2019)"
+    },
+    "vaaleakiitäjä": {
+      "id": "MX.29323",
+      "habitats": "",
+      "redlist": ""
+    },
+    "alppikiitäjä": {
+      "id": "MX.29315",
+      "habitats": "",
+      "redlist": ""
+    },
+    "häätökiitäjä": {
+      "id": "MX.29330",
+      "habitats": "",
+      "redlist": ""
+    },
+    "kuningaskalastaja": {
+      "id": "MX.29860",
+      "habitats": "Vj - joet; Vp - purot ja norot",
+      "redlist": "CR (2019)"
+    },
+    "mehiläissyöjä": {
+      "id": "MX.29998",
+      "habitats": "",
+      "redlist": ""
+    },
+    "vihermehiläissyöjä": {
+      "id": "MX.29996",
+      "habitats": "",
+      "redlist": ""
+    },
+    "sininärhi": {
+      "id": "MX.30004",
+      "habitats": "",
+      "redlist": ""
+    },
+    "harjalintu": {
+      "id": "MX.30031",
+      "habitats": "",
+      "redlist": ""
+    },
+    "käenpiika": {
+      "id": "MX.30333",
+      "habitats": "Mk - kangasmetsät; Ml - lehdot (myös kuusivaltaiset); Ip - puistot, pihamaat ja puutarhat; Ih - hakamaat, lehdesniityt ja metsälaitumet; Mt - tunturikoivikot (pois lukien tunturikoivulehdot)",
+      "redlist": "NT (2019)"
+    },
+    "harmaapäätikka": {
+      "id": "MX.30530",
+      "habitats": "Ml - lehdot (myös kuusivaltaiset); Mk - kangasmetsät; Ip - puistot, pihamaat ja puutarhat",
+      "redlist": "LC (2019)"
+    },
+    "vihertikka": {
+      "id": "MX.30527",
+      "habitats": "",
+      "redlist": ""
+    },
+    "palokärki": {
+      "id": "MX.30504",
+      "habitats": "Mk - kangasmetsät; Ml - lehdot (myös kuusivaltaiset)",
+      "redlist": "LC (2019)"
+    },
+    "käpytikka": {
+      "id": "MX.30443",
+      "habitats": "Mk - kangasmetsät; Ml - lehdot (myös kuusivaltaiset); Sk - korvet; Sr - rämeet; Ip - puistot, pihamaat ja puutarhat",
+      "redlist": "LC (2019)"
+    },
+    "tammitikka": {
+      "id": "MX.30437",
+      "habitats": "",
+      "redlist": ""
+    },
+    "valkoselkätikka": {
+      "id": "MX.30438",
+      "habitats": "Ml - lehdot (myös kuusivaltaiset); Mkt - tuoreet ja lehtomaiset kankaat; Ip - puistot, pihamaat ja puutarhat",
+      "redlist": "VU (2019)"
+    },
+    "pikkutikka": {
+      "id": "MX.30428",
+      "habitats": "Ml - lehdot (myös kuusivaltaiset); Mkt - tuoreet ja lehtomaiset kankaat; Rjm - rantametsät; Rim - rantametsät; Ip - puistot, pihamaat ja puutarhat; Mt - tunturikoivikot (pois lukien tunturikoivulehdot)",
+      "redlist": "LC (2019)"
+    },
+    "pohjantikka": {
+      "id": "MX.30453",
+      "habitats": "Mk - kangasmetsät; Sk - korvet; Mk - kangasmetsät; Mt - tunturikoivikot (pois lukien tunturikoivulehdot)",
+      "redlist": "LC (2019)"
+    },
+    "kamtshatkanuunilintu": {
+      "id": "MX.5007615",
+      "habitats": "",
+      "redlist": ""
+    },
+    "arokiuru": {
+      "id": "MX.32020",
+      "habitats": "",
+      "redlist": ""
+    },
+    "ylänkökiuru": {
+      "id": "MX.32021",
+      "habitats": "",
+      "redlist": ""
+    },
+    "valkosiipikiuru": {
+      "id": "MX.32024",
+      "habitats": "",
+      "redlist": ""
+    },
+    "mustakiuru": {
+      "id": "MX.32025",
+      "habitats": "",
+      "redlist": ""
+    },
+    "lyhytvarvaskiuru": {
+      "id": "MX.32033",
+      "habitats": "",
+      "redlist": ""
+    },
+    "pikkukiuru": {
+      "id": "MX.32038",
+      "habitats": "",
+      "redlist": ""
+    },
+    "töyhtökiuru": {
+      "id": "MX.32056",
+      "habitats": "",
+      "redlist": ""
+    },
+    "kangaskiuru": {
+      "id": "MX.32063",
+      "habitats": "K - Kalliot ja kivikot; Mkk - kuivahkot ja sitä karummat kankaat; Mk - kangasmetsät; Io - ojat ja muut kaivannot",
+      "redlist": "NT (2019)"
+    },
+    "kiuru": {
+      "id": "MX.32065",
+      "habitats": "Iv - viljelymaat; Rjn - niittyrannat; Rin - niittyrannat; Sn - nevat; Iu - uuselinympäristöt",
+      "redlist": "NT (2019)"
+    },
+    "tunturikiuru": {
+      "id": "MX.32076",
+      "habitats": "Tk - tunturikankaat",
+      "redlist": "CR (2019)"
+    },
+    "törmäpääsky": {
+      "id": "MX.32120",
+      "habitats": "Io - ojat ja muut kaivannot; Vj - joet; Ris - sora-, somerikko- ja kivikkorannat; Iu - uuselinympäristöt",
+      "redlist": "EN (2019)"
+    },
+    "kalliopääsky": {
+      "id": "MX.32128",
+      "habitats": "",
+      "redlist": ""
+    },
+    "haarapääsky": {
+      "id": "MX.32132",
+      "habitats": "Ir - rakennukset ja rakenteet",
+      "redlist": "VU (2019)"
+    },
+    "räystäspääsky": {
+      "id": "MX.32163",
+      "habitats": "Ir - rakennukset ja rakenteet; Kr - kalliorotkot, rotkolaaksot ja kurut",
+      "redlist": "EN (2019)"
+    },
+    "ruostepääsky": {
+      "id": "MX.32149",
+      "habitats": "",
+      "redlist": ""
+    },
+    "isokirvinen": {
+      "id": "MX.32204",
+      "habitats": "",
+      "redlist": ""
+    },
+    "mongoliankirvinen": {
+      "id": "MX.32206",
+      "habitats": "",
+      "redlist": ""
+    },
+    "nummikirvinen": {
+      "id": "MX.32207",
+      "habitats": "",
+      "redlist": "NA (2019)"
+    },
+    "taigakirvinen": {
+      "id": "MX.32215",
+      "habitats": "",
+      "redlist": ""
+    },
+    "metsäkirvinen": {
+      "id": "MX.32214",
+      "habitats": "Mk - kangasmetsät; Sr - rämeet; Ml - lehdot (myös kuusivaltaiset); Sn - nevat",
+      "redlist": "LC (2019)"
+    },
+    "tundrakirvinen": {
+      "id": "MX.32218",
+      "habitats": "",
+      "redlist": ""
+    },
+    "niittykirvinen": {
+      "id": "MX.32213",
+      "habitats": "Sn - nevat; Tk - tunturikankaat; Ts - paljakan suot; Iv - viljelymaat; Ri - Itämeren rannat; Rjn - niittyrannat; Sr - rämeet; Ik - kosteat niityt (muut kuin rantaniityt); Iu - uuselinympäristöt",
+      "redlist": "LC (2019)"
+    },
+    "lapinkirvinen": {
+      "id": "MX.32217",
+      "habitats": "Ts - paljakan suot; Sn - nevat",
+      "redlist": "EN (2019)"
+    },
+    "luotokirvinen": {
+      "id": "MX.32221",
+      "habitats": "Vi - Itämeri; Ris - sora-, somerikko- ja kivikkorannat; K - Kalliot ja kivikot",
+      "redlist": "LC (2019)"
+    },
+    "keltavästäräkki": {
+      "id": "MX.32180",
+      "habitats": "Sn - nevat; Sr - rämeet; Iv - viljelymaat; Rjn - niittyrannat; Rin - niittyrannat; Ts - paljakan suot; Ik - kosteat niityt (muut kuin rantaniityt); Iu - uuselinympäristöt; Mkk - kuivahkot ja sitä karummat kankaat",
+      "redlist": "LC (2019)"
+    },
+    "sitruunavästäräkki": {
+      "id": "MX.32181",
+      "habitats": "Rin - niittyrannat; Rjn - niittyrannat; Ik - kosteat niityt (muut kuin rantaniityt)",
+      "redlist": "EN (2019)"
+    },
+    "virtavästäräkki": {
+      "id": "MX.32182",
+      "habitats": "Vk - kosket; Vj - joet; Vp - purot ja norot",
+      "redlist": "VU (2019)"
+    },
+    "västäräkki": {
+      "id": "MX.32183",
+      "habitats": "I - Perinneympäristöt ja muut ihmisen muuttamat ympäristöt; Rj - järven- ja joenrannat; Ri - Itämeren rannat; K - Kalliot ja kivikot; S - Suot; Mkk - kuivahkot ja sitä karummat kankaat",
+      "redlist": "NT (2019)"
+    },
+    "tilhi": {
+      "id": "MX.32608",
+      "habitats": "Mk - kangasmetsät; Mt - tunturikoivikot (pois lukien tunturikoivulehdot)",
+      "redlist": "LC (2019)"
+    },
+    "koskikara": {
+      "id": "MX.32625",
+      "habitats": "Vj - joet; Vk - kosket; Vp - purot ja norot",
+      "redlist": "VU (2019)"
+    },
+    "peukaloinen": {
+      "id": "MX.32696",
+      "habitats": "Mkt - tuoreet ja lehtomaiset kankaat; Sk - korvet; Ml - lehdot (myös kuusivaltaiset)",
+      "redlist": "LC (2019)"
+    },
+    "rautiainen": {
+      "id": "MX.32772",
+      "habitats": "Mk - kangasmetsät; Ml - lehdot (myös kuusivaltaiset); Mt - tunturikoivikot (pois lukien tunturikoivulehdot)",
+      "redlist": "LC (2019)"
+    },
+    "taigarautiainen": {
+      "id": "MX.32767",
+      "habitats": "",
+      "redlist": ""
+    },
+    "mustakurkkurautiainen": {
+      "id": "MX.32770",
+      "habitats": "",
+      "redlist": ""
+    },
+    "alppirautiainen": {
+      "id": "MX.32763",
+      "habitats": "",
+      "redlist": ""
+    },
+    "ruostepyrstö": {
+      "id": "MX.32878",
+      "habitats": "",
+      "redlist": ""
+    },
+    "punarinta": {
+      "id": "MX.32801",
+      "habitats": "Mkt - tuoreet ja lehtomaiset kankaat; Ml - lehdot (myös kuusivaltaiset)",
+      "redlist": "LC (2019)"
+    },
+    "satakieli": {
+      "id": "MX.32819",
+      "habitats": "Ml - lehdot (myös kuusivaltaiset); Rjm - rantametsät; Rim - rantametsät; Ip - puistot, pihamaat ja puutarhat; Ih - hakamaat, lehdesniityt ja metsälaitumet",
+      "redlist": "LC (2019)"
+    },
+    "etelänsatakieli": {
+      "id": "MX.32820",
+      "habitats": "",
+      "redlist": ""
+    },
+    "sinirinta": {
+      "id": "MX.32821",
+      "habitats": "Mt - tunturikoivikot (pois lukien tunturikoivulehdot); Sn - nevat; Ts - paljakan suot",
+      "redlist": "LC (2019)"
+    },
+    "rubiinisatakieli": {
+      "id": "MX.32805",
+      "habitats": "",
+      "redlist": ""
+    },
+    "sinipyrstö": {
+      "id": "MX.32816",
+      "habitats": "Mk - kangasmetsät",
+      "redlist": "LC (2019)"
+    },
+    "kivikkosatakieli": {
+      "id": "MX.32832",
+      "habitats": "",
+      "redlist": ""
+    },
+    "mustaleppälintu": {
+      "id": "MX.32894",
+      "habitats": "Ir - rakennukset ja rakenteet",
+      "redlist": "NT (2019)"
+    },
+    "leppälintu": {
+      "id": "MX.32895",
+      "habitats": "Mk - kangasmetsät; Ip - puistot, pihamaat ja puutarhat; Mt - tunturikoivikot (pois lukien tunturikoivulehdot)",
+      "redlist": "LC (2019)"
+    },
+    "pensastasku": {
+      "id": "MX.32949",
+      "habitats": "Iv - viljelymaat; Ik - kosteat niityt (muut kuin rantaniityt); Mk - kangasmetsät; Sr - rämeet; Rjn - niittyrannat; Iu - uuselinympäristöt",
+      "redlist": "VU (2019)"
+    },
+    "nokitasku": {
+      "id": "MX.32956",
+      "habitats": "",
+      "redlist": ""
+    },
+    "sepeltasku": {
+      "id": "MX.200001",
+      "habitats": "",
+      "redlist": "NA (2019)"
+    },
+    "mustapäätasku": {
+      "id": "MX.32953",
+      "habitats": "",
+      "redlist": ""
+    },
+    "arotasku": {
+      "id": "MX.32979",
+      "habitats": "",
+      "redlist": ""
+    },
+    "kivitasku": {
+      "id": "MX.32966",
+      "habitats": "Iv - viljelymaat; Tl - paljakan kalliot ja kivikot; Ir - rakennukset ja rakenteet; Iu - uuselinympäristöt; K - Kalliot ja kivikot; Mt - tunturikoivikot (pois lukien tunturikoivulehdot); Mkk - kuivahkot ja sitä karummat kankaat",
+      "redlist": "LC (2019)"
+    },
+    "nunnatasku": {
+      "id": "MX.32971",
+      "habitats": "",
+      "redlist": ""
+    },
+    "rusotasku": {
+      "id": "MX.32974",
+      "habitats": "",
+      "redlist": ""
+    },
+    "aavikkotasku": {
+      "id": "MX.32976",
+      "habitats": "",
+      "redlist": ""
+    },
+    "kivikkorastas": {
+      "id": "MX.33010",
+      "habitats": "",
+      "redlist": ""
+    },
+    "sinirastas": {
+      "id": "MX.33015",
+      "habitats": "",
+      "redlist": ""
+    },
+    "kirjorastas": {
+      "id": "MX.33051",
+      "habitats": "",
+      "redlist": ""
+    },
+    "korpirastas": {
+      "id": "MX.33081",
+      "habitats": "",
+      "redlist": ""
+    },
+    "sepelrastas": {
+      "id": "MX.33104",
+      "habitats": "Tl - paljakan kalliot ja kivikot",
+      "redlist": "VU (2019)"
+    },
+    "mustarastas": {
+      "id": "MX.33106",
+      "habitats": "Ml - lehdot (myös kuusivaltaiset); Mkt - tuoreet ja lehtomaiset kankaat; Ip - puistot, pihamaat ja puutarhat",
+      "redlist": "LC (2019)"
+    },
+    "harmaakurkkurastas": {
+      "id": "MX.33114",
+      "habitats": "",
+      "redlist": ""
+    },
+    "ruosterastas": {
+      "id": "MX.33116",
+      "habitats": "",
+      "redlist": ""
+    },
+    "ruostesiipirastas": {
+      "id": "MX.200002",
+      "habitats": "",
+      "redlist": ""
+    },
+    "mustakaularastas": {
+      "id": "MX.33115",
+      "habitats": "",
+      "redlist": ""
+    },
+    "räkättirastas": {
+      "id": "MX.33117",
+      "habitats": "Ml - lehdot (myös kuusivaltaiset); Mk - kangasmetsät; Ip - puistot, pihamaat ja puutarhat; Sr - rämeet; Mt - tunturikoivikot (pois lukien tunturikoivulehdot)",
+      "redlist": "LC (2019)"
+    },
+    "laulurastas": {
+      "id": "MX.33119",
+      "habitats": "Mkt - tuoreet ja lehtomaiset kankaat; Mkk - kuivahkot ja sitä karummat kankaat; Sr - rämeet; Mt - tunturikoivikot (pois lukien tunturikoivulehdot)",
+      "redlist": "LC (2019)"
+    },
+    "punakylkirastas": {
+      "id": "MX.33118",
+      "habitats": "Mkt - tuoreet ja lehtomaiset kankaat; Ml - lehdot (myös kuusivaltaiset); Sr - rämeet; Mt - tunturikoivikot (pois lukien tunturikoivulehdot)",
+      "redlist": "LC (2019)"
+    },
+    "kulorastas": {
+      "id": "MX.33121",
+      "habitats": "Mkk - kuivahkot ja sitä karummat kankaat; Mk - kangasmetsät",
+      "redlist": "LC (2019)"
+    },
+    "sarasirkkalintu": {
+      "id": "MX.33631",
+      "habitats": "",
+      "redlist": ""
+    },
+    "viirusirkkalintu": {
+      "id": "MX.33629",
+      "habitats": "",
+      "redlist": ""
+    },
+    "pensassirkkalintu": {
+      "id": "MX.33630",
+      "habitats": "Ik - kosteat niityt (muut kuin rantaniityt); Iv - viljelymaat; Rjn - niittyrannat; Rin - niittyrannat",
+      "redlist": "LC (2019)"
+    },
+    "viitasirkkalintu": {
+      "id": "MX.33634",
+      "habitats": "Rjn - niittyrannat; Ik - kosteat niityt (muut kuin rantaniityt); Rin - niittyrannat; Ml - lehdot (myös kuusivaltaiset)",
+      "redlist": "LC (2019)"
+    },
+    "ruokosirkkalintu": {
+      "id": "MX.33635",
+      "habitats": "Rjn - niittyrannat; Rin - niittyrannat",
+      "redlist": "EN (2019)"
+    },
+    "paksunokkakerttunen": {
+      "id": "MX.33666",
+      "habitats": "",
+      "redlist": ""
+    },
+    "pikkukultarinta": {
+      "id": "MX.33671",
+      "habitats": "Iv - viljelymaat; In - kuivat niityt, kedot ja nummet",
+      "redlist": "VU (2019)"
+    },
+    "aavikkokultarinta": {
+      "id": "MX.73578",
+      "habitats": "",
+      "redlist": ""
+    },
+    "vaaleakultarinta": {
+      "id": "MX.33672",
+      "habitats": "",
+      "redlist": ""
+    },
+    "kultarinta": {
+      "id": "MX.33676",
+      "habitats": "Ml - lehdot (myös kuusivaltaiset); Ip - puistot, pihamaat ja puutarhat; Mkt - tuoreet ja lehtomaiset kankaat",
+      "redlist": "LC (2019)"
+    },
+    "sarakerttunen": {
+      "id": "MX.33640",
+      "habitats": "",
+      "redlist": ""
+    },
+    "ruokokerttunen": {
+      "id": "MX.33641",
+      "habitats": "Rjn - niittyrannat; Rin - niittyrannat; Ik - kosteat niityt (muut kuin rantaniityt); Iv - viljelymaat; Io - ojat ja muut kaivannot",
+      "redlist": "NT (2019)"
+    },
+    "kenttäkerttunen": {
+      "id": "MX.33644",
+      "habitats": "",
+      "redlist": ""
+    },
+    "viitakerttunen": {
+      "id": "MX.33650",
+      "habitats": "Ik - kosteat niityt (muut kuin rantaniityt); Ip - puistot, pihamaat ja puutarhat; In - kuivat niityt, kedot ja nummet; Iv - viljelymaat; Rjn - niittyrannat; Rin - niittyrannat",
+      "redlist": "LC (2019)"
+    },
+    "luhtakerttunen": {
+      "id": "MX.33649",
+      "habitats": "Rjn - niittyrannat; Rin - niittyrannat; Ip - puistot, pihamaat ja puutarhat; Ik - kosteat niityt (muut kuin rantaniityt); Iv - viljelymaat",
+      "redlist": "LC (2019)"
+    },
+    "rytikerttunen": {
+      "id": "MX.33646",
+      "habitats": "Rin - niittyrannat; Rjn - niittyrannat",
+      "redlist": "LC (2019)"
+    },
+    "rastaskerttunen": {
+      "id": "MX.33651",
+      "habitats": "Rin - niittyrannat; Rjn - niittyrannat",
+      "redlist": "VU (2019)"
+    },
+    "ruskokerttu": {
+      "id": "MX.33949",
+      "habitats": "",
+      "redlist": ""
+    },
+    "rusorintakerttu": {
+      "id": "MX.33946",
+      "habitats": "",
+      "redlist": ""
+    },
+    "samettipääkerttu": {
+      "id": "MX.33943",
+      "habitats": "",
+      "redlist": ""
+    },
+    "mustakurkkukerttu": {
+      "id": "MX.33942",
+      "habitats": "",
+      "redlist": ""
+    },
+    "kääpiökerttu": {
+      "id": "MX.33938",
+      "habitats": "",
+      "redlist": ""
+    },
+    "kirjokerttu": {
+      "id": "MX.33939",
+      "habitats": "In - kuivat niityt, kedot ja nummet; Ih - hakamaat, lehdesniityt ja metsälaitumet; Ip - puistot, pihamaat ja puutarhat; Ml - lehdot (myös kuusivaltaiset); Rin - niittyrannat",
+      "redlist": "VU (2019)"
+    },
+    "hernekerttu": {
+      "id": "MX.33937",
+      "habitats": "Mk - kangasmetsät; In - kuivat niityt, kedot ja nummet; Ip - puistot, pihamaat ja puutarhat; Ih - hakamaat, lehdesniityt ja metsälaitumet; Sr - rämeet",
+      "redlist": "LC (2019)"
+    },
+    "pensaskerttu": {
+      "id": "MX.33936",
+      "habitats": "Rjn - niittyrannat; Rin - niittyrannat; Ip - puistot, pihamaat ja puutarhat; Iu - uuselinympäristöt; Ik - kosteat niityt (muut kuin rantaniityt); Ih - hakamaat, lehdesniityt ja metsälaitumet; Ml - lehdot (myös kuusivaltaiset)",
+      "redlist": "NT (2019)"
+    },
+    "lehtokerttu": {
+      "id": "MX.33935",
+      "habitats": "Ml - lehdot (myös kuusivaltaiset); Mkt - tuoreet ja lehtomaiset kankaat; Ip - puistot, pihamaat ja puutarhat; Ih - hakamaat, lehdesniityt ja metsälaitumet",
+      "redlist": "LC (2019)"
+    },
+    "mustapääkerttu": {
+      "id": "MX.33934",
+      "habitats": "Ml - lehdot (myös kuusivaltaiset); Mkt - tuoreet ja lehtomaiset kankaat; Ih - hakamaat, lehdesniityt ja metsälaitumet; Ip - puistot, pihamaat ja puutarhat",
+      "redlist": "LC (2019)"
+    },
+    "amurinuunilintu": {
+      "id": "MX.33899",
+      "habitats": "",
+      "redlist": ""
+    },
+    "kaukasianuunilintu": {
+      "id": "MX.33892",
+      "habitats": "",
+      "redlist": ""
+    },
+    "burjatianuunilintu": {
+      "id": "MX.33893",
+      "habitats": "",
+      "redlist": ""
+    },
+    "idänuunilintu": {
+      "id": "MX.33891",
+      "habitats": "Mkt - tuoreet ja lehtomaiset kankaat; Mk - kangasmetsät; Mkk - kuivahkot ja sitä karummat kankaat",
+      "redlist": "LC (2019)"
+    },
+    "lapinuunilintu": {
+      "id": "MX.33890",
+      "habitats": "Ml - lehdot (myös kuusivaltaiset); Mt - tunturikoivikot (pois lukien tunturikoivulehdot); Mkt - tuoreet ja lehtomaiset kankaat",
+      "redlist": "EN (2019)"
+    },
+    "hippiäisuunilintu": {
+      "id": "MX.33887",
+      "habitats": "",
+      "redlist": ""
+    },
+    "taigauunilintu": {
+      "id": "MX.33889",
+      "habitats": "",
+      "redlist": ""
+    },
+    "kashmirinuunilintu": {
+      "id": "MX.73589",
+      "habitats": "",
+      "redlist": ""
+    },
+    "siperianuunilintu": {
+      "id": "MX.33884",
+      "habitats": "",
+      "redlist": ""
+    },
+    "ruskouunilintu": {
+      "id": "MX.33879",
+      "habitats": "",
+      "redlist": ""
+    },
+    "vuoriuunilintu": {
+      "id": "MX.33877",
+      "habitats": "",
+      "redlist": ""
+    },
+    "balkaninuunilintu": {
+      "id": "MX.73591",
+      "habitats": "",
+      "redlist": ""
+    },
+    "sirittäjä": {
+      "id": "MX.33878",
+      "habitats": "Mkt - tuoreet ja lehtomaiset kankaat; Ml - lehdot (myös kuusivaltaiset)",
+      "redlist": "LC (2019)"
+    },
+    "tiltaltti": {
+      "id": "MX.33874",
+      "habitats": "Mkt - tuoreet ja lehtomaiset kankaat; Mk - kangasmetsät; Ml - lehdot (myös kuusivaltaiset)",
+      "redlist": "LC (2019)"
+    },
+    "iberiantiltaltti": {
+      "id": "MX.73590",
+      "habitats": "",
+      "redlist": ""
+    },
+    "pajulintu": {
+      "id": "MX.33873",
+      "habitats": "Mk - kangasmetsät; Ml - lehdot (myös kuusivaltaiset); Sr - rämeet; Mt - tunturikoivikot (pois lukien tunturikoivulehdot); Rim - rantametsät; Rjm - rantametsät",
+      "redlist": "LC (2019)"
+    },
+    "hippiäinen": {
+      "id": "MX.33954",
+      "habitats": "Mkt - tuoreet ja lehtomaiset kankaat; Mkk - kuivahkot ja sitä karummat kankaat",
+      "redlist": "LC (2019)"
+    },
+    "tulipäähippiäinen": {
+      "id": "MX.33952",
+      "habitats": "",
+      "redlist": ""
+    },
+    "harmaasieppo": {
+      "id": "MX.33989",
+      "habitats": "Mkk - kuivahkot ja sitä karummat kankaat; Mkt - tuoreet ja lehtomaiset kankaat; Mlt - tuoreet ja kuivat lehdot; Sr - rämeet; Ip - puistot, pihamaat ja puutarhat; Ir - rakennukset ja rakenteet; Ih - hakamaat, lehdesniityt ja metsälaitumet",
+      "redlist": "LC (2019)"
+    },
+    "pikkusieppo": {
+      "id": "MX.34029",
+      "habitats": "Mkt - tuoreet ja lehtomaiset kankaat; Ml - lehdot (myös kuusivaltaiset); Sk - korvet",
+      "redlist": "LC (2019)"
+    },
+    "idänpikkusieppo": {
+      "id": "MX.4887361",
+      "habitats": "",
+      "redlist": ""
+    },
+    "sepelsieppo": {
+      "id": "MX.34022",
+      "habitats": "",
+      "redlist": ""
+    },
+    "kirjosieppo": {
+      "id": "MX.34021",
+      "habitats": "Mkt - tuoreet ja lehtomaiset kankaat; Ip - puistot, pihamaat ja puutarhat; Mkk - kuivahkot ja sitä karummat kankaat; Ml - lehdot (myös kuusivaltaiset)",
+      "redlist": "LC (2019)"
+    },
+    "viiksitimali": {
+      "id": "MX.33492",
+      "habitats": "Rin - niittyrannat; Vsr - rehevät järvet ja lammet; Rjn - niittyrannat; Vi - Itämeri",
+      "redlist": "VU (2019)"
+    },
+    "pyrstötiainen": {
+      "id": "MX.34505",
+      "habitats": "Ml - lehdot (myös kuusivaltaiset); Rim - rantametsät; Rjm - rantametsät; Mkt - tuoreet ja lehtomaiset kankaat",
+      "redlist": "LC (2019)"
+    },
+    "valkopäätiainen": {
+      "id": "MX.34575",
+      "habitats": "",
+      "redlist": "NA (2019)"
+    },
+    "sinitiainen": {
+      "id": "MX.34574",
+      "habitats": "Mk - kangasmetsät; Ml - lehdot (myös kuusivaltaiset); Sk - korvet; Ip - puistot, pihamaat ja puutarhat",
+      "redlist": "LC (2019)"
+    },
+    "talitiainen": {
+      "id": "MX.34567",
+      "habitats": "Mk - kangasmetsät; Ml - lehdot (myös kuusivaltaiset); Sk - korvet; Ip - puistot, pihamaat ja puutarhat",
+      "redlist": "LC (2019)"
+    },
+    "kuusitiainen": {
+      "id": "MX.34549",
+      "habitats": "Mkt - tuoreet ja lehtomaiset kankaat; Ml - lehdot (myös kuusivaltaiset)",
+      "redlist": "LC (2019)"
+    },
+    "töyhtötiainen": {
+      "id": "MX.34553",
+      "habitats": "Mkk - kuivahkot ja sitä karummat kankaat; Sr - rämeet",
+      "redlist": "VU (2019)"
+    },
+    "viitatiainen": {
+      "id": "MX.34532",
+      "habitats": "",
+      "redlist": ""
+    },
+    "hömötiainen": {
+      "id": "MX.34535",
+      "habitats": "Mk - kangasmetsät",
+      "redlist": "EN (2019)"
+    },
+    "lapintiainen": {
+      "id": "MX.34542",
+      "habitats": "Mk - kangasmetsät; Sk - korvet",
+      "redlist": "NT (2019)"
+    },
+    "pähkinänakkeli": {
+      "id": "MX.34586",
+      "habitats": "Ip - puistot, pihamaat ja puutarhat; Ml - lehdot (myös kuusivaltaiset)",
+      "redlist": "VU (2019)"
+    },
+    "puukiipijä": {
+      "id": "MX.34616",
+      "habitats": "Mk - kangasmetsät; Ml - lehdot (myös kuusivaltaiset); Sk - korvet",
+      "redlist": "LC (2019)"
+    },
+    "pussitiainen": {
+      "id": "MX.34517",
+      "habitats": "Rim - rantametsät; Rjm - rantametsät",
+      "redlist": "EN (2019)"
+    },
+    "kuhankeittäjä": {
+      "id": "MX.36871",
+      "habitats": "Ml - lehdot (myös kuusivaltaiset); Rim - rantametsät; Rjm - rantametsät",
+      "redlist": "EN (2019)"
+    },
+    "siperianlepinkäinen": {
+      "id": "MX.32560",
+      "habitats": "",
+      "redlist": ""
+    },
+    "punapyrstölepinkäinen": {
+      "id": "MX.73581",
+      "habitats": "",
+      "redlist": ""
+    },
+    "pikkulepinkäinen": {
+      "id": "MX.32561",
+      "habitats": "Mk - kangasmetsät; I - Perinneympäristöt ja muut ihmisen muuttamat ympäristöt; Rin - niittyrannat; Rjn - niittyrannat",
+      "redlist": "LC (2019)"
+    },
+    "mustaotsalepinkäinen": {
+      "id": "MX.32568",
+      "habitats": "",
+      "redlist": ""
+    },
+    "isolepinkäinen": {
+      "id": "MX.32570",
+      "habitats": "Sr - rämeet; Mk - kangasmetsät",
+      "redlist": "LC (2019)"
+    },
+    "etelänisolepinkäinen": {
+      "id": "MX.73582",
+      "habitats": "",
+      "redlist": ""
+    },
+    "punapäälepinkäinen": {
+      "id": "MX.32578",
+      "habitats": "",
+      "redlist": ""
+    },
+    "valko-otsalepinkäinen": {
+      "id": "MX.32579",
+      "habitats": "",
+      "redlist": ""
+    },
+    "närhi": {
+      "id": "MX.37090",
+      "habitats": "Mk - kangasmetsät; Ml - lehdot (myös kuusivaltaiset)",
+      "redlist": "NT (2019)"
+    },
+    "kuukkeli": {
+      "id": "MX.37095",
+      "habitats": "Mk - kangasmetsät",
+      "redlist": "NT (2019)"
+    },
+    "harakka": {
+      "id": "MX.37122",
+      "habitats": "Ip - puistot, pihamaat ja puutarhat; Iv - viljelymaat; Mk - kangasmetsät; Ml - lehdot (myös kuusivaltaiset)",
+      "redlist": "NT (2019)"
+    },
+    "pähkinähakki": {
+      "id": "MX.37135",
+      "habitats": "Mk - kangasmetsät",
+      "redlist": "LC (2019)"
+    },
+    "naakka": {
+      "id": "MX.37142",
+      "habitats": "Ir - rakennukset ja rakenteet; Iv - viljelymaat; Ip - puistot, pihamaat ja puutarhat; Mk - kangasmetsät; Ml - lehdot (myös kuusivaltaiset)",
+      "redlist": "LC (2019)"
+    },
+    "idännaakka": {
+      "id": "MX.37143",
+      "habitats": "",
+      "redlist": ""
+    },
+    "mustavaris": {
+      "id": "MX.37156",
+      "habitats": "Ip - puistot, pihamaat ja puutarhat; Iv - viljelymaat",
+      "redlist": "LC (2019)"
+    },
+    "varis": {
+      "id": "MX.73566",
+      "habitats": "Iv - viljelymaat; Ip - puistot, pihamaat ja puutarhat; R - Rannat; Mk - kangasmetsät",
+      "redlist": "LC (2019)"
+    },
+    "korppi": {
+      "id": "MX.37178",
+      "habitats": "Mk - kangasmetsät; Tl - paljakan kalliot ja kivikot; Rim - rantametsät; K - Kalliot ja kivikot; Sr - rämeet",
+      "redlist": "LC (2019)"
+    },
+    "kottarainen": {
+      "id": "MX.36817",
+      "habitats": "Ip - puistot, pihamaat ja puutarhat; Iv - viljelymaat; Mk - kangasmetsät; Ml - lehdot (myös kuusivaltaiset)",
+      "redlist": "LC (2019)"
+    },
+    "punakottarainen": {
+      "id": "MX.36816",
+      "habitats": "",
+      "redlist": ""
+    },
+    "varpunen": {
+      "id": "MX.36573",
+      "habitats": "Ir - rakennukset ja rakenteet; Ip - puistot, pihamaat ja puutarhat",
+      "redlist": "EN (2019)"
+    },
+    "pensasvarpunen": {
+      "id": "MX.36574",
+      "habitats": "",
+      "redlist": ""
+    },
+    "pikkuvarpunen": {
+      "id": "MX.36589",
+      "habitats": "Ir - rakennukset ja rakenteet; Ip - puistot, pihamaat ja puutarhat; Iv - viljelymaat",
+      "redlist": "LC (2019)"
+    },
+    "peippo": {
+      "id": "MX.36237",
+      "habitats": "Mk - kangasmetsät; Ml - lehdot (myös kuusivaltaiset); Ip - puistot, pihamaat ja puutarhat; Sk - korvet",
+      "redlist": "LC (2019)"
+    },
+    "järripeippo": {
+      "id": "MX.36239",
+      "habitats": "Mk - kangasmetsät; Ml - lehdot (myös kuusivaltaiset); Sk - korvet; Sr - rämeet; Tk - tunturikankaat",
+      "redlist": "NT (2019)"
+    },
+    "keltahemppo": {
+      "id": "MX.36242",
+      "habitats": "Ip - puistot, pihamaat ja puutarhat",
+      "redlist": "NA (2019)"
+    },
+    "sitruunahemppo": {
+      "id": "MX.36245",
+      "habitats": "",
+      "redlist": ""
+    },
+    "viherpeippo": {
+      "id": "MX.36283",
+      "habitats": "Ip - puistot, pihamaat ja puutarhat; Iv - viljelymaat; Mk - kangasmetsät; Ml - lehdot (myös kuusivaltaiset)",
+      "redlist": "EN (2019)"
+    },
+    "tikli": {
+      "id": "MX.36306",
+      "habitats": "Ip - puistot, pihamaat ja puutarhat; Iu - uuselinympäristöt; Iv - viljelymaat; Mk - kangasmetsät; Ml - lehdot (myös kuusivaltaiset)",
+      "redlist": "LC (2019)"
+    },
+    "vihervarpunen": {
+      "id": "MX.36287",
+      "habitats": "Mk - kangasmetsät; Ml - lehdot (myös kuusivaltaiset)",
+      "redlist": "LC (2019)"
+    },
+    "hemppo": {
+      "id": "MX.36310",
+      "habitats": "Ip - puistot, pihamaat ja puutarhat; Ih - hakamaat, lehdesniityt ja metsälaitumet; Iu - uuselinympäristöt; In - kuivat niityt, kedot ja nummet; Iv - viljelymaat; Mk - kangasmetsät",
+      "redlist": "LC (2019)"
+    },
+    "vuorihemppo": {
+      "id": "MX.36309",
+      "habitats": "Tl - paljakan kalliot ja kivikot",
+      "redlist": "CR (2019)"
+    },
+    "urpiainen": {
+      "id": "MX.36308",
+      "habitats": "Mt - tunturikoivikot (pois lukien tunturikoivulehdot); Sr - rämeet; Ml - lehdot (myös kuusivaltaiset); Mk - kangasmetsät",
+      "redlist": "LC (2019)"
+    },
+    "tundraurpiainen": {
+      "id": "MX.73545",
+      "habitats": "Mt - tunturikoivikot (pois lukien tunturikoivulehdot); T - Tunturipaljakat",
+      "redlist": "LC (2019)"
+    },
+    "kirjosiipikäpylintu": {
+      "id": "MX.36359",
+      "habitats": "Mkt - tuoreet ja lehtomaiset kankaat",
+      "redlist": "LC (2019)"
+    },
+    "pikkukäpylintu": {
+      "id": "MX.36358",
+      "habitats": "Mkt - tuoreet ja lehtomaiset kankaat",
+      "redlist": "LC (2019)"
+    },
+    "isokäpylintu": {
+      "id": "MX.36356",
+      "habitats": "Mkk - kuivahkot ja sitä karummat kankaat; Sr - rämeet",
+      "redlist": "LC (2019)"
+    },
+    "punavarpunen": {
+      "id": "MX.36331",
+      "habitats": "It - tuoreet niityt; Ip - puistot, pihamaat ja puutarhat; Io - ojat ja muut kaivannot; Ih - hakamaat, lehdesniityt ja metsälaitumet; Rin - niittyrannat; Mkt - tuoreet ja lehtomaiset kankaat; Ml - lehdot (myös kuusivaltaiset)",
+      "redlist": "NT (2019)"
+    },
+    "aavikkotulkku": {
+      "id": "MX.36321",
+      "habitats": "",
+      "redlist": ""
+    },
+    "taviokuurna": {
+      "id": "MX.36351",
+      "habitats": "Mk - kangasmetsät",
+      "redlist": "LC (2019)"
+    },
+    "punatulkku": {
+      "id": "MX.36366",
+      "habitats": "Mkt - tuoreet ja lehtomaiset kankaat; Ml - lehdot (myös kuusivaltaiset)",
+      "redlist": "LC (2019)"
+    },
+    "nokkavarpunen": {
+      "id": "MX.36368",
+      "habitats": "Ip - puistot, pihamaat ja puutarhat; Ml - lehdot (myös kuusivaltaiset)",
+      "redlist": "LC (2019)"
+    },
+    "viirukerttuli": {
+      "id": "MX.35921",
+      "habitats": "",
+      "redlist": ""
+    },
+    "kettusirkku": {
+      "id": "MX.35194",
+      "habitats": "",
+      "redlist": ""
+    },
+    "valkokurkkusirkku": {
+      "id": "MX.35203",
+      "habitats": "",
+      "redlist": ""
+    },
+    "lapinsirkku": {
+      "id": "MX.35185",
+      "habitats": "Ts - paljakan suot; Tk - tunturikankaat; Tl - paljakan kalliot ja kivikot; Sn - nevat",
+      "redlist": "NT (2019)"
+    },
+    "pulmunen": {
+      "id": "MX.35189",
+      "habitats": "Tl - paljakan kalliot ja kivikot; Tk - tunturikankaat",
+      "redlist": "VU (2019)"
+    },
+    "harmaapääsirkku": {
+      "id": "MX.35179",
+      "habitats": "",
+      "redlist": ""
+    },
+    "mäntysirkku": {
+      "id": "MX.35147",
+      "habitats": "",
+      "redlist": ""
+    },
+    "keltasirkku": {
+      "id": "MX.35146",
+      "habitats": "Iv - viljelymaat; Ip - puistot, pihamaat ja puutarhat; In - kuivat niityt, kedot ja nummet; Ih - hakamaat, lehdesniityt ja metsälaitumet; Mk - kangasmetsät; Ml - lehdot (myös kuusivaltaiset)",
+      "redlist": "LC (2019)"
+    },
+    "peltosirkku": {
+      "id": "MX.35154",
+      "habitats": "Iv - viljelymaat; In - kuivat niityt, kedot ja nummet",
+      "redlist": "CR (2019)"
+    },
+    "kivikkosirkku": {
+      "id": "MX.35151",
+      "habitats": "",
+      "redlist": ""
+    },
+    "ruostekurkkusirkku": {
+      "id": "MX.35155",
+      "habitats": "",
+      "redlist": ""
+    },
+    "pohjansirkku": {
+      "id": "MX.35167",
+      "habitats": "Sr - rämeet; Sk - korvet; Mkt - tuoreet ja lehtomaiset kankaat; Mlk - kosteat lehdot",
+      "redlist": "NT (2019)"
+    },
+    "pikkusirkku": {
+      "id": "MX.35165",
+      "habitats": "Sr - rämeet; Mt - tunturikoivikot (pois lukien tunturikoivulehdot)",
+      "redlist": "LC (2019)"
+    },
+    "kastanjasirkku": {
+      "id": "MX.35174",
+      "habitats": "",
+      "redlist": ""
+    },
+    "kultasirkku": {
+      "id": "MX.35169",
+      "habitats": "Rin - niittyrannat; Rjn - niittyrannat",
+      "redlist": "RE (2019)"
+    },
+    "pajusirkku": {
+      "id": "MX.35182",
+      "habitats": "Rjn - niittyrannat; Vsr - rehevät järvet ja lammet; Io - ojat ja muut kaivannot; S - Suot",
+      "redlist": "VU (2019)"
+    },
+    "pikkupajusirkku": {
+      "id": "MX.35181",
+      "habitats": "",
+      "redlist": ""
+    },
+    "ruskopääsirkku": {
+      "id": "MX.35177",
+      "habitats": "",
+      "redlist": ""
+    },
+    "mustapääsirkku": {
+      "id": "MX.35176",
+      "habitats": "",
+      "redlist": ""
+    },
+    "harmaasirkku": {
+      "id": "MX.35145",
+      "habitats": "",
+      "redlist": ""
+    }
+  }

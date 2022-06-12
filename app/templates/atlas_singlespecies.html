@@ -14,5 +14,14 @@
     <h1>{{ html["species_name"] }}</h1>
 
     <p>Pesimäkanta keskimäärin {{ html["species_pairs"] }} paria (2010)</p>
+    <p>Habitaatit {{ html["habitats"] }}</p>
+    <p>Uhanalaisuusluokka {{ html["redlist"] }}</p>
+
+    {{ html["atlas_classes"] }}
+    
+    {{ html["confirmed_atlas_codes"] }}
+
+    <p>Atlashavaintoja suhteessa parimäärään {{ html["proportion"] }}</p>
+
 
 {% endblock %}
