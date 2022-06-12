@@ -1,0 +1,761 @@
+{
+    "kyhmyjoutsen": {
+      "pareja": 8000
+    },
+    "laulujoutsen": {
+      "pareja": 6000
+    },
+    "metsähanhi": {
+      "pareja": 2100
+    },
+    "kiljuhanhi": {
+      "pareja": "2,5"
+    },
+    "merihanhi": {
+      "pareja": 5500
+    },
+    "lumihanhi": {
+      "pareja": 0
+    },
+    "tiibetinhanhi": {
+      "pareja": 0
+    },
+    "kanadanhanhi": {
+      "pareja": 7500
+    },
+    "valkoposkihanhi": {
+      "pareja": 3250
+    },
+    "ristisorsa": {
+      "pareja": 300
+    },
+    "haapana": {
+      "pareja": 50000
+    },
+    "harmaasorsa": {
+      "pareja": 750
+    },
+    "tavi": {
+      "pareja": 200000
+    },
+    "sinisorsa": {
+      "pareja": 200000
+    },
+    "jouhisorsa": {
+      "pareja": 11500
+    },
+    "heinätavi": {
+      "pareja": 1500
+    },
+    "lapasorsa": {
+      "pareja": 12000
+    },
+    "punasotka": {
+      "pareja": 11500
+    },
+    "tukkasotka": {
+      "pareja": 50000
+    },
+    "lapasotka": {
+      "pareja": 500
+    },
+    "haahka": {
+      "pareja": 110000
+    },
+    "alli": {
+      "pareja": 1750
+    },
+    "mustalintu": {
+      "pareja": 1500
+    },
+    "pilkkasiipi": {
+      "pareja": 10000
+    },
+    "telkkä": {
+      "pareja": 195000
+    },
+    "uivelo": {
+      "pareja": 2500
+    },
+    "tukkakoskelo": {
+      "pareja": 30000
+    },
+    "isokoskelo": {
+      "pareja": 25000
+    },
+    "pyy": {
+      "pareja": 580000
+    },
+    "riekko": {
+      "pareja": 82000
+    },
+    "kiiruna": {
+      "pareja": 3000
+    },
+    "teeri": {
+      "pareja": 675000
+    },
+    "metso": {
+      "pareja": 305000
+    },
+    "peltopyy": {
+      "pareja": 8750
+    },
+    "viiriäinen": {
+      "pareja": 55
+    },
+    "fasaani": {
+      "pareja": 17500
+    },
+    "kaakkuri": {
+      "pareja": 1750
+    },
+    "kuikka": {
+      "pareja": 12000
+    },
+    "pikku-uikku": {
+      "pareja": "12,5"
+    },
+    "silkkiuikku": {
+      "pareja": 30000
+    },
+    "härkälintu": {
+      "pareja": 7000
+    },
+    "mustakurkku-uikku": {
+      "pareja": 1450
+    },
+    "merimetso": {
+      "pareja": 11000
+    },
+    "kaulushaikara": {
+      "pareja": 1250
+    },
+    "harmaahaikara": {
+      "pareja": 850
+    },
+    "mehiläishaukka": {
+      "pareja": 2500
+    },
+    "haarahaukka": {
+      "pareja": "17,5"
+    },
+    "merikotka": {
+      "pareja": 340
+    },
+    "ruskosuohaukka": {
+      "pareja": 850
+    },
+    "sinisuohaukka": {
+      "pareja": 2000
+    },
+    "arosuohaukka": {
+      "pareja": "1,5"
+    },
+    "niittysuohaukka": {
+      "pareja": 6
+    },
+    "kanahaukka": {
+      "pareja": 5100
+    },
+    "varpushaukka": {
+      "pareja": 7000
+    },
+    "hiirihaukka": {
+      "pareja": 4000
+    },
+    "piekana": {
+      "pareja": 2250
+    },
+    "kiljukotka": {
+      "pareja": "0,5"
+    },
+    "maakotka": {
+      "pareja": 340
+    },
+    "sääksi": {
+      "pareja": 1200
+    },
+    "tuulihaukka": {
+      "pareja": 7500
+    },
+    "punajalkahaukka": {
+      "pareja": 0
+    },
+    "ampuhaukka": {
+      "pareja": 2500
+    },
+    "nuolihaukka": {
+      "pareja": 3000
+    },
+    "tunturihaukka": {
+      "pareja": "38,5"
+    },
+    "muuttohaukka": {
+      "pareja": 265
+    },
+    "luhtakana": {
+      "pareja": 650
+    },
+    "luhtahuitti": {
+      "pareja": 750
+    },
+    "pikkuhuitti": {
+      "pareja": "7,5"
+    },
+    "ruisrääkkä": {
+      "pareja": 5000
+    },
+    "liejukana": {
+      "pareja": 125
+    },
+    "nokikana": {
+      "pareja": 7500
+    },
+    "kurki": {
+      "pareja": 35000
+    },
+    "meriharakka": {
+      "pareja": 3500
+    },
+    "pikkutylli": {
+      "pareja": 5000
+    },
+    "tylli": {
+      "pareja": 4500
+    },
+    "keräkurmitsa": {
+      "pareja": 2250
+    },
+    "kapustarinta": {
+      "pareja": 65000
+    },
+    "töyhtöhyyppä": {
+      "pareja": 95000
+    },
+    "pikkusirri": {
+      "pareja": "2,5"
+    },
+    "lapinsirri": {
+      "pareja": 1500
+    },
+    "merisirri": {
+      "pareja": "12,5"
+    },
+    "suosirri": {
+      "pareja": 7500
+    },
+    "jänkäsirriäinen": {
+      "pareja": 30000
+    },
+    "suokukko": {
+      "pareja": 6500
+    },
+    "jänkäkurppa": {
+      "pareja": 6000
+    },
+    "taivaanvuohi": {
+      "pareja": 100000
+    },
+    "heinäkurppa": {
+      "pareja": "5,5"
+    },
+    "lehtokurppa": {
+      "pareja": 150000
+    },
+    "mustapyrstökuiri": {
+      "pareja": 80
+    },
+    "punakuiri": {
+      "pareja": 2500
+    },
+    "pikkukuovi": {
+      "pareja": 40000
+    },
+    "kuovi": {
+      "pareja": 70000
+    },
+    "mustaviklo": {
+      "pareja": 17500
+    },
+    "punajalkaviklo": {
+      "pareja": 5250
+    },
+    "lampiviklo": {
+      "pareja": "2,5"
+    },
+    "valkoviklo": {
+      "pareja": 60000
+    },
+    "metsäviklo": {
+      "pareja": 150000
+    },
+    "liro": {
+      "pareja": 375000
+    },
+    "rantakurvi": {
+      "pareja": "7,5"
+    },
+    "rantasipi": {
+      "pareja": 150000
+    },
+    "karikukko": {
+      "pareja": 3000
+    },
+    "vesipääsky": {
+      "pareja": 8000
+    },
+    "merikihu": {
+      "pareja": 550
+    },
+    "tunturikihu": {
+      "pareja": 2550
+    },
+    "pikkulokki": {
+      "pareja": 11500
+    },
+    "naurulokki": {
+      "pareja": 110000
+    },
+    "kalalokki": {
+      "pareja": 80000
+    },
+    "selkälokki": {
+      "pareja": 7000
+    },
+    "harmaalokki": {
+      "pareja": 30000
+    },
+    "merilokki": {
+      "pareja": 2500
+    },
+    "räyskä": {
+      "pareja": 850
+    },
+    "kalatiira": {
+      "pareja": 50000
+    },
+    "lapintiira": {
+      "pareja": 75000
+    },
+    "pikkutiira": {
+      "pareja": 60
+    },
+    "mustatiira": {
+      "pareja": 30
+    },
+    "etelänkiisla": {
+      "pareja": "52,5"
+    },
+    "ruokki": {
+      "pareja": 7750
+    },
+    "riskilä": {
+      "pareja": 18500
+    },
+    "kesykyyhky": {
+      "pareja": 30000
+    },
+    "uuttukyyhky": {
+      "pareja": 4500
+    },
+    "sepelkyyhky": {
+      "pareja": 250000
+    },
+    "turkinkyyhky": {
+      "pareja": 150
+    },
+    "turturikyyhky": {
+      "pareja": "7,5"
+    },
+    "käki": {
+      "pareja": 125000
+    },
+    "huuhkaja": {
+      "pareja": 1300
+    },
+    "tunturipöllö": {
+      "pareja": 5
+    },
+    "hiiripöllö": {
+      "pareja": 3500
+    },
+    "varpuspöllö": {
+      "pareja": 7000
+    },
+    "lehtopöllö": {
+      "pareja": 1300
+    },
+    "viirupöllö": {
+      "pareja": 3250
+    },
+    "lapinpöllö": {
+      "pareja": 900
+    },
+    "sarvipöllö": {
+      "pareja": 6000
+    },
+    "suopöllö": {
+      "pareja": 6500
+    },
+    "helmipöllö": {
+      "pareja": 5500
+    },
+    "kehrääjä": {
+      "pareja": 4000
+    },
+    "tervapääsky": {
+      "pareja": 40000
+    },
+    "kuningaskalastaja": {
+      "pareja": "17,5"
+    },
+    "käenpiika": {
+      "pareja": 15000
+    },
+    "harmaapäätikka": {
+      "pareja": 3500
+    },
+    "palokärki": {
+      "pareja": 40000
+    },
+    "käpytikka": {
+      "pareja": 500000
+    },
+    "valkoselkätikka": {
+      "pareja": 150
+    },
+    "pikkutikka": {
+      "pareja": 5500
+    },
+    "pohjantikka": {
+      "pareja": 25000
+    },
+    "kangaskiuru": {
+      "pareja": 5500
+    },
+    "kiuru": {
+      "pareja": 375000
+    },
+    "tunturikiuru": {
+      "pareja": 5
+    },
+    "törmäpääsky": {
+      "pareja": 45000
+    },
+    "haarapääsky": {
+      "pareja": 125000
+    },
+    "räystäspääsky": {
+      "pareja": 90000
+    },
+    "nummikirvinen": {
+      "pareja": 0
+    },
+    "metsäkirvinen": {
+      "pareja": 2000000
+    },
+    "niittykirvinen": {
+      "pareja": 550000
+    },
+    "lapinkirvinen": {
+      "pareja": 1500
+    },
+    "luotokirvinen": {
+      "pareja": 1850
+    },
+    "keltavästäräkki": {
+      "pareja": 600000
+    },
+    "sitruunavästäräkki": {
+      "pareja": "17,5"
+    },
+    "virtavästäräkki": {
+      "pareja": 25
+    },
+    "västäräkki": {
+      "pareja": 500000
+    },
+    "tilhi": {
+      "pareja": 55000
+    },
+    "koskikara": {
+      "pareja": 300
+    },
+    "peukaloinen": {
+      "pareja": 85000
+    },
+    "rautiainen": {
+      "pareja": 600000
+    },
+    "punarinta": {
+      "pareja": 2500000
+    },
+    "satakieli": {
+      "pareja": 21500
+    },
+    "sinirinta": {
+      "pareja": 55000
+    },
+    "sinipyrstö": {
+      "pareja": 900
+    },
+    "mustaleppälintu": {
+      "pareja": 225
+    },
+    "leppälintu": {
+      "pareja": 650000
+    },
+    "pensastasku": {
+      "pareja": 300000
+    },
+    "mustapäätasku": {
+      "pareja": "0,5"
+    },
+    "kivitasku": {
+      "pareja": 75000
+    },
+    "sepelrastas": {
+      "pareja": 100
+    },
+    "mustarastas": {
+      "pareja": 500000
+    },
+    "räkättirastas": {
+      "pareja": 1650000
+    },
+    "laulurastas": {
+      "pareja": 1100000
+    },
+    "punakylkirastas": {
+      "pareja": 1750000
+    },
+    "kulorastas": {
+      "pareja": 165000
+    },
+    "pensassirkkalintu": {
+      "pareja": 3000
+    },
+    "viitasirkkalintu": {
+      "pareja": 1500
+    },
+    "ruokosirkkalintu": {
+      "pareja": 6
+    },
+    "ruokokerttunen": {
+      "pareja": 300000
+    },
+    "rytikerttunen": {
+      "pareja": 25000
+    },
+    "luhtakerttunen": {
+      "pareja": 7500
+    },
+    "viitakerttunen": {
+      "pareja": 10000
+    },
+    "rastaskerttunen": {
+      "pareja": 350
+    },
+    "pikkukultarinta": {
+      "pareja": 30
+    },
+    "kultarinta": {
+      "pareja": 15000
+    },
+    "mustapääkerttu": {
+      "pareja": 75000
+    },
+    "lehtokerttu": {
+      "pareja": 850000
+    },
+    "kirjokerttu": {
+      "pareja": 500
+    },
+    "hernekerttu": {
+      "pareja": 325000
+    },
+    "pensaskerttu": {
+      "pareja": 350000
+    },
+    "idänuunilintu": {
+      "pareja": 6500
+    },
+    "lapinuunilintu": {
+      "pareja": 1250
+    },
+    "sirittäjä": {
+      "pareja": 150000
+    },
+    "tiltaltti": {
+      "pareja": 300000
+    },
+    "pajulintu": {
+      "pareja": 9000000
+    },
+    "hippiäinen": {
+      "pareja": 1100000
+    },
+    "harmaasieppo": {
+      "pareja": 1600000
+    },
+    "pikkusieppo": {
+      "pareja": 4000
+    },
+    "kirjosieppo": {
+      "pareja": 475000
+    },
+    "viiksitimali": {
+      "pareja": 750
+    },
+    "pyrstötiainen": {
+      "pareja": 35000
+    },
+    "hömötiainen": {
+      "pareja": 800000
+    },
+    "lapintiainen": {
+      "pareja": 75000
+    },
+    "töyhtötiainen": {
+      "pareja": 500000
+    },
+    "kuusitiainen": {
+      "pareja": 60000
+    },
+    "sinitiainen": {
+      "pareja": 500000
+    },
+    "valkopäätiainen": {
+      "pareja": "0,5"
+    },
+    "talitiainen": {
+      "pareja": 1750000
+    },
+    "pussitiainen": {
+      "pareja": "1,5"
+    },
+    "pähkinänakkeli": {
+      "pareja": 10
+    },
+    "puukiipijä": {
+      "pareja": 250000
+    },
+    "kuhankeittäjä": {
+      "pareja": 2500
+    },
+    "pikkulepinkäinen": {
+      "pareja": 60000
+    },
+    "isolepinkäinen": {
+      "pareja": 7500
+    },
+    "närhi": {
+      "pareja": 150000
+    },
+    "kuukkeli": {
+      "pareja": 60000
+    },
+    "harakka": {
+      "pareja": 170000
+    },
+    "pähkinähakki": {
+      "pareja": 2750
+    },
+    "naakka": {
+      "pareja": 115000
+    },
+    "mustavaris": {
+      "pareja": 1100
+    },
+    "varis": {
+      "pareja": 185000
+    },
+    "korppi": {
+      "pareja": 21000
+    },
+    "kottarainen": {
+      "pareja": 80000
+    },
+    "varpunen": {
+      "pareja": 250000
+    },
+    "pikkuvarpunen": {
+      "pareja": 170000
+    },
+    "peippo": {
+      "pareja": 8000000
+    },
+    "järripeippo": {
+      "pareja": 1750000
+    },
+    "keltahemppo": {
+      "pareja": "1,5"
+    },
+    "viherpeippo": {
+      "pareja": 325000
+    },
+    "tikli": {
+      "pareja": 15000
+    },
+    "vihervarpunen": {
+      "pareja": 1750000
+    },
+    "hemppo": {
+      "pareja": 15000
+    },
+    "vuorihemppo": {
+      "pareja": 5
+    },
+    "urpiainen": {
+      "pareja": 500000
+    },
+    "tundraurpiainen": {
+      "pareja": 6000
+    },
+    "kirjosiipikäpylintu": {
+      "pareja": 10500
+    },
+    "pikkukäpylintu": {
+      "pareja": 225000
+    },
+    "isokäpylintu": {
+      "pareja": 55000
+    },
+    "punavarpunen": {
+      "pareja": 125000
+    },
+    "taviokuurna": {
+      "pareja": 15000
+    },
+    "punatulkku": {
+      "pareja": 185000
+    },
+    "nokkavarpunen": {
+      "pareja": 1250
+    },
+    "lapinsirkku": {
+      "pareja": 35000
+    },
+    "pulmunen": {
+      "pareja": 8500
+    },
+    "keltasirkku": {
+      "pareja": 1000000
+    },
+    "peltosirkku": {
+      "pareja": 25000
+    },
+    "pohjansirkku": {
+      "pareja": 150000
+    },
+    "pikkusirkku": {
+      "pareja": 20000
+    },
+    "kultasirkku": {
+      "pareja": 5
+    },
+    "pajusirkku": {
+      "pareja": 250000
+    }
+  }
