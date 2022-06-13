@@ -177,3 +177,11 @@ def atlas_code_to_text(atlas_code):
     atlas_code_dict["http://tun.fi/MY.atlasCodeEnum82"] = "82 Varma pesintä: nähty pesässä munia tai poikasia."
 
     return atlas_code_dict[atlas_code]
+
+def read_json_to_dict(filename):
+    filename = "./data/" + filename
+    f = open(filename)       
+    dictionary = json.load(f)
+    f.close()
+    return dictionary
+

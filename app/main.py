@@ -9,6 +9,7 @@ import atlas.atlas
 import atlas.squareform
 import atlas.squaremap
 import atlas.species
+import atlas.specieslist
 import atlas.singlespecies
 import atlas.squares
 import atlas.observers
@@ -58,6 +59,12 @@ def squaremap_redirect(square_id_untrusted):
 def squaremap(square_id_untrusted):
     html = atlas.squaremap.main(square_id_untrusted)
     return render_template("squaremap.html", html=html)
+
+@app.route("/atlas/lajiluettelo")
+#@cache.cached(timeout=3600)
+def atlas_specieslist():
+    html = atlas.specieslist.main()
+    return render_template("atlas_specieslist.html", html=html)
 
 @app.route("/atlas/laji/<string:species_name_untrusted>")
 #@cache.cached(timeout=3600) # 1 h

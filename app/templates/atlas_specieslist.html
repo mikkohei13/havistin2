@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <title>Lajit - Lintuatlaksen tilastoja (biomi.org)</title>
+{% endblock %}
+
+{% block breadcrumb %}
+    &raquo; <a href="../../../">Lintuatlas</a> &raquo; Lajit
+{% endblock %}
+
+{% block body %}
+
+    <h1>Lintuatlaksen yksittäisten lajien tilastoja</h1>
+
+    {{ html["species_list"]|safe }}
+    
+
+{% endblock %}
