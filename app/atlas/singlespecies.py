@@ -76,6 +76,7 @@ def get_atlasclass_counts(taxon_id):
             html += "<td>" + str(item["count"]) + "</td></tr>"
             total = total + item["count"]
 
+    html += f"<tr><td><strong>Yhteensä</strong></td><td><strong>{total}</strong></td></tr>\n"
     html += "</table>"
 
     return html, total
@@ -115,7 +116,6 @@ def main(species_name_untrusted):
     html["redlist"] = species_data["redlist"]
     html["habitats"] = species_data["habitats"]
     html["atlas_classes_html"] = atlas_classes_html
-    html["observations_total"] = observations_total
     html["proportion"] = proportion
     html["confirmed_atlas_codes_html"] = confirmed_atlas_codes
 
