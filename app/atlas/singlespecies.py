@@ -119,7 +119,4 @@ def main(species_name_untrusted):
     html["proportion"] = proportion
     html["confirmed_atlas_codes_html"] = confirmed_atlas_codes
 
-    
-
-
     return html

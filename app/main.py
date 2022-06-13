@@ -13,6 +13,7 @@ import atlas.specieslist
 import atlas.singlespecies
 import atlas.squares
 import atlas.observers
+import atlas.species_proportions
 
 #import app_secrets
 
@@ -38,6 +39,12 @@ def root():
     html = atlas.atlas.main()
     return render_template("index.html", html=html)
 
+@app.route("/atlas/havaintosuhteet")
+#@cache.cached(timeout=3600) # 3600 = 1 h
+def species_proportions():
+    html = atlas.species_proportions.main()
+    return render_template("species_proportions.html", html=html)
+
 @app.route("/ruutulomake/<string:square_id_untrusted>/<string:show_untrusted>")
 # Redirect
 def squareform_redirect(square_id_untrusted, show_untrusted):
@@ -61,13 +68,13 @@ def squaremap(square_id_untrusted):
     return render_template("squaremap.html", html=html)
 
 @app.route("/atlas/lajiluettelo")
-#@cache.cached(timeout=3600)
+@cache.cached(timeout=3600) # 1 h
 def atlas_specieslist():
     html = atlas.specieslist.main()
     return render_template("atlas_specieslist.html", html=html)
 
 @app.route("/atlas/laji/<string:species_name_untrusted>")
-#@cache.cached(timeout=3600) # 1 h
+@cache.cached(timeout=3600) # 1 h
 def atlas_singlespecies(species_name_untrusted):
     html = atlas.singlespecies.main(species_name_untrusted)
     return render_template("atlas_singlespecies.html", html=html)

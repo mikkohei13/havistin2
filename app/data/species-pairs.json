@@ -9,7 +9,7 @@
       "pareja": 2100
     },
     "kiljuhanhi": {
-      "pareja": "2,5"
+      "pareja": "2"
     },
     "merihanhi": {
       "pareja": 5500
@@ -114,7 +114,7 @@
       "pareja": 12000
     },
     "pikku-uikku": {
-      "pareja": "12,5"
+      "pareja": "12"
     },
     "silkkiuikku": {
       "pareja": 30000
@@ -138,7 +138,7 @@
       "pareja": 2500
     },
     "haarahaukka": {
-      "pareja": "17,5"
+      "pareja": "17"
     },
     "merikotka": {
       "pareja": 340
@@ -150,7 +150,7 @@
       "pareja": 2000
     },
     "arosuohaukka": {
-      "pareja": "1,5"
+      "pareja": "1"
     },
     "niittysuohaukka": {
       "pareja": 6
@@ -168,7 +168,7 @@
       "pareja": 2250
     },
     "kiljukotka": {
-      "pareja": "0,5"
+      "pareja": "1"
     },
     "maakotka": {
       "pareja": 340
@@ -189,7 +189,7 @@
       "pareja": 3000
     },
     "tunturihaukka": {
-      "pareja": "38,5"
+      "pareja": "38"
     },
     "muuttohaukka": {
       "pareja": 265
@@ -201,7 +201,7 @@
       "pareja": 750
     },
     "pikkuhuitti": {
-      "pareja": "7,5"
+      "pareja": "7"
     },
     "ruisrääkkä": {
       "pareja": 5000
@@ -234,13 +234,13 @@
       "pareja": 95000
     },
     "pikkusirri": {
-      "pareja": "2,5"
+      "pareja": "2"
     },
     "lapinsirri": {
       "pareja": 1500
     },
     "merisirri": {
-      "pareja": "12,5"
+      "pareja": "12"
     },
     "suosirri": {
       "pareja": 7500
@@ -258,7 +258,7 @@
       "pareja": 100000
     },
     "heinäkurppa": {
-      "pareja": "5,5"
+      "pareja": "5"
     },
     "lehtokurppa": {
       "pareja": 150000
@@ -282,7 +282,7 @@
       "pareja": 5250
     },
     "lampiviklo": {
-      "pareja": "2,5"
+      "pareja": "2"
     },
     "valkoviklo": {
       "pareja": 60000
@@ -294,7 +294,7 @@
       "pareja": 375000
     },
     "rantakurvi": {
-      "pareja": "7,5"
+      "pareja": "7"
     },
     "rantasipi": {
       "pareja": 150000
@@ -345,7 +345,7 @@
       "pareja": 30
     },
     "etelänkiisla": {
-      "pareja": "52,5"
+      "pareja": "52"
     },
     "ruokki": {
       "pareja": 7750
@@ -353,7 +353,7 @@
     "riskilä": {
       "pareja": 18500
     },
-    "kesykyyhky": {
+    "kalliokyyhky": {
       "pareja": 30000
     },
     "uuttukyyhky": {
@@ -366,7 +366,7 @@
       "pareja": 150
     },
     "turturikyyhky": {
-      "pareja": "7,5"
+      "pareja": "7"
     },
     "käki": {
       "pareja": 125000
@@ -408,7 +408,7 @@
       "pareja": 40000
     },
     "kuningaskalastaja": {
-      "pareja": "17,5"
+      "pareja": "17"
     },
     "käenpiika": {
       "pareja": 15000
@@ -468,7 +468,7 @@
       "pareja": 600000
     },
     "sitruunavästäräkki": {
-      "pareja": "17,5"
+      "pareja": "17"
     },
     "virtavästäräkki": {
       "pareja": 25
@@ -510,7 +510,7 @@
       "pareja": 300000
     },
     "mustapäätasku": {
-      "pareja": "0,5"
+      "pareja": "1"
     },
     "kivitasku": {
       "pareja": 75000
@@ -596,6 +596,9 @@
     "hippiäinen": {
       "pareja": 1100000
     },
+    "tulipäähippiäinen": {
+      "pareja": 1
+    },
     "harmaasieppo": {
       "pareja": 1600000
     },
@@ -627,13 +630,13 @@
       "pareja": 500000
     },
     "valkopäätiainen": {
-      "pareja": "0,5"
+      "pareja": "1"
     },
     "talitiainen": {
       "pareja": 1750000
     },
     "pussitiainen": {
-      "pareja": "1,5"
+      "pareja": "1"
     },
     "pähkinänakkeli": {
       "pareja": 10
@@ -690,7 +693,7 @@
       "pareja": 1750000
     },
     "keltahemppo": {
-      "pareja": "1,5"
+      "pareja": "1"
     },
     "viherpeippo": {
       "pareja": 325000
