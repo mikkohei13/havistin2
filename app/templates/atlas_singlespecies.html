@@ -11,6 +11,16 @@
 
 {% block body %}
 
+    <p id="prevnext">
+        <a href="/atlas/laji/{{ html["prev_name"] }}" id="prev">
+            &laquo; {{ html["prev_name"]}}
+        </a>
+        <span>|</span>
+        <a href="/atlas/laji/{{html["next_name"]}}" id="next">
+            {{html["next_name"] }} &raquo;
+        </a>
+    </p>
+
     <h1>{{ html["species_name"].capitalize() }}</h1>
 
     <p>Pesimäkanta keskimäärin {{ html["species_pairs"] }} paria (2010)</p>

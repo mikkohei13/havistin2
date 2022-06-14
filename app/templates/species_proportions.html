@@ -1,17 +1,18 @@
 {% extends "base.html" %}
 
 {% block head %}
-    <title>Lajit - Lintuatlaksen tilastoja (biomi.org)</title>
+    <title>Lajien havaintomäärät - Lintuatlaksen tilastoja (biomi.org)</title>
 {% endblock %}
 
 {% block breadcrumb %}
-    &raquo; <a href="../../../">Lintuatlas</a> &raquo; Lajit
+    &raquo; <a href="../../../">Lintuatlas</a> &raquo; Havaintomäärät
 {% endblock %}
 
 {% block body %}
 
     <h1>Lajien havaintomäärän ja parimäärän suhde</h1>
-    <p>Atlashavainnoiksi lasketaan mahdolliset, todennäköiset ja varmat pesimähavainnot. Parimäärä on v. 2010 atlasjulkaisusta, paitsi tulipäähippiäisellä 1.</p>
+
+    <p>Taulukossa on ensimmäisenä "alihavainnoidut" ja viimeisen "ylihavainnoidut" lajit. Atlashavainnoiksi lasketaan mahdolliset, todennäköiset ja varmat pesimähavainnot. Parimäärät ovat v. 2010 atlasjulkaisusta pesimäkannan min- ja max-parimääräarvion keskiarvoja, paitsi tulipäähippiäisellä 1.</p>
 
     {{ html["species_table"]|safe }}
     

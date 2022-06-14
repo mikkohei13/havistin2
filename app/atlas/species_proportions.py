@@ -46,12 +46,12 @@ def main():
 #    exit()
 
     species_table_html = "<table class='styled-table'>"
-    species_table_html += "<tr><th>Laji</th><th>Havaintoja / pareja</th><th>Pareja / havaintoja<th>Havaintoja</th><th>Pareja (2010)</th></tr>"
+    species_table_html += "<thead><tr><th>Laji</th><th>Havaintoja / pareja</th><th>Pareja / havaintoja<th>Havaintoja</th><th>Pareja (2010)</th></tr></thead><tbody>"
 
     for species in sorted_species_proportions:
         name = species[0]
         prop = round(species[1], 3)
-        prop_invert = round(int(species_pairs[name]['pareja']) / int(species_atlasobs_counts_keyed[name]), 3)
+        prop_invert = round(int(species_pairs[name]['pareja']) / int(species_atlasobs_counts_keyed[name]), 1)
 
         species_table_html += "<tr>"
         species_table_html += f"<td>{name}</td>"
@@ -61,7 +61,7 @@ def main():
         species_table_html += f"<td>{species_pairs[name]['pareja']}</td>"
         species_table_html += "</tr>"
 
-    species_table_html += "</table>"
+    species_table_html += "</tbody></table>"
 
     '''
     hae kaikkien lajien havaintomäärä (mahd, tn, varma) 4 atlaksesta

@@ -9,7 +9,7 @@ def get_species_list():
 
     for key, value in species_list.items():
         common.print_log(key)
-        html += f"  <li><a href='/atlas/laji/{key}'>{key}</a></li>\n"
+        html += "  <li><a href='/atlas/laji/" + key + "'>" + key.capitalize() + "</a></li>\n"
 
     html += "</ul>\n"
     return html

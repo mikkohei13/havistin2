@@ -81,6 +81,30 @@ def get_atlasclass_counts(taxon_id):
 
     return html, total
 
+def get_neighbour_names(this_name):
+    atlas_species_data = read_json_to_dict("atlas-species.json")
+
+    names_list = list(atlas_species_data.keys())
+
+    i = 0
+    last = len(names_list) - 1
+
+    for name in names_list:
+        if name == this_name:
+            if 0 == i:
+                prev = names_list[last]
+                next = names_list[i+1]
+            elif last == i:
+                prev = names_list[i-1]
+                next = names_list[0]
+            else:
+                prev = names_list[i-1]
+                next = names_list[i+1]
+            break
+        i = i + 1
+
+    return prev, next
+
 
 def main(species_name_untrusted):
     species_name = valid_species_name(species_name_untrusted)
@@ -91,6 +115,10 @@ def main(species_name_untrusted):
     if not species_data:
         common.print_log("ERROR: Species not found: " + species_name)
         raise ValueError
+
+    prev_name, next_name = get_neighbour_names(species_name)
+#    common.print_log(prev_name)
+#    common.print_log(next_name)
 
     all_species_pairs = read_json_to_dict("species-pairs.json")
     species_pairs_dict = all_species_pairs.get(species_name, { "pareja": 0 })
@@ -112,6 +140,8 @@ def main(species_name_untrusted):
 
     html = dict()
     html["species_name"] = species_name
+    html["prev_name"] = prev_name
+    html["next_name"] = next_name
     html["species_pairs"] = species_pairs
     html["redlist"] = species_data["redlist"]
     html["habitats"] = species_data["habitats"]
