@@ -15,7 +15,6 @@
         <a href="/atlas/laji/{{ html["prev_name"] }}" id="prev">
             &laquo; {{ html["prev_name"]}}
         </a>
-        <span>|</span>
         <a href="/atlas/laji/{{html["next_name"]}}" id="next">
             {{html["next_name"] }} &raquo;
         </a>
@@ -23,20 +22,22 @@
 
     <h1>{{ html["species_name"].capitalize() }}</h1>
 
-    <p>Pesimäkanta keskimäärin {{ html["species_pairs"] }} paria (2010)</p>
-    <p>Habitaatit: {{ html["habitats"] }}</p>
-    <p>Uhanalaisuusluokka: {{ html["redlist"] }}</p>
+    <p>Pesimäkanta keskimäärin <strong>{{ html["species_pairs"] }} paria</strong> (2010)</p>
+    <p>Habitaatit: <strong>{{ html["habitats"] }}</strong></p>
+    <p>Uhanalaisuusluokka: <strong>{{ html["redlist"] }}</strong></p>
 
     <h3>Atlashavaintojen määrä (4. atlas)</h3>
 
     {{ html["atlas_classes_html"] | safe }}
 
-    <p>Atlashavaintoja (varma, todennäköinen, mahdollinen) suhteessa parimäärään: {{ html["proportion"] }}</p>
+    <p>Atlashavaintoja (varma, todennäköinen, mahdollinen) suhteessa parimäärään: <strong>{{ html["proportion"] }}</strong></p>
 
     <h3>Miten pesinnät on varmistettu (3. ja 4 atlas)</h3>
     <p>Taulukossa on havainnot pesimävarmuusindekseillä 71, 72, 73, 74, 75, 81 ja 82.</p>
     {{ html["confirmed_atlas_codes_html"] | safe }}
 
+    <h3>Varmojen pesimähavaintojen lisätiedot (3. ja 4. atlas)</Label></h3>
+    {{ html["notes"] | safe }}
 
 
 {% endblock %}

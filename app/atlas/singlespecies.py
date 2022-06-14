@@ -31,7 +31,7 @@ def get_confirmed_atlascode_counts(taxon_id):
     url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=unit.atlasCode&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=100&page=1&cache=true&taxonId={taxon_id}&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&time={time}&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumD&access_token=";
 
     data_dict = common.fetch_finbif_api(url)
-    common.print_log(data_dict) # debug
+#    common.print_log(data_dict) # debug
 
     html = "<table class='styled-table'>"
     html += "<thead><tr><th>Pesimävarmuusindeksi</th><th>Havaintoja kpl</th></tr></thead>"
@@ -106,6 +106,31 @@ def get_neighbour_names(this_name):
     return prev, next
 
 
+def get_notes(taxon_id):
+    url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=unit.notes&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=500&page=1&cache=false&taxonId={taxon_id}&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&taxonRankId=MX.species&countryId=ML.206&time=2000%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumD&access_token="
+
+    # MY.atlasClassEnumB%2CMY.atlasClassEnumC%2C
+
+    data_dict = common.fetch_finbif_api(url)
+
+    html = "<table class='styled-table'>"
+    html += "<thead><tr><th>Lisätiedot</th><th>Havaintoja kpl</th></tr></thead>"
+
+    for item in data_dict["results"]:
+        notes = item["aggregateBy"]["unit.notes"]
+
+        # TODO: Filter out ATL:[0-9]{1-2}, GRI... trim, and skip empties 
+        # Skip unimportant notes, like < 4 chars
+#        if "http://tun.fi/MY.atlasCodeEnum7" == atlas_code:
+#            continue
+
+        html += "\n<tr><td>" + notes + "</td>"
+        html += "<td>" + str(item["count"]) + "</td></tr>"
+
+    html += "</table>"
+    return html
+
+
 def main(species_name_untrusted):
     species_name = valid_species_name(species_name_untrusted)
 
@@ -138,10 +163,13 @@ def main(species_name_untrusted):
 
     confirmed_atlas_codes = get_confirmed_atlascode_counts(species_data["id"])
 
+    notes = get_notes(species_data["id"])
+
     html = dict()
     html["species_name"] = species_name
     html["prev_name"] = prev_name
     html["next_name"] = next_name
+    html["notes"] = notes
     html["species_pairs"] = species_pairs
     html["redlist"] = species_data["redlist"]
     html["habitats"] = species_data["habitats"]
