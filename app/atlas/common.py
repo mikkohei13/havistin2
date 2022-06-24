@@ -9,7 +9,7 @@ def print_log(dict):
     print(dict, sep="\n", file = sys.stdout)
 
 
-def neighbour_ids(square_id):
+def neighbour_ids(square_id, include_corners = False):
     links = dict()
     latlon = square_id.split(":")
     links["n"] = str(int(latlon[0]) + 1) + ":" + latlon[1]
@@ -17,7 +17,14 @@ def neighbour_ids(square_id):
     links["s"] = str(int(latlon[0]) -1) + ":" + latlon[1]
     links["w"] = latlon[0] + ":" + str(int(latlon[1]) - 1)
 
+    if include_corners:
+        links["ne"] = str(int(latlon[0]) + 1) + ":" + str(int(latlon[1]) + 1)
+        links["se"] = str(int(latlon[0]) - 1) + ":" + str(int(latlon[1]) + 1)
+        links["sw"] = str(int(latlon[0]) - 1) + ":" + str(int(latlon[1]) - 1)
+        links["nw"] = str(int(latlon[0]) + 1) + ":" + str(int(latlon[1]) - 1)
+
     return links
+
 
 def valid_square_id(square_id):
     pattern = r'[6-7][0-9][0-9]:[3-3][0-7][0-9]'
