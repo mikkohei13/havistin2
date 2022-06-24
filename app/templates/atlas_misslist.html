@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <title>{{ html["title"] }} - Lintuatlas (biomi.org)</title>
+{% endblock %}
+
+{% block breadcrumb %}
+    &raquo; <a href="../../../">Lintuatlas</a> &raquo; Ruutulomake
+{% endblock %}
+
+{% block body %}
+
+    <div id="subnavi">
+        {{ html["showselection"]|safe }}
+        <form id="squareselection" action="" method="get">
+            <input id="mode" type="hidden" value="squareform">
+            <label id="square-label">
+                Ruutu:
+                <input type="text" id="square" name="square">
+            </label>
+            <input type="submit" value="Valitse"> <span>(esim. 668:338)</span>
+        </form>
+    </div>
+
+    <div id="heading">
+        <h1>{{ html["heading"]|safe }}</h1>
+        <p id="links">
+            <span>
+                <a href="/atlas/ruutu/{{ html["square_id"] }}">Ruudun havaintokartta</a>
+            </span>
+            <span>
+                Naapuriruudut:
+                <a href="/atlas/ruutulomake/{{ html["neighbour_ids"]["w"] }}/{{ html["show"] }}">&laquo; W</a>
+                <a href="/atlas/ruutulomake/{{ html["neighbour_ids"]["n"] }}/{{ html["show"] }}">N</a>
+                <a href="/atlas/ruutulomake/{{ html["neighbour_ids"]["s"] }}/{{ html["show"] }}">S</a>
+                <a href="/atlas/ruutulomake/{{ html["neighbour_ids"]["e"] }}/{{ html["show"] }}">E &raquo;</a>
+            </span>
+            <span>
+                <a href="https://laji.fi/map?gridsquare={{ html["square_id"] }}&layers=maastokartta,atlasGrid&print=true">Tulostettava kartta</a>
+            </span>
+    </div>
+
+    <div id="info_top">
+        <div id="info">
+            {{ html["info_top"]|safe }}
+        </div>
+        <div id="fillable">
+            <span id="paikka">Paikka:</span>
+            <span id="pvm">Pvm:</span>
+            <span id="klo">Klo alku & loppu:</span>
+            <span id="havainnoijat">Havainnoijat:</span>
+            <span id="taydellinen"><strong>☐</strong> Täydellinen lista</span>
+            <span id="tallennettu">Tallennettu: <strong>☐</strong> Vihko <strong>☐</strong> Tiira <strong>☐</strong> iNaturalist</span>
+        </div>
+    </div>
+
+    <div id="species_table">
+        {{ html["species"]|safe }}
+    </div>
+
+{% endblock %}
+

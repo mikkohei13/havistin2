@@ -107,7 +107,7 @@ def get_neighbour_names(this_name):
 
 
 def get_notes(taxon_id):
-    url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=unit.notes&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=500&page=1&cache=false&taxonId={taxon_id}&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&taxonRankId=MX.species&countryId=ML.206&time=2020%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumD&access_token="
+    url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=unit.notes&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=500&page=1&cache=false&taxonId={taxon_id}&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&taxonRankId=MX.species&countryId=ML.206&time=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumD&access_token="
 
     # MY.atlasClassEnumB%2CMY.atlasClassEnumC%2C
 

@@ -7,6 +7,7 @@ import traceback
 
 import atlas.atlas
 import atlas.squareform
+import atlas.misslist
 import atlas.squaremap
 import atlas.species
 import atlas.specieslist
@@ -40,7 +41,7 @@ def root():
     return render_template("index.html", html=html)
 
 @app.route("/atlas/havaintosuhteet")
-#@cache.cached(timeout=3600) # 3600 = 1 h
+@cache.cached(timeout=3600) # 3600 = 1 h
 def species_proportions():
     html = atlas.species_proportions.main()
     return render_template("species_proportions.html", html=html)
@@ -51,10 +52,16 @@ def squareform_redirect(square_id_untrusted, show_untrusted):
     return redirect('/atlas/ruutulomake/' + square_id_untrusted + "/" + show_untrusted)
 
 @app.route("/atlas/ruutulomake/<string:square_id_untrusted>/<string:show_untrusted>")
-@cache.cached(timeout=86400) # 86400 = 24 h
+@cache.cached(timeout=86400) # 3600 = 1 h, 86400 = 24 h
 def squareform(square_id_untrusted, show_untrusted):
     html = atlas.squareform.main(square_id_untrusted, show_untrusted)
     return render_template("squareform.html", html=html)
+
+@app.route("/atlas/puutelista/<string:square_id_untrusted>")
+@cache.cached(timeout=1) # 3600 = 1 h
+def misslist(square_id_untrusted):
+    html = atlas.misslist.main(square_id_untrusted)
+    return render_template("atlas_misslist.html", html=html)
 
 @app.route("/ruutu/<string:square_id_untrusted>")
 # Redirect
