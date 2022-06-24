@@ -252,9 +252,18 @@ def main(square_id_untrusted):
     add_species_to_pointsdict(pointsdict, around_ids["nw"])
 
     filtered_pointsdict = filter_confirmed_species(pointsdict, atlas4_species_dict)
-#    common.print_log(filtered_pointsdict)
 
-    html["species_table"] = make_table(filtered_pointsdict)
+    # Makes a species list that is sorted by points decending
+    sorted_species_list = sorted(filtered_pointsdict, reverse=True, key=lambda x: (filtered_pointsdict[x]['points']))
+
+    common.print_log(sorted_species_list)
+
+    # Create sorted dict
+    sorted_pointsdict = dict()
+    for species in sorted_species_list:
+        sorted_pointsdict[species] = filtered_pointsdict[species]
+
+    html["species_table"] = make_table(sorted_pointsdict)
 
     return html
 
