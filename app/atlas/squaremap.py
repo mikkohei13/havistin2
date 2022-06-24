@@ -56,6 +56,26 @@ def coordinate_accuracy_html(data):
     return html[0:-2]
 
 
+def observers(square_id):
+    url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=gathering.team.memberName&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=30&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&coordinates={square_id}%3AYKJ&access_token="
+
+    data = common.fetch_finbif_api(url)
+
+    html = ""
+    html += "<table class='styled-table'>"
+    html += "<thead><tr><th>Havainnoija</th><th>Havaintoja</th></tr></thead>"
+    html += "<tbody>"
+
+    for item in data["results"]:
+        aggregate_by = item["aggregateBy"]["gathering.team.memberName"]
+        count = str(item["count"])
+        html += "<tr><td>" + aggregate_by + "</td>"
+        html += "<td>" + count + "</td>"
+
+    html += "</tbody></table>"
+    return html
+
+
 def main(square_id_untrusted):
     html = dict()
 
@@ -71,6 +91,8 @@ def main(square_id_untrusted):
 
     coordinate_accuracy_data, total_obs_count = common.coordinate_accuracy_data(square_id)
     html["accuracies"] = coordinate_accuracy_html(coordinate_accuracy_data)
+
+    html["observers"] = observers(square_id)
 
 #    html["total_obs_count"] = collection_counts(square_id)
 

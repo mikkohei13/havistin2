@@ -49,9 +49,13 @@
     <p>{{ html["accuracies"]|safe }}</p>
 
     <div id="map"></div>
-    
+
+    <h3>Havainnoijat tällä ruudulla (top 30)</h3>
+
+    <p>{{ html["observers"]|safe }}</p>
+
     <script>
-        var map = L.map('map').setView([{{ html["centerpoint"]|safe }}], 11);
+        var map = L.map('map', { scrollWheelZoom: false }).setView([{{ html["centerpoint"]|safe }}], 11);
         
         // Set max zoom, since too much zooming gives wrong impression of inaccurate obs locations.
         // But: this affects heat map calculations!
