@@ -54,7 +54,7 @@ def main():
         prop_invert = round(int(species_pairs[name]['pareja']) / int(species_atlasobs_counts_keyed[name]), 1)
 
         species_table_html += "<tr>"
-        species_table_html += f"<td>{name}</td>"
+        species_table_html += f"<td><a href='/atlas/laji/{name}'>{name}</a></td>"
         species_table_html += f"<td>{prop}</td>"
         species_table_html += f"<td>{prop_invert}</td>"
         species_table_html += f"<td>{species_atlasobs_counts_keyed[name]}</td>"

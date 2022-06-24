@@ -20,9 +20,9 @@ def breeding_html(probablility):
     html += "<tbody>"
 
     for item in data["results"]:
-        aggregate_by = item["aggregateBy"]["unit.linkings.originalTaxon.speciesNameFinnish"]
+        species = item["aggregateBy"]["unit.linkings.originalTaxon.speciesNameFinnish"]
         count = str(item["count"])
-        html += "<tr><td>" + aggregate_by + "</td>"
+        html += "<tr><td><a href='/atlas/laji/" + species + "'>" + species + "</a></td>"
         html += "<td>" + count + "</td>"
 
     html += "</tbody></table>"
