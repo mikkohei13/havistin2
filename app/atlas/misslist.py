@@ -35,7 +35,11 @@ def atlas4_square(square_id):
     url = f"https://atlas-api.rahtiapp.fi/api/v1/grid/{square_id}/atlas"
 
     req = requests.get(url)
-    data_dict = req.json()
+    if 200 == req.status_code:
+        data_dict = req.json()
+    else:
+        data_dict = dict()
+        data_dict["data"] = []
 
     # Square metadata as separate dict, without species
     square_info_dict = data_dict.copy()
@@ -199,7 +203,7 @@ def filter_confirmed_species(pointsdict, this_square_species_dict):
 
 def make_table(this_square_species):
     html = "<table class='styled-table'>"
-    html += "<thead><tr><th>Laji</th><th>Pistearvo</th><th>Korkein indeksi</th></tr></thead><tbody>"
+    html += "<thead><tr><th>Laji</th><th>Pistearvo</th><th>Korkein indeksi tällä ruudulla</th></tr></thead><tbody>"
 
     for species, value in this_square_species.items():
         html += f"<td>{species}</td>"
@@ -216,13 +220,6 @@ def make_table(this_square_species):
 
 def main(square_id_untrusted):
     html = dict()
-
-    '''
-    TODO:
-    Handle edge squares, like 664:335
-    Cleanup code
-    Refactor common functions into common
-    '''
 
     square_id = common.valid_square_id(square_id_untrusted)
     html["square_id"] = square_id
@@ -256,7 +253,7 @@ def main(square_id_untrusted):
     # Makes a species list that is sorted by points decending
     sorted_species_list = sorted(filtered_pointsdict, reverse=True, key=lambda x: (filtered_pointsdict[x]['points']))
 
-    common.print_log(sorted_species_list)
+#    common.print_log(sorted_species_list) # debug
 
     # Create sorted dict
     sorted_pointsdict = dict()
