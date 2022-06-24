@@ -58,7 +58,7 @@ def squareform(square_id_untrusted, show_untrusted):
     return render_template("squareform.html", html=html)
 
 @app.route("/atlas/puutelista/<string:square_id_untrusted>")
-@cache.cached(timeout=1) # 3600 = 1 h
+@cache.cached(timeout=86400) # 3600 = 1 h
 def misslist(square_id_untrusted):
     html = atlas.misslist.main(square_id_untrusted)
     return render_template("atlas_misslist.html", html=html)

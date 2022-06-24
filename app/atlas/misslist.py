@@ -217,6 +217,13 @@ def make_table(this_square_species):
 def main(square_id_untrusted):
     html = dict()
 
+    '''
+    TODO:
+    Handle edge squares, like 664:335
+    Cleanup code
+    Refactor common functions into common
+    '''
+
     square_id = common.valid_square_id(square_id_untrusted)
     html["square_id"] = square_id
 
