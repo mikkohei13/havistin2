@@ -174,28 +174,27 @@ def info_top_html(atlas4_square_info_dict):
 
 
 def filter_confirmed_species(pointsdict, this_square_species_dict):
-    filtered_dict = this_square_species_dict.copy()
+    filtered_dict = dict()
+#    common.print_log(pointsdict) # debug
+#    common.print_log(this_square_species_dict) # debug
 
-    # Filter out species which have aleady been confirmed in this square 
     for species, points in pointsdict.items():
+        # Skip species which have aleady been confirmed in this square 
         if species in this_square_species_dict:
             if "MY.atlasClassEnumD" == this_square_species_dict[species]["atlasClass"]["key"]:
-                del filtered_dict[species]
-            # Add points if exist
-            else:
-                if points > 0:
-                    filtered_dict[species]["points"] = points
-        # else add to atlas4speciesdict
+                continue
+        # Add info needed on the page
+        filtered_dict[species] = dict()
+        filtered_dict[species]["points"] = points
 
-    filtered_dict_2 = filtered_dict.copy()
+        # If species has been observed in this square:
+        if species in this_square_species_dict:
+            filtered_dict[species]["atlasCode"] = this_square_species_dict[species]["atlasCode"]["value"]
+        # If hasn't been:
+        else:
+            filtered_dict[species]["atlasCode"] = ""
 
-    # Filter out unlikely breeders
-    # Not needed, if this_square list is used as a basis: we want to see also species that exist only in this square!
-    for species, value in filtered_dict.items():
-        if "MY.atlasClassEnumA" == value["atlasClass"]["key"]:
-            del filtered_dict_2[species]
-
-    return filtered_dict_2
+    return filtered_dict
 
 
 def make_table(this_square_species):
@@ -207,7 +206,7 @@ def make_table(this_square_species):
         if not "points" in value:
             value['points'] = "0"
         html += f"<td>{value['points']}</td>"
-        html += f"<td>{value['atlasCode']['value']}</td>"
+        html += f"<td>{value['atlasCode']}</td>"
         html += "</tr>\n"
 
     html += "</tbody></table>"
@@ -221,16 +220,13 @@ def main(square_id_untrusted):
     square_id = common.valid_square_id(square_id_untrusted)
     html["square_id"] = square_id
 
-    neighbour_ids = common.neighbour_ids(square_id)
-    html["neighbour_ids"] = neighbour_ids
-
     around_ids = common.neighbour_ids(square_id, True)
-    common.print_log(around_ids)
+    html["neighbour_ids"] = around_ids
 
     # Atlas 4
     atlas4_species_dict, atlas4_square_info_dict = atlas4_square(square_id)
 
-    html["title"] = f"Atlasruutu {atlas4_square_info_dict['coordinates']}"
+    html["title"] = f"Atlasruudun {atlas4_square_info_dict['coordinates']} puutelista"
     html["species"] = species_html()
 
     html["heading"] = f"{atlas4_square_info_dict['coordinates']} {atlas4_square_info_dict['name']} <span> - {atlas4_square_info_dict['birdAssociationArea']['value']}</span>"
@@ -253,7 +249,7 @@ def main(square_id_untrusted):
 #    TODO: Puutelistalle myös lajit, joita ei havaittu tällä ruudulla vielä lainkaan. Miten? Pohjana pointsdict, josta kootaan uusi dict
 
     filtered_pointsdict = filter_confirmed_species(pointsdict, atlas4_species_dict)
-    common.print_log(filtered_pointsdict)
+#    common.print_log(filtered_pointsdict)
 
     html["species_table"] = make_table(filtered_pointsdict)
 

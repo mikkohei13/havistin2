@@ -5,15 +5,15 @@
 {% endblock %}
 
 {% block breadcrumb %}
-    &raquo; <a href="../../../">Lintuatlas</a> &raquo; Ruutulomake
+    &raquo; <a href="../../../">Lintuatlas</a> &raquo; Puutelista
 {% endblock %}
 
 {% block body %}
 
     <div id="subnavi">
-        {{ html["showselection"]|safe }}
+        <h3>Ruudun puutelista</h3>
         <form id="squareselection" action="" method="get">
-            <input id="mode" type="hidden" value="squareform">
+            <input id="mode" type="hidden" value="misslist">
             <label id="square-label">
                 Ruutu:
                 <input type="text" id="square" name="square">
@@ -26,14 +26,17 @@
         <h1>{{ html["heading"]|safe }}</h1>
         <p id="links">
             <span>
+                <a href="/atlas/ruutulomake/{{ html["square_id"] }}/vakio">Ruudun maastolomake</a>
+            </span>
+            <span>
                 <a href="/atlas/ruutu/{{ html["square_id"] }}">Ruudun havaintokartta</a>
             </span>
             <span>
                 Naapuriruudut:
-                <a href="/atlas/ruutulomake/{{ html["neighbour_ids"]["w"] }}/{{ html["show"] }}">&laquo; W</a>
-                <a href="/atlas/ruutulomake/{{ html["neighbour_ids"]["n"] }}/{{ html["show"] }}">N</a>
-                <a href="/atlas/ruutulomake/{{ html["neighbour_ids"]["s"] }}/{{ html["show"] }}">S</a>
-                <a href="/atlas/ruutulomake/{{ html["neighbour_ids"]["e"] }}/{{ html["show"] }}">E &raquo;</a>
+                <a href="/atlas/puutelista/{{ html["neighbour_ids"]["w"] }}">&laquo; W</a>
+                <a href="/atlas/puutelista/{{ html["neighbour_ids"]["n"] }}">N</a>
+                <a href="/atlas/puutelista/{{ html["neighbour_ids"]["s"] }}">S</a>
+                <a href="/atlas/puutelista/{{ html["neighbour_ids"]["e"] }}">E &raquo;</a>
             </span>
             <span>
                 <a href="https://laji.fi/map?gridsquare={{ html["square_id"] }}&layers=maastokartta,atlasGrid&print=true">Tulostettava kartta</a>
@@ -57,6 +60,8 @@
     <div id="species_table">
         {{ html["species_table"]|safe }}
     </div>
+
+    <p>Puutelistalla ei ole mukana lajeja, joiden pesintä on jo varmistettu tästä ruudusta. Pistearvo lasketaan kahdeksan naapuriruudun havaintojen perusteella niin että varma pesintä tuo 3 pistettä, todennäköinen 2 ja mahdollinen 1. Eli jos laji on havaittu varmasti pesivänä kaikissa naapuriruuduissa, sen pistearvo on 24.</p>
 
 {% endblock %}
 
