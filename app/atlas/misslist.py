@@ -237,16 +237,12 @@ def main(square_id_untrusted):
     pointsdict = dict()
     add_species_to_pointsdict(pointsdict, around_ids["n"])
     add_species_to_pointsdict(pointsdict, around_ids["ne"])
-    '''
     add_species_to_pointsdict(pointsdict, around_ids["e"])
     add_species_to_pointsdict(pointsdict, around_ids["se"])
     add_species_to_pointsdict(pointsdict, around_ids["s"])
     add_species_to_pointsdict(pointsdict, around_ids["sw"])
     add_species_to_pointsdict(pointsdict, around_ids["w"])
     add_species_to_pointsdict(pointsdict, around_ids["nw"])
-    '''
-
-#    TODO: Puutelistalle myös lajit, joita ei havaittu tällä ruudulla vielä lainkaan. Miten? Pohjana pointsdict, josta kootaan uusi dict
 
     filtered_pointsdict = filter_confirmed_species(pointsdict, atlas4_species_dict)
 #    common.print_log(filtered_pointsdict)
