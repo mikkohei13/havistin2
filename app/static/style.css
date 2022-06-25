@@ -234,6 +234,10 @@ h2, h3, h3 {
     display: block;
 }
 
+#cc {
+    font-style: italic;
+}
+
 /* Printer */
 
 @media print {

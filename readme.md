@@ -81,8 +81,8 @@ Build image from Dockerfile:
 
 ## Must
 
-- Add CC-license, https://lintuatlas.fi/api/
-- Empty atlasform PDF (somehow)
+- Cleanup code
+- Refactor common functions into common
 - robots.txt, forbid all but front page (now all forbidden)
 - Paginate fetching mappable observations of a square. Must do this before top square has less than 1000 mappable observations.
 - Birds of prey on adjusted form
@@ -90,9 +90,9 @@ Build image from Dockerfile:
 - Country filtering? (bots)
 
 
-## Should
+## Should / Might
 
-- Species page
+- Species page with time graph (x: time, y: atlascode) 
 - People lists:
     - People with complete lists from most squares: https://ebird.org/atlasny/top100?region=New+York&locInfo.regionCode=US-NY&rankedBy=blocks_with_complete
         - needs complete checklist search
