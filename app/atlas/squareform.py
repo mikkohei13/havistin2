@@ -99,40 +99,6 @@ def atlas3_square(square_id):
     return species_dict
 
 
-def convert_breeding_number(atlas_class_key):
-    if "MY.atlasClassEnumA" == atlas_class_key:
-        return 0
-    if "MY.atlasClassEnumB" == atlas_class_key:
-        return 1
-    if "MY.atlasClassEnumC" == atlas_class_key:
-        return 2
-    if "MY.atlasClassEnumD" == atlas_class_key:
-        return 3
-
-
-def atlas4_square(square_id):
-    square_id = square_id.replace(":", "%3A")
-    url = f"https://atlas-api.rahtiapp.fi/api/v1/grid/{square_id}/atlas"
-
-    req = requests.get(url)
-    data_dict = req.json()
-
-    # Square metadata as separate dict, without species
-    square_info_dict = data_dict.copy()
-    square_info_dict.pop("data", None)
-
-    # Species dict with fi name as key
-    species_dict = dict().copy()
-    breeding_sum_counter = 0
-
-    for species in data_dict["data"]:
-        species_dict[species["speciesName"]] = species
-        breeding_sum_counter = breeding_sum_counter + convert_breeding_number(species["atlasClass"]["key"])
-
-    square_info_dict["breeding_sum"] = breeding_sum_counter
-
-    return species_dict, square_info_dict
-
 # Most common specis breeding now (-14 days)
 def atlas4_breeding():
 
@@ -160,24 +126,6 @@ def atlas4_breeding():
     return breeding_species_list
 
 
-def split_atlascode(atlascode_text):
-    parts = atlascode_text.split(" ")
-    return parts[0]
-    
-
-def convert_atlasclass(atlasclass_raw):
-    if atlasclass_raw == "Epätodennäköinen pesintä" or atlasclass_raw == 1:
-        return "e"
-    elif atlasclass_raw == "Mahdollinen pesintä" or atlasclass_raw == 2:
-        return "M"
-    elif atlasclass_raw == "Todennäköinen pesintä" or atlasclass_raw == 3:
-        return "T"
-    elif atlasclass_raw == "Varma pesintä" or atlasclass_raw == 4:
-        return "V"
-    else:
-        return atlasclass_raw
-
-
 def species_html(species_to_show_dict, atlas3_species_dict, atlas4_species_dict, breeding_species_list):
 
     html = "<div id='listwrapper'>"
@@ -195,7 +143,7 @@ def species_html(species_to_show_dict, atlas3_species_dict, atlas4_species_dict,
             atlas3_class = "&nbsp;"
             atlas3_code = "&nbsp;"
             if speciesFi in atlas3_species_dict:
-                atlas3_class = convert_atlasclass(atlas3_species_dict[speciesFi]["breedingCategory"])
+                atlas3_class = common.convert_atlasclass(atlas3_species_dict[speciesFi]["breedingCategory"])
                 atlas3_code = str(atlas3_species_dict[speciesFi]["breedingIndex"]).replace("0", "")
 
             row_class += f" atlas3_class_{atlas3_class}"
@@ -204,8 +152,8 @@ def species_html(species_to_show_dict, atlas3_species_dict, atlas4_species_dict,
             atlas4_class = "&nbsp;"
             atlas4_code = "&nbsp;"
             if speciesFi in atlas4_species_dict:
-                atlas4_class = convert_atlasclass(atlas4_species_dict[speciesFi]["atlasClass"]["value"])
-                atlas4_code = str(split_atlascode(atlas4_species_dict[speciesFi]["atlasCode"]["value"]))
+                atlas4_class = common.convert_atlasclass(atlas4_species_dict[speciesFi]["atlasClass"]["value"])
+                atlas4_code = str(common.split_atlascode(atlas4_species_dict[speciesFi]["atlasCode"]["value"]))
 
             row_class += f" atlas4_class_{atlas4_class}"
 
@@ -295,7 +243,7 @@ def main(square_id_untrusted, show_untrusted):
 #    exit() # debug
 
     # Atlas 4
-    atlas4_species_dict, atlas4_square_info_dict = atlas4_square(square_id)
+    atlas4_species_dict, atlas4_square_info_dict = common.get_atlas4_square_data(square_id)
 
 #    print_r(atlas4_species_dict)
 

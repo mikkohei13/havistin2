@@ -18,48 +18,8 @@ def atlas_species():
     return species_dict
 
 
-# TODO: Move to common
-def convert_breeding_number(atlas_class_key):
-    if "MY.atlasClassEnumA" == atlas_class_key:
-        return 0
-    if "MY.atlasClassEnumB" == atlas_class_key:
-        return 1
-    if "MY.atlasClassEnumC" == atlas_class_key:
-        return 2
-    if "MY.atlasClassEnumD" == atlas_class_key:
-        return 3
-
-# TODO: move to common
-def atlas4_square(square_id):
-    square_id = square_id.replace(":", "%3A")
-    url = f"https://atlas-api.rahtiapp.fi/api/v1/grid/{square_id}/atlas"
-
-    req = requests.get(url)
-    if 200 == req.status_code:
-        data_dict = req.json()
-    else:
-        data_dict = dict()
-        data_dict["data"] = []
-
-    # Square metadata as separate dict, without species
-    square_info_dict = data_dict.copy()
-    square_info_dict.pop("data", None)
-
-    # Species dict with fi name as key
-    species_dict = dict().copy()
-    breeding_sum_counter = 0
-
-    for species in data_dict["data"]:
-        species_dict[species["speciesName"]] = species
-        breeding_sum_counter = breeding_sum_counter + convert_breeding_number(species["atlasClass"]["key"])
-
-    square_info_dict["breeding_sum"] = breeding_sum_counter
-
-    return species_dict, square_info_dict
-
-
 def add_species_to_pointsdict(pointsdict, square_id):
-    newsquare_species_dict, newsquare_species_info = atlas4_square(square_id)
+    newsquare_species_dict, newsquare_species_info = common.get_atlas4_square_data(square_id)
 
     # Add points: 3 for confirmed, 2 for probable and 1 for possible breeder
     for key, value in newsquare_species_dict.items():
@@ -74,24 +34,6 @@ def add_species_to_pointsdict(pointsdict, square_id):
             pointsdict[species] = pointsdict[species] + 1
 
     return pointsdict
-
-# Todo: Move to common
-def split_atlascode(atlascode_text):
-    parts = atlascode_text.split(" ")
-    return parts[0]
-    
-# Todo: Move to common
-def convert_atlasclass(atlasclass_raw):
-    if atlasclass_raw == "Epätodennäköinen pesintä" or atlasclass_raw == 1:
-        return "e"
-    elif atlasclass_raw == "Mahdollinen pesintä" or atlasclass_raw == 2:
-        return "M"
-    elif atlasclass_raw == "Todennäköinen pesintä" or atlasclass_raw == 3:
-        return "T"
-    elif atlasclass_raw == "Varma pesintä" or atlasclass_raw == 4:
-        return "V"
-    else:
-        return atlasclass_raw
 
 
 def species_html():
@@ -148,34 +90,6 @@ def species_html():
 
     return html
 
-# TODO: Move to common
-def info_top_html(atlas4_square_info_dict):
-
-    level2 = round(atlas4_square_info_dict['level2'], 1)
-    level3 = round(atlas4_square_info_dict['level3'], 1)
-    level4 = round(atlas4_square_info_dict['level4'], 1)
-    level5 = round(atlas4_square_info_dict['level5'], 1)
-
-    if atlas4_square_info_dict['breeding_sum'] >= atlas4_square_info_dict['level5']:
-        current_level = "erinomainen"
-    elif atlas4_square_info_dict['breeding_sum'] >= atlas4_square_info_dict['level4']:
-        current_level = "hyvä"
-    elif atlas4_square_info_dict['breeding_sum'] >= atlas4_square_info_dict['level3']:
-        current_level = "tyydyttävä"
-    elif atlas4_square_info_dict['breeding_sum'] >= atlas4_square_info_dict['level2']:
-        current_level = "välttävä"
-    elif atlas4_square_info_dict['breeding_sum'] >= atlas4_square_info_dict['level1']:
-        current_level = "satunnaishavaintoja"
-    else:
-        current_level = "ei havaintoja"
-    
-    square_id = atlas4_square_info_dict["coordinates"]
-
-    html = ""
-    html += f"<p id='paragraph3'>Selvitysaste: {current_level}, summa: {atlas4_square_info_dict['breeding_sum']} (rajat: välttävä {level2}, tyydyttävä {level3}, hyvä {level4}, erinomainen {level5})</p>"
-
-    return html
-
 
 def filter_confirmed_species(pointsdict, this_square_species_dict):
     filtered_dict = dict()
@@ -228,15 +142,14 @@ def main(square_id_untrusted):
     html["neighbour_ids"] = around_ids
 
     # Atlas 4
-    atlas4_species_dict, atlas4_square_info_dict = atlas4_square(square_id)
+    atlas4_species_dict, atlas4_square_info_dict = common.get_atlas4_square_data(square_id)
 
     html["title"] = f"Atlasruudun {atlas4_square_info_dict['coordinates']} puutelista"
     html["species"] = species_html()
 
     html["heading"] = f"{atlas4_square_info_dict['coordinates']} {atlas4_square_info_dict['name']} <span> - {atlas4_square_info_dict['birdAssociationArea']['value']}</span>"
     
-    # TODO: Move to common
-    html["info_top"] = info_top_html(atlas4_square_info_dict)
+    html["info_top"] = common.get_info_top_html(atlas4_square_info_dict)
 
     pointsdict = dict()
     add_species_to_pointsdict(pointsdict, around_ids["n"])
