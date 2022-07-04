@@ -58,6 +58,7 @@ for i, row in enumerate(data):
 #    thisGridSpeciesDict = dict()
 
     # New grid starts
+    # NOTE: Since this saves the data only when it handles the next square, it will never save the last grid (777:353), unless specifically told to.
     if thisGridCode != gridCodeMem:
 
 #        save_file(gridCodeMem, gridSpeciesList)
@@ -92,7 +93,7 @@ for i, row in enumerate(data):
     gridSpeciesDict[row["speciesFi"]] = row
 
 
-    step = 1000
+    step = 10000
     if i % step == 0:
         print("Done " + str(i) + " rows")
 
