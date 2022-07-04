@@ -88,6 +88,7 @@ Build image from Dockerfile:
 - Birds of prey on adjusted form
 - Command to deploy version other than latest. First submit to Articat Registry, then deploy from there using --image option.
 - Country filtering? (bots)
+- Moving from existing to nonexisting grid should show message, not error
 
 
 ## Should / Might
