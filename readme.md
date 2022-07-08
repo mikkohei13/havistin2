@@ -93,6 +93,13 @@ Build image from Dockerfile:
 
 ## Should / Might
 
+- Gamification: show how much my today's observations increased pv-summa
+    - User logs in
+    - User gives square and date
+    - Get aggregate of observations by species, atlasClass, filter Aves, Finland, 2022-01-01 ... given date - 1, grid, quality, atlasClassB/C/D, rank=species
+    - Calculate pv-sum by going through each species, and doing if/else checking if D, C, or B exist.
+    - Get similar aggregate, but only my observations only today
+    - Calculate how much pv-sum increases by going through my observations each species, and comparing to class of previous aggregate 
 - Species page with time graph (x: time, y: atlascode) 
 - People lists:
     - People with complete lists from most squares: https://ebird.org/atlasny/top100?region=New+York&locInfo.regionCode=US-NY&rankedBy=blocks_with_complete
