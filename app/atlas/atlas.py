@@ -20,7 +20,7 @@ def convert_collection_name(id):
     if  "http://tun.fi/HR.61" == id:
         return "Maalintujen linjalaskennat vakiolinjoilla"
     if  "http://tun.fi/HR.2691" == id:
-        return "Maalintujen pistelaskennat ei-vakiolinjoilla"
+        return "Maalintujen linjalaskennat ei-vakiolinjoilla"
     return "Muu (" + id + ")"
 
 
