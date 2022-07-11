@@ -183,7 +183,13 @@ def atlas_code_to_text(atlas_code):
     atlas_code_dict["http://tun.fi/MY.atlasCodeEnum81"] = "81 Varma pesintä: kuultu poikasten ääntelyä pesässä (kolo / pesä korkealla)."
     atlas_code_dict["http://tun.fi/MY.atlasCodeEnum82"] = "82 Varma pesintä: nähty pesässä munia tai poikasia."
 
-    return atlas_code_dict[atlas_code]
+    # Prepare for incorrect atlasCode's, they exist at least in old Hatikka data
+    if atlas_code in atlas_code_dict:
+        return atlas_code_dict[atlas_code]
+    else:
+        print_log("erroneous atlasCode: " + atlas_code)
+        return False
+
 
 def read_json_to_dict(filename):
     filename = "./data/" + filename

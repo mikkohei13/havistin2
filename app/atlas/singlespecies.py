@@ -31,14 +31,17 @@ def get_confirmed_atlascode_counts(taxon_id):
     url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=unit.atlasCode&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=100&page=1&cache=true&taxonId={taxon_id}&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&time={time}&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumD&access_token=";
 
     data_dict = common.fetch_finbif_api(url)
-#    common.print_log(data_dict) # debug
 
     html = "<table class='styled-table'>"
     html += "<thead><tr><th>Pesimävarmuusindeksi</th><th>Havaintoja kpl</th></tr></thead>"
 
     for item in data_dict["results"]:
         atlas_code = item["aggregateBy"]["unit.atlasCode"]
+        atlas_code_text = common.atlas_code_to_text(atlas_code)
 
+        # Skip erroneous atlas codes
+        if False == atlas_code_text:
+            continue
         # Skip inaccurate atlas code's
         if "http://tun.fi/MY.atlasCodeEnum7" == atlas_code:
             continue
