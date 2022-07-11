@@ -22,9 +22,12 @@
 
     <h1>{{ html["species_name"].capitalize() }}</h1>
 
+    <img id="speciesmap" src='https://atlas-api.rahtiapp.fi/api/v1/map/{{ html["qname"] }}/atlas'>
+
     <p>Pesimäkanta keskimäärin <strong>{{ html["species_pairs"] }} paria (2010)</strong></p>
     <p>Habitaatit: <strong>{{ html["habitats"] }}</strong></p>
     <p>Uhanalaisuusluokka: <strong>{{ html["redlist"] }}</strong></p>
+    <p><a href='https://tulokset.lintuatlas.fi/species/{{ html["qname"] }}' target='_blank'>Atlaskartta</a></p>
 
     <h3>Atlashavaintojen määrä (4. atlas)</h3>
 

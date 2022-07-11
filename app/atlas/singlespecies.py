@@ -176,5 +176,6 @@ def main(species_name_untrusted):
     html["atlas_classes_html"] = atlas_classes_html
     html["proportion"] = proportion
     html["confirmed_atlas_codes_html"] = confirmed_atlas_codes
+    html["qname"] = species_data["id"]
 
     return html
