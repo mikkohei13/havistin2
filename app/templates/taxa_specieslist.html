@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <title>{{ html["taxon_name"] }} - Lajitietoa (biomi.org)</title>
+{% endblock %}
+
+{% block breadcrumb %}
+    &raquo; <a href='/'>Havistin</a> &raquo; <a href='/taxa'>Lajitietoa</a> &raquo; {{ html["taxon_name"] }}
+{% endblock %}
+
+{% block body %}
+
+    <h1>{{ html["taxon_name"] }}</h1>
+
+    <ul>
+        <li><a href='./'>FOO</a></li>
+    </ul>
+
+{% endblock %}

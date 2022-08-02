@@ -16,6 +16,9 @@ import atlas.squares
 import atlas.observers
 import atlas.species_proportions
 
+import taxa.taxa
+import taxa.specieslist
+
 #import app_secrets
 
 config = {
@@ -103,6 +106,18 @@ def atlas_squares():
 def atlas_observers():
     html = atlas.observers.main()
     return render_template("atlas_observers.html", html=html)
+
+@app.route("/taxa/<string:taxon_id_untrusted>")
+@cache.cached(timeout=1) # dev
+def taxa_specieslist(taxon_id_untrusted):
+    html = taxa.specieslist.main(taxon_id_untrusted)
+    return render_template("taxa_specieslist.html", html=html)
+
+@app.route("/taxa")
+@cache.cached(timeout=1) # dev
+def taxa_root():
+    html = taxa.taxa.main()
+    return render_template("taxa.html", html=html)
 
 
 # Tools
