@@ -12,8 +12,6 @@
 
     <h1>{{ html["taxon_name"] }}</h1>
 
-    <ul>
-        <li><a href='./'>FOO</a></li>
-    </ul>
-
+    {{ html["list"]|safe }}
+    
 {% endblock %}
