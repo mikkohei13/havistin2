@@ -18,6 +18,7 @@ import atlas.species_proportions
 
 import taxa.taxa
 import taxa.specieslist
+import taxa.species
 
 #import app_secrets
 
@@ -118,6 +119,12 @@ def taxa_specieslist(taxon_id_untrusted):
 def taxa_root():
     html = taxa.taxa.main()
     return render_template("taxa.html", html=html)
+
+@app.route("/taxa/species/<string:taxon_id_untrusted>")
+@cache.cached(timeout=1) # dev
+def taxa_species(taxon_id_untrusted):
+    html = taxa.species.main(taxon_id_untrusted)
+    return render_template("taxa_species.html", html=html)
 
 
 # Tools
