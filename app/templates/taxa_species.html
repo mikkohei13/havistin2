@@ -1,15 +1,28 @@
 {% extends "base.html" %}
 
 {% block head %}
-    <title>{{ html["taxon_name"] }} - Lajitietoa (biomi.org)</title>
+    <title>{{ html["raw_data"]["scientificName"] }} - {{ html["raw_data"]["vernacularName"] }} - Lajitietoa (biomi.org)</title>
 {% endblock %}
 
 {% block breadcrumb %}
-    &raquo; <a href='/'>Havistin</a> &raquo; <a href='/taxa'>Lajitietoa</a> &raquo; {{ html["taxon_name"] }}
+    <!-- TODO: Remove hardcoded parent level --->
+    <a href='/'>Havistin</a> &raquo; <a href='/taxa'>Lajitietoa</a> &raquo; <a href='../{{ html["raw_data"]["parent"]["suborder"]["id"] }}'>{{ html["raw_data"]["parent"]["suborder"]["scientificName"] }}</a> &raquo; {{ html["raw_data"]["scientificName"] }}
 {% endblock %}
 
 {% block body %}
 
-    <h1>{{ html["taxon_name"] }}</h1>
-    
+    <h1><em>{{ html["raw_data"]["scientificName"] }} {{ html["raw_data"]["scientificNameAuthorship"] }}</em> - {{ html["raw_data"]["vernacularName"] }}</h1>
+
+    <p><a href='https://laji.fi/observation/statistics?target={{ html["raw_data"]["qname"] }}'>Havaintotilastoja Laji.fi:ssa</a></p>
+
+    <p>{{ html["raw_data"]["occurrenceCountFinland"] }} havaintoa Suomesta</p>
+
+    <p>Esiintymisen tyyppi: {{ html["occurrence_status"] }}</p>
+
+    <p>Ensisijainen habitaatti: {{ html["primary_habitat"] }}</p>
+
+    <p>Uhanalaisuusluokka: {{ html["redlist_status"] }} ({{ (html["redlist_year"]) }})</p>
+
+    {{ html["raw_data"] }}
+
 {% endblock %}

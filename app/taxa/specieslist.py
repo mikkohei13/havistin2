@@ -7,21 +7,32 @@ def generate_list(data):
     html = ""
 
     for item in data["results"]:
+#        common.print_log(item)
+#        exit()
+
         family = item["parent"]["family"]["scientificName"]
         if family != family_mem:
             html += "</ul>"
             html += "<h4>" + family + "</h4>"
-            html += "<ul>"
+            html += "<ul class='taxonlist'>"
             family_mem = family
+
+        if "vernacularName" in item:
+            vernacular_name = item['vernacularName']
+        else:
+            vernacular_name = "ei suomenkielistä nimeä"
+
+        if "typeOfOccurrenceInFinland" in item:
+            type_of_occurrence_finland = item['typeOfOccurrenceInFinland'][0]
+        else:
+            type_of_occurrence_finland = "ei esiintymistietoa"
 
         html += "<li>"
         html += f"<a href='/taxa/species/{item['id']}'>"
-        html += item["scientificName"] + " - " + item["vernacularName"]
+        html += f"<em>{item['scientificName']}</em> - {vernacular_name}"
         html += "</a>"
-        html += f" ({item['observationCountFinland']}) {item['typeOfOccurrenceInFinland'][0]}"
+        html += f" ({item['observationCountFinland']}) {type_of_occurrence_finland}"
         html += "</li>"
-
-        common.print_log(item["vernacularName"])
 
     html += "</ul>"
     return html
@@ -39,10 +50,8 @@ def main(taxon_id_untrusted):
     html["scientific_name"] = taxon_data["scientificName"]
     html["obs_count_finland"] = taxon_data["observationCountFinland"]
 
-    max_species = 20
+    max_species = 1000
     species_data = common.fetch_finbif_api(f"https://api.laji.fi/v0/taxa/{valid_qname}/species?onlyFinnish=true&selectedFields=id,vernacularName,scientificName,typeOfOccurrenceInFinland,parent.family.scientificName,observationCountFinland&lang=fi&page=1&pageSize={max_species}&sortOrder=taxonomic&access_token=")
-
-#    common.print_log(taxon_data)
 
     html["list"] = generate_list(species_data)
 
