@@ -1,17 +1,20 @@
 {% extends "base.html" %}
 
 {% block head %}
-    <title>{{ html["taxon_name"] }} - Lajitietoa (biomi.org)</title>
+    <title>{{ html["scientific_name"] }} - {{ html["vernacular_name"] }} - Lajitietoa (biomi.org)</title>
 {% endblock %}
 
 {% block breadcrumb %}
-    &raquo; <a href='/'>Havistin</a> &raquo; <a href='/taxa'>Lajitietoa</a> &raquo; {{ html["taxon_name"] }}
+    &raquo; <a href='/'>Havistin</a> &raquo; <a href='/taxa'>Lajitietoa</a> &raquo; {{ html["scientific_name"] }}
 {% endblock %}
 
 {% block body %}
 
-    <h1>{{ html["taxon_name"] }}</h1>
+    <h1>{{ html["scientific_name"] }} - {{ html["vernacular_name"] }}</h1>
 
+    <p>{{ html["finnish_species_count"] }} suomalaista lajia ja {{ html["obs_count_finland"] }} havaintoa</p>
+    
     {{ html["list"]|safe }}
+        
     
 {% endblock %}
