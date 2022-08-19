@@ -21,6 +21,8 @@ def convert_collection_name(id):
         return "Maalintujen linjalaskennat vakiolinjoilla"
     if  "http://tun.fi/HR.2691" == id:
         return "Maalintujen linjalaskennat ei-vakiolinjoilla"
+    if  "http://tun.fi/HR.48" == id:
+        return "Rengastus- ja löytörekisteri (TIPU)"
     return "Muu (" + id + ")"
 
 
