@@ -81,7 +81,10 @@ def main(taxon_id_untrusted):
 
     html["occurrence_status"] = common.fetch_variable_label(html["raw_data"]["typeOfOccurrenceInFinland"][0])
 
-    html["primary_habitat"] = common.fetch_variable_label(html["raw_data"]["primaryHabitat"]["habitat"])
+    if "primary_habitat" in html["raw_data"]:
+        html["primary_habitat"] = common.fetch_variable_label(html["raw_data"]["primaryHabitat"]["habitat"])
+    else:
+        html["primary_habitat"] = ""
 
     html["redlist_status"] = common.fetch_variable_label(html["raw_data"]["latestRedListStatusFinland"]["status"])
     html["redlist_year"] = html["raw_data"]["latestRedListStatusFinland"]["year"]
