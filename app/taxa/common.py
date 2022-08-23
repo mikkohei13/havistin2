@@ -11,6 +11,18 @@ def print_log(dict):
     print(dict, sep="\n", file = sys.stdout)
 
 
+def map_status(status):
+    if "MX.typeOfOccurrenceStablePopulation" == status:
+        return "vakiintunut"
+    if "MX.typeOfOccurrenceNotEstablished" == status:
+        return "ei vakiintunut"
+    if "MX.typeOfOccurrenceAnthropogenic" == status:
+        return "ihmisen vaikutuksesta"
+    if "MX.typeOfOccurrenceVeryRare" == status:
+        return "hyvin harvinainen"
+    return status
+
+
 def valid_qname(qname):
     pattern = r'[A-Z]+\.[A-Z0-9]+'
     match = re.fullmatch(pattern, qname)

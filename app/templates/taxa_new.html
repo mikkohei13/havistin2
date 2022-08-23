@@ -12,6 +12,6 @@
 
     <h1>{{ html["scientific_name"] }} - {{ html["vernacular_name"] }}, uudet lajit</h1>        
     
-    {{ html["species"] }}
+    {{ html["species_html"]|safe }}
 
 {% endblock %}
