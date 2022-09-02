@@ -9,16 +9,19 @@ def get_species_qnames(page_name_untrusted):
 
     if "heteroptera_new" == page_name_untrusted:
         taxon_qname = "MX.229577"
-        
-        species.append("MX.5075811")
-        species.append("MX.229664")
 
+        '''
+        species.append("MX.5075811") # debug duplicate
+        species.append("MX.229664") # debug duplicate
         species.append("MX.230068") # debug duplicate
         species.append("MX.229819") # debug duplicate
+        species.append("MX.229815") # debug duplicate
         species.append("MX.4994296") # debug duplicate
         species.append("MX.230542") # debug duplicate
         species.append("MX.230504") # debug duplicate
         '''
+        species.append("MX.5075811")
+        species.append("MX.229664")
         species.append("MX.4999057")
         species.append("MX.5080747")
         species.append("MX.5074723")
@@ -66,18 +69,33 @@ def get_species_qnames(page_name_untrusted):
         species.append("MX.5015646")
         species.append("MX.230548")
         species.append("MX.230556")
-        '''
         
     return taxon_qname, species
 
 def get_species_data(species_qnames):
     species_data = []
     for qname in species_qnames:
-        data = common.fetch_finbif_api(f"https://api.laji.fi/v0/taxa/{qname}?lang=fi&langFallback=true&maxLevel=0&includeHidden=true&includeMedia=true&includeDescriptions=true&includeRedListEvaluations=false&sortOrder=taxonomic&access_token=", True)
+        data = common.fetch_finbif_api(f"https://api.laji.fi/v0/taxa/{qname}?lang=fi&langFallback=true&maxLevel=0&includeHidden=true&includeMedia=true&includeDescriptions=true&includeRedListEvaluations=false&sortOrder=taxonomic&access_token=", False)
 #        common.print_log(data) # debug
         species_data.append(data)
 
     return species_data
+
+
+def cc_link(lic):
+    if "http://tun.fi/MZ.intellectualRightsCC-BY-NC-4.0" == lic or "CC-BY-NC-4.0" == lic:
+        return "CC BY-NC 4.0"
+    if "http://tun.fi/MZ.intellectualRightsCC-BY-SA-4.0" == lic or "CC-BY-SA-4.0" == lic:
+        return "CC BY-SA 4.0"
+    if "http://tun.fi/MZ.intellectualRightsCC-BY-4.0" == lic or "CC-BY-4.0" == lic:
+        return "CC BY 4.0"
+    if "http://tun.fi/MZ.intellectualRightsCC-BY-NC-ND-4.0" == lic or "CC-BY-NC-ND-4.0" == lic:
+        return "CC BY-NC-ND 4.0"
+    if "http://tun.fi/MZ.intellectualRightsCC-BY-NC-SA-4.0" == lic or "CC-BY-NC-SA-4.0" == lic:
+        return "CC BY-NC-SA 4.0"
+#    if "" == lic or "" == lic:
+#        return ""
+    return lic
 
 
 def get_additional_multimedia(qname):
@@ -100,7 +118,6 @@ def get_additional_multimedia(qname):
     for item in data['results']:
         media = dict()
         if "IMAGE" == item['media']['mediaType']:
-            # TODO: harmonize cc-links to abbreviation
             media['licenseAbbreviation'] = item['media']['licenseId']
             media['fullURL'] = item['media']['fullURL']
             media['thumbnailURL'] = item['media']['thumbnailURL']
@@ -121,11 +138,18 @@ def generate_media_html(media_data, qname):
         if media['licenseAbbreviation'] not in disallowed:
             html += "\n<figure class='photo'>\n"
             html += "<a href='" + media['fullURL'] + "'><img src='" + media['thumbnailURL'] + "' alt='' title=''></a>"
+            
             html += "<figcaption>\n"
+
             if "caption" in media:
                 html += "<span class='caption'>" + media['caption'] + "</span><br>\n"
-            html += "<span class='copyright'>" + media['author'] + ", " + media['licenseAbbreviation'] + "</span>"
+            elif "taxonDescriptionCaption" in media:
+                if "fi" in media['taxonDescriptionCaption']:
+                    html += "<span class='caption'>" + media['taxonDescriptionCaption']['fi'] + "</span><br>\n"
+
+            html += "<span class='copyright'>" + media['author'] + ", " + cc_link(media['licenseAbbreviation']) + "</span>"
             html += "</figcaption>\n"
+
             html += "</figure>\n"
         else:
             html += "<!-- non-cc media -->\n"
@@ -137,18 +161,18 @@ def generate_description(groups):
 #    common.print_log(groups[0])
     html = ""
     for group in groups:
-        common.print_log("HERE:")
-        common.print_log(group)
+#        common.print_log("HERE:")
+#        common.print_log(group)
         # Yleistä
         if "MX.SDVG1" == group['group']:
             for variable in group['variables']:
-                html += variable['content']
-                '''
-                if "ingressi" == variable['title']:
-                    html += variable['content']
-                elif "yleiskuvaus" == variable['title']:
-                    html += variable['content']
-                '''
+#                html += variable['content']
+                if "Ingressi" == variable['title']:
+                    html += "<div class='ingressi'>" + variable['content'] + "</div>\n"
+                elif "Yleiskuvaus" == variable['title']:
+                    html += "<div class='yleiskuvaus'>" + variable['content'] + "</div>\n"
+                elif "Tunnistaminen" == variable['title']:
+                    html += "<div class='tunnistaminen'>" + variable['content'] + "</div>\n"
     return html
 
 
@@ -192,6 +216,9 @@ def generate_species_html(species_data):
         # If no taxon photos, try different sources
         if "multimedia" not in species:
             species['multimedia'], species['hasMultimedia'] = get_additional_multimedia(qname)
+#        else:
+#            common.print_log(species['multimedia'])
+
 
         # Create photo html
         html += "<div class='multimedia'>\n"

@@ -278,6 +278,9 @@ h2, h3, h3 {
     flex-direction: row;
 }
 
+.ingressi {
+    font-style: italic;
+}
 
 figure {
     max-width: 220px;
