@@ -175,12 +175,12 @@ def generate_species_html(species_data):
         html += "<ul class='speciesinfo'>\n"
 
         if "typeOfOccurrenceInFinland" in species:
-            html += "<li>"
+            html += "<li>Suomessa "
             for status in species['typeOfOccurrenceInFinland']:
                 translated_status = common.map_status(status)
                 html += f"{translated_status}, "
         else:
-            html += "<li>ei statustietoa, "
+            html += "<li>Ei statustietoa, "
 
         html += " <a href='/taxa/species/" + qname + "'>lisätietoa &raquo;</a></li>\n"
         

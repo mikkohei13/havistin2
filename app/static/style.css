@@ -1,6 +1,6 @@
 body {
     font-family: Roboto, sans-serif;
-    font-size: 80%;
+    font-size: 86%;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -18,7 +18,7 @@ h1 span {
 }
 
 h2 {
-    border-bottom: 4px solid #eee;
+    border-bottom: 4px solid #dee;
 }
 
 h2, h3 {
@@ -97,8 +97,8 @@ h2, h3, h3 {
 }
 
 .row div {
-    border-top: 1px solid #eee;
-    border-left: 1px solid #eee;
+    border-top: 1px solid #dee;
+    border-left: 1px solid #dee;
     padding: 0.1em;
     display: inline;
     float: left;
@@ -249,14 +249,14 @@ h2, h3, h3 {
 #cc {
     margin: 2em -10px 0 -10px;
     padding: 10px;
-    border-top: 4px solid #eee;
+    border-top: 4px solid #dee;
     font-style: italic;
 }
 
 #speciesmap {
     width: 300px;
     height: 430px;
-    border: 2px solid #eee;
+    border: 2px solid #dee;
     margin-bottom: 1em;
     max-width: 90%;
     float: right;
@@ -264,6 +264,13 @@ h2, h3, h3 {
 
 .species {
     margin-top: 1.5em;
+    background-color: #dee;
+    padding: 1em;
+    border-radius: 1em;
+}
+
+.species h3 {
+    margin-top: 0;
 }
 
 .multimedia {
