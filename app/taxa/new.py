@@ -203,10 +203,11 @@ def generate_species_html(species_data):
             for status in species['typeOfOccurrenceInFinland']:
                 translated_status = common.map_status(status)
                 html += f"{translated_status}, "
-        if species["invasiveSpecies"]:
-            html += "<span class='invasive'>vieraslaji</span>, "
         else:
             html += "<li>Ei statustietoa, "
+
+        if species["invasiveSpecies"]:
+            html += "<span class='invasive'>vieraslaji</span>, "
 
         html += " <a href='/taxa/species/" + qname + "'>lisätietoa &raquo;</a></li>\n"
         
