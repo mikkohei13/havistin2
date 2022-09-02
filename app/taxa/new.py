@@ -76,7 +76,7 @@ def get_species_data(species_qnames):
     species_data = []
     for qname in species_qnames:
         data = common.fetch_finbif_api(f"https://api.laji.fi/v0/taxa/{qname}?lang=fi&langFallback=true&maxLevel=0&includeHidden=true&includeMedia=true&includeDescriptions=true&includeRedListEvaluations=false&sortOrder=taxonomic&access_token=", False)
-#        common.print_log(data) # debug
+        common.print_log(data) # debug
         species_data.append(data)
 
     return species_data
@@ -203,6 +203,8 @@ def generate_species_html(species_data):
             for status in species['typeOfOccurrenceInFinland']:
                 translated_status = common.map_status(status)
                 html += f"{translated_status}, "
+        if species["invasiveSpecies"]:
+            html += "<span class='invasive'>vieraslaji</span>, "
         else:
             html += "<li>Ei statustietoa, "
 

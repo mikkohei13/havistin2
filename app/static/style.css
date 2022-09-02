@@ -269,6 +269,11 @@ h2, h3, h3 {
     border-radius: 1em;
 }
 
+.invasive {
+    color: #d00;
+    font-weight: bold;
+}
+
 .species h3 {
     margin-top: 0;
 }
