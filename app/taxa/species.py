@@ -19,8 +19,8 @@ def get_obs_aggregate_data(qname):
 
     # Observations
     for obs in obs_data["results"]:
-        common.print_log("NEW OBS")
-        common.print_log(obs)
+#        common.print_log("NEW OBS")
+#        common.print_log(obs)
         this_obs_facts = dict()
 
         # TODO: Gathering facts
@@ -28,15 +28,15 @@ def get_obs_aggregate_data(qname):
         # Unit facts
         if "unit" in obs:
             unit = obs["unit"]
-            common.print_log("unit:")
-            common.print_log(unit)
+#            common.print_log("unit:")
+#            common.print_log(unit)
             if "facts" in unit:
                 for unit_fact in unit["facts"]:
-                    common.print_log("unit_fact:")
-                    common.print_log(unit_fact)
+#                    common.print_log("unit_fact:")
+#                    common.print_log(unit_fact)
                     this_obs_facts[unit_fact["fact"]] = unit_fact["value"]
 
-        common.print_log(this_obs_facts)
+#        common.print_log(this_obs_facts)
 
         for key, value in this_obs_facts.items():
             if key in facts_dict:
@@ -46,8 +46,8 @@ def get_obs_aggregate_data(qname):
                 facts_dict[key].append(value)
 
 
-    common.print_log("==================")
-    common.print_log(facts_dict)
+#    common.print_log("==================")
+#    common.print_log(facts_dict)
 
     return facts_dict
 
@@ -106,7 +106,10 @@ def main(taxon_id_untrusted):
     # Expecting only one species
     html["raw_data"] = species_data["results"][0]
 
-    html["occurrence_status"] = common.fetch_variable_label(html["raw_data"]["typeOfOccurrenceInFinland"][0])
+    if "occurrence_status" in html["raw_data"]:
+        html["occurrence_status"] = common.fetch_variable_label(html["raw_data"]["typeOfOccurrenceInFinland"][0])
+    else:
+        html["occurrence_status"] = "Ei statustietoa"
 
     if "primary_habitat" in html["raw_data"]:
         html["primary_habitat"] = common.fetch_variable_label(html["raw_data"]["primaryHabitat"]["habitat"])

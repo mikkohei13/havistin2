@@ -76,7 +76,7 @@ def get_species_data(species_qnames):
     species_data = []
     for qname in species_qnames:
         data = common.fetch_finbif_api(f"https://api.laji.fi/v0/taxa/{qname}?lang=fi&langFallback=true&maxLevel=0&includeHidden=true&includeMedia=true&includeDescriptions=true&includeRedListEvaluations=false&sortOrder=taxonomic&access_token=", False)
-        common.print_log(data) # debug
+#        common.print_log(data) # debug
         species_data.append(data)
 
     return species_data
@@ -192,7 +192,7 @@ def generate_species_html(species_data):
         html += "\n<div class='species'>\n"
         if "vernacularName" in species:
             vernacular_name = species['vernacularName'].capitalize()
-            html += f"<h3><em>{vernacular_name}</em> - {species['scientificName']} {species['scientificNameAuthorship']}</h3>\n"
+            html += f"<h3>{vernacular_name} - <em>{species['scientificName']}</em> {species['scientificNameAuthorship']}</h3>\n"
         else:
             html += f"<h3><em>{species['scientificName']}</em> {species['scientificNameAuthorship']}</h3>\n"
 

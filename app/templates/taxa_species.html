@@ -27,12 +27,12 @@
         <p>Uhanalaisuusluokka: {{ html["redlist_status"] }} ({{ (html["redlist_year"]) }})</p>
     {% endif %}
 
-    {{ html["samplingMethod"] | safe }}
-    {{ html["lifeStage"] | safe }}
-
     {{ html["hostInformalNameString"] | safe }}
     {{ html["habitatIUCN"] | safe }}
     {{ html["habitatDescription"] | safe }}
+
+    {{ html["samplingMethod"] | safe }}
+    {{ html["lifeStage"] | safe }}
 
     <h3>Raakadata</h3>
 
