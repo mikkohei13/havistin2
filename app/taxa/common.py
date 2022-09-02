@@ -59,8 +59,15 @@ def fetch_finbif_api(api_url, log = False):
     return dataDict
 
 
+# TODO: caching?
 def fetch_variable_label(variable):
+
+    variable = variable.replace("http://tun.fi/", "")
+
     api_url = f"http://tun.fi/{variable}?format=json"
+
+    print_log("HERE")
+    print_log(api_url)
 
     try:
         r = requests.get(api_url)

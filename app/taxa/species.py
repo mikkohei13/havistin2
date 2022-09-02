@@ -64,6 +64,32 @@ def generate_fact_table(facts_dict):
     return html
 
 
+def summarize_fact(data, name, fetch_terms):
+    summary = dict()
+    for item in data:
+        if item not in summary:
+            summary[item] = 1
+        else:
+            summary[item] = summary[item] + 1
+
+    # Sort by value desc
+    summary = dict(sorted(summary.items(), key=lambda item: item[1], reverse=True))
+
+    if fetch_terms:
+        summary_human_readable = dict()
+        for key, value in summary.items():
+            summary_human_readable[common.fetch_variable_label(key)] = value
+    else:
+        summary_human_readable = summary
+
+    html = "<table class='styled-table facts'>\n"
+    html += f"<thead><th>{name}</th><th>Havaintoja kpl</th></thead>\n"
+    html += "<tbody>\n"
+    for key, value in summary_human_readable.items():
+        html += f"<tr><td>{key}</td><td>{value}</td></tr>\n"
+    html += "</tbody>\n</table>\n"
+
+    return html
 
 
 def main(taxon_id_untrusted):
@@ -92,7 +118,24 @@ def main(taxon_id_untrusted):
         html["redlist_year"] = html["raw_data"]["latestRedListStatusFinland"]["year"]
 
     raw_facts = get_obs_aggregate_data(qname)
+#    common.print_log(raw_facts)
+
     html["fact_table"] = generate_fact_table(raw_facts)
+
+    if "http://tun.fi/MY.samplingMethod" in raw_facts:
+        html["samplingMethod"] = summarize_fact(raw_facts['http://tun.fi/MY.samplingMethod'], "Keruumenetelmä", True)
+
+    if "http://tun.fi/MY.lifeStage" in raw_facts:
+        html["lifeStage"] = summarize_fact(raw_facts['http://tun.fi/MY.lifeStage'], "Elinvaihe", True)
+
+    if "http://tun.fi/MY.hostInformalNameString" in raw_facts:
+        html["hostInformalNameString"] = summarize_fact(raw_facts['http://tun.fi/MY.hostInformalNameString'], "Isäntälaji (vapaateksti)", False)
+
+    if "http://tun.fi/MY.habitatIUCN" in raw_facts:
+        html["habitatIUCN"] = summarize_fact(raw_facts['http://tun.fi/MY.habitatIUCN'], "Habitaatti", False)
+
+    if "http://tun.fi/MY.habitatDescription" in raw_facts:
+        html["habitatDescription"] = summarize_fact(raw_facts['http://tun.fi/MY.habitatDescription'], "Habitaatin kuvaus", False)
 
 
 #    html["scientific_name"] = species_data["scientificName"]

@@ -11,7 +11,7 @@
 
 {% block body %}
 
-    <h1><em>{{ html["raw_data"]["scientificName"] }} {{ html["raw_data"]["scientificNameAuthorship"] }}</em> - {{ html["raw_data"]["vernacularName"] }}</h1>
+    <h1><em>{{ html["raw_data"]["scientificName"] }}</em> {{ html["raw_data"]["scientificNameAuthorship"] }} - {{ html["raw_data"]["vernacularName"] }}</h1>
 
     <p><a href='https://laji.fi/observation/statistics?target={{ html["raw_data"]["qname"] }}'>Havaintotilastoja Laji.fi:ssa</a></p>
 
@@ -19,14 +19,23 @@
 
     <p>Esiintymisen tyyppi: {{ html["occurrence_status"] }}</p>
 
-    <p>Ensisijainen habitaatti: {{ html["primary_habitat"] }}</p>
+    {% if html["primary_habitat"] %}
+        <p>Ensisijainen habitaatti: {{ html["primary_habitat"] }}</p>
+    {% endif %}    
 
-    <p>Uhanalaisuusluokka: {{ html["redlist_status"] }} ({{ (html["redlist_year"]) }})</p>
+    {% if html["redlist_status"] %}
+        <p>Uhanalaisuusluokka: {{ html["redlist_status"] }} ({{ (html["redlist_year"]) }})</p>
+    {% endif %}
 
-    {{ html["raw_data"] }}
+    {{ html["samplingMethod"] | safe }}
+    {{ html["lifeStage"] | safe }}
 
-    <hr>
+    {{ html["hostInformalNameString"] | safe }}
+    {{ html["habitatIUCN"] | safe }}
+    {{ html["habitatDescription"] | safe }}
 
-    {{ html["fact_table"]|safe }}
+    <h3>Raakadata</h3>
+
+    {{ html["fact_table"] | safe }}
 
 {% endblock %}
