@@ -1,0 +1,551 @@
+{
+    "occurrences":[
+       { 
+         "area":"ML.251",
+         "occurrenceCount":19,
+         "status":"MX.typeOfOccurrenceOccursBasedOnOccurrences"
+      },
+      {
+         "area":"ML.252",
+         "occurrenceCount":115,
+         "status":"MX.typeOfOccurrenceOccursBasedOnOccurrences"
+      },
+      {
+         "area":"ML.253",
+         "occurrenceCount":91,
+         "status":"MX.typeOfOccurrenceOccursBasedOnOccurrences"
+      },
+      {
+         "area":"ML.254",
+         "occurrenceCount":15,
+         "status":"MX.typeOfOccurrenceOccursBasedOnOccurrences"
+      },
+      {
+         "area":"ML.256",
+         "occurrenceCount":21,
+         "status":"MX.typeOfOccurrenceOccursBasedOnOccurrences"
+      },
+      {
+         "area":"ML.257",
+         "occurrenceCount":5,
+         "status":"MX.typeOfOccurrenceOccursBasedOnOccurrences"
+      }
+   ],
+   "parent":{
+      "suborder":{
+         "cursiveName":false,
+         "vernacularName":"luteet",
+         "scientificName":"Heteroptera",
+         "scientificNameAuthorship":"Latreille, 1810",
+         "taxonRank":"MX.suborder",
+         "id":"MX.229577"
+      },
+      "subfamily":{
+         "cursiveName":false,
+         "scientificName":"Deraecorinae",
+         "taxonRank":"MX.subfamily",
+         "id":"MX.229802"
+      },
+      "superfamily":{
+         "cursiveName":false,
+         "scientificName":"Miroidea",
+         "taxonRank":"MX.superfamily",
+         "id":"MX.53671"
+      },
+      "kingdom":{
+         "cursiveName":false,
+         "vernacularName":"el\u00e4imet",
+         "scientificName":"Animalia",
+         "scientificNameAuthorship":"Linnaeus, 1758",
+         "taxonRank":"MX.kingdom",
+         "id":"MX.37602"
+      },
+      "phylum":{
+         "cursiveName":false,
+         "vernacularName":"niveljalkaiset",
+         "scientificName":"Arthropoda",
+         "scientificNameAuthorship":"von Siebold, 1848",
+         "taxonRank":"MX.phylum",
+         "id":"MX.37605"
+      },
+      "genus":{
+         "cursiveName":true,
+         "scientificName":"Deraeocoris",
+         "scientificNameAuthorship":"Kirschbaum, 1855",
+         "taxonRank":"MX.genus",
+         "id":"MX.229813"
+      },
+      "species":{
+         "cursiveName":true,
+         "vernacularName":"keltasiimalude",
+         "scientificName":"Deraeocoris lutescens",
+         "scientificNameAuthorship":"(Schilling, 1837)",
+         "taxonRank":"MX.species",
+         "id":"MX.229819"
+      },
+      "tribe":{
+         "cursiveName":false,
+         "scientificName":"Deraecorini",
+         "taxonRank":"MX.tribe",
+         "id":"MX.229809"
+      },
+      "domain":{
+         "cursiveName":false,
+         "vernacularName":"aitotumaiset",
+         "scientificName":"Eucarya",
+         "scientificNameAuthorship":"Whittaker & Margulis, 1978",
+         "taxonRank":"MX.domain",
+         "id":"MX.53761"
+      },
+      "subphylum":{
+         "cursiveName":false,
+         "vernacularName":"kuusijalkaiset",
+         "notes":"The order of orders of Entognatha and Insecta is based on Misof et al. 2014: Phylogenomics resolves the timing and pattern of insect evolution - Science 346:763-767.",
+         "scientificName":"Hexapoda",
+         "taxonRank":"MX.subphylum",
+         "id":"MX.37607"
+      },
+      "subgenus":{
+         "cursiveName":true,
+         "scientificName":"Deraeocoris (sg.Camptobrochis)",
+         "scientificNameAuthorship":"Fieber, 1858",
+         "taxonRank":"MX.subgenus",
+         "id":"MX.229818"
+      },
+      "family":{
+         "cursiveName":false,
+         "vernacularName":"kuneluteet",
+         "scientificName":"Miridae",
+         "taxonRank":"MX.family",
+         "id":"MX.53599"
+      },
+      "class":{
+         "cursiveName":false,
+         "vernacularName":"hy\u00f6nteiset",
+         "scientificName":"Insecta",
+         "taxonRank":"MX.class",
+         "id":"MX.37613"
+      },
+      "order":{
+         "cursiveName":false,
+         "vernacularName":"nivelk\u00e4rs\u00e4iset",
+         "scientificName":"Hemiptera",
+         "scientificNameAuthorship":"Linnaeus, 1758",
+         "taxonRank":"MX.order",
+         "id":"MX.53683"
+      }
+   },
+   "hasLatestRedListEvaluation":true,
+   "scientificName":"Deraeocoris lutescens",
+   "latestRedListStatusFinland":{
+      "year":2019,
+      "status":"MX.iucnNA"
+   },
+   "hasChildren":false,
+   "redListStatusesInFinland":[
+      {
+         "year":2019,
+         "status":"MX.iucnNA"
+      }
+   ],
+   "descriptions":[
+      {
+         "speciesCardAuthors":{
+            "variable":"MX.speciesCardAuthors",
+            "title":"Kuvaustekstin laatijat",
+            "content":"
+
+Mikko Heikkinen/Lajitietokeskus 17.8.2022
+"
+         },
+         "groups":[
+            {
+               "variables":[
+                  {
+                     "variable":"MX.ingressText",
+                     "title":"Ingressi",
+                     "content":"
+
+Keltasiimalude on petoludelaji, joka l\u00f6ydettiin Suomesta ensimm\u00e4isen kerran Turusta vuonna 2010. Se on sittemmin runsastunut nopeasti ja on nyky\u00e4\u00e4n yleinen laji Etel\u00e4-Suomessa.
+"
+                  },
+                  {
+                     "variable":"MX.descriptionText",
+                     "title":"Yleiskuvaus",
+                     "content":"
+
+Keltasiimaluteen ruumis ja peitinsiivet ovat vaihtelevan oranssit-ruskeat ja niiss\u00e4 on mustia laikkuja. Siipien k\u00e4rkikalvo on l\u00e4pikuultava. Pikkukilpi on pisteet\u00f6n ja siin\u00e4 on usein kaksi tummaa juovaa.
+\r\n
+
+Pituus n. 4 mm.
+\r\n
+
+Keltasiimaluteen nymfi on vaalea ja pitk\u00e4karvainen.
+"
+                  }
+               ],
+               "title":"Yleist\u00e4",
+               "group":"MX.SDVG1"
+            },
+            {
+               "variables":[
+                  {
+                     "variable":"MX.distributionFinland",
+                     "title":"Levinneisyys Suomessa",
+                     "content":"
+
+Keltasiimalude esiintyy yleisen\u00e4 Etel\u00e4-Suomessa, vuonna 2022 pohjoisimmat havainnot ovat Savonlinnasta.
+"
+                  },
+                  {
+                     "variable":"MX.originAndDistributionText",
+                     "title":"Alkuper\u00e4 ja yleislevinneisyys",
+                     "content":"
+
+Esiintyy suurimmassa osassa Eurooppaa, sek\u00e4 Pohjois-Afrikassa ja L\u00e4hi-id\u00e4ss\u00e4. Laji on levitt\u00e4ytynyt pohjoiseen, ensihavainto Tanskasta tehtiin 1970 ja Ruotsista 1990.
+"
+                  }
+               ],
+               "title":"Levinneisyys",
+               "group":"MX.SDVG2"
+            },
+            {
+               "variables":[
+                  {
+                     "variable":"MX.behaviour",
+                     "title":"Elintavat",
+                     "content":"
+
+Keltasiimalude on polyfaginen (useita eri ravintoja k\u00e4ytt\u00e4v\u00e4) peto, joka saalistaa monenlaisilla kasveilla esiintyvi\u00e4 kirvoja ja muita pieni\u00e4 niveljalkaisia sek\u00e4 niiden toukkia ja munia. Laji suosii lehtipuita, erityisesti tammea ja lehmusta, mutta my\u00f6s p\u00e4hkin\u00e4pensaita, jalavaa ja omenapuita.
+\r\n
+
+Laji talvehtii aikuisena. Havainnot muualta Euroopasta viittaavat ett\u00e4 laji talvehtii mm. havupuissa mutta my\u00f6s esim. rakennuksissa.
+"
+                  }
+               ],
+               "title":"Elinkaari ja elintavat",
+               "group":"MX.SDVG4"
+            },
+            {
+               "variables":[
+                  {
+                     "variable":"MX.ecology",
+                     "title":"Ekologinen ja taloudellinen merkitys",
+                     "content":"
+
+Laji k\u00e4ytt\u00e4\u00e4 ravintonaan viljelykasvien tuholaisia. Euroopassa keltasiimaluteen on havaittu olevan yleinen esim. omenatarhoilla.
+"
+                  }
+               ],
+               "title":"Ekologia",
+               "group":"MX.SDVG5"
+            },
+            {
+               "variables":[
+                  {
+                     "variable":"MX.descriptionReferences",
+                     "title":"Viitteet",
+                     "content":"
+
+Bantock, T. & Botting, J. 2018: British bugs. https://www.britishbugs.org.uk Viitattu 2022-08-15.
+\r\n
+
+Lamine, K., Lambin, M & Alauzet, C. 2005: Effect of starvation on the searching path of the predatory bug Deraeocoris lutescens. BioControl (2005) 50:717\u2013727. DOI 10.1007/s10526-005-2899-9
+\r\n
+
+Lindskog, P. & Viklund, B. 2000: On Deraeocoris lutescens (Schilling) and Pinalitus atomarius (Meyer-Diir) in Sweden (Heteroptera: Miridae).-Entomol. Fennica 11: 231-238.
+"
+                  }
+               ],
+               "title":"Lis\u00e4tietoja",
+               "group":"MX.SDVG10"
+            }
+         ],
+         "id":"default",
+         "title":"Laji.fi lajikuvaukset"
+      }
+   ],
+   "originalPublications":[
+      "MP.701"
+   ],
+   "anyHabitatSearchStrings":[
+      "MKV.habitatI",
+      "MKV.habitatIp"
+   ],
+   "informalTaxonGroups":[
+      "MVL.232",
+      "MVL.34",
+      "MVL.701"
+   ],
+   "qname":"MX.229819",
+   "id":"MX.229819",
+   "scientificNameDisplayName":"Deraeocoris lutescens",
+   "occurrenceCountInvasiveFinland":0,
+   "habitatOccurrenceCounts":[
+      {
+         "habitat":{
+            "fi":"lehmus",
+            "sv":"lehmus",
+            "en":"lehmus"
+         },
+         "occurrenceCount":6,
+         "id":"lehmus"
+      },
+      {
+         "habitat":{
+            "fi":"puisto",
+            "sv":"puisto",
+            "en":"puisto"
+         },
+         "occurrenceCount":4,
+         "id":"puisto"
+      },
+      {
+         "habitat":{
+            "fi":"tammi",
+            "sv":"tammi",
+            "en":"tammi"
+         },
+         "occurrenceCount":4,
+         "id":"tammi"
+      },
+      {
+         "habitat":{
+            "fi":"kadun varren lehmukset",
+            "sv":"kadun varren lehmukset",
+            "en":"kadun varren lehmukset"
+         },
+         "occurrenceCount":2,
+         "id":"kadunvarrenlehmukset"
+      },
+      {
+         "habitat":{
+            "fi":"puisto, tammelta",
+            "sv":"puisto, tammelta",
+            "en":"puisto, tammelta"
+         },
+         "occurrenceCount":2,
+         "id":"puisto,tammelta"
+      },
+      {
+         "habitat":{
+            "fi":"puisto: puistolehmukselta.",
+            "sv":"puisto: puistolehmukselta.",
+            "en":"puisto: puistolehmukselta."
+         },
+         "occurrenceCount":2,
+         "id":"puisto:puistolehmukselta."
+      },
+      {
+         "habitat":{
+            "fi":"saarni",
+            "sv":"saarni",
+            "en":"saarni"
+         },
+         "occurrenceCount":2,
+         "id":"saarni"
+      }
+   ],
+   "sensitive":false,
+   "redListEvaluationGroups":[
+      "MVL.1041",
+      "MVL.784",
+      "MVL.785"
+   ],
+   "taxonExpert":[
+      "MA.80",
+      "MA.43"
+   ],
+   "parentsIncludeSelf":[
+      "MX.37600",
+      "MX.53761",
+      "MX.37602",
+      "MX.37605",
+      "MX.37607",
+      "MX.37613",
+      "MX.53683",
+      "MX.229577",
+      "MX.53703",
+      "MX.53671",
+      "MX.53599",
+      "MX.229802",
+      "MX.229809",
+      "MX.229813",
+      "MX.229818",
+      "MX.229819"
+   ],
+   "observationCountInvasiveFinland":0,
+   "taxonomicOrder":2607,
+   "parents":[
+      "MX.37600",
+      "MX.53761",
+      "MX.37602",
+      "MX.37605",
+      "MX.37607",
+      "MX.37613",
+      "MX.53683",
+      "MX.229577",
+      "MX.53703",
+      "MX.53671",
+      "MX.53599",
+      "MX.229802",
+      "MX.229809",
+      "MX.229813",
+      "MX.229818"
+   ],
+   "countOfSpecies":1,
+   "stableInFinland":true,
+   "scientificNameAuthorship":"(Schilling, 1837)",
+   "taxonRank":"MX.species",
+   "occurrenceInFinlandPublications":[
+      "MP.15397",
+      "MP.15396",
+      "MP.15395"
+   ],
+   "hiddenTaxon":false,
+   "cursiveName":true,
+   "vernacularName":"keltasiimalude",
+   "hasMultimedia":true,
+   "invasiveSpecies":false,
+   "countOfFinnishSpecies":1,
+   "nameAccordingTo":"MR.1",
+   "taxonEditor":[
+      "MA.80",
+      "MA.43"
+   ],
+   "occurrenceCountFinland":266,
+   "typeOfOccurrenceInFinland":[
+      "MX.typeOfOccurrenceStablePopulation"
+   ],
+   "nonHiddenParentsIncludeSelf":[
+      "MX.37600",
+      "MX.53761",
+      "MX.37602",
+      "MX.37605",
+      "MX.37607",
+      "MX.37613",
+      "MX.53683",
+      "MX.229577",
+      "MX.53703",
+      "MX.53671",
+      "MX.53599",
+      "MX.229802",
+      "MX.229809",
+      "MX.229813",
+      "MX.229818",
+      "MX.229819"
+   ],
+   "observationCountFinland":266,
+   "occurrenceCount":271,
+   "primaryHabitatSearchStrings":[
+      "MKV.habitatI",
+      "MKV.habitatIp"
+   ],
+   "finnishSpecies":true,
+   "finnish":true,
+   "multimedia":[
+      {
+         "licenseAbbreviation":"CC-BY-NC-4.0",
+         "copyrightOwner":"Tuomo Vainio",
+         "licenseFullname":"Creative Commons Nime\u00e4 Ei-Kaupallinen 4.0",
+         "keywords":[
+            "Kuvapankki"
+         ],
+         "author":"Tuomo Vainio",
+         "fullURL":"https://image.laji.fi/MM.272544/Deraeocoris_lutescens_04.jpg",
+         "caption":"male",
+         "largeURL":"https://image.laji.fi/MM.272544/Deraeocoris_lutescens_04.jpg",
+         "taxon":{
+            "cursiveName":true,
+            "vernacularName":"keltasiimalude",
+            "scientificName":"Deraeocoris lutescens",
+            "scientificNameAuthorship":"(Schilling, 1837)",
+            "taxonRank":"MX.species",
+            "id":"MX.229819"
+         },
+         "source":"default",
+         "squareThumbnailURL":"https://image.laji.fi/MM.272544/Deraeocoris_lutescens_04_square.jpg",
+         "thumbnailURL":"https://image.laji.fi/MM.272544/Deraeocoris_lutescens_04_thumb.jpg"
+      },
+      {
+         "licenseAbbreviation":"CC-BY-NC-4.0",
+         "copyrightOwner":"Tuomo Vainio",
+         "licenseFullname":"Creative Commons Nime\u00e4 Ei-Kaupallinen 4.0",
+         "keywords":[
+            "Kuvapankki"
+         ],
+         "author":"Tuomo Vainio",
+         "fullURL":"https://image.laji.fi/MM.272545/Deraeocoris_lutescens_01.jpg",
+         "caption":"viimeisen vaiheen nymfi",
+         "largeURL":"https://image.laji.fi/MM.272545/Deraeocoris_lutescens_01.jpg",
+         "taxon":{
+            "cursiveName":true,
+            "vernacularName":"keltasiimalude",
+            "scientificName":"Deraeocoris lutescens",
+            "scientificNameAuthorship":"(Schilling, 1837)",
+            "taxonRank":"MX.species",
+            "id":"MX.229819"
+         },
+         "source":"default",
+         "squareThumbnailURL":"https://image.laji.fi/MM.272545/Deraeocoris_lutescens_01_square.jpg",
+         "thumbnailURL":"https://image.laji.fi/MM.272545/Deraeocoris_lutescens_01_thumb.jpg"
+      },
+      {
+         "licenseAbbreviation":"CC-BY-NC-4.0",
+         "copyrightOwner":"Tuomo Vainio",
+         "licenseFullname":"Creative Commons Nime\u00e4 Ei-Kaupallinen 4.0",
+         "keywords":[
+            "Kuvapankki"
+         ],
+         "author":"Tuomo Vainio",
+         "fullURL":"https://image.laji.fi/MM.272546/Deraeocoris_lutescens_02.jpg",
+         "caption":"female",
+         "largeURL":"https://image.laji.fi/MM.272546/Deraeocoris_lutescens_02.jpg",
+         "taxon":{
+            "cursiveName":true,
+            "vernacularName":"keltasiimalude",
+            "scientificName":"Deraeocoris lutescens",
+            "scientificNameAuthorship":"(Schilling, 1837)",
+            "taxonRank":"MX.species",
+            "id":"MX.229819"
+         },
+         "source":"default",
+         "squareThumbnailURL":"https://image.laji.fi/MM.272546/Deraeocoris_lutescens_02_square.jpg",
+         "thumbnailURL":"https://image.laji.fi/MM.272546/Deraeocoris_lutescens_02_thumb.jpg"
+      },
+      {
+         "licenseAbbreviation":"CC-BY-NC-4.0",
+         "copyrightOwner":"TuomoVainio",
+         "licenseFullname":"Creative Commons Nime\u00e4 Ei-Kaupallinen 4.0",
+         "keywords":[
+            "Kuvapankki"
+         ],
+         "author":"TuomoVainio",
+         "fullURL":"https://image.laji.fi/MM.272547/Deraeocoris_lutescens_05.jpg",
+         "caption":"male",
+         "largeURL":"https://image.laji.fi/MM.272547/Deraeocoris_lutescens_05.jpg",
+         "taxon":{
+            "cursiveName":true,
+            "vernacularName":"keltasiimalude",
+            "scientificName":"Deraeocoris lutescens",
+            "scientificNameAuthorship":"(Schilling, 1837)",
+            "taxonRank":"MX.species",
+            "id":"MX.229819"
+         },
+         "source":"default",
+         "squareThumbnailURL":"https://image.laji.fi/MM.272547/Deraeocoris_lutescens_05_square.jpg",
+         "thumbnailURL":"https://image.laji.fi/MM.272547/Deraeocoris_lutescens_05_thumb.jpg"
+      }
+   ],
+   "primaryHabitat":{
+      "habitat":"MKV.habitatIp",
+      "id":"MKV.308647",
+      "order":0
+   },
+   "species":true,
+   "observationCount":271,
+   "occurrenceInFinland":"MX.occurrenceInFinlandPublished",
+   "hasParent":true,
+   "hasDescriptions":true,
+   "intellectualRights":"MZ.intellectualRightsCC-BY-4.0"
+}

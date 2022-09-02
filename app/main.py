@@ -130,10 +130,10 @@ def taxa_species(taxon_id_untrusted):
     html = taxa.species.main(taxon_id_untrusted)
     return render_template("taxa_species.html", html=html)
 
-@app.route("/taxa/new/<string:taxon_id_untrusted>")
+@app.route("/taxa/id/<string:page_name_untrusted>")
 @cache.cached(timeout=1)
-def taxa_new(taxon_id_untrusted):
-    html = taxa.new.main(taxon_id_untrusted)
+def taxa_new(page_name_untrusted):
+    html = taxa.new.main(page_name_untrusted)
     return render_template("taxa_new.html", html=html)
 
 

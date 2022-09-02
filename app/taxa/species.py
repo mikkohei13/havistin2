@@ -76,6 +76,7 @@ def main(taxon_id_untrusted):
     # &selectedFields=id,vernacularName,scientificName,typeOfOccurrenceInFinland,parent.family.scientificName,observationCountFinland
     species_data = common.fetch_finbif_api(f"https://api.laji.fi/v0/taxa/{qname}/species?onlyFinnish=true&lang=fi&page=1&pageSize=10&sortOrder=taxonomic&access_token=")
 
+    # TODO: Better var names
     # Expecting only one species
     html["raw_data"] = species_data["results"][0]
 
@@ -86,8 +87,9 @@ def main(taxon_id_untrusted):
     else:
         html["primary_habitat"] = ""
 
-    html["redlist_status"] = common.fetch_variable_label(html["raw_data"]["latestRedListStatusFinland"]["status"])
-    html["redlist_year"] = html["raw_data"]["latestRedListStatusFinland"]["year"]
+    if "redlist_status" in html["raw_data"]:
+        html["redlist_status"] = common.fetch_variable_label(html["raw_data"]["latestRedListStatusFinland"]["status"])
+        html["redlist_year"] = html["raw_data"]["latestRedListStatusFinland"]["year"]
 
     raw_facts = get_obs_aggregate_data(qname)
     html["fact_table"] = generate_fact_table(raw_facts)
