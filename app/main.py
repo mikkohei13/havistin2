@@ -119,7 +119,7 @@ def taxa_specieslist(taxon_id_untrusted):
     return render_template("taxa_specieslist.html", html=html)
 
 @app.route("/taxa")
-@cache.cached(timeout=3600)
+@cache.cached(timeout=1)
 def taxa_root():
     html = taxa.taxa.main()
     return render_template("taxa.html", html=html)
