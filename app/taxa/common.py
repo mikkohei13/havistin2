@@ -90,3 +90,25 @@ def fetch_variable_label(variable):
 
     print(dataDict, file = sys.stdout)
     return label_fi
+
+
+# TODO: make full list of possible licenses
+# TODO: make license link
+def cc_abbreviation(lic):
+    if "http://tun.fi/MZ.intellectualRightsCC-BY-NC-4.0" == lic or "CC-BY-NC-4.0" == lic or "CC BY-NC 4.0" == lic:
+        return "CC BY-NC 4.0"
+    if "http://tun.fi/MZ.intellectualRightsCC-BY-SA-4.0" == lic or "CC-BY-SA-4.0" == lic:
+        return "CC BY-SA 4.0"
+    if "http://tun.fi/MZ.intellectualRightsCC-BY-4.0" == lic or "CC-BY-4.0" == lic:
+        return "CC BY 4.0"
+    if "http://tun.fi/MZ.intellectualRightsCC-BY-NC-ND-4.0" == lic or "CC-BY-NC-ND-4.0" == lic:
+        return "CC BY-NC-ND 4.0"
+    if "http://tun.fi/MZ.intellectualRightsCC-BY-NC-SA-4.0" == lic or "CC-BY-NC-SA-4.0" == lic:
+        return "CC BY-NC-SA 4.0"
+    if "CC0-4.0" == lic:
+        return "CC Zero 4.0"
+
+#    if "" == lic or "" == lic:
+#        return ""
+    return lic
+

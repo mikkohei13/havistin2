@@ -62,6 +62,9 @@ def get_species_qnames(page_name_untrusted):
         species.append("MX.230303")
         species.append("MX.230415")
         species.append("MX.5008073")
+
+        # Pentatomidae
+        species.append("MX.5093768") # Arma custos
         species.append("MX.230504")
         species.append("MX.4994295")
         species.append("MX.4994296")
@@ -80,22 +83,6 @@ def get_species_data(species_qnames):
         species_data.append(data)
 
     return species_data
-
-
-def cc_link(lic):
-    if "http://tun.fi/MZ.intellectualRightsCC-BY-NC-4.0" == lic or "CC-BY-NC-4.0" == lic:
-        return "CC BY-NC 4.0"
-    if "http://tun.fi/MZ.intellectualRightsCC-BY-SA-4.0" == lic or "CC-BY-SA-4.0" == lic:
-        return "CC BY-SA 4.0"
-    if "http://tun.fi/MZ.intellectualRightsCC-BY-4.0" == lic or "CC-BY-4.0" == lic:
-        return "CC BY 4.0"
-    if "http://tun.fi/MZ.intellectualRightsCC-BY-NC-ND-4.0" == lic or "CC-BY-NC-ND-4.0" == lic:
-        return "CC BY-NC-ND 4.0"
-    if "http://tun.fi/MZ.intellectualRightsCC-BY-NC-SA-4.0" == lic or "CC-BY-NC-SA-4.0" == lic:
-        return "CC BY-NC-SA 4.0"
-#    if "" == lic or "" == lic:
-#        return ""
-    return lic
 
 
 def get_additional_multimedia(qname):
@@ -147,7 +134,7 @@ def generate_media_html(media_data, qname):
                 if "fi" in media['taxonDescriptionCaption']:
                     html += "<span class='caption'>" + media['taxonDescriptionCaption']['fi'] + "</span><br>\n"
 
-            html += "<span class='copyright'>" + media['author'] + ", " + cc_link(media['licenseAbbreviation']) + "</span>"
+            html += "<span class='copyright'>" + media['author'] + ", " + common.cc_abbreviation(media['licenseAbbreviation']) + "</span>"
             html += "</figcaption>\n"
 
             html += "</figure>\n"
@@ -182,6 +169,7 @@ def generate_species_html(species_data):
     family_mem = ""
 
     for species in species_data:
+#        common.print_log(species)
         qname = species['qname']
         family = species['parent']['family']['scientificName']
 
@@ -197,6 +185,13 @@ def generate_species_html(species_data):
             html += f"<h3><em>{species['scientificName']}</em> {species['scientificNameAuthorship']}</h3>\n"
 
         html += "<ul class='speciesinfo'>\n"
+
+        '''
+        if species['finnishSpecies']:
+            html += "<li>SUOMALAINEN</li>"
+        else:
+            html += "<li>EI-SUOMALAINEN</li>"
+        '''
 
         if "typeOfOccurrenceInFinland" in species:
             html += "<li>Suomessa "
