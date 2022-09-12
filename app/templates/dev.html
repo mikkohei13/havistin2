@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <title>Test (biomi.org)</title>
+{% endblock %}
+
+{% block breadcrumb %}
+    <a href='/'>Havistin</a> &raquo; Test
+{% endblock %}
+
+{% block body %}
+
+    {% for photo in html["raw"]["photos"] %}
+        <p>
+        <img src='{{ photo.thumbnail_url }}'><br>
+        {{ photo.attribution_plain }}
+        </p>
+    {% endfor %}
+
+    <div>
+    <h3>JSON Data</h3>
+    {{ html["raw"]|safe }}
+    </div>
+
+{% endblock %}

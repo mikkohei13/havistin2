@@ -21,7 +21,7 @@ import taxa.specieslist
 import taxa.species
 import taxa.new
 
-import test.test
+import dev.dev
 
 #import app_secrets
 
@@ -138,11 +138,11 @@ def taxa_new(page_name_untrusted):
     html = taxa.new.main(page_name_untrusted)
     return render_template("taxa_new.html", html=html)
 
-@app.route("/test")
+@app.route("/dev")
 @cache.cached(timeout=1)
-def test_root():
-    html = test.test.main()
-    return render_template("test.html", html=html)
+def dev_root():
+    html = dev.dev.main()
+    return render_template("dev.html", html=html)
 
 # If getting error "AttributeError: 'function' object has no attribute", you have used same name for function and the file it calls. Use foo_root() or such name instead.
 

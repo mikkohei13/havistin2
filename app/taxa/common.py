@@ -122,6 +122,8 @@ def cc_abbreviation(lic):
         return "CC BY-NC-SA 4.0"
     if "CC0-4.0" == lic:
         return "CC Zero 4.0"
+    if "pd" == lic:
+        return "Public Domain"
 
 #    if "" == lic or "" == lic:
 #        return ""
