@@ -37,6 +37,8 @@ Deploy:
 
 Redeploy from Google Console (https://console.cloud.google.com/run) if you want to set more options there.
 
+Some pages under havistin.biomi.org are fetched regularly using Google Cloud Scheduler, to clear caches.
+
 ## Google Cloud Run notes:
 
 Three ways to handle secrets:
@@ -81,10 +83,9 @@ Build image from Dockerfile:
 
 ## Must
 
-- Cleanup code
 - Refactor common functions into common
 - robots.txt, forbid all but front page (now all forbidden)
-- Paginate fetching mappable observations of a square. Must do this before top square has less than 1000 mappable observations.
+- Paginate fetching mappable observations of a square. Or increase page size? Must do this before top square has less than 1000 mappable observations.
 - Birds of prey on adjusted form
 - Command to deploy version other than latest. First submit to Articat Registry, then deploy from there using --image option.
 - Country filtering? (bots)

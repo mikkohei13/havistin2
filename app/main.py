@@ -20,6 +20,7 @@ import taxa.taxa
 import taxa.specieslist
 import taxa.species
 import taxa.new
+import taxa.common_photos
 
 import dev.dev
 
@@ -137,6 +138,12 @@ def taxa_species(taxon_id_untrusted):
 def taxa_new(page_name_untrusted):
     html = taxa.new.main(page_name_untrusted)
     return render_template("taxa_new.html", html=html)
+
+@app.route("/taxa/photos_data/<string:taxon_id_untrusted>")
+@cache.cached(timeout=1)
+def taxa_photos_data(taxon_id_untrusted):
+    html = taxa.common_photos.main(taxon_id_untrusted)
+    return render_template("taxa_photos_data.html", html=html)
 
 @app.route("/dev")
 @cache.cached(timeout=1)

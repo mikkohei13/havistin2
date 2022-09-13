@@ -2,11 +2,12 @@
 import taxa.common as common
 import taxa.cache_db as cache_db
 import time
+import math
 
 
 def get_inat_data(sci_name):
     taxon_data = common.fetch_api(f"https://api.inaturalist.org/v1/search?q={sci_name}&locale=fi&preferred_place_id=7020&per_page=10", True)
-    common.print_log(taxon_data)
+#    common.print_log(taxon_data)
 
     return taxon_data
 
@@ -17,7 +18,7 @@ def get_inat_author(attribution):
     return author
 
 
-def generate_photos_data(qname, min_photo_count_toget):
+def generate_photos_data(qname, photo_count_toget):
 
     photo_count = 0
     disallowed = ["ARR", "http://tun.fi/MZ.intellectualRightsARR", None]
@@ -38,13 +39,13 @@ def generate_photos_data(qname, min_photo_count_toget):
     if "multimedia" in species_data:
         for photo in species_data['multimedia']:
             if photo['licenseAbbreviation'] not in disallowed:
-                photo_count = photo_count + 1
                 new_photo = dict()
                 new_photo['photo_type'] = "taxon_photo"
 
                 new_photo['full_url'] = photo['fullURL']
                 new_photo['thumbnail_url'] = photo['thumbnailURL']
 
+                # TODO: Fix cases where captions contain html, e.g. birds / MX.37580
                 if "caption" in photo:
                     new_photo['caption_plain'] = photo['caption']
                 elif "taxonDescriptionCaption" in photo:
@@ -76,8 +77,12 @@ def generate_photos_data(qname, min_photo_count_toget):
                 # Add the photo data dict the array of photos
                 new_photo['rawdata'] = photo
                 photos_data['photos'].append(new_photo)
+
+                photo_count = photo_count + 1
+                if photo_count >= photo_count_toget:
+                    break
         
-    if photo_count >= min_photo_count_toget:
+    if photo_count >= photo_count_toget:
         photos_data['photo_count'] = photo_count
         return photos_data
 
@@ -86,11 +91,14 @@ def generate_photos_data(qname, min_photo_count_toget):
 
     if species_data['total'] > 0:
 
-        # for each photo (test)
+        # For each photo
+        # Limit verified photo count, since they are not necessarily good photos
+        expert_verified_photo_count = math.floor(photo_count_toget / 3)
+        i = 0
+
         for photo in species_data['results']:
             if "IMAGE" == photo['media']['mediaType']:
                 if photo['media']['licenseId'] not in disallowed:
-                    photo_count = photo_count + 1
                     new_photo = dict()
                     new_photo['photo_type'] = "expert_verified"
 
@@ -117,7 +125,15 @@ def generate_photos_data(qname, min_photo_count_toget):
                     new_photo['rawdata'] = photo
                     photos_data['photos'].append(new_photo)
 
-        if photo_count >= min_photo_count_toget:
+                    photo_count = photo_count + 1
+                    if photo_count >= photo_count_toget:
+                        break
+
+                    i = i + 1
+                    if i >= expert_verified_photo_count:
+                        break
+
+        if photo_count >= photo_count_toget:
             photos_data['photo_count'] = photo_count
             return photos_data
 
@@ -128,7 +144,6 @@ def generate_photos_data(qname, min_photo_count_toget):
         best_match = inat_data['results'][0]
         for photo in best_match['record']['taxon_photos']:
             if photo['photo']['license_code'] not in disallowed:
-                photo_count = photo_count + 1
                 new_photo = dict()
                 new_photo['photo_type'] = "inat_taxon_photo"
 
@@ -152,6 +167,11 @@ def generate_photos_data(qname, min_photo_count_toget):
 #                new_photo['rawdata'] = photo
                 photos_data['photos'].append(new_photo)
 
+                photo_count = photo_count + 1
+                if photo_count >= photo_count_toget:
+#                    common.print_log("Breaking at iNat photos, nro " + str(photo_count)) # debug
+                    break
+
     # TODO: If adding specimen photos here later, you need to check on the 3) step if there are enough photos, and return results if yes.
     
     # If no more photos, return those that we do have
@@ -159,7 +179,9 @@ def generate_photos_data(qname, min_photo_count_toget):
     return photos_data
 
 
-def get_photos_data(qname, max_age_seconds):
+def get_photos_data(qname, max_age_seconds, max_photo_count):
+    # Note that changes to params (max_photo_count) & code will only take effect after cache has expired.
+
     # TODO: Make max photo count a param
     taxon_photos_db_collection = cache_db.connect_db()
 
@@ -167,7 +189,7 @@ def get_photos_data(qname, max_age_seconds):
 
     if not photos_data:
         # Get data and save to db
-        photos_data = generate_photos_data(qname, 6)
+        photos_data = generate_photos_data(qname, max_photo_count)
         cache_db.set_taxon_photos_data(taxon_photos_db_collection, qname, photos_data)
         common.print_log("Created cache entry for " + qname)
     else:
@@ -176,7 +198,7 @@ def get_photos_data(qname, max_age_seconds):
 
         if cache_age_seconds > max_age_seconds:
             # Get fresh data and save to db
-            photos_data = generate_photos_data(qname, 6)
+            photos_data = generate_photos_data(qname, max_photo_count)
             cache_db.set_taxon_photos_data(taxon_photos_db_collection, qname, photos_data)
             common.print_log("Regenerated cache for " + qname)
         else:
@@ -186,13 +208,12 @@ def get_photos_data(qname, max_age_seconds):
     return photos_data
 
 
-def main():
+def main(qname_untrusted):
+    # TODO: Return valid json with headers
+    qname = common.valid_qname(qname_untrusted)
+
     html = dict()
-    html["foo"] = "bar"
-
-    qname = "MX.229819" # keltasiimalude, lajikuvia
-
-    photos_data = get_photos_data(qname, 600)
+    photos_data = get_photos_data(qname, 86400, 6)
         
-    html['raw'] = photos_data
+    html['photos_data'] = photos_data
     return html
