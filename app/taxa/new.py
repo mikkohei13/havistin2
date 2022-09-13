@@ -118,7 +118,7 @@ def generate_species_html(species_data):
         qname = species['qname']
         family = species['parent']['family']['scientificName']
 
-        photos_data = common_photos.get_photos_data(qname, 86400, 6) # 86400 = 24 h
+        photos_data = common_photos.get_photos_data(qname, 600, 6) # 86400 = 24 h
 
         if family != family_mem:
             html += f"<h2 class='new_family'>{family}</h2>"
@@ -192,19 +192,23 @@ def main(page_name_untrusted):
     common.print_log("Getting species data...")
 
     html = dict()
-
     taxon_qname, species_qnames = get_species_qnames(page_name_untrusted)
-    
-    species_data = get_species_data(species_qnames)
-    common.print_log("Generating species html...")
-
-    html["species_html"] = generate_species_html(species_data)
 
     common.print_log("Getting higher taxon data...")
-    # TODO: Why is this so slow? ~10 seconds. Todo caching?
     taxon_data = common.fetch_finbif_api(f"https://api.laji.fi/v0/taxa/{taxon_qname}?lang=fi&langFallback=true&maxLevel=0&includeHidden=false&includeMedia=false&includeDescriptions=false&includeRedListEvaluations=false&sortOrder=taxonomic&access_token=", False)
 
-    if "vernacular_name" in taxon_data:
+#    common.print_log(taxon_data)
+#    return html
+
+    common.print_log("Generating species html...")
+    species_data = get_species_data(species_qnames)
+
+    # TODO: Remove subgenus name, if that hinders data fetching from iNat?
+    # e.g. Chlamydatus (Chlamydatus) evanescens
+    html["species_html"] = generate_species_html(species_data)
+
+    common.print_log("Finishing up...")
+    if "vernacularName" in taxon_data:
         html["vernacular_name"] = taxon_data["vernacularName"]
     else:
         html["vernacular_name"] = "Ei suomenkielistä nimeä"
