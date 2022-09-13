@@ -3,5 +3,4 @@ requests == 2.27.*
 pandas == 1.4.*
 gunicorn == 20.1.*
 Flask-Caching == 1.10.*
-fastapi == 0.83.*
 pymongo[srv] == 4.2.*

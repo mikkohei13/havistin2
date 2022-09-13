@@ -2,6 +2,7 @@
 import taxa.common as common
 import dev.cache_db as cache_db
 import time
+import json
 
 def get_additional_photos(qname):
     photos = [] # list of dicts
@@ -201,29 +202,41 @@ def main():
     html = dict()
     html["foo"] = "bar"
 
-    qname = "MX.194380" # seitsenpistepirkko, varmistettuja havaintoja
     qname = "MX.229819" # keltasiimalude, lajikuvia
-    qname = "MX.1"
+    qname = "MX.194380" # seitsenpistepirkko, varmistettuja havaintoja
+    qname = "MX.1" # sudenkorennot
+    qname = "MX.230504" # valtikkalude, lajikuvia iNatista
+    qname = "MX.2"
 
     # Temp, get this when fetching images
 #    taxon_data = common.fetch_finbif_api(f"https://api.laji.fi/v0/taxa/MX.194380?lang=fi&langFallback=true&maxLevel=0&includeHidden=false&includeMedia=false&includeDescriptions=false&includeRedListEvaluations=false&sortOrder=taxonomic&access_token=", False)
 #    taxon_sci_name = taxon_data['scientificName']
 
 #    get_inat_data(taxon_sci_name)
-    
 
-    '''
-    photos_data = generate_photos_data(qname, 30)
-    common.print_log(photos_data)
-
-    html['raw'] = photos_data
-    '''
 
     taxon_photos_db_collection = cache_db.connect_db()
 
-    qname = "MX.1"
-    data = cache_db.get_taxon_photos_data(taxon_photos_db_collection, qname)
+    photos_data = cache_db.get_taxon_photos_data(taxon_photos_db_collection, qname)
 
-    html['raw'] = data
+    max_age_seconds = 600 # 600 = 10 min
 
+    if not photos_data:
+        # Get data and save to db
+        photos_data = generate_photos_data(qname, 30)
+        id = cache_db.set_taxon_photos_data(taxon_photos_db_collection, qname, photos_data)
+        common.print_log("Created cache entry for " + qname)
+    else:
+        cache_age_seconds = int(time.time()) - photos_data['time']
+        common.print_log("Cache age is " + str(cache_age_seconds) + " seconds")
+
+        if cache_age_seconds > max_age_seconds:
+            # Get fresh data and save to db
+            photos_data = generate_photos_data(qname, 30)
+            cache_db.set_taxon_photos_data(taxon_photos_db_collection, qname, photos_data)
+            common.print_log("Regenerated cache for " + qname)
+        else:
+            common.print_log("Used cached data for " + qname)
+        
+    html['raw'] = photos_data
     return html

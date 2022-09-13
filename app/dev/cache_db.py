@@ -18,6 +18,11 @@ def connect_db():
     return taxon_photos_coll
 
 
+def set_taxon_photos_data(collection, qname, data):
+    record_id = collection.update_one({ '_id': qname }, { "$set": data }, True)
+    return record_id
+
+
 def get_taxon_photos_data(collection, qname):
 
     where = {"_id": qname }
