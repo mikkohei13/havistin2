@@ -4,48 +4,7 @@ import taxa.cache_db as cache_db
 import time
 
 
-def get_additional_photos(qname):
-    photos = [] # list of dicts
-
-    # Verified observations
-    data = common.fetch_finbif_api(f"https://api.laji.fi/v0/warehouse/query/unitMedia/list?taxonId={qname}&reliability=RELIABLE&aggregateBy=unit.linkings.taxon.id,media,document.documentId,unit.unitId&selected=unit.linkings.taxon.id,media,document.documentId,unit.unitId&includeNonValidTaxa=false&hasUnitMedia=true&cache=true&page=1&pageSize=4&access_token=", False)
-
-#    common.print_log("GETTING MORE IMAGES")
-#    common.print_log(data)
-
-    # If still no verified records, try specimens 
-    if 0 == data['total']:
-        data = common.fetch_finbif_api(f"https://api.laji.fi/v0/warehouse/query/unitMedia/list?taxonId={qname}&sourceId=KE.3&superRecordBasis=PRESERVED_SPECIMEN&aggregateBy=unit.linkings.taxon.id,media,document.documentId,unit.unitId&selected=unit.linkings.taxon.id,media,document.documentId,unit.unitId&includeNonValidTaxa=false&hasUnitMedia=true&cache=true&needsCheck=false&page=1&pageSize=4&access_token=", False)
-
-    # If still no photos, return empty 
-    if 0 == data['total']:
-        return photos, False
-
-    for item in data['results']:
-        media = dict()
-        if "IMAGE" == item['media']['mediaType']:
-            media['licenseAbbreviation'] = item['media']['licenseId']
-            media['fullURL'] = item['media']['fullURL']
-            media['thumbnailURL'] = item['media']['thumbnailURL']
-            media['author'] = item['media']['author']
-            media['caption'] = "Havainto/näyte <a href='" + item['document']['documentId'] + "' target='_blank'>" + item['document']['documentId'] + "</a>\n"
-
-            photos.append(media)
-
-    return photos, True
-
-
 def get_inat_data(sci_name):
-
-    # Get taxon id
-    # https://api.inaturalist.org/v1/search?q=seitsenpistepirkk&locale=fi&preferred_place_id=7020&per_page=10
-
-    # API call on species page
-    # https://api.inaturalist.org/v1/observations?verifiable=true&taxon_id=51702&place_id=&preferred_place_id=7020&locale=fi&order_by=observed_on&order=desc&per_page=1&skip_total_hits=true
-
-    # API call on curation page
-    # https://inaturalist.laji.fi/taxa/319877.json
-
     taxon_data = common.fetch_api(f"https://api.inaturalist.org/v1/search?q={sci_name}&locale=fi&preferred_place_id=7020&per_page=10", True)
     common.print_log(taxon_data)
 
@@ -189,12 +148,11 @@ def generate_photos_data(qname, min_photo_count_toget):
                 if "native_page_url" in photo['photo']:
                     new_photo['source_url'] = photo['photo']['native_page_url']
 
-
 # Don't include raw data from iNat, because there's so much of it                
 #                new_photo['rawdata'] = photo
                 photos_data['photos'].append(new_photo)
 
-    # TODO: If adding specimen photos, you need to check on the 3) step if there are enough photos, and return results if yes.
+    # TODO: If adding specimen photos here later, you need to check on the 3) step if there are enough photos, and return results if yes.
     
     # If no more photos, return those that we do have
     photos_data['photo_count'] = photo_count
@@ -233,17 +191,6 @@ def main():
     html["foo"] = "bar"
 
     qname = "MX.229819" # keltasiimalude, lajikuvia
-    qname = "MX.194380" # seitsenpistepirkko, varmistettuja havaintoja
-    qname = "MX.1" # sudenkorennot
-    qname = "MX.230504" # valtikkalude, lajikuvia iNatista
-    qname = "MX.2"
-    qname = "MX.229821"
-
-    # Temp, get this when fetching images
-#    taxon_data = common.fetch_finbif_api(f"https://api.laji.fi/v0/taxa/MX.194380?lang=fi&langFallback=true&maxLevel=0&includeHidden=false&includeMedia=false&includeDescriptions=false&includeRedListEvaluations=false&sortOrder=taxonomic&access_token=", False)
-#    taxon_sci_name = taxon_data['scientificName']
-
-#    get_inat_data(taxon_sci_name)
 
     photos_data = get_photos_data(qname, 600)
         

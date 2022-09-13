@@ -1,7 +1,8 @@
-import json
+
 #from webbrowser import get
 import taxa.common as common
 import taxa.common_photos as common_photos
+
 
 # Here is manually defined which species are "new", this depends on existing literature of that taxon.
 def get_species_qnames(page_name_untrusted):
@@ -78,9 +79,8 @@ def get_species_qnames(page_name_untrusted):
         species.append("MX.230548")
         species.append("MX.230556")
         
-
-        
     return taxon_qname, species
+
 
 def get_species_data(species_qnames):
     species_data = []
@@ -92,71 +92,9 @@ def get_species_data(species_qnames):
     return species_data
 
 
-def get_additional_multimedia(qname):
-    multimedia = [] # list of dicts
-
-    # Verified observations
-    data = common.fetch_finbif_api(f"https://api.laji.fi/v0/warehouse/query/unitMedia/list?taxonId={qname}&reliability=RELIABLE&aggregateBy=unit.linkings.taxon.id,media,document.documentId,unit.unitId&selected=unit.linkings.taxon.id,media,document.documentId,unit.unitId&includeNonValidTaxa=false&hasUnitMedia=true&cache=true&page=1&pageSize=4&access_token=", False)
-
-#    common.print_log("GETTING MORE IMAGES")
-#    common.print_log(data)
-
-    # If still no verified records, try specimens 
-    if 0 == data['total']:
-        data = common.fetch_finbif_api(f"https://api.laji.fi/v0/warehouse/query/unitMedia/list?taxonId={qname}&sourceId=KE.3&superRecordBasis=PRESERVED_SPECIMEN&aggregateBy=unit.linkings.taxon.id,media,document.documentId,unit.unitId&selected=unit.linkings.taxon.id,media,document.documentId,unit.unitId&includeNonValidTaxa=false&hasUnitMedia=true&cache=true&needsCheck=false&page=1&pageSize=4&access_token=", False)
-
-    # If still no photos, return empty 
-    if 0 == data['total']:
-        return multimedia, False
-
-    for item in data['results']:
-        media = dict()
-        if "IMAGE" == item['media']['mediaType']:
-            media['licenseAbbreviation'] = item['media']['licenseId']
-            media['fullURL'] = item['media']['fullURL']
-            media['thumbnailURL'] = item['media']['thumbnailURL']
-            media['author'] = item['media']['author']
-            media['caption'] = "Havainto/näyte <a href='" + item['document']['documentId'] + "' target='_blank'>" + item['document']['documentId'] + "</a>\n"
-
-            multimedia.append(media)
-
-    return multimedia, True
-
-
-def generate_media_html(media_data, qname):
-
-    disallowed = ["ARR", "http://tun.fi/MZ.intellectualRightsARR", "None"]
-
-    html = ""
-    for media in media_data:
-        if media['licenseAbbreviation'] not in disallowed:
-            html += "\n<figure class='photo'>\n"
-            html += "<a href='" + media['fullURL'] + "'><img src='" + media['thumbnailURL'] + "' alt='' title=''></a>"
-            
-            html += "<figcaption>\n"
-
-            if "caption" in media:
-                html += "<span class='caption'>" + media['caption'] + "</span><br>\n"
-            elif "taxonDescriptionCaption" in media:
-                if "fi" in media['taxonDescriptionCaption']:
-                    html += "<span class='caption'>" + media['taxonDescriptionCaption']['fi'] + "</span><br>\n"
-
-            html += "<span class='copyright'>" + media['author'] + ", " + common.cc_abbreviation(media['licenseAbbreviation']) + "</span>"
-            html += "</figcaption>\n"
-
-            html += "</figure>\n"
-        else:
-            html += "<!-- non-cc media -->\n"
-
-    return html
-
-
 def generate_description(groups):
-#    common.print_log(groups[0])
     html = ""
     for group in groups:
-#        common.print_log("HERE:")
-#        common.print_log(group)
         # Yleistä
         if "MX.SDVG1" == group['group']:
             for variable in group['variables']:
@@ -172,7 +110,6 @@ def generate_description(groups):
 
 def generate_species_html(species_data):
     html = ""
-
     family_mem = ""
 
     for species in species_data:
@@ -221,24 +158,9 @@ def generate_species_html(species_data):
         html += "</ul>\n"
 
         # Photos
-        '''
-        # If no taxon photos, try different sources
-        if "multimedia" not in species:
-            species['multimedia'], species['hasMultimedia'] = get_additional_multimedia(qname)
-#        else:
-#            common.print_log(species['multimedia'])
-
-
-        # Create photo html
         html += "<div class='multimedia'>\n"
-        if True == species['hasMultimedia']:
-            html += generate_media_html(species['multimedia'], species['qname'])
-        else:
-            html += "ei vahvistettuja tai museonäytteiden kuvia"
-        html += "</div>\n"
-        '''
 
-        html += "<div class='multimedia'>\n"
+        # For each photo of this taxon
         for photo in photos_data['photos']:
             html += "\n<figure class='photo'>\n"
             html += "<a href='" + str(photo['full_url']) + "'>"
@@ -261,8 +183,6 @@ def generate_species_html(species_data):
 
         html += f"<div class='desc'>{description_html}\n</div>\n"
 
-
-#        html += json.dumps(species) # debug
         html += "</div>\n"
 
     return html
@@ -281,6 +201,7 @@ def main(page_name_untrusted):
     html["species_html"] = generate_species_html(species_data)
 
     common.print_log("Getting higher taxon data...")
+    # TODO: Why is this so slow? ~10 seconds. Todo caching?
     taxon_data = common.fetch_finbif_api(f"https://api.laji.fi/v0/taxa/{taxon_qname}?lang=fi&langFallback=true&maxLevel=0&includeHidden=false&includeMedia=false&includeDescriptions=false&includeRedListEvaluations=false&sortOrder=taxonomic&access_token=", False)
 
     if "vernacular_name" in taxon_data:
