@@ -15,7 +15,11 @@ services:
       - FLASK_DEBUG=1
       - PYTHONUNBUFFERED=TRUE # Stuff printed to logs are visible immediately
     entrypoint: >
-      gunicorn --chdir /havistin2/app main:app -w 1 --threads 1 -b 0.0.0.0:80 --reload
+      gunicorn 
+      --chdir /havistin2/app main:app -w 1 
+      --threads 1 -b 0.0.0.0:80
+      --timeout 120 
+      --reload
       --reload-extra-file /havistin2/app/templates/base.html
       --reload-extra-file /havistin2/app/templates/index.html
       --reload-extra-file /havistin2/app/templates/squareform.html

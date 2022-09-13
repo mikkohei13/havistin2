@@ -2,7 +2,7 @@
 import taxa.common as common
 import taxa.cache_db as cache_db
 import time
-import json
+
 
 def get_additional_photos(qname):
     photos = [] # list of dicts
@@ -61,7 +61,7 @@ def get_inat_author(attribution):
 def generate_photos_data(qname, min_photo_count_toget):
 
     photo_count = 0
-    disallowed = ["ARR", "http://tun.fi/MZ.intellectualRightsARR"]
+    disallowed = ["ARR", "http://tun.fi/MZ.intellectualRightsARR", None]
 
     photos_data = dict()
     photos_data['photos'] = []
@@ -151,7 +151,7 @@ def generate_photos_data(qname, min_photo_count_toget):
                     new_photo['caption_html'] = "Havainto/näyte <a href='" + photo['document']['documentId'] + "' target='_blank'>" + photo['document']['documentId'] + "</a>\n"
 
                     # Todo: Better differentiation from caption? How?
-                    new_photo['attribution_plain'] = new_photo['author'] + ", " + new_photo['license_abbreviation'], new_photo['caption_plain']
+                    new_photo['attribution_plain'] = new_photo['author'] + ", " + new_photo['license_abbreviation'] + ", " + new_photo['caption_plain']
 
                     new_photo['source_url'] = photo['document']['documentId']
 
@@ -202,13 +202,14 @@ def generate_photos_data(qname, min_photo_count_toget):
 
 
 def get_photos_data(qname, max_age_seconds):
+    # TODO: Make max photo count a param
     taxon_photos_db_collection = cache_db.connect_db()
 
     photos_data = cache_db.get_taxon_photos_data(taxon_photos_db_collection, qname)
 
     if not photos_data:
         # Get data and save to db
-        photos_data = generate_photos_data(qname, 30)
+        photos_data = generate_photos_data(qname, 6)
         cache_db.set_taxon_photos_data(taxon_photos_db_collection, qname, photos_data)
         common.print_log("Created cache entry for " + qname)
     else:
@@ -217,7 +218,7 @@ def get_photos_data(qname, max_age_seconds):
 
         if cache_age_seconds > max_age_seconds:
             # Get fresh data and save to db
-            photos_data = generate_photos_data(qname, 30)
+            photos_data = generate_photos_data(qname, 6)
             cache_db.set_taxon_photos_data(taxon_photos_db_collection, qname, photos_data)
             common.print_log("Regenerated cache for " + qname)
         else:

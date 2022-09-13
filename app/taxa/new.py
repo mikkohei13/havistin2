@@ -1,6 +1,7 @@
 import json
 #from webbrowser import get
 import taxa.common as common
+import taxa.common_photos as common_photos
 
 # Here is manually defined which species are "new", this depends on existing literature of that taxon.
 def get_species_qnames(page_name_untrusted):
@@ -11,6 +12,9 @@ def get_species_qnames(page_name_untrusted):
         taxon_qname = "MX.229577"
 
         '''
+        # Test data
+        species.append("MX.4994283") # Heterotoma planicornis 
+
         species.append("MX.5075811") # debug duplicate
         species.append("MX.229664") # debug duplicate
         species.append("MX.230068") # debug duplicate
@@ -20,6 +24,7 @@ def get_species_qnames(page_name_untrusted):
         species.append("MX.230542") # debug duplicate
         species.append("MX.230504") # debug duplicate
         '''
+        # Real data
         species.append("MX.5075811")
         species.append("MX.229664")
         species.append("MX.4999057")
@@ -73,6 +78,8 @@ def get_species_qnames(page_name_untrusted):
         species.append("MX.230548")
         species.append("MX.230556")
         
+
+        
     return taxon_qname, species
 
 def get_species_data(species_qnames):
@@ -118,7 +125,7 @@ def get_additional_multimedia(qname):
 
 def generate_media_html(media_data, qname):
 
-    disallowed = ["ARR", "http://tun.fi/MZ.intellectualRightsARR"]
+    disallowed = ["ARR", "http://tun.fi/MZ.intellectualRightsARR", "None"]
 
     html = ""
     for media in media_data:
@@ -169,9 +176,12 @@ def generate_species_html(species_data):
     family_mem = ""
 
     for species in species_data:
+
 #        common.print_log(species)
         qname = species['qname']
         family = species['parent']['family']['scientificName']
+
+        photos_data = common_photos.get_photos_data(qname, 86400) # 86400 = 24 h
 
         if family != family_mem:
             html += f"<h2 class='new_family'>{family}</h2>"
@@ -211,6 +221,7 @@ def generate_species_html(species_data):
         html += "</ul>\n"
 
         # Photos
+        '''
         # If no taxon photos, try different sources
         if "multimedia" not in species:
             species['multimedia'], species['hasMultimedia'] = get_additional_multimedia(qname)
@@ -224,6 +235,21 @@ def generate_species_html(species_data):
             html += generate_media_html(species['multimedia'], species['qname'])
         else:
             html += "ei vahvistettuja tai museonäytteiden kuvia"
+        html += "</div>\n"
+        '''
+
+        html += "<div class='multimedia'>\n"
+        for photo in photos_data['photos']:
+            html += "\n<figure class='photo'>\n"
+            html += "<a href='" + str(photo['full_url']) + "'>"
+            html += "<img src='" + str(photo['thumbnail_url']) + "'>"
+            html += "</a>\n"
+            html += "<figcaption>\n"
+            html += "<span class='caption'>" + str(photo['caption_plain']) + "</span><br>\n"
+            html += "<span class='copyright'>" + str(photo['attribution_plain']) + "</span>\n"
+            html += "</figcaption>\n"
+            html += "</figure>\n"
+
         html += "</div>\n"
 
         description_html = "<!-- No desc -->\n"
@@ -243,18 +269,25 @@ def generate_species_html(species_data):
 
 
 def main(page_name_untrusted):
+    common.print_log("Getting species data...")
 
     html = dict()
 
     taxon_qname, species_qnames = get_species_qnames(page_name_untrusted)
     
     species_data = get_species_data(species_qnames)
+    common.print_log("Generating species html...")
 
     html["species_html"] = generate_species_html(species_data)
 
+    common.print_log("Getting higher taxon data...")
     taxon_data = common.fetch_finbif_api(f"https://api.laji.fi/v0/taxa/{taxon_qname}?lang=fi&langFallback=true&maxLevel=0&includeHidden=false&includeMedia=false&includeDescriptions=false&includeRedListEvaluations=false&sortOrder=taxonomic&access_token=", False)
 
-    html["vernacular_name"] = taxon_data["vernacularName"]
+    if "vernacular_name" in taxon_data:
+        html["vernacular_name"] = taxon_data["vernacularName"]
+    else:
+        html["vernacular_name"] = "Ei suomenkielistä nimeä"
     html["scientific_name"] = taxon_data["scientificName"]
 
+    common.print_log("Ready.")
     return html
