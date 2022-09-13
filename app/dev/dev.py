@@ -1,6 +1,6 @@
 
 import taxa.common as common
-import taxa.fire as fire
+import dev.cache_db as cache_db
 import time
 
 def get_additional_photos(qname):
@@ -212,9 +212,18 @@ def main():
 #    get_inat_data(taxon_sci_name)
     
 
+    '''
     photos_data = generate_photos_data(qname, 30)
     common.print_log(photos_data)
 
     html['raw'] = photos_data
+    '''
+
+    taxon_photos_db_collection = cache_db.connect_db()
+
+    qname = "MX.1"
+    data = cache_db.get_taxon_photos_data(taxon_photos_db_collection, qname)
+
+    html['raw'] = data
 
     return html
