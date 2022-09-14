@@ -7,10 +7,10 @@ import taxa.common_photos as common_photos
 # Here is manually defined which species are "new", this depends on existing literature of that taxon.
 def get_species_qnames(page_name_untrusted):
     species = list()
-    taxon_qname = ""
 
     if "heteroptera_new" == page_name_untrusted:
-        taxon_qname = "MX.229577"
+        taxon_title = "Heteroptera: Corixidae - Miridae"
+        description_title = "Suomen luteet -kirjasta puuttuvat lajit"
 
         '''
         # Test data
@@ -55,6 +55,13 @@ def get_species_qnames(page_name_untrusted):
         species.append("MX.230068")
         species.append("MX.4994287")
         species.append("MX.230095")
+
+    elif "heteroptera_new_2" == page_name_untrusted:
+
+        taxon_title = "Heteroptera: Nabidae - Pentatomidae"
+        description_title = "Suomen luteet -kirjasta puuttuvat lajit"
+
+        # Nabidae etc.
         species.append("MX.4994288")
         species.append("MX.4994289")
         species.append("MX.4994292")
@@ -79,7 +86,41 @@ def get_species_qnames(page_name_untrusted):
         species.append("MX.230548")
         species.append("MX.230556")
         
-    return taxon_qname, species
+    elif "heteroptera_near" == page_name_untrusted:
+
+        taxon_title = "Heteroptera"
+        description_title = "Suomen lähialueiden lajit"
+
+        species.append("MX.5093770")
+        species.append("MX.5093771")
+        species.append("MX.5093773")
+        species.append("MX.5093774")
+        species.append("MX.5093776")
+        species.append("MX.5093777")
+        species.append("MX.5093786")
+        species.append("MX.5093843")
+        species.append("MX.5093779")
+        species.append("MX.5093781")
+        species.append("MX.5093784")
+        species.append("MX.5093787")
+        species.append("MX.5093788")
+        species.append("MX.5093790")
+        species.append("MX.5093791")
+        species.append("MX.5093794")
+        species.append("MX.5093796")
+        species.append("MX.5093798")        
+        species.append("MX.5093801")        
+        species.append("MX.5093803")        
+        species.append("MX.5093806")        
+        species.append("MX.5093811")        
+        species.append("MX.5093812")        
+        species.append("MX.5093814")        
+        species.append("MX.5093815")        
+        species.append("MX.5093816")        
+        species.append("MX.5093818") # Mermitelocerus schmidtii
+
+
+    return taxon_title, description_title, species
 
 
 def get_species_data(species_qnames):
@@ -118,7 +159,7 @@ def generate_species_html(species_data):
         qname = species['qname']
         family = species['parent']['family']['scientificName']
 
-        photos_data = common_photos.get_photos_data(qname, 600, 6) # 86400 = 24 h
+        photos_data = common_photos.get_photos_data(qname, 86400, 6) # 86400 = 24 h
 
         if family != family_mem:
             html += f"<h2 class='new_family'>{family}</h2>"
@@ -192,10 +233,13 @@ def main(page_name_untrusted):
     common.print_log("Getting species data...")
 
     html = dict()
-    taxon_qname, species_qnames = get_species_qnames(page_name_untrusted)
+    taxon_title, description_title, species_qnames = get_species_qnames(page_name_untrusted)
 
-    common.print_log("Getting higher taxon data...")
-    taxon_data = common.fetch_finbif_api(f"https://api.laji.fi/v0/taxa/{taxon_qname}?lang=fi&langFallback=true&maxLevel=0&includeHidden=false&includeMedia=false&includeDescriptions=false&includeRedListEvaluations=false&sortOrder=taxonomic&access_token=", False)
+    html['taxon_title'] = taxon_title
+    html['description_title'] = description_title
+
+#    common.print_log("Getting higher taxon data...")
+#    taxon_data = common.fetch_finbif_api(f"https://api.laji.fi/v0/taxa/{taxon_qname}?lang=fi&langFallback=true&maxLevel=0&includeHidden=false&includeMedia=false&includeDescriptions=false&includeRedListEvaluations=false&sortOrder=taxonomic&access_token=", False)
 
 #    common.print_log(taxon_data)
 #    return html
@@ -207,12 +251,14 @@ def main(page_name_untrusted):
     # e.g. Chlamydatus (Chlamydatus) evanescens
     html["species_html"] = generate_species_html(species_data)
 
+    '''
     common.print_log("Finishing up...")
     if "vernacularName" in taxon_data:
         html["vernacular_name"] = taxon_data["vernacularName"]
     else:
         html["vernacular_name"] = "Ei suomenkielistä nimeä"
     html["scientific_name"] = taxon_data["scientificName"]
+    '''
 
     common.print_log("Ready.")
     return html

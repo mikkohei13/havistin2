@@ -128,13 +128,13 @@ def taxa_root():
     return render_template("taxa.html", html=html)
 
 @app.route("/taxa/species/<string:taxon_id_untrusted>")
-@cache.cached(timeout=10000)
+@cache.cached(timeout=86400)
 def taxa_species(taxon_id_untrusted):
     html = taxa.species.main(taxon_id_untrusted)
     return render_template("taxa_species.html", html=html)
 
 @app.route("/taxa/id/<string:page_name_untrusted>")
-@cache.cached(timeout=20000)
+@cache.cached(timeout=86400)
 def taxa_new(page_name_untrusted):
     html = taxa.new.main(page_name_untrusted)
     return render_template("taxa_new.html", html=html)
