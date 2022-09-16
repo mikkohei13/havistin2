@@ -28,7 +28,8 @@ import dev.dev
 
 config = {
     "DEBUG": True,
-    "CACHE_TYPE": "SimpleCache",
+    "CACHE_TYPE": "FileSystemCache",
+    "CACHE_DIR": "/havistin2/app/cache",
     "CACHE_DEFAULT_TIMEOUT": 600 # Seconds
 }
 
