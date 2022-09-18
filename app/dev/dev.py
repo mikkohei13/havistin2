@@ -227,9 +227,9 @@ def get_photos_data(qname, max_age_seconds):
     return photos_data
 
 
-def main():
+def main(taxon_id_untrusted):
     html = dict()
-    html["foo"] = "bar"
+    html["time"] = int(time.time())
 
     qname = "MX.229819" # keltasiimalude, lajikuvia
     qname = "MX.194380" # seitsenpistepirkko, varmistettuja havaintoja
@@ -244,7 +244,10 @@ def main():
 
 #    get_inat_data(taxon_sci_name)
 
-    photos_data = get_photos_data(qname, 600)
-        
-    html['raw'] = photos_data
+# Latest
+#    photos_data = get_photos_data(qname, 600)        
+#    html['raw'] = photos_data
+
+    html['taxon_id_untrusted'] = taxon_id_untrusted
+
     return html

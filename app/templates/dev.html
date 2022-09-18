@@ -10,16 +10,11 @@
 
 {% block body %}
 
-    {% for photo in html["raw"]["photos"] %}
-        <p>
-        <img src='{{ photo.thumbnail_url }}'><br>
-        {{ photo.attribution_plain }}
-        </p>
-    {% endfor %}
-
     <div>
-    <h3>JSON Data</h3>
-    {{ html["raw"]|safe }}
+    <h3>Time</h3>
+    {{ html["time"] }}
+    <h3>taxon_id_untrusted</h3>
+    {{ html["taxon_id_untrusted"] }}
     </div>
 
 {% endblock %}

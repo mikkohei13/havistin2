@@ -23,6 +23,7 @@ import taxa.new
 import taxa.common_photos
 
 import dev.dev
+import dev.cache as devcache
 
 #import app_secrets
 
@@ -146,10 +147,13 @@ def taxa_photos_data(taxon_id_untrusted):
     html = taxa.common_photos.main(taxon_id_untrusted)
     return render_template("taxa_photos_data.html", html=html)
 
-@app.route("/dev")
-@cache.cached(timeout=1)
-def dev_root():
-    html = dev.dev.main()
+@app.route("/dev/<string:taxon_id_untrusted>")
+#@cache.cached(timeout=1)
+def dev_root(taxon_id_untrusted):
+    html = devcache.get_cached("/dev/" + taxon_id_untrusted, 60)
+    if not html:
+        html = dev.dev.main(taxon_id_untrusted)
+        devcache.set_cached("/dev/" + taxon_id_untrusted, html)
     return render_template("dev.html", html=html)
 
 # If getting error "AttributeError: 'function' object has no attribute", you have used same name for function and the file it calls. Use foo_root() or such name instead.
