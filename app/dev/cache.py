@@ -35,6 +35,7 @@ def get_data(collection, id):
 
 # Todo: if fails to find, what returns?
 def get_cached(url, max_time):
+#    max_time = 60
     db_coll = connect_db()
     result_dict = get_data(db_coll, url)
     time_now = int(time.time())
@@ -57,3 +58,12 @@ def set_cached(url, html):
     set_data(db_coll, url, html)
     common.print_log("Set cache for " + url)
     return id
+
+'''
+def get_cached_deco(func):
+    def wrapper():
+
+        func()
+    return wrapper
+'''
+

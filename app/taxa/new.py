@@ -159,7 +159,7 @@ def generate_species_html(species_data):
         qname = species['qname']
         family = species['parent']['family']['scientificName']
 
-        photos_data = common_photos.get_photos_data(qname, 86400, 6) # 86400 = 24 h
+        photos_data = common_photos.get_photos_data(qname, 180, 6) # 86400 = 24 h
 
         if family != family_mem:
             html += f"<h2 class='new_family'>{family}</h2>"

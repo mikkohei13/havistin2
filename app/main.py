@@ -23,15 +23,31 @@ import taxa.new
 import taxa.common_photos
 
 import dev.dev
-import dev.cache as devcache
+import app_secrets
+#import dev.cache as devcache
 
 #import app_secrets
 
+'''
 config = {
     "DEBUG": True,
     "CACHE_TYPE": "FileSystemCache",
     "CACHE_DIR": "/havistin2/app/cache",
     "CACHE_DEFAULT_TIMEOUT": 600 # Seconds
+}
+'''
+
+config = {
+    "DEBUG": True,
+    "CACHE_TYPE": "RedisCache",
+    "CACHE_DEFAULT_TIMEOUT": 600, # Seconds
+#    "CACHE_KEY_PREFIX": ,
+#    "CACHE_OPTIONS": ,
+    "CACHE_REDIS_HOST": app_secrets.redis_host,
+    "CACHE_REDIS_PORT": app_secrets.redis_port,
+    "CACHE_REDIS_PASSWORD": app_secrets.redis_pass,
+    "CACHE_REDIS_DB": 0,
+    "CACHE_REDIS_URL": f"redis://{ app_secrets.redis_user }:{ app_secrets.redis_pass }@{ app_secrets.redis_host }:{ app_secrets.redis_port }",
 }
 
 app = Flask(__name__)
@@ -138,6 +154,10 @@ def taxa_species(taxon_id_untrusted):
 @app.route("/taxa/id/<string:page_name_untrusted>")
 @cache.cached(timeout=86400)
 def taxa_new(page_name_untrusted):
+#    html = devcache.get_cached("/taxa/id/" + page_name_untrusted, 86400)
+#    if not html:
+#        html = taxa.new.main(page_name_untrusted)
+#        devcache.set_cached("/taxa/id/" + page_name_untrusted, html)
     html = taxa.new.main(page_name_untrusted)
     return render_template("taxa_new.html", html=html)
 
@@ -148,12 +168,13 @@ def taxa_photos_data(taxon_id_untrusted):
     return render_template("taxa_photos_data.html", html=html)
 
 @app.route("/dev/<string:taxon_id_untrusted>")
-#@cache.cached(timeout=1)
+@cache.cached(timeout=60)
 def dev_root(taxon_id_untrusted):
-    html = devcache.get_cached("/dev/" + taxon_id_untrusted, 60)
-    if not html:
-        html = dev.dev.main(taxon_id_untrusted)
-        devcache.set_cached("/dev/" + taxon_id_untrusted, html)
+#    html = devcache.get_cached("/dev/" + taxon_id_untrusted)
+#    if not html:
+#        html = dev.dev.main(taxon_id_untrusted)
+#        devcache.set_cached("/dev/" + taxon_id_untrusted, html)
+    html = dev.dev.main(taxon_id_untrusted)
     return render_template("dev.html", html=html)
 
 # If getting error "AttributeError: 'function' object has no attribute", you have used same name for function and the file it calls. Use foo_root() or such name instead.
