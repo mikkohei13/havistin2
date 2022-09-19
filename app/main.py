@@ -29,6 +29,7 @@ import app_secrets
 #import app_secrets
 
 '''
+# Filesystem cache (works inconsistently on services that have ephemeral storage)
 config = {
     "DEBUG": True,
     "CACHE_TYPE": "FileSystemCache",
@@ -37,12 +38,11 @@ config = {
 }
 '''
 
+# Redis cache
 config = {
     "DEBUG": True,
     "CACHE_TYPE": "RedisCache",
     "CACHE_DEFAULT_TIMEOUT": 600, # Seconds
-#    "CACHE_KEY_PREFIX": ,
-#    "CACHE_OPTIONS": ,
     "CACHE_REDIS_HOST": app_secrets.redis_host,
     "CACHE_REDIS_PORT": app_secrets.redis_port,
     "CACHE_REDIS_PASSWORD": app_secrets.redis_pass,

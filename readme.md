@@ -29,9 +29,13 @@ To run without Docker-compose:
 
     docker run -ti -p 80:80 havistin2-gunicorn:latest
 
-## Running in production with Google Cloud run
+## Running in production with Google Cloud Run & Redis
 
-Deploy:
+Set up Redis to be used for caching. Store Redis server name & credentials to app_secrets.py.
+
+The app can be run also without Redis cache; just comment out Redis cache on main.py and use Filesystem cache instead.
+
+Deploy to Google Cloud Run:
 
     gcloud run deploy havistin2 --port=80 --max-instances=4 --concurrency=10 --memory=256Mi --timeout=30 --source .
 
