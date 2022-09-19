@@ -162,7 +162,7 @@ def taxa_new(page_name_untrusted):
     return render_template("taxa_new.html", html=html)
 
 @app.route("/taxa/photos_data/<string:taxon_id_untrusted>")
-@cache.cached(timeout=1)
+@cache.cached(timeout=3600)
 def taxa_photos_data(taxon_id_untrusted):
     html = taxa.common_photos.main(taxon_id_untrusted)
     return render_template("taxa_photos_data.html", html=html)

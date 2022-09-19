@@ -80,6 +80,19 @@ h2, h3, h3 {
     margin: 1.7em 0 0.5em 0;
 }
 
+
+.horizontal_bar {
+    background-color: #80c9ba;
+    display: block;
+}
+
+#cc {
+    margin: 2em -10px 0 -10px;
+    padding: 10px;
+    border-top: 4px solid #dee;
+    font-style: italic;
+}
+
 /* Species checklist */
 
 #species_table {
@@ -199,6 +212,23 @@ h2, h3, h3 {
     border-radius: 5px; 
 }
 
+#speciesmap {
+    width: 300px;
+    height: 430px;
+    border: 2px solid #dee;
+    margin-bottom: 1em;
+    max-width: 90%;
+    float: right;
+}
+
+
+#cumulative_chart, #daily_chart {
+    max-width: 1000px;
+    min-height: 300px;
+    max-height: 600px;
+}
+
+
 /* Generic tables */
 /* https://dev.to/dcodeyt/creating-beautiful-html-tables-with-css-428l */
 .styled-table {
@@ -235,34 +265,10 @@ h2, h3, h3 {
     color: #009879;
 }
 
-#cumulative_chart, #daily_chart {
-    max-width: 1000px;
-    min-height: 300px;
-    max-height: 600px;
-}
 
-.horizontal_bar {
-    background-color: #80c9ba;
-    display: block;
-}
+/* Taxa/species photos */
 
-#cc {
-    margin: 2em -10px 0 -10px;
-    padding: 10px;
-    border-top: 4px solid #dee;
-    font-style: italic;
-}
-
-#speciesmap {
-    width: 300px;
-    height: 430px;
-    border: 2px solid #dee;
-    margin-bottom: 1em;
-    max-width: 90%;
-    float: right;
-}
-
-.species {
+.species_block {
     margin-top: 1.5em;
     background-color: #dee;
     padding: 1em;
@@ -274,7 +280,7 @@ h2, h3, h3 {
     font-weight: bold;
 }
 
-.species h3 {
+.species_block h3 {
     margin-top: 0;
 }
 

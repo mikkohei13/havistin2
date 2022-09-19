@@ -165,7 +165,7 @@ def generate_species_html(species_data):
             html += f"<h2 class='new_family'>{family}</h2>"
             family_mem = family
 
-        html += "\n<div class='species'>\n"
+        html += "\n<div class='species_block'>\n"
         if "vernacularName" in species:
             vernacular_name = species['vernacularName'].capitalize()
             html += f"<h3>{vernacular_name} - <em>{species['scientificName']}</em> {species['scientificNameAuthorship']}</h3>\n"
