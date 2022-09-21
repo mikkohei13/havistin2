@@ -133,7 +133,7 @@ print("------ START ------------------------------------------------------------
 
 sensitive_species = ['kiljuhanhi', 'merikotka', 'kiljukotka', 'sääksi', 'maakotka', 'tunturihaukka', 'muuttohaukka', 'lapinsirri', 'etelänsuosirri', 'rantakurvi', 'tunturipöllö', 'kuukkeli', 'punakuiri', 'etelänkiisla']
 
-atlas_square = "667:337"
+atlas_square = "667:337" # For testing
 atlas_dict = get_square_atlas_dict(atlas_square)
 
 #print(atlas_dict)
@@ -147,13 +147,41 @@ tiira_df = tiira_df.replace(np.nan, "", regex=True)
 html = f"<h1>{atlas_square}</h1>"
 html += "<div><table>"
 
-limit = 10000
-i = 0
-s = 0
+limit = 100000
+obs_count = 0
+secret_count = 0
 #html += "<div class='species'><table>"
 
 species_mem = ""
 for ind in tiira_df.index:
+    species = tiira_df['Laji'][ind]
+
+    # Skip uncertain species and non-species
+    if "/" in species:
+        continue
+
+    if "risteymä" in species:
+        continue
+
+    if " " in species:
+        continue
+
+    # Tiira datafile can contain rows without species name, skip them as well.
+    if "" == species:
+        continue
+
+    # Skip migrating
+    if migrating(tiira_df['Tila'][ind]):
+        continue
+
+    # Harmonize names between Tiira & Atlas
+    if "kesykyyhky" == species:
+        species = "kalliokyyhky" 
+
+    # Skip if breeding is already certain
+    if species in atlas_dict:
+        if "D" == atlas_dict[species]['atlas_class']:
+            continue
 
     # Use bird coordinates if present, otherwise observer coordinates
     if tiira_df['Y-koord-linnun'][ind]:
@@ -170,41 +198,6 @@ for ind in tiira_df.index:
 #        print(f"Skipping wrong square: {latlon}")
         continue
 
-    species = tiira_df['Laji'][ind]
-
-    # Harmonize names between Tiira & Atlas
-    if "kesykyyhky" == species:
-        species = "kalliokyyhky" 
-
-    # Skip if breeding is already certain
-    if species in atlas_dict:
-        if "D" == atlas_dict[species]['atlas_class']:
-            continue
-
-    # Skip migrating
-    if migrating(tiira_df['Tila'][ind]):
-        continue
-
-
-    # Skip uncertain species and non-species
-    if "/" in species:
-        continue
-
-    if "laji" in species:
-        continue
-
-    if "risteymä" in species:
-        continue
-
-    if " " in species:
-        continue
-
-    if "lintu" == species:
-        continue
-
-    # Tiira datafile can contain rows without species name, skip them as well.
-    if "" == species:
-        continue
 
     # Skip if already probable or certain observation, and this observation does not have any notes, because any information about probable or certain breeding whould be in the notes.
     if species in atlas_dict:
@@ -227,7 +220,7 @@ for ind in tiira_df.index:
             html += "On todennäköinen pesintä"
 
         if species in sensitive_species:
-            html += " <strong>(osa) atlashavainnoista karkeistetaan</strong>"
+            html += " <strong>(osa) lajin atlashavainnoista karkeistetaan</strong>"
 
         html += "</h3>\n<table>\n"
         table_open = True
@@ -235,13 +228,12 @@ for ind in tiira_df.index:
 
     if "X" == str(tiira_df['Salattu'][ind]):
         secret = "<em class='secret'>salattu</em> "
-        s = s + 1
+        secret_count = secret_count + 1
     else:
         secret = ""
 
     if "X" == str(tiira_df['Pesintä'][ind]):
         breeding = "<em class='breeding'>merkitty pesiväksi</em> "
-        s = s + 1
     else:
         breeding = ""
 
@@ -253,18 +245,17 @@ for ind in tiira_df.index:
     html += "<td class='nowrap'>" + str(tiira_df['Määrä'][ind]) + " " + str(tiira_df['Tila'][ind]) + "</td>"
     html += "<td>" + secret + breeding + str(tiira_df['Lisätietoja'][ind]) + ", " + str(tiira_df['Lisätietoja_2'][ind]) + "</td>"
     html += "<td>" + atlascode(tiira_df['Atlaskoodi'][ind]) + "</td>"
-#    html += "<td>" + str(tiira_df['Y-koord'][ind]) + ":<br>" + str(tiira_df['X-koord'][ind]) + "</td>"
     html += "<td>" + truncate(tiira_df['Havainnoijat'][ind], 20) + "</td>"
     html += "<td><a href='https://www.tiira.fi/selain/naytahavis.php?id=" + str(tiira_df['Havainto id'][ind]) + "' target='_blank' name='tiirahavis'>[↗]</a></td>"
     html += "</tr>\n"
 
-    i = i + 1
-    if i > limit:
+    obs_count = obs_count + 1
+    if obs_count > limit:
         break
 
 html += "</table>\n"
 
-html += f"<p class='total'>Yhteensä {i} havaintoa, joista {s} salattuja Tiirassa</p>"
+html += f"<p class='total'>Yhteensä {obs_count} havaintoa, joista {secret_count} salattuja Tiirassa</p>"
 
 save_html(html)
 
