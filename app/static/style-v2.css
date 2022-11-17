@@ -1,0 +1,345 @@
+body {
+    font-family: Roboto, sans-serif;
+    font-size: 86%;
+    background: #fff url("/static/web_top_w_icons.jpg") top left no-repeat;
+    padding: 70px 0 0 0;
+    margin: 0;
+}
+
+h1, h2 {
+    clear: both;
+}
+
+/* Clearing h3 would make atlas species page look funny */
+/*
+h3, h4, h5, h6 {
+    clear: both;
+}
+*/
+
+h1 {
+    font-size: 165%;
+    margin-bottom: 1em;
+}
+
+h1 span {
+    font-size: 100%;
+    font-weight: normal;
+}
+
+h2 {
+    border-bottom: 4px solid #dee;
+}
+
+h2, h3 {
+    margin-top: 2em;
+}
+
+a {
+    color: #439FA5; /* v2 turquoise darkened */
+}
+
+a:visited {
+    color: #6B7D80; /* v2 grey darkened */
+}
+
+#navi {
+    margin: -10px -10px 20px -10px;
+    padding: 15px 10px 15px 30px;
+    color: #333;
+}
+
+#navi a:link, #navi a:visited {
+    color: #CD4F1A; /* v2 butterfly orange darkened */
+}
+
+#navi p {
+    margin: 0;
+}
+
+#subnavi {
+    max-width: 600px;
+    background-color: #F4F8B8; /* v2 light yellow */
+    padding: 10px;
+    border-radius: 10px;
+}
+
+#subnavi h3 {
+    margin: 0 0 0.5em 0;
+}
+
+#subnavi p {
+    margin: 0 0 1em 0;
+}
+
+#subnavi input {
+    width: 5em;
+}
+
+#links {
+    margin: -0.7em -10px 1.5em;
+    padding: 0.5em 1em;
+    border-left: 10px solid #4DB6BC; /* v2 turquoise */
+}
+
+#links span {
+    padding-left: 1em;
+    font-weight: bold;
+}
+
+#links a {
+
+}
+
+h2, h3, h3 {
+    margin: 1.7em 0 0.5em 0;
+}
+
+
+.horizontal_bar {
+    background-color: #4DB6BC; /* v2 turquoise */
+    display: block;
+}
+
+#allwrapper {
+    margin: 0;
+    padding: 10px;
+    background: transparent url("/static/web_bottom.jpg") bottom left no-repeat;
+}
+
+#cc {
+    margin: 3em -10px 0 -10px;
+    padding: 10px 10px 30px 10px;
+/*    border-top: 4px solid #B3EFED; */ /* v2 light turquoise */
+    font-style: italic;
+}
+
+/* Species checklist */
+
+#species_table {
+    clear: both;
+    padding-top: 1em;
+}
+
+#listwrapper {
+  columns: 3 200px;
+}
+
+.row {
+    display: block;
+    clear: both;
+}
+
+.row div {
+    border-top: 1px solid #B3EFED; /* v2 light turquoise */
+    border-left: 1px solid #B3EFED; /* v2 light turquoise */
+    padding: 0.1em;
+    display: inline;
+    float: left;
+    width: 20px;
+    overflow: hidden;
+}
+
+.row div.species {
+    border-left: 0;
+    width: 100px;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.row div.own {
+    width: 60px;
+}
+
+.atlas3, .atlas4 {
+    text-align: center;
+}
+
+.breeding_now {
+    font-weight: bold;
+}
+
+
+/* Info texts */
+
+#info_top {
+    margin: 0;
+}
+
+#info_top #info p {
+    margin: 0;
+}
+
+#info_top #info #paragraph1 {
+    margin: 1em 0;
+    font-weight: bold;
+}
+
+#fillable {
+    margin-top: 1em;
+    height: 2em;
+    line-height: 150%;
+}
+
+#fillable span {
+    display: block;
+    float: left;
+    margin-right: 3em;
+}
+
+#paikka {
+    width: 14em;
+}
+
+#pvm {
+    width: 8em;
+}
+
+#havainnoijat {
+    clear: left;
+    width: 18em;
+}
+
+#fillable #taydellinen {
+    margin-right: 1em;
+}
+
+#info_top strong {
+    font-weight: normal;
+    letter-spacing: 0.2em;
+}
+
+#klo {
+    width: 12em;
+}
+
+#info_bottom {
+    margin: 1em 0 0 0;
+}
+
+#version {
+    margin-top: -1em;
+    font-size: 70%;
+}
+
+#mapwrapper {
+    justify-content: center;
+}
+
+#map {
+    margin: 1em auto;
+    width: 99%;
+    height: 500px;
+    border-radius: 10px; 
+}
+
+#speciesmap {
+    width: 300px;
+    height: 430px;
+    margin-bottom: 1em;
+    max-width: 90%;
+    float: right;
+}
+
+
+#cumulative_chart, #daily_chart {
+    max-width: 1000px;
+    min-height: 300px;
+    max-height: 600px;
+}
+
+
+/* Generic tables */
+/* https://dev.to/dcodeyt/creating-beautiful-html-tables-with-css-428l */
+.styled-table {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    min-width: 400px;
+        min-width: 30em;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+        box-shadow: none;
+}
+.styled-table thead tr {
+    background-color: #1290A2; /* v2 butterfly turquoise */
+    color: #ffffff;
+    text-align: left;
+}
+.styled-table th,
+.styled-table td {
+    padding: 12px 15px;
+        padding: 0.7em 0.9em;
+}
+.styled-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+        border-bottom: 0;
+}
+.styled-table tbody tr:nth-of-type(odd) {
+    background-color: #FFFFFF;
+}
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #DBF4F8; /* v2 verylight turquoise */
+}
+.styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid #1290A2; /* v2 butterfly turquoise */
+}
+.styled-table tbody tr.active-row {
+    font-weight: bold;
+    color: #1290A2; /* v2 butterfly turquoise */
+}
+
+
+/* Taxa/species photos */
+
+.species_block {
+    margin-top: 1.5em;
+    background-color: #DBF4F8; /* v2 verylight turquoise */
+    padding: 1em;
+    border-radius: 10px;
+}
+
+.species_block img {
+    border-radius: 10px;
+}
+
+.invasive {
+    color: #FE8B84; /* v2 orangish red */
+    font-weight: bold;
+}
+
+.species_block h3 {
+    margin-top: 0;
+}
+
+.multimedia {
+    display: flex;
+    flex-direction: row;
+}
+
+.ingressi {
+    font-style: italic;
+}
+
+figure {
+    max-width: 220px;
+    margin: 0 10px 0 0;
+    padding: 1em;
+}
+
+/* Printer */
+
+@media print {
+
+    .noprint, #navi, #subnavi, #links {
+      display: none;
+    }
+
+    h1 {
+        font-size: 120%;
+    }
+    
+    .styled-table td {
+        padding: 0.1em 0.5em;
+    }
+  
+  }

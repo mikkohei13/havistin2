@@ -42,7 +42,7 @@ config = {
 config = {
     "DEBUG": True,
     "CACHE_TYPE": "RedisCache",
-    "CACHE_DEFAULT_TIMEOUT": 600, # Seconds
+    "CACHE_DEFAULT_TIMEOUT": 86400, # Seconds
     "CACHE_REDIS_HOST": app_secrets.redis_host,
     "CACHE_REDIS_PORT": app_secrets.redis_port,
     "CACHE_REDIS_PASSWORD": app_secrets.redis_pass,
@@ -64,7 +64,7 @@ print("-------------- BEGIN -------------- --------------", file = sys.stdout)
 # Pages
 
 @app.route("/")
-@cache.cached(timeout=3600)
+@cache.cached(timeout=3600) # 3600
 def root():
     html = atlas.atlas.main()
     return render_template("index.html", html=html)

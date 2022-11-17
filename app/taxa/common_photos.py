@@ -213,7 +213,7 @@ def main(qname_untrusted):
     qname = common.valid_qname(qname_untrusted)
 
     html = dict()
-    photos_data = get_photos_data(qname, 86400, 6)
+    photos_data = get_photos_data(qname, 604800, 6) # 86400 = 24h, 604800 = 7days
         
     html['photos_data'] = photos_data
     return html
