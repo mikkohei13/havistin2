@@ -174,9 +174,9 @@ def main():
 
     html["collections_table"] = collections_data()
 
-    html["cumulative_datechart_data_birdatlas"], html["daily_datechart_data_birdatlas"] = datechart_data("HR.4471")
-    html["cumulative_datechart_data_trip"], html["daily_datechart_data_trip"] = datechart_data("HR.1747")
+    html["cumulative_datechart_data_vihko"], html["daily_datechart_data_vihko"] = datechart_data("HR.4471,HR.1747")
+#    html["cumulative_datechart_data_trip"], html["daily_datechart_data_trip"] = datechart_data("HR.1747")
     html["cumulative_datechart_data_tiira"], html["daily_datechart_data_tiira"] = datechart_data("HR.4412")
-#    html["cumulative_datechart_data_inat"], html["daily_datechart_data_inat"] = datechart_data("HR.3211")
+    html["cumulative_datechart_data_tipu"], html["daily_datechart_data_tipu"] = datechart_data("HR.48")
 
     return html
