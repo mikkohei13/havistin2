@@ -11,7 +11,7 @@ def print_log(dict):
 
 
 def connect_db():
-    client = MongoClient("mongodb+srv://%s:%s@clusterfree0.zps1x.gcp.mongodb.net/?retryWrites=true&w=majority" % (app_secrets.mongodb_user, app_secrets.mongodb_pass))
+    client = MongoClient("mongodb+srv://%s:%s@%s/?retryWrites=true&w=majority" % (app_secrets.mongodb_user, app_secrets.mongodb_pass, app_secrets.mongodb_server))
     db = client['havistin']
     coll = db['cache']
     return coll
