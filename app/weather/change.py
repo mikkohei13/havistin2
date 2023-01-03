@@ -86,108 +86,112 @@ def trigger_message(data):
 
 
 def evaluate_change(change_value, trigger_value, key, secs, current_value):
-    mins = secs / 60
+    change_value = round(change_value, 1)
+    mins = round(secs / 60)
     if abs(change_value) >= trigger_value:
-        text = f"{key} change in {mins} min: {change_value}, now {current_value}"
-        print(text)
+        text = f"{key} change: {change_value} in {mins} minutes, now {current_value}\n"
         telegram.send_text(text, False)
+        return text
     else:
-        text = f"{key} NO change in  {mins} min: {change_value}, now {current_value}"
-        print(text)
+        text = f"NO {key} change: {change_value} in {mins} minutes, now {current_value}\n"
+        return text
 
 
-print("--")
+def main():
+    html = ""
 
-data = fetch_fmi_api(api_url)
-observations = data['observations']
+    data = fetch_fmi_api(api_url)
+    observations = data['observations']
 
-i = 0
-limit = 10
-latest_unix_time = None
+    i = 0
+    limit = 10
+    latest_unix_time = None
 
-obs_indexed = {}
+    obs_indexed = {}
 
-# Create a reversed indexed observation dict
-for obs in reversed(observations):
-    dt = datetime.strptime(obs['localtime'], "%Y%m%dT%H%M%S")
-    unix_time = dt.timestamp()
+    # Create a reversed indexed observation dict
+    for obs in reversed(observations):
+        dt = datetime.strptime(obs['localtime'], "%Y%m%dT%H%M%S")
+        unix_time = dt.timestamp()
 
-    if None == latest_unix_time:
-        latest_unix_time = unix_time
+        if None == latest_unix_time:
+            latest_unix_time = unix_time
 
-    obs_unix_time_diff = latest_unix_time - unix_time
-#    print(obs_unix_time_diff)
-#    print(obs)
+        obs_unix_time_diff = latest_unix_time - unix_time
+    #    print(obs_unix_time_diff)
+    #    print(obs)
 
-    obs_indexed[int(obs_unix_time_diff)] = obs
+        obs_indexed[int(obs_unix_time_diff)] = obs
 
-    i = i + 1
-    if i >= limit:
-        break
+        i = i + 1
+        if i >= limit:
+            break
 
-print(obs_indexed)
+    html += json.dumps(obs_indexed, indent = 3) + "\n"
 
-if valid_times(obs_indexed) == False:
-    print("Some times missing, send message")
-else:
-    print("Times ok")
+    if valid_times(obs_indexed) == False:
+        html += "Some times missing, send message\n"
+        telegram.send_text(f"Some times missing: {obs_indexed}", False)
+    else:
+        html += "Times ok\n"
+
+    #prettyprint(obs)
+
+    #print(obs_indexed)
+
+    # Check that there are values, they can be missing
+    if None == obs_indexed[0]["t2m"]:
+        html += "Got None values, exiting..."
+        return html
 
 
-#prettyprint(obs)
+    # Temperature
+    key = "t2m"
+    # 10 min
+    secs = 600
+    change = obs_indexed[0][key] - obs_indexed[secs][key]
+    html = evaluate_change(change, 2, key, secs, obs_indexed[0][key]) + html
 
-#print(obs_indexed)
+    # 1 hour
+    secs = 3600
+    change = obs_indexed[0][key] - obs_indexed[secs][key]
+    html = evaluate_change(change, 5, key, secs, obs_indexed[0][key]) + html
 
-# Check that there are values, they can be missing
-if None == obs_indexed[0]["t2m"]:
-    print("Got None values, exiting...")
-    exit()
+    # 1,5 hours
+    secs = 5400
+    change = obs_indexed[0][key] - obs_indexed[secs][key]
+    html = evaluate_change(change, 7, key, secs, obs_indexed[0][key]) + html
 
+    # Wind
+    key = "WindSpeedMS"
+    # 10 min
+    secs = 600
+    change = obs_indexed[0][key] - obs_indexed[secs][key]
+    html = evaluate_change(change, 2, key, secs, obs_indexed[0][key]) + html
 
-# Temperature
-key = "t2m"
-# 10 min
-secs = 600
-change = obs_indexed[0][key] - obs_indexed[secs][key]
-evaluate_change(change, 2, key, secs, obs_indexed[0][key])
+    # 1 hour
+    secs = 3600
+    change = obs_indexed[0][key] - obs_indexed[secs][key]
+    html = evaluate_change(change, 4, key, secs, obs_indexed[0][key]) + html
 
-# 1 hour
-secs = 3600
-change = obs_indexed[0][key] - obs_indexed[secs][key]
-evaluate_change(change, 5, key, secs, obs_indexed[0][key])
+    # 1,5 hours
+    secs = 5400
+    change = obs_indexed[0][key] - obs_indexed[secs][key]
+    html = evaluate_change(change, 5, key, secs, obs_indexed[0][key]) + html
 
-# 1,5 hours
-secs = 5400
-change = obs_indexed[0][key] - obs_indexed[secs][key]
-evaluate_change(change, 7, key, secs, obs_indexed[0][key])
+    # Cloud cover
+    key = "TotalCloudCover"
+    # 1 h
+    secs = 3600
+    change = obs_indexed[0][key] - obs_indexed[secs][key]
+    html = evaluate_change(change, 3, key, secs, obs_indexed[0][key]) + html
 
-# Wind
-key = "WindSpeedMS"
-# 10 min
-secs = 600
-change = obs_indexed[0][key] - obs_indexed[secs][key]
-evaluate_change(change, 2, key, secs, obs_indexed[0][key])
+    # Snow depth
+    key = "SnowDepth"
+    # 1 h
+    secs = 3600
+    change = obs_indexed[0][key] - obs_indexed[secs][key]
+    html = evaluate_change(change, 2, key, secs, obs_indexed[0][key]) + html
 
-# 1 hour
-secs = 3600
-change = obs_indexed[0][key] - obs_indexed[secs][key]
-evaluate_change(change, 4, key, secs, obs_indexed[0][key])
-
-# 1,5 hours
-secs = 5400
-change = obs_indexed[0][key] - obs_indexed[secs][key]
-evaluate_change(change, 5, key, secs, obs_indexed[0][key])
-
-# Cloud cover
-key = "TotalCloudCover"
-# 1 h
-secs = 3600
-change = obs_indexed[0][key] - obs_indexed[secs][key]
-evaluate_change(change, 3, key, secs, obs_indexed[0][key])
-
-# Snow depth
-key = "SnowDepth"
-# 1 h
-secs = 3600
-change = obs_indexed[0][key] - obs_indexed[secs][key]
-evaluate_change(change, 2, key, secs, obs_indexed[0][key])
+    return html
 

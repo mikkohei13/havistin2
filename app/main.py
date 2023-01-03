@@ -22,6 +22,8 @@ import taxa.species
 import taxa.new
 import taxa.common_photos
 
+import weather.change
+
 import dev.dev
 import app_secrets
 #import dev.cache as devcache
@@ -166,6 +168,11 @@ def taxa_new(page_name_untrusted):
 def taxa_photos_data(taxon_id_untrusted):
     html = taxa.common_photos.main(taxon_id_untrusted)
     return render_template("taxa_photos_data.html", html=html)
+
+@app.route("/weather/change")
+def weather_change():
+    html = weather.change.main()
+    return render_template("weather_change.html", html=html)
 
 @app.route("/dev/<string:taxon_id_untrusted>")
 @cache.cached(timeout=60)
