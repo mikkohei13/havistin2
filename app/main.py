@@ -61,7 +61,7 @@ cache = Cache(app)
  # 3600 = 1 h
  # 86400 = 24 h
 
-print("-------------- BEGIN -------------- --------------", file = sys.stdout)
+print("-------------- BEGIN --------------", file = sys.stdout)
 
 # Pages
 

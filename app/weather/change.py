@@ -98,6 +98,9 @@ def evaluate_change(change_value, trigger_value, key, secs, current_value):
 
 
 def main():
+    # TODO: Check when last message about a certain weather event has been sent, don't sent new ones in 1 hour.
+    # TODO: Silent messages between 22-23.59 and 00-06.59
+
     html = ""
 
     data = fetch_fmi_api(api_url)
@@ -155,12 +158,12 @@ def main():
     # 1 hour
     secs = 3600
     change = obs_indexed[0][key] - obs_indexed[secs][key]
-    html = evaluate_change(change, 5, key, secs, obs_indexed[0][key]) + html
+    html = evaluate_change(change, 4, key, secs, obs_indexed[0][key]) + html
 
     # 1,5 hours
     secs = 5400
     change = obs_indexed[0][key] - obs_indexed[secs][key]
-    html = evaluate_change(change, 7, key, secs, obs_indexed[0][key]) + html
+    html = evaluate_change(change, 6, key, secs, obs_indexed[0][key]) + html
 
     # Wind
     key = "WindSpeedMS"
@@ -172,19 +175,23 @@ def main():
     # 1 hour
     secs = 3600
     change = obs_indexed[0][key] - obs_indexed[secs][key]
-    html = evaluate_change(change, 4, key, secs, obs_indexed[0][key]) + html
+    html = evaluate_change(change, 3, key, secs, obs_indexed[0][key]) + html
 
     # 1,5 hours
     secs = 5400
     change = obs_indexed[0][key] - obs_indexed[secs][key]
-    html = evaluate_change(change, 5, key, secs, obs_indexed[0][key]) + html
+    html = evaluate_change(change, 4, key, secs, obs_indexed[0][key]) + html
 
     # Cloud cover
     key = "TotalCloudCover"
-    # 1 h
-    secs = 3600
+    # 20 min
+    secs = 1200
     change = obs_indexed[0][key] - obs_indexed[secs][key]
-    html = evaluate_change(change, 3, key, secs, obs_indexed[0][key]) + html
+    html = evaluate_change(change, 4, key, secs, obs_indexed[0][key]) + html
+    # 1.5 h
+    secs = 5400
+    change = obs_indexed[0][key] - obs_indexed[secs][key]
+    html = evaluate_change(change, 6, key, secs, obs_indexed[0][key]) + html
 
     # Snow depth
     key = "SnowDepth"
