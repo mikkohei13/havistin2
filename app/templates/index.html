@@ -13,6 +13,12 @@
 
     <h1>Havistin</h1>
 
-    {{ html["foo"]|safe }}
+    {% if error %}
+        <h3>Virhe</h3>
+        {{ html["error"]|safe }}
+    {% else %}
+        <p>Tänään Lajitietokeskukseen on tullut <a href="https://laji.fi/observation/species?countryId=ML.206&time=0%2F0">{{ html["today_obs_count"] }} uutta havaintoa</a>.</p>
+    {% endif %}
+
 
 {% endblock %}
