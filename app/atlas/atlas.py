@@ -4,6 +4,7 @@ from datetime import timedelta, date
 import json
 
 import atlas.common as common
+from helpers import common_helpers
 
 
 def convert_collection_name(id):
@@ -29,7 +30,7 @@ def convert_collection_name(id):
 def collections_data():
     api_url = "https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=document.collectionId&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=100&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&access_token="
 
-    data_dict = common.fetch_finbif_api(api_url)
+    data_dict = common_helpers.fetch_finbif_api(api_url)
 
     total_obs_count = 0
     for i in data_dict["results"]:
@@ -62,7 +63,7 @@ def breeding_data(atlas_class):
 
     api_url = "https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=unit.linkings.originalTaxon.speciesNameFinnish&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=20&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&time=-14%2F0&atlasClass=" + atlas_class + "&access_token="
 
-    data_dict = common.fetch_finbif_api(api_url)
+    data_dict = common_helpers.fetch_finbif_api(api_url)
 
     breeding_dict = dict()
     for item in data_dict["results"]:
@@ -133,7 +134,7 @@ def datechart_data(collection_id):
     # Get daily data from api. This lacks dates with zero count.
     api_url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=document.firstLoadDate&orderBy=document.firstLoadDate&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=365&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&collectionId=http%3A%2F%2Ftun.fi%2F{collection_id}&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&access_token="
 
-    data_dict = common.fetch_finbif_api(api_url)
+    data_dict = common_helpers.fetch_finbif_api(api_url)
 
     # Use day as key in dict
     data_by_days = dict()

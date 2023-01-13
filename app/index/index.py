@@ -4,7 +4,6 @@ import json
 import sys
 
 import app_secrets
-
 from helpers import common_helpers
 
 def check_api():
