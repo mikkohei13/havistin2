@@ -1,7 +1,8 @@
 
 #from webbrowser import get
-import taxa.common as common
+import taxa.common_taxa as common_taxa
 import taxa.common_photos as common_photos
+from helpers import common_helpers
 
 
 # Here is manually defined which species are "new", this depends on existing literature of that taxon.
@@ -126,8 +127,8 @@ def get_species_qnames(page_name_untrusted):
 def get_species_data(species_qnames):
     species_data = []
     for qname in species_qnames:
-        data = common.fetch_finbif_api(f"https://api.laji.fi/v0/taxa/{qname}?lang=fi&langFallback=true&maxLevel=0&includeHidden=true&includeMedia=true&includeDescriptions=true&includeRedListEvaluations=false&sortOrder=taxonomic&access_token=", False)
-#        common.print_log(data) # debug
+        data = common_helpers.fetch_finbif_api(f"https://api.laji.fi/v0/taxa/{qname}?lang=fi&langFallback=true&maxLevel=0&includeHidden=true&includeMedia=true&includeDescriptions=true&includeRedListEvaluations=false&sortOrder=taxonomic&access_token=", False)
+#        common_helpers.print_log(data) # debug
         species_data.append(data)
 
     return species_data
@@ -155,7 +156,7 @@ def generate_species_html(species_data):
 
     for species in species_data:
 
-#        common.print_log(species)
+#        common_helpers.print_log(species)
         qname = species['qname']
         family = species['parent']['family']['scientificName']
 
@@ -184,7 +185,7 @@ def generate_species_html(species_data):
         if "typeOfOccurrenceInFinland" in species:
             html += "<li>Suomessa "
             for status in species['typeOfOccurrenceInFinland']:
-                translated_status = common.map_status(status)
+                translated_status = common_taxa.map_status(status)
                 html += f"{translated_status}, "
         else:
             html += "<li>Ei statustietoa, "
@@ -230,7 +231,7 @@ def generate_species_html(species_data):
 
 
 def main(page_name_untrusted):
-    common.print_log("Getting species data...")
+    common_helpers.print_log("Getting species data...")
 
     html = dict()
     taxon_title, description_title, species_qnames = get_species_qnames(page_name_untrusted)
@@ -238,13 +239,13 @@ def main(page_name_untrusted):
     html['taxon_title'] = taxon_title
     html['description_title'] = description_title
 
-#    common.print_log("Getting higher taxon data...")
-#    taxon_data = common.fetch_finbif_api(f"https://api.laji.fi/v0/taxa/{taxon_qname}?lang=fi&langFallback=true&maxLevel=0&includeHidden=false&includeMedia=false&includeDescriptions=false&includeRedListEvaluations=false&sortOrder=taxonomic&access_token=", False)
+#    common_helpers.print_log("Getting higher taxon data...")
+#    taxon_data = common_helpers.fetch_finbif_api(f"https://api.laji.fi/v0/taxa/{taxon_qname}?lang=fi&langFallback=true&maxLevel=0&includeHidden=false&includeMedia=false&includeDescriptions=false&includeRedListEvaluations=false&sortOrder=taxonomic&access_token=", False)
 
-#    common.print_log(taxon_data)
+#    common_helpers.print_log(taxon_data)
 #    return html
 
-    common.print_log("Generating species html...")
+    common_helpers.print_log("Generating species html...")
     species_data = get_species_data(species_qnames)
 
     # TODO: Remove subgenus name, if that hinders data fetching from iNat?
@@ -252,7 +253,7 @@ def main(page_name_untrusted):
     html["species_html"] = generate_species_html(species_data)
 
     '''
-    common.print_log("Finishing up...")
+    common_helpers.print_log("Finishing up...")
     if "vernacularName" in taxon_data:
         html["vernacular_name"] = taxon_data["vernacularName"]
     else:
@@ -260,5 +261,5 @@ def main(page_name_untrusted):
     html["scientific_name"] = taxon_data["scientificName"]
     '''
 
-    common.print_log("Ready.")
+    common_helpers.print_log("Ready.")
     return html

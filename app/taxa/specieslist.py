@@ -1,5 +1,6 @@
 
-import taxa.common as common
+import taxa.common_taxa as common_taxa
+from helpers import common_helpers
 
 def generate_list(data):
 
@@ -7,7 +8,7 @@ def generate_list(data):
     html = ""
 
     for item in data["results"]:
-#        common.print_log(item)
+#        common_helpers.print_log(item)
 #        exit()
 
         family = item["parent"]["family"]["scientificName"]
@@ -39,11 +40,11 @@ def generate_list(data):
 
 def main(taxon_id_untrusted):
 
-    valid_qname = common.valid_qname(taxon_id_untrusted)
+    valid_qname = common_taxa.valid_qname(taxon_id_untrusted)
     
     html = dict()
 
-    taxon_data = common.fetch_finbif_api(f"https://api.laji.fi/v0/taxa/{valid_qname}?lang=fi&langFallback=true&maxLevel=0&includeHidden=false&includeMedia=false&includeDescriptions=false&includeRedListEvaluations=false&sortOrder=taxonomic&access_token=")
+    taxon_data = common_helpers.fetch_finbif_api(f"https://api.laji.fi/v0/taxa/{valid_qname}?lang=fi&langFallback=true&maxLevel=0&includeHidden=false&includeMedia=false&includeDescriptions=false&includeRedListEvaluations=false&sortOrder=taxonomic&access_token=")
 
     html["vernacular_name"] = taxon_data["vernacularName"]
     html["finnish_species_count"] = taxon_data["countOfFinnishSpecies"]
@@ -51,7 +52,7 @@ def main(taxon_id_untrusted):
     html["obs_count_finland"] = taxon_data["observationCountFinland"]
 
     max_species = 1000
-    species_data = common.fetch_finbif_api(f"https://api.laji.fi/v0/taxa/{valid_qname}/species?onlyFinnish=true&selectedFields=id,vernacularName,scientificName,typeOfOccurrenceInFinland,parent.family.scientificName,observationCountFinland&lang=fi&page=1&pageSize={max_species}&sortOrder=taxonomic&access_token=")
+    species_data = common_helpers.fetch_finbif_api(f"https://api.laji.fi/v0/taxa/{valid_qname}/species?onlyFinnish=true&selectedFields=id,vernacularName,scientificName,typeOfOccurrenceInFinland,parent.family.scientificName,observationCountFinland&lang=fi&page=1&pageSize={max_species}&sortOrder=taxonomic&access_token=")
 
     html["list"] = generate_list(species_data)
 

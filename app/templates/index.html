@@ -17,10 +17,15 @@
         <h3>Virhe</h3>
         {{ html["error"]|safe }}
     {% else %}
+
+        <h3>Laji.fi tilastoja</h3>
         <p>Tänään Lajitietokeskukseen on tullut <a href="https://laji.fi/observation/species?countryId=ML.206&time=0%2F0">{{ html["today_obs_count"] }} uutta havaintoa</a>.</p>
 
         <h3><a href="/atlas">Lintuatlas</a></h3>
-    {% endif %}
+
+        <h3><a href="/taxa">Lajitietoa</a></h3>
+
+        {% endif %}
 
 
 {% endblock %}

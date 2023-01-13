@@ -12,6 +12,29 @@ def print_log(dict):
     print(dict, sep="\n", file = sys.stdout)
 
 
+# TODO: make full list of possible licenses
+# TODO: make license link
+def cc_abbreviation(lic):
+    if "http://tun.fi/MZ.intellectualRightsCC-BY-NC-4.0" == lic or "CC-BY-NC-4.0" == lic or "CC BY-NC 4.0" == lic:
+        return "CC BY-NC 4.0"
+    if "http://tun.fi/MZ.intellectualRightsCC-BY-SA-4.0" == lic or "CC-BY-SA-4.0" == lic:
+        return "CC BY-SA 4.0"
+    if "http://tun.fi/MZ.intellectualRightsCC-BY-4.0" == lic or "CC-BY-4.0" == lic:
+        return "CC BY 4.0"
+    if "http://tun.fi/MZ.intellectualRightsCC-BY-NC-ND-4.0" == lic or "CC-BY-NC-ND-4.0" == lic:
+        return "CC BY-NC-ND 4.0"
+    if "http://tun.fi/MZ.intellectualRightsCC-BY-NC-SA-4.0" == lic or "CC-BY-NC-SA-4.0" == lic:
+        return "CC BY-NC-SA 4.0"
+    if "CC0-4.0" == lic:
+        return "CC Zero 4.0"
+    if "pd" == lic:
+        return "Public Domain"
+
+#    if "" == lic or "" == lic:
+#        return ""
+    return lic
+
+
 def fetch_finbif_api(api_url, log = False):
     api_url = api_url + app_secrets.finbif_api_token
 #    print(api_url, file = sys.stdout)

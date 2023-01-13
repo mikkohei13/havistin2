@@ -3,12 +3,7 @@ import json
 import sys
 import re
 
-import app_secrets
-
-#TODO: combine generic functions with atlas/common.py
-
-def print_log(dict):
-    print(dict, sep="\n", file = sys.stdout)
+from helpers import common_helpers
 
 
 def map_status(status):
@@ -30,10 +25,10 @@ def valid_qname(qname):
     if match is not None:
         return qname
     else:
-        print_log("ERROR: Qname invalid: " + qname)
+        common_helpers.print_log("ERROR: Qname invalid: " + qname)
         raise ValueError
 
-
+'''
 def fetch_api(api_url, log = False):
     if log:
         print_log(api_url)
@@ -72,7 +67,7 @@ def fetch_finbif_api(api_url, log = False):
 
 #    print(dataDict, file = sys.stdout)
     return dataDict
-
+'''
 
 # TODO: caching?
 def fetch_variable_label(variable):
@@ -81,8 +76,8 @@ def fetch_variable_label(variable):
 
     api_url = f"http://tun.fi/{variable}?format=json"
 
-    print_log("HERE")
-    print_log(api_url)
+    common_helpers.print_log("HERE")
+    common_helpers.print_log(api_url)
 
     try:
         r = requests.get(api_url)
@@ -105,27 +100,4 @@ def fetch_variable_label(variable):
 
     print(dataDict, file = sys.stdout)
     return label_fi
-
-
-# TODO: make full list of possible licenses
-# TODO: make license link
-def cc_abbreviation(lic):
-    if "http://tun.fi/MZ.intellectualRightsCC-BY-NC-4.0" == lic or "CC-BY-NC-4.0" == lic or "CC BY-NC 4.0" == lic:
-        return "CC BY-NC 4.0"
-    if "http://tun.fi/MZ.intellectualRightsCC-BY-SA-4.0" == lic or "CC-BY-SA-4.0" == lic:
-        return "CC BY-SA 4.0"
-    if "http://tun.fi/MZ.intellectualRightsCC-BY-4.0" == lic or "CC-BY-4.0" == lic:
-        return "CC BY 4.0"
-    if "http://tun.fi/MZ.intellectualRightsCC-BY-NC-ND-4.0" == lic or "CC-BY-NC-ND-4.0" == lic:
-        return "CC BY-NC-ND 4.0"
-    if "http://tun.fi/MZ.intellectualRightsCC-BY-NC-SA-4.0" == lic or "CC-BY-NC-SA-4.0" == lic:
-        return "CC BY-NC-SA 4.0"
-    if "CC0-4.0" == lic:
-        return "CC Zero 4.0"
-    if "pd" == lic:
-        return "Public Domain"
-
-#    if "" == lic or "" == lic:
-#        return ""
-    return lic
 
