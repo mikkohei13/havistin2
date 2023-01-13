@@ -5,6 +5,8 @@ from flask_caching import Cache
 import sys
 import traceback
 
+import index.index
+
 import atlas.atlas
 import atlas.squareform
 import atlas.misslist
@@ -66,10 +68,16 @@ print("-------------- BEGIN --------------", file = sys.stdout)
 # Pages
 
 @app.route("/")
-@cache.cached(timeout=3600) # 3600
 def root():
-    html = atlas.atlas.main()
+    html = index.index.main()
+#    html = atlas.atlas.main()
     return render_template("index.html", html=html)
+
+@app.route("/atlas")
+@cache.cached(timeout=1) # 3600
+def atlas():
+    html = atlas.atlas.main()
+    return render_template("atlas.html", html=html)
 
 @app.route("/atlas/havaintosuhteet")
 @cache.cached(timeout=3600)
@@ -184,7 +192,12 @@ def dev_root(taxon_id_untrusted):
     html = dev.dev.main(taxon_id_untrusted)
     return render_template("dev.html", html=html)
 
-# If getting error "AttributeError: 'function' object has no attribute", you have used same name for function and the file it calls. Use foo_root() or such name instead.
+'''
+Debugging help:
+- If getting error "AttributeError: 'function' object has no attribute", you have used same name for function and the file it calls. Use foo_root() or such name instead.
+- 
+
+'''
 
 # Tools
 
@@ -199,13 +212,23 @@ def flush_cache():
         cache.clear()
     return render_template("simple.html", content="Cache flushed")
 
-@app.errorhandler(ValueError)
-def handle_exception(e):
-    print(traceback.format_exc(), sep="\n", file = sys.stdout)
-    return 'Tarkista antamasi ruudun numero tai lajin nimi. Haettua sivua ei löydy (404)', 404
-
-# Todo: why does not catch the error?
+# This should catch connection errors to FinBIF API, in case the error is not already handled elsewhere.
 @app.errorhandler(ConnectionError)
 def handle_bad_request(e):
+    print("Havistin main error handler: ConnectionError " + str(e))
     print(traceback.format_exc(), sep="\n", file = sys.stdout)
-    return 'Lajitietokeskuksen rajapinta ei juuri nyt toimi, yritä myöhemmin uudelleen (503)', 503
+    return 'Lajitietokeskuksen rajapinta ei juuri nyt toimi, yritä myöhemmin uudelleen (ConnectionError)', 503
+
+# This should catch ValueEerors raised e.g. when user enters invalid data.
+@app.errorhandler(ValueError)
+def handle_value_error(e):
+    print("Havistin main error handler: ValueError " + str(e))
+    print(traceback.format_exc(), sep="\n", file = sys.stdout)
+    return 'Antamasi ruudun numero tai lajin nimi on virheellinen. (ValueError)', 404
+
+# This should cathc any generic errors raised in the app by 'raise Exception("Your custom error message")'
+@app.errorhandler(Exception)
+def handle_exception(e):
+    print("Havistin generic Exception: " + str(e))
+    print(traceback.format_exc(), sep="\n", file = sys.stdout)
+    return "Lajitietokeskuksen rajapinta ei juuri nyt toimi, tai tässä palvelussa on jokin vika. Ole hyvä ja yritä myöhemmin uudelleen. (Exception)", 500

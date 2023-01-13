@@ -3,7 +3,7 @@
 #from app.main import species_proportions
 
 #from collections import OrderedDict
-from unittest.util import sorted_list_difference
+#from unittest.util import sorted_list_difference
 import atlas.common as common
 
 def get_species_atlasobs_counts():
