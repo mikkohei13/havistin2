@@ -1,13 +1,14 @@
 
 from dataclasses import replace
-import atlas.common as common
-import json
+#import json
+import atlas.common_atlas as common_atlas
+from helpers import common_helpers
 
 
 def observation_coordinates(square_id):
     url = f"https://api.laji.fi/v0/warehouse/query/unit/list?selected=gathering.conversions.wgs84CenterPoint.lat%2Cgathering.conversions.wgs84CenterPoint.lon%2Cgathering.coordinatesVerbatim&pageSize=1000&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&time=2022%2F2025&individualCountMin=1&coordinates={square_id}%3AYKJ&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&coordinateAccuracyMax=5000&access_token=";
 
-    data_dict = common.fetch_finbif_api(url)
+    data_dict = common_helpers.fetch_finbif_api(url)
 
     obs_count = data_dict["total"] 
 
@@ -59,7 +60,7 @@ def coordinate_accuracy_html(data):
 def observers(square_id):
     url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=gathering.team.memberName&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=30&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&coordinates={square_id}%3AYKJ&access_token="
 
-    data = common.fetch_finbif_api(url)
+    data = common_helpers.fetch_finbif_api(url)
 
     html = ""
     html += "<table class='styled-table'>"
@@ -79,24 +80,24 @@ def observers(square_id):
 def main(square_id_untrusted):
     html = dict()
 
-    square_id = common.valid_square_id(square_id_untrusted)
+    square_id = common_atlas.valid_square_id(square_id_untrusted)
     html["square_id"] = square_id
 
-    neighbour_ids = common.neighbour_ids(square_id)
+    neighbour_ids = common_atlas.neighbour_ids(square_id)
     html["neighbour_ids"] = neighbour_ids
 
     coordinates, mappable_obs_count = observation_coordinates(square_id)
     html["coordinates"] = coordinates
     html["mappable_obs_count"] = mappable_obs_count
 
-    coordinate_accuracy_data, total_obs_count = common.coordinate_accuracy_data(square_id)
+    coordinate_accuracy_data, total_obs_count = common_atlas.coordinate_accuracy_data(square_id)
     html["accuracies"] = coordinate_accuracy_html(coordinate_accuracy_data)
 
     html["observers"] = observers(square_id)
 
 #    html["total_obs_count"] = collection_counts(square_id)
 
-    square_name, society, centerpoint, cornerpoints = common.square_info(square_id)
+    square_name, society, centerpoint, cornerpoints = common_atlas.square_info(square_id)
     # Todo: Make heading the same way as on squareform
     html["heading"] = f"{square_id} {square_name}"
     html["centerpoint"] = centerpoint

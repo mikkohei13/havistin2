@@ -4,22 +4,23 @@
 
 #from collections import OrderedDict
 #from unittest.util import sorted_list_difference
-import atlas.common as common
+import atlas.common_atlas as common_atlas
+from helpers import common_helpers
 
 def get_species_atlasobs_counts():
     # TODO: add quality classes
     url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=unit.linkings.originalTaxon.nameFinnish&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=500&page=1&cache=false&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&taxonRankId=MX.species&countryId=ML.206&time=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&access_token=";
 
-    data_dict = common.fetch_finbif_api(url)
+    data_dict = common_helpers.fetch_finbif_api(url)
     return data_dict
 
 
 def main():
 
-    species_pairs = common.read_json_to_dict("species-pairs.json")
+    species_pairs = common_atlas.read_json_to_dict("species-pairs.json")
 
     species_atlasobs_counts = get_species_atlasobs_counts()
-#    common.print_log(species_atlasobs_counts)
+#    common_helpers.print_log(species_atlasobs_counts)
 #    exit()
 
     species_proportions = dict()
@@ -28,7 +29,7 @@ def main():
     for item in species_atlasobs_counts["results"]:
         name = item["aggregateBy"]["unit.linkings.originalTaxon.nameFinnish"]
         if name not in species_pairs:
-            common.print_log("Name not found: " + name)
+            common_helpers.print_log("Name not found: " + name)
             continue
         elif 0 == int(species_pairs[name]["pareja"]):
             continue
@@ -36,13 +37,13 @@ def main():
             proportion = int(item["count"]) / int(species_pairs[name]["pareja"])
             species_proportions[name] = proportion
             species_atlasobs_counts_keyed[name] = item["count"]
-            common.print_log(name + ": ") # debug
-            common.print_log(str(proportion) + "\n") # debug
+            common_helpers.print_log(name + ": ") # debug
+            common_helpers.print_log(str(proportion) + "\n") # debug
 
     # Creates list of tuples
     # TODO: Maybe sort on frontend with js instead?
     sorted_species_proportions = sorted(species_proportions.items(), key=lambda item: item[1])
-#    common.print_log(sorted_species_proportions)
+#    common_helpers.print_log(sorted_species_proportions)
 #    exit()
 
     species_table_html = "<table class='styled-table'>"

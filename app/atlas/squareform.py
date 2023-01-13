@@ -5,7 +5,8 @@ import json
 from datetime import datetime, date, timedelta
 
 import finnish_species
-import atlas.common as common
+import atlas.common_atlas as common_atlas
+from helpers import common_helpers
 
 def count_species_sum(species_list):
     count_sum = 0
@@ -54,7 +55,7 @@ def adaptive_species(square_id):
     # All bird data except TIPU
     api_url = f"https://laji.fi/api/warehouse/query/unit/aggregate?target=MX.37580&countryId=ML.206&collectionIdNot=HR.48&typeOfOccurrenceId=MX.typeOfOccurrenceBirdLifeCategoryA,MX.typeOfOccurrenceBirdLifeCategoryC&coordinates={coordinates_param}&aggregateBy=unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesNameFinnish&selected=unit.linkings.taxon.speciesNameFinnish&cache=true&page=1&pageSize={limit}&season={season_param}&geoJSON=false&onlyCount=true&access_token="
 
-    data_dict = common.fetch_finbif_api(api_url)
+    data_dict = common_helpers.fetch_finbif_api(api_url)
 
     species_count_sum = count_species_sum(data_dict["results"])
 
@@ -91,7 +92,7 @@ def atlas3_square(square_id):
     try:
         f = open(filename)
     except ValueError:
-        common.print_log("ERROR: Square file not found.")
+        common_helpers.print_log("ERROR: Square file not found.")
 
     species_dict = json.load(f)
     
@@ -116,7 +117,7 @@ def atlas4_breeding():
     # Both probable and confirmed breeders, but not 4 & 5, using atlasCode
     api_url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=unit.linkings.originalTaxon.speciesNameFinnish&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize={number_of_species}&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&time=-14%2F0&atlasCode=MY.atlasCodeEnum6,MY.atlasCodeEnum61,MY.atlasCodeEnum62,MY.atlasCodeEnum63,MY.atlasCodeEnum64,MY.atlasCodeEnum65,MY.atlasCodeEnum66,MY.atlasCodeEnum7,MY.atlasCodeEnum71,MY.atlasCodeEnum72,MY.atlasCodeEnum73,MY.atlasCodeEnum74,MY.atlasCodeEnum75,MY.atlasCodeEnum8,MY.atlasCodeEnum81,MY.atlasCodeEnum82&access_token="
 
-    data_dict = common.fetch_finbif_api(api_url)
+    data_dict = common_helpers.fetch_finbif_api(api_url)
 
     breeding_species_list = [] 
 
@@ -143,7 +144,7 @@ def species_html(species_to_show_dict, atlas3_species_dict, atlas4_species_dict,
             atlas3_class = "&nbsp;"
             atlas3_code = "&nbsp;"
             if speciesFi in atlas3_species_dict:
-                atlas3_class = common.convert_atlasclass(atlas3_species_dict[speciesFi]["breedingCategory"])
+                atlas3_class = common_atlas.convert_atlasclass(atlas3_species_dict[speciesFi]["breedingCategory"])
                 atlas3_code = str(atlas3_species_dict[speciesFi]["breedingIndex"]).replace("0", "")
 
             row_class += f" atlas3_class_{atlas3_class}"
@@ -152,8 +153,8 @@ def species_html(species_to_show_dict, atlas3_species_dict, atlas4_species_dict,
             atlas4_class = "&nbsp;"
             atlas4_code = "&nbsp;"
             if speciesFi in atlas4_species_dict:
-                atlas4_class = common.convert_atlasclass(atlas4_species_dict[speciesFi]["atlasClass"]["value"])
-                atlas4_code = str(common.split_atlascode(atlas4_species_dict[speciesFi]["atlasCode"]["value"]))
+                atlas4_class = common_atlas.convert_atlasclass(atlas4_species_dict[speciesFi]["atlasClass"]["value"])
+                atlas4_code = str(common_atlas.split_atlascode(atlas4_species_dict[speciesFi]["atlasCode"]["value"]))
 
             row_class += f" atlas4_class_{atlas4_class}"
 
@@ -224,10 +225,10 @@ def info_bottom_html(show_untrusted, species_count = 250):
 def main(square_id_untrusted, show_untrusted):
     html = dict()
 
-    square_id = common.valid_square_id(square_id_untrusted)
+    square_id = common_atlas.valid_square_id(square_id_untrusted)
     html["square_id"] = square_id
 
-    neighbour_ids = common.neighbour_ids(square_id)
+    neighbour_ids = common_atlas.neighbour_ids(square_id)
     html["neighbour_ids"] = neighbour_ids
 
     if "mukautuva" == show_untrusted:
@@ -243,7 +244,7 @@ def main(square_id_untrusted, show_untrusted):
 #    exit() # debug
 
     # Atlas 4
-    atlas4_species_dict, atlas4_square_info_dict = common.get_atlas4_square_data(square_id)
+    atlas4_species_dict, atlas4_square_info_dict = common_atlas.get_atlas4_square_data(square_id)
 
 #    print_r(atlas4_species_dict)
 

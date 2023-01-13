@@ -1,11 +1,12 @@
 from xml.sax.handler import property_dom_node
-import requests
+#import requests
 import json
 
 from datetime import datetime, date, timedelta
 
-import finnish_species
-import atlas.common as common
+#import finnish_species
+import atlas.common_atlas as common_atlas
+from helpers import common_helpers
 
 
 def atlas_species():
@@ -19,7 +20,7 @@ def atlas_species():
 
 
 def add_species_to_pointsdict(pointsdict, square_id):
-    newsquare_species_dict, newsquare_species_info = common.get_atlas4_square_data(square_id)
+    newsquare_species_dict, newsquare_species_info = common_atlas.get_atlas4_square_data(square_id)
 
     # Add points: 3 for confirmed, 2 for probable and 1 for possible breeder
     for key, value in newsquare_species_dict.items():
@@ -135,21 +136,21 @@ def make_table(this_square_species):
 def main(square_id_untrusted):
     html = dict()
 
-    square_id = common.valid_square_id(square_id_untrusted)
+    square_id = common_atlas.valid_square_id(square_id_untrusted)
     html["square_id"] = square_id
 
-    around_ids = common.neighbour_ids(square_id, True)
+    around_ids = common_atlas.neighbour_ids(square_id, True)
     html["neighbour_ids"] = around_ids
 
     # Atlas 4
-    atlas4_species_dict, atlas4_square_info_dict = common.get_atlas4_square_data(square_id)
+    atlas4_species_dict, atlas4_square_info_dict = common_atlas.get_atlas4_square_data(square_id)
 
     html["title"] = f"Atlasruudun {atlas4_square_info_dict['coordinates']} puutelista"
     html["species"] = species_html()
 
     html["heading"] = f"{atlas4_square_info_dict['coordinates']} {atlas4_square_info_dict['name']} <span> - {atlas4_square_info_dict['birdAssociationArea']['value']}</span>"
     
-    html["info_top"] = common.get_info_top_html(atlas4_square_info_dict)
+    html["info_top"] = common_atlas.get_info_top_html(atlas4_square_info_dict)
 
     pointsdict = dict()
     add_species_to_pointsdict(pointsdict, around_ids["n"])

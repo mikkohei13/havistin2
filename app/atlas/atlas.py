@@ -3,7 +3,7 @@
 from datetime import timedelta, date
 import json
 
-import atlas.common as common
+import atlas.common_atlas as common_atlas
 from helpers import common_helpers
 
 
@@ -170,7 +170,7 @@ def datechart_data(collection_id):
 def main():
     html = dict()
 
-    accuracy_data, total_count = common.coordinate_accuracy_data()
+    accuracy_data, total_count = common_atlas.coordinate_accuracy_data()
     html["accuracy_table"] = coordinate_accuracy_html(accuracy_data, total_count)
 
     html["collections_table"] = collections_data()

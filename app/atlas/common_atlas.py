@@ -29,7 +29,7 @@ def valid_square_id(square_id):
     if match is not None:
         return square_id
     else:
-        print_log("ERROR: Coordinates invalid: " + square_id)
+        common_helpers.print_log("ERROR: Coordinates invalid: " + square_id)
         raise ValueError
 
 
@@ -135,7 +135,7 @@ def atlas_code_to_text(atlas_code):
     if atlas_code in atlas_code_dict:
         return atlas_code_dict[atlas_code]
     else:
-        print_log("erroneous atlasCode: " + atlas_code)
+        common_helpers.print_log("erroneous atlasCode: " + atlas_code)
         return False
 
 
@@ -196,7 +196,7 @@ def get_info_top_html(atlas4_square_info_dict):
     else:
         current_level = "ei havaintoja"
     
-    square_id = atlas4_square_info_dict["coordinates"]
+#    square_id = atlas4_square_info_dict["coordinates"]
 
     html = ""
     html += f"<p id='paragraph3'>Selvitysaste: {current_level}, summa: {atlas4_square_info_dict['breeding_sum']} (rajat: välttävä {level2}, tyydyttävä {level3}, hyvä {level4}, erinomainen {level5})</p>"

@@ -1,7 +1,8 @@
 import time
 import os.path
 
-import atlas.common as common
+import atlas.common_atlas as common_atlas
+from helpers import common_helpers
 
 def observer_name(user_id):
     user_qname = user_id.replace("http://tun.fi/", "")
@@ -15,7 +16,7 @@ def observer_name(user_id):
 
     # Get from API, save to cache 
     api_url = f"https://api.laji.fi/v0/person/by-id/{user_qname}?access_token="
-    data = common.fetch_finbif_api(api_url)
+    data = common_helpers.fetch_finbif_api(api_url)
     name = data["fullName"]
 
     with open(filename, 'w') as f:
@@ -26,7 +27,7 @@ def observer_name(user_id):
 def complete_lists():
     api_url = "https://api.laji.fi/v0/warehouse/query/document/aggregate?aggregateBy=document.editorUserIds&onlyCount=true&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=30&page=1&cache=true&qualityIssues=NO_ISSUES&completeListTaxonId=MX.37580&completeListType=MY.completeListTypeCompleteWithBreedingStatus%2CMY.completeListTypeComplete&access_token="
 
-    data = common.fetch_finbif_api(api_url)
+    data = common_helpers.fetch_finbif_api(api_url)
 
     html = ""
     html += "<table class='styled-table'>"
@@ -53,7 +54,7 @@ def recent_observers():
 
     url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=gathering.team.memberName&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=20&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&firstLoadedSameOrAfter={timestamp}&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&collectionIdNot=HR.4412&access_token="
 
-    data = common.fetch_finbif_api(url)
+    data = common_helpers.fetch_finbif_api(url)
 
     html = ""
     html += "<table class='styled-table'>"
@@ -75,7 +76,7 @@ def societies():
     # Tiira observations
     url = "https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=gathering.team.memberName&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=50&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&collectionId=HR.4412&access_token="
 
-    data = common.fetch_finbif_api(url)
+    data = common_helpers.fetch_finbif_api(url)
 
     html = ""
     html += "<table class='styled-table'>"

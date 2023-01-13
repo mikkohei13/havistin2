@@ -1,7 +1,8 @@
 import re
 import json
 
-import atlas.common as common
+import atlas.common_atlas as common_atlas
+from helpers import common_helpers
 
 def valid_species_name(species_name_untrusted):    
     pattern = r"[a-zA-ZäöÄÖ]+"
@@ -12,7 +13,7 @@ def valid_species_name(species_name_untrusted):
 #        species_name = species_name.capitalize()
         return species_name
     else:
-        common.print_log("ERROR: Lajinimi ei kelpaa")
+        common_helpers.print_log("ERROR: Lajinimi ei kelpaa")
         raise ValueError
 
 def read_json_to_dict(filename):
@@ -30,14 +31,14 @@ def get_confirmed_atlascode_counts(taxon_id):
 
     url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=unit.atlasCode&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=100&page=1&cache=true&taxonId={taxon_id}&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&time={time}&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumD&access_token=";
 
-    data_dict = common.fetch_finbif_api(url)
+    data_dict = common_helpers.fetch_finbif_api(url)
 
     html = "<table class='styled-table'>"
     html += "<thead><tr><th>Pesimävarmuusindeksi</th><th>Havaintoja kpl</th></tr></thead>"
 
     for item in data_dict["results"]:
         atlas_code = item["aggregateBy"]["unit.atlasCode"]
-        atlas_code_text = common.atlas_code_to_text(atlas_code)
+        atlas_code_text = common_atlas.atlas_code_to_text(atlas_code)
 
         # Skip erroneous atlas codes
         if False == atlas_code_text:
@@ -48,7 +49,7 @@ def get_confirmed_atlascode_counts(taxon_id):
         if "http://tun.fi/MY.atlasCodeEnum8" == atlas_code:
             continue
 
-        html += "\n<tr><td>" + common.atlas_code_to_text(atlas_code) + "</td>"
+        html += "\n<tr><td>" + common_atlas.atlas_code_to_text(atlas_code) + "</td>"
         html += "<td>" + str(item["count"]) + "</td></tr>"
 
     html += "</table>"
@@ -59,7 +60,7 @@ def get_atlasclass_counts(taxon_id):
     # TODO: add quality classes
     url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=unit.atlasClass&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=100&page=1&cache=true&taxonId={taxon_id}&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&time=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&access_token=";
 
-    data_dict = common.fetch_finbif_api(url)
+    data_dict = common_helpers.fetch_finbif_api(url)
 
     html = "<table class='styled-table'>"
     html += "<thead><tr><th>Pesimävarmuusluokka</th><th>Havaintoja kpl</th></tr></thead>"
@@ -114,7 +115,7 @@ def get_notes(taxon_id):
 
     # MY.atlasClassEnumB%2CMY.atlasClassEnumC%2C
 
-    data_dict = common.fetch_finbif_api(url)
+    data_dict = common_helpers.fetch_finbif_api(url)
 
     html = "<table class='styled-table'>"
     html += "<thead><tr><th>Lisätiedot</th><th>Havaintoja kpl</th></tr></thead>"
@@ -141,12 +142,12 @@ def main(species_name_untrusted):
     species_data = all_species_data.get(species_name, False)
 
     if not species_data:
-        common.print_log("ERROR: Species not found: " + species_name)
+        common_helpers.print_log("ERROR: Species not found: " + species_name)
         raise ValueError
 
     prev_name, next_name = get_neighbour_names(species_name)
-#    common.print_log(prev_name)
-#    common.print_log(next_name)
+#    common_helpers.print_log(prev_name)
+#    common_helpers.print_log(next_name)
 
     all_species_pairs = read_json_to_dict("species-pairs.json")
     species_pairs_dict = all_species_pairs.get(species_name, { "pareja": 0 })
@@ -162,7 +163,7 @@ def main(species_name_untrusted):
     else:
         proportion = round(observations_total / species_pairs, 4)
 
-#    common.print_log(species_data) # debug
+#    common_helpers.print_log(species_data) # debug
 
     confirmed_atlas_codes = get_confirmed_atlascode_counts(species_data["id"])
 
