@@ -13,3 +13,5 @@ redis_port = ""
 
 telegram_bot_token = "NNN:NNN"
 telegram_bot_chat_id = "-NNN"
+
+dev_secret = 1
