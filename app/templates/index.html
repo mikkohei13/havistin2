@@ -13,17 +13,25 @@
 
     <h1>Havistin</h1>
 
-    {% if error %}
-        <h3>Virhe</h3>
-        {{ html["error"]|safe }}
+    {% if html["error"] %}
+        <div class="error">
+            <h3>Virhe</h3>
+            <p>Lajitietokeskuksen rajapinta ei juuri nyt toimi. Ole hyvä ja yritä myöhemmin uudelleen!</p>
+        </div>
     {% else %}
 
-        <h3>Laji.fi tilastoja</h3>
-        <p>Tänään Lajitietokeskukseen on tullut <a href="https://laji.fi/observation/species?countryId=ML.206&time=0%2F0">{{ html["today_obs_count"] }} uutta havaintoa</a>.</p>
+        <h3>Laji.fi:n havaintotilastoja Suomesta</h3>
+        <p>Tältä päivältä <a href="https://laji.fi/observation/species?countryId=ML.206&time=0%2F0">{{ html["today_obs_count"] }} havaintoa</a>.</p>
+        <p>Tänään tallennettu <a href="https://laji.fi/observation/statistics?countryId=ML.206&firstLoadedSameOrAfter={{ html["today"] }}">{{ html["today_saved_count"] }} havaintoa</a>.</p>
 
         <h3><a href="/atlas">Lintuatlas</a></h3>
+        <p>4. Lintuatlaksen tilastoja ja apuvälineitä</p>
 
         <h3><a href="/taxa">Lajitietoa</a></h3>
+        <p>Kuvia ja tietoja muutamista hyönteisryhmistä</p>
+
+        <h3><a href="/talvilinnut">Talvilintulaskenta</a></h3>
+        <p>Kuvia talvilintulaskentareiteiltä</p>
 
         {% endif %}
 
