@@ -37,10 +37,12 @@ h2, h3 {
 
 a {
     color: #439FA5; /* v2 turquoise darkened */
+    color: #00a0ab; /* v2 turquoise darkened saturated */
 }
 
 a:visited {
     color: #6B7D80; /* v2 grey darkened */
+    color: #439FA5; /* v2 turquoise darkened */
 }
 
 #navi {
@@ -113,6 +115,20 @@ h2, h3, h3 {
 /*    border-top: 4px solid #B3EFED; */ /* v2 light turquoise */
     font-style: italic;
 }
+
+.error {
+    border: 3px solid #E3578B;
+    border: 3px dashed #777;
+    padding: 0.7em;
+    background-color: #F7F2B2;
+    background-color: #ccc;
+    border-radius: 10px;
+}
+
+.error h3, .error p {
+    margin: 0 0 0.5em 0;
+}
+
 
 /* Species checklist */
 
@@ -324,6 +340,18 @@ figure {
     max-width: 220px;
     margin: 0 10px 0 0;
     padding: 1em;
+}
+
+
+/* Winterbirds */
+
+.winterbird_photo img {
+    max-width: 1000px;
+    max-height: 1000px;
+}
+
+.no_cc_license {
+    color: #69bfcd;
 }
 
 /* Printer */
