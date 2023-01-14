@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect
+from flask import Flask, render_template, redirect, request
 #from werkzeug.exceptions import HTTPException
 from flask_caching import Cache
 
@@ -23,6 +23,8 @@ import taxa.specieslist
 import taxa.species
 import taxa.new
 import taxa.common_photos
+
+import winterbird.winterbird
 
 import weather.change
 
@@ -182,6 +184,12 @@ def weather_change():
     html = weather.change.main()
     return render_template("weather_change.html", html=html)
 
+@app.route("/talvilinnut")
+#@cache.cached(timeout=3600)
+def winterbird_root():
+    html = winterbird.winterbird.main()
+    return render_template("winterbird.html", html=html)
+
 @app.route("/dev/<string:taxon_id_untrusted>")
 @cache.cached(timeout=60)
 def dev_root(taxon_id_untrusted):
@@ -229,6 +237,11 @@ def handle_value_error(e):
 # This should cathc any generic errors raised in the app by 'raise Exception("Your custom error message")'
 @app.errorhandler(Exception)
 def handle_exception(e):
-    print("Havistin generic Exception: " + str(e))
-    print(traceback.format_exc(), sep="\n", file = sys.stdout)
-    return "Lajitietokeskuksen rajapinta ei juuri nyt toimi, tai tässä palvelussa on jokin vika. Ole hyvä ja yritä myöhemmin uudelleen. (Exception)", 500
+    # TODO: What tries to fetch this url? Something in Docker?
+    if "http://wpad.home/wpad.dat" == request.url:
+        print(f"Havistin generic Exception for url {request.url}: {str(e)}")
+        return "404", 404
+    else:
+        print(f"Havistin generic Exception for url {request.url}: {str(e)}")
+        print(traceback.format_exc(), sep="\n", file = sys.stdout)
+        return "Lajitietokeskuksen rajapinta ei juuri nyt toimi, tai tässä palvelussa on jokin vika. Ole hyvä ja yritä myöhemmin uudelleen. (Exception)", 500
