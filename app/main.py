@@ -76,12 +76,14 @@ def root():
     return render_template("index.html", html=html)
 
 @app.route("/atlas")
+@app.route("/atlas/")
 @cache.cached(timeout=3600)
 def atlas_root():
     html = atlas.atlas.main()
     return render_template("atlas.html", html=html)
 
 @app.route("/atlas/havaintosuhteet")
+@app.route("/atlas/havaintosuhteet/")
 @cache.cached(timeout=3600)
 def species_proportions():
     html = atlas.species_proportions.main()
@@ -116,6 +118,7 @@ def squaremap(square_id_untrusted):
     return render_template("squaremap.html", html=html)
 
 @app.route("/atlas/lajiluettelo")
+@app.route("/atlas/lajiluettelo/")
 @cache.cached(timeout=3600)
 def atlas_specieslist():
     html = atlas.specieslist.main()
@@ -128,18 +131,21 @@ def atlas_singlespecies(species_name_untrusted):
     return render_template("atlas_singlespecies.html", html=html)
 
 @app.route("/atlas/lajit")
+@app.route("/atlas/lajit/")
 @cache.cached(timeout=3600)
 def atlas_species():
     html = atlas.species.main()
     return render_template("atlas_species.html", html=html)
 
 @app.route("/atlas/ruudut")
+@app.route("/atlas/ruudut/")
 @cache.cached(timeout=3600)
 def atlas_squares():
     html = atlas.squares.main()
     return render_template("atlas_squares.html", html=html)
 
 @app.route("/atlas/havainnoijat")
+@app.route("/atlas/havainnoijat/")
 @cache.cached(timeout=3600)
 def atlas_observers():
     html = atlas.observers.main()
@@ -152,6 +158,7 @@ def taxa_specieslist(taxon_id_untrusted):
     return render_template("taxa_specieslist.html", html=html)
 
 @app.route("/taxa")
+@app.route("/taxa/")
 @cache.cached(timeout=10)
 def taxa_root():
     html = taxa.taxa.main()
@@ -184,10 +191,12 @@ def weather_change():
     html = weather.change.main()
     return render_template("weather_change.html", html=html)
 
+@app.route("/talvilinnut/<int:dev_secret>")
+@app.route("/talvilinnut/")
 @app.route("/talvilinnut")
-#@cache.cached(timeout=3600)
-def winterbird_root():
-    html = winterbird.winterbird.main()
+@cache.cached(timeout=86400)
+def winterbird_root(dev_secret = 1):
+    html = winterbird.winterbird.main(dev_secret)
     return render_template("winterbird.html", html=html)
 
 @app.route("/dev/<string:taxon_id_untrusted>")
@@ -230,7 +239,7 @@ def handle_bad_request(e):
 # This should catch ValueEerors raised e.g. when user enters invalid data.
 @app.errorhandler(ValueError)
 def handle_value_error(e):
-    print("Havistin main error handler: ValueError " + str(e))
+    print("Havistin main error handler: ValueError " + str(e), file = sys.stdout)
     print(traceback.format_exc(), sep="\n", file = sys.stdout)
     return 'Antamasi ruudun numero tai lajin nimi on virheellinen. (ValueError)', 404
 
@@ -239,9 +248,9 @@ def handle_value_error(e):
 def handle_exception(e):
     # TODO: What tries to fetch this url? Something in Docker?
     if "http://wpad.home/wpad.dat" == request.url:
-        print(f"Havistin generic Exception for url {request.url}: {str(e)}")
+        print(f"Havistin generic Exception for specific case url {request.url}: {str(e)}", file = sys.stdout)
         return "404", 404
     else:
-        print(f"Havistin generic Exception for url {request.url}: {str(e)}")
+        print(f"Havistin generic Exception for url {request.url}: {str(e)}", file = sys.stdout)
         print(traceback.format_exc(), sep="\n", file = sys.stdout)
         return "Lajitietokeskuksen rajapinta ei juuri nyt toimi, tai tässä palvelussa on jokin vika. Ole hyvä ja yritä myöhemmin uudelleen. (Exception)", 500
