@@ -24,6 +24,10 @@ def convert_collection_name(id):
         return "Maalintujen linjalaskennat ei-vakiolinjoilla"
     if  "http://tun.fi/HR.48" == id:
         return "Rengastus- ja löytörekisteri (TIPU)"
+    if  "http://tun.fi/HR.4991" == id:
+        return "Tiiran tulkitut atlashavainnot"
+    if  "http://tun.fi/HR.4611" == id:
+        return "FCG Finnish Consulting Group Oy:n lajihavainnot"
     return "Muu (" + id + ")"
 
 

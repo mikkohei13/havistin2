@@ -37,7 +37,7 @@ The app can be run also without Redis cache; just comment out Redis cache on mai
 
 Deploy to Google Cloud Run:
 
-    gcloud run deploy havistin2 --port=80 --max-instances=4 --concurrency=10 --memory=256Mi --timeout=30 --source .
+    gcloud run deploy havistin2 --port=80 --max-instances=4 --concurrency=10 --memory=512Mi --timeout=40 --source .
 
 Redeploy from Google Console (https://console.cloud.google.com/run) if you want to set more options there.
 
