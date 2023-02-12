@@ -345,6 +345,11 @@ figure {
 
 /* Winterbirds */
 
+.winterbird_document {
+    padding-top: 0.7em;
+    clear: both;
+}
+
 .winterbird_photo img {
     max-width: 1000px;
     max-height: 1000px;
@@ -352,6 +357,15 @@ figure {
 
 .no_cc_license {
     color: #69bfcd;
+}
+
+.minimap {
+    float: left;
+    margin-right: 1em;
+}
+
+.route-photos {
+    margin-left: 100px;
 }
 
 /* Printer */

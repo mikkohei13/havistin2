@@ -36,7 +36,7 @@ def get_habitat_photos(collection_id, dev_secret = 1):
     page_size = 200
 #    page_size = 10 # debug
     page = 1
-    api_url = f"https://api.laji.fi/v0/warehouse/query/gathering/aggregate?aggregateBy=document.documentId%2Cgathering.displayDateTime&orderBy=gathering.displayDateTime DESC&onlyCount=true&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize={page_size}&page={page}&cache=true&collectionId={collection_id}&hasGatheringMedia=true&access_token="
+    api_url = f"https://api.laji.fi/v0/warehouse/query/gathering/aggregate?aggregateBy=gathering.conversions.wgs84CenterPoint.lat%2Cgathering.conversions.wgs84CenterPoint.lon%2Cdocument.documentId%2Cgathering.displayDateTime&orderBy=gathering.displayDateTime DESC&onlyCount=true&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize={page_size}&page={page}&cache=true&collectionId={collection_id}&hasGatheringMedia=true&access_token="
 
     documents_dict = common_helpers.fetch_finbif_api(api_url)
 
@@ -45,6 +45,10 @@ def get_habitat_photos(collection_id, dev_secret = 1):
     # Each document
     for document in documents_dict["results"]:
         document_id = document["aggregateBy"]["document.documentId"]
+        lat = round(float(document["aggregateBy"]["gathering.conversions.wgs84CenterPoint.lat"]))
+        lon = round(float(document["aggregateBy"]["gathering.conversions.wgs84CenterPoint.lon"]))
+
+        map_filename = f"/static/maps/{ lat }_{ lon }.png"
 
         # Skip documents that have already been shown
         if document_id in shown_documents:
@@ -70,9 +74,10 @@ def get_habitat_photos(collection_id, dev_secret = 1):
             else:
                 taxa_count = 0
 
-            photo_html += f"<h3>{locality} - {date}</h3>\n"
-            photo_html += f"<p><a href='{document_id}''>{document_id}</a> - {taxa_count} havainto(a), {photo_count} habitaattikuva(a)</p>\n"
+            photo_html += f"<h3>{ locality } - { date }</h3>\n"
+            photo_html += f"<p><img src='{ map_filename }' class='minimap' alt=''><a href='{ document_id }'>{ document_id }</a> - { taxa_count } havainto(a), { photo_count } habitaattikuva(a)</p>\n"
 
+            photo_html += "<div class='route-photos'>"
             # Each photo
 #            common_helpers.print_log(document_dict["document"]["gatherings"][0]["media"]) # debug
             media = document_dict["document"]["gatherings"][0]["media"]
@@ -82,7 +87,7 @@ def get_habitat_photos(collection_id, dev_secret = 1):
                 else:
                     photo_html += get_photo_html(photo)
 
-            photo_html += "</div>\n\n"
+            photo_html += "</div>\n</div>\n\n"
         
         else:
             print(f"WARNING: No media in document {document_id}")
