@@ -17,7 +17,7 @@ Flush cache: root-URL/flush
 
 ## Setting weather messaging
 
-With crontab, call http://localhost/weather/change every 10 minutes.
+With crontab, call http://localhost/weather/change/1 every 10 minutes. The parameter "1" sets messaging on.
 
 It's better to call this at 5, 15, 25, 35 45 and 55 past, so that data has been updated from weather stations to the API.
 
