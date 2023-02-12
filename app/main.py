@@ -186,9 +186,10 @@ def taxa_photos_data(taxon_id_untrusted):
     html = taxa.common_photos.main(taxon_id_untrusted)
     return render_template("taxa_photos_data.html", html=html)
 
+@app.route("/weather/change/<int:messaging_on>")
 @app.route("/weather/change")
-def weather_change():
-    html = weather.change.main()
+def weather_change(messaging_on = 0):
+    html = weather.change.main(messaging_on)
     return render_template("weather_change.html", html=html)
 
 @app.route("/talvilinnut/<int:dev_secret>")

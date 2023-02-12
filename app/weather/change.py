@@ -90,16 +90,22 @@ def evaluate_change(change_value, trigger_value, key, secs, current_value):
     mins = round(secs / 60)
     if abs(change_value) >= trigger_value:
         text = f"{key} change: {change_value} in {mins} minutes, now {current_value}\n"
-        telegram.send_text(text, False)
-        return text
+        if 1 == global_messaging_on:
+            telegram.send_text(text, False)
+        else:
+            print("Messaging off")
+        return "Messaging off: " + text
     else:
         text = f"NO {key} change: {change_value} in {mins} minutes, now {current_value}\n"
         return text
 
 
-def main():
+def main(messaging_on):
     # TODO: Check when last message about a certain weather event has been sent, don't sent new ones in 1 hour.
     # TODO: Silent messages between 22-23.59 and 00-06.59
+
+    global global_messaging_on
+    global_messaging_on = messaging_on
 
     html = ""
 
@@ -133,8 +139,7 @@ def main():
     html += json.dumps(obs_indexed, indent = 3) + "\n"
 
     if valid_times(obs_indexed) == False:
-        html += "Some times missing, send message\n"
-        telegram.send_text(f"Some times missing: {obs_indexed}", False)
+        html += f"Some times missing:  { obs_indexed }\n"
     else:
         html += "Times ok\n"
 
@@ -164,6 +169,11 @@ def main():
     secs = 5400
     change = obs_indexed[0][key] - obs_indexed[secs][key]
     html = evaluate_change(change, 6, key, secs, obs_indexed[0][key]) + html
+
+    # DEBUG
+    secs = 5400
+    change = obs_indexed[0][key] - obs_indexed[secs][key]
+    html = evaluate_change(change, 0.1, key, secs, obs_indexed[0][key]) + html
 
     # Wind
     key = "WindSpeedMS"
