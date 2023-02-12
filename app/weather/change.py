@@ -84,8 +84,23 @@ def trigger_message(data):
     print(data)
     print("EOM")
 
-
+'''
+change_value: how much the measurement has been changed. Positive of negative number.
+trigger_value: how large change should trigger messaging. Positive number. 
+key: key/name of the measurement. String.
+secs: in how many seconds has the value changed. Positive integer.
+current_value: current value of the measurement. Positive of negative number.
+'''
 def evaluate_change(change_value, trigger_value, key, secs, current_value):
+
+    # Database key
+    if change_value >= 0:
+        db_direction = "positive"
+    else:
+        db_direction = "negative"
+
+    db_key = f"{ key }-{ db_direction }"
+
     change_value = round(change_value, 1)
     mins = round(secs / 60)
     if abs(change_value) >= trigger_value:
@@ -171,26 +186,26 @@ def main(messaging_on):
     html = evaluate_change(change, 6, key, secs, obs_indexed[0][key]) + html
 
     # DEBUG
-    secs = 5400
-    change = obs_indexed[0][key] - obs_indexed[secs][key]
-    html = evaluate_change(change, 0.1, key, secs, obs_indexed[0][key]) + html
+#    secs = 5400
+#    change = obs_indexed[0][key] - obs_indexed[secs][key]
+#    html = evaluate_change(change, 0.1, key, secs, obs_indexed[0][key]) + html
 
     # Wind
     key = "WindSpeedMS"
     # 10 min
     secs = 600
     change = obs_indexed[0][key] - obs_indexed[secs][key]
-    html = evaluate_change(change, 2, key, secs, obs_indexed[0][key]) + html
+    html = evaluate_change(change, 3, key, secs, obs_indexed[0][key]) + html
 
     # 1 hour
     secs = 3600
     change = obs_indexed[0][key] - obs_indexed[secs][key]
-    html = evaluate_change(change, 3, key, secs, obs_indexed[0][key]) + html
+    html = evaluate_change(change, 4, key, secs, obs_indexed[0][key]) + html
 
     # 1,5 hours
     secs = 5400
     change = obs_indexed[0][key] - obs_indexed[secs][key]
-    html = evaluate_change(change, 4, key, secs, obs_indexed[0][key]) + html
+    html = evaluate_change(change, 5, key, secs, obs_indexed[0][key]) + html
 
     # Cloud cover
     key = "TotalCloudCover"
