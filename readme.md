@@ -15,6 +15,12 @@ Based on https://medium.com/thedevproject/setup-flask-project-using-docker-and-g
 
 Flush cache: root-URL/flush
 
+## Setting weather messaging
+
+With crontab, call http://localhost/weather/change every 10 minutes.
+
+It's better to call this at 5, 15, 25, 35 45 and 55 past, so that data has been updated from weather stations to the API.
+
 ## Running in development
 
 First build the image, and tag it with a version number and/or as latest:
