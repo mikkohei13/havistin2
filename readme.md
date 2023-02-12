@@ -7,6 +7,10 @@ Uses Python, Flask, Docker & Docker-Compose and Chart.js, and is deployed with G
 
 # Setup
 
+* Clone this repo
+* Set secrets to app/app_secrets.py (see example file in the directory)
+* `docker-compose up; docker-compose down;`
+
 Based on https://medium.com/thedevproject/setup-flask-project-using-docker-and-gunicorn-4dcaaa829620
 
 Flush cache: root-URL/flush
@@ -14,6 +18,10 @@ Flush cache: root-URL/flush
 ## Running in development
 
 First build the image, and tag it with a version number and/or as latest:
+
+    docker build -t havistin2-gunicorn:VERSIONNUMBER -t havistin2-gunicorn:latest .
+
+Or set a version number:
 
     docker build -t havistin2-gunicorn:VERSIONNUMBER -t havistin2-gunicorn:latest .
 
