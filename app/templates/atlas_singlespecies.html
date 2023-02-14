@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block breadcrumb %}
-    <a href="/">Havistin</a> &raquo; <a href="/atlas">Lintuatlas</a> &raquo; <a href="/atlas/lajiluettelo">Lajit</a> {{ html["species_name"].capitalize() }} 
+    <a href="/">Havistin</a> &raquo; <a href="/atlas">Lintuatlas</a> &raquo; <a href="/atlas/lajiluettelo">Lajit</a> &raquo; {{ html["species_name"].capitalize() }} 
 {% endblock %}
 
 {% block body %}
@@ -35,12 +35,60 @@
 
     <p>Atlashavaintoja (varma, todennäköinen, mahdollinen) suhteessa parimäärään: <strong>{{ html["proportion"] }}</strong></p>
 
+
+    <h3>Atlashavaintojen ajoittuminen</h3>
+    <p>Päivittäinen havaintomäärä (mahdolliset + todennäköiset + varmat) havainnoista, joiden alku- ja loppupäivä ovat samat.</p>
+
+    <div>
+        <canvas id="daily_chart"></canvas>
+    </div>
+
     <h3>Miten pesinnät on varmistettu (3. ja 4 atlas)</h3>
     <p>Taulukossa on havainnot pesimävarmuusindekseillä 71, 72, 73, 74, 75, 81 ja 82.</p>
     {{ html["confirmed_atlas_codes_html"] | safe }}
 
     <h3>Varmojen pesimähavaintojen lisätiedot (4. atlas)</Label></h3>
     {{ html["notes"] | safe }}
+
+
+    <script type="text/javascript">
+
+        const labels = [];
+        for (let i = 0; i < 365; i++) {
+            const date = new Date(2023, 0, i + 1); // 2023 is the year, 0 is January (the first month), i + 1 is the day
+            const dateString = date.toLocaleDateString('fi-FI', { month: 'short', day: 'numeric' }); // format the date as 'MMM D'
+            labels.push(dateString);
+        }
+
+        const daily_data = {
+            labels: labels,
+            datasets: [
+                { 
+                    data: {{ html["phenology_data"]|safe }},
+                    backgroundColor: '#FA5428',
+                    tension: 0.1,
+                    pointStyle: false,
+                    label: ""
+                }
+            ]
+        };
+
+        const config = {
+            type: 'bar',
+            data: daily_data,
+            options: {
+                plugins: {
+                    legend: {
+                        labels: {
+                        display: false // set display to false to disable the display of the label
+                        }
+                    }
+                }
+            },
+        };
+        
+        const myChart = new Chart(document.getElementById('daily_chart'), config);
+    </script>
 
 
 {% endblock %}

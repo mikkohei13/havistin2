@@ -135,6 +135,67 @@ def get_notes(taxon_id):
     return html
 
 
+def day_of_year_NEW(day, month):
+    days_in_month = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365]
+    return days_in_month[month - 1] + day
+
+def day_of_year(day, month):
+    days_in_month = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    return sum(days_in_month[:month]) + day
+
+
+def get_phenology(taxon_id):
+
+    year = 2022 # Change to 2022/2023 at the end of 2023. 
+    url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=gathering.conversions.day%2Cgathering.conversions.month&onlyCount=true&taxonCounts=false&gatheringCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=366&page=1&cache=false&taxonId={ taxon_id }&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&yearMonth={ year }&access_token="
+
+    data_dict = common_helpers.fetch_finbif_api(url)
+#    print(data_dict)
+
+    # Generate dictionary of days of year and number of observations
+    day_data = dict()
+    for day in data_dict["results"]:
+        monthday_number = day["aggregateBy"]["gathering.conversions.day"]
+        month_number = day["aggregateBy"]["gathering.conversions.month"]
+
+        # Skip if number is missing
+        if "" == monthday_number or "" == month_number:
+            continue
+
+        monthday_number = int(monthday_number)
+        month_number = int(month_number)
+
+#        print(monthday_number)
+#        print(month_number)
+        day_data[day_of_year(monthday_number, month_number)] = day["count"]
+
+    # Fill in missing dates and set in order
+    full_day_data = []
+    for i in range(1, 366):
+        if i in day_data:
+            full_day_data.append(day_data[i])
+        else:
+            full_day_data.append(0)
+
+    print(full_day_data)
+    return full_day_data
+
+    '''
+    full_day_data = []
+    for i in range(1, 366):
+        day_number = str(i)
+        if i in day_data:
+            dictdata = {day_number: i}
+            full_day_data.append(dictdata)
+        else:
+            dictdata = {day_number: 0}
+            full_day_data.append(dictdata)
+
+    print(full_day_data)
+    return json.dumps(full_day_data)
+    '''
+
+
 def main(species_name_untrusted):
     species_name = valid_species_name(species_name_untrusted)
 
@@ -169,6 +230,8 @@ def main(species_name_untrusted):
 
     notes = get_notes(species_data["id"])
 
+    phenology_data = get_phenology(species_data["id"])
+
     html = dict()
     html["species_name"] = species_name
     html["prev_name"] = prev_name
@@ -181,5 +244,6 @@ def main(species_name_untrusted):
     html["proportion"] = proportion
     html["confirmed_atlas_codes_html"] = confirmed_atlas_codes
     html["qname"] = species_data["id"]
+    html["phenology_data"] = str(phenology_data)
 
     return html
