@@ -77,7 +77,7 @@ def root():
 
 @app.route("/atlas")
 @app.route("/atlas/")
-@cache.cached(timeout=1) # 3600
+@cache.cached(timeout=3600)
 def atlas_root():
     html = atlas.atlas.main()
     return render_template("atlas.html", html=html)
