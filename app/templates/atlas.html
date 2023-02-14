@@ -58,12 +58,15 @@
         <canvas id="daily_chart"></canvas>
     </div>
 
+    <h4>Havaintojen kertyminen vuonna 2022</h4>
+
+    <p class="img-chart"><img src="/static/images/havainnot-kumul-2022.png" alt=""></p>
+
+    <p class="img-chart"><img src="/static/images/havainnot-paivitt-2022.png" alt=""></p>
+
     <script type="text/javascript">
         json = '{{ html["cumulative_datechart_data_vihko"]|safe }}';
         vihko_data = JSON.parse(json);
-
-//        json = '{{ html["cumulative_datechart_data_trip"]|safe }}';
-//        trip_data = JSON.parse(json);
 
         json = '{{ html["cumulative_datechart_data_tiira"]|safe }}';
         tiira_data = JSON.parse(json);
@@ -77,12 +80,7 @@
                     data: vihko_data,
                     borderColor: '#FA5428',
                     label: "Vihko, lintuatlas- ja retkilomake"
-                },/*
-                { 
-                    data: trip_data,
-                    borderColor: '#2691D9',
-                    label: "Vihko, retkilomake"
-                },*/
+                },
                 { 
                     data: tiira_data,
                     borderColor: '#99019C',
@@ -99,17 +97,7 @@
         const config = {
             type: 'line',
             data: data,
-            /*
-            // Stacked, but without unique filler colors
-            options: {
-                scales: {
-                    yAxes: {
-                        stacked: true
-                    }
-                }
-            }
-            */
-           options: {}
+            options: {}
         };
         
         const myChart = new Chart(document.getElementById('cumulative_chart'), config);
@@ -118,9 +106,6 @@
     <script type="text/javascript">
         json = '{{ html["daily_datechart_data_vihko"]|safe }}';
         vihko_data = JSON.parse(json);
-
-//        json = '{{ html["daily_datechart_data_trip"]|safe }}';
-//        trip_data = JSON.parse(json);
 
         json = '{{ html["daily_datechart_data_tiira"]|safe }}';
         tiira_data = JSON.parse(json);
@@ -134,12 +119,7 @@
                     data: vihko_data,
                     borderColor: '#FA5428',
                     label: "Vihko, lintuatlas- ja retkilomake"
-                },/*
-                { 
-                    data: trip_data,
-                    borderColor: '#2691D9',
-                    label: "Vihko, retkilomake"
-                },*/
+                },
                 { 
                     data: tiira_data,
                     borderColor: '#99019C',
@@ -156,16 +136,6 @@
         const daily_config = {
             type: 'line',
             data: daily_data,
-            /*
-            // Stacked, but without unique filler colors
-            options: {
-                scales: {
-                    yAxes: {
-                        stacked: true
-                    }
-                }
-            }
-            */
             options: {}
         };
         

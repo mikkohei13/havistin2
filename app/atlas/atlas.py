@@ -28,6 +28,8 @@ def convert_collection_name(id):
         return "Tiiran tulkitut atlashavainnot"
     if  "http://tun.fi/HR.4611" == id:
         return "FCG Finnish Consulting Group Oy:n lajihavainnot"
+    if  "http://tun.fi/HR.4051" == id:
+        return "LajiGIS: Lajin seurantakohteet: Petolinnut "
     return "Muu (" + id + ")"
 
 
@@ -135,8 +137,10 @@ def coordinate_accuracy_html(accuracy_dict, total_count):
 
 def datechart_data(collection_id):
 
+    year = 2023
+
     # Get daily data from api. This lacks dates with zero count.
-    api_url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=document.firstLoadDate&orderBy=document.firstLoadDate&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=365&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&collectionId=http%3A%2F%2Ftun.fi%2F{collection_id}&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&access_token="
+    api_url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=document.firstLoadDate&orderBy=document.firstLoadDate&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=365&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&collectionId=http%3A%2F%2Ftun.fi%2F{collection_id}&countryId=ML.206&yearMonth={ year }&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&access_token="
 
     data_dict = common_helpers.fetch_finbif_api(api_url)
 
@@ -147,7 +151,7 @@ def datechart_data(collection_id):
 
     # Loop all dates so far, to generate chart.js data list.
     # If this date is changed, all observations before that are discarded.
-    start_date = date(2022, 1, 1)
+    start_date = date(year, 1, 1)
 
     cumulative_count = 0
     daily_count = 0
