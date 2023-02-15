@@ -37,7 +37,7 @@
 
 
     <h3>Atlashavaintojen ajoittuminen</h3>
-    <p>Päivittäinen havaintomäärä (mahdolliset + todennäköiset + varmat) havainnoista, joiden alku- ja loppupäivä ovat samat.</p>
+    <p>Päivittäinen havaintomäärä (mahdolliset + todennäköiset + varmat) vuoden 2022 havainnoista, joiden alku- ja loppupäivä ovat samat.</p>
 
     <div>
         <canvas id="daily_chart"></canvas>
@@ -64,26 +64,26 @@
             labels: labels,
             datasets: [
                 { 
-                    data: {{ html["phenology_data"]|safe }},
-                    backgroundColor: '#FA5428',
+                    data: {{ html["phenology_atlas_confirmed"]|safe }},
+                    type: 'line',
+                    borderColor: '#1C9AA7',
                     tension: 0.1,
                     pointStyle: false,
-                    label: ""
+                    label: "varmat"
+                },
+                { 
+                    data: {{ html["phenology_atlas_all"]|safe }},
+                    type: 'bar',
+                    backgroundColor: '#FE708A',
+                    pointStyle: false,
+                    label: "mahdolliset+todennäköiset+varmat"
                 }
             ]
         };
 
         const config = {
-            type: 'bar',
             data: daily_data,
             options: {
-                plugins: {
-                    legend: {
-                        labels: {
-                        display: false // set display to false to disable the display of the label
-                        }
-                    }
-                }
             },
         };
         

@@ -144,10 +144,11 @@ def day_of_year(day, month):
     return sum(days_in_month[:month]) + day
 
 
-def get_phenology(taxon_id):
+def get_phenology(taxon_id, params):
 
-    year = 2022 # Change to 2022/2023 at the end of 2023. 
-    url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=gathering.conversions.day%2Cgathering.conversions.month&onlyCount=true&taxonCounts=false&gatheringCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=366&page=1&cache=false&taxonId={ taxon_id }&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&yearMonth={ year }&access_token="
+    year = "2022" # Change to 2022/2023 at the end of 2023.
+
+    url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=gathering.conversions.day%2Cgathering.conversions.month&onlyCount=true&taxonCounts=false&gatheringCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=366&page=1&cache=false&taxonId={ taxon_id }&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&individualCountMin=1&qualityIssues=NO_ISSUES{ params }&yearMonth={ year }&access_token="
 
     data_dict = common_helpers.fetch_finbif_api(url)
 #    print(data_dict)
@@ -168,6 +169,8 @@ def get_phenology(taxon_id):
 #        print(monthday_number)
 #        print(month_number)
         day_data[day_of_year(monthday_number, month_number)] = day["count"]
+    
+    print(day_data)
 
     # Fill in missing dates and set in order
     full_day_data = []
@@ -180,20 +183,6 @@ def get_phenology(taxon_id):
     print(full_day_data)
     return full_day_data
 
-    '''
-    full_day_data = []
-    for i in range(1, 366):
-        day_number = str(i)
-        if i in day_data:
-            dictdata = {day_number: i}
-            full_day_data.append(dictdata)
-        else:
-            dictdata = {day_number: 0}
-            full_day_data.append(dictdata)
-
-    print(full_day_data)
-    return json.dumps(full_day_data)
-    '''
 
 
 def main(species_name_untrusted):
@@ -230,7 +219,8 @@ def main(species_name_untrusted):
 
     notes = get_notes(species_data["id"])
 
-    phenology_data = get_phenology(species_data["id"])
+    phenology_atlas_all = str(get_phenology(species_data["id"], "&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD"))
+    phenology_atlas_confirmed = str(get_phenology(species_data["id"], "&atlasClass=MY.atlasClassEnumD"))
 
     html = dict()
     html["species_name"] = species_name
@@ -244,6 +234,7 @@ def main(species_name_untrusted):
     html["proportion"] = proportion
     html["confirmed_atlas_codes_html"] = confirmed_atlas_codes
     html["qname"] = species_data["id"]
-    html["phenology_data"] = str(phenology_data)
+    html["phenology_atlas_all"] = phenology_atlas_all
+    html["phenology_atlas_confirmed"] = phenology_atlas_confirmed
 
     return html

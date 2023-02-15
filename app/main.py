@@ -125,7 +125,7 @@ def atlas_specieslist():
     return render_template("atlas_specieslist.html", html=html)
 
 @app.route("/atlas/laji/<string:species_name_untrusted>")
-@cache.cached(timeout=86400)
+@cache.cached(timeout=86400) # 86400
 def atlas_singlespecies(species_name_untrusted):
     html = atlas.singlespecies.main(species_name_untrusted)
     return render_template("atlas_singlespecies.html", html=html)
