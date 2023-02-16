@@ -3,7 +3,7 @@
 
 Tools to view and manage biodiversity data and Finnish bird atlas.
 
-Uses Python, Flask, Docker & Docker-Compose and Chart.js, and is deployed with Google Cloud Run.
+Uses Python, Flask, Redis (for caching), MongoDB (for weather data), Chart.js, Docker & Docker-Compose, and is deployed with Google Cloud Run.
 
 # Setup
 
@@ -101,9 +101,8 @@ Build image from Dockerfile:
 
 # Todo
 
-## Must
+## Should / Might
 
-- Refactor common functions into common
 - robots.txt, forbid all but front page (now all forbidden)
 - Paginate fetching mappable observations of a square. Or increase page size? Must do this before top square has less than 1000 mappable observations.
 - Birds of prey on adjusted form
@@ -111,9 +110,11 @@ Build image from Dockerfile:
 - Country filtering? (bots)
 - Moving from existing to nonexisting grid should show message, not error
 
+## Nice / Ideas
 
-## Should / Might
-
+- Refactor templating & separate html from code
+- Lajit yleisyysjärjestyksessä, tai ainakin rarimmat myös
+- Reloading with inotify, see https://docs.gunicorn.org/en/stable/settings.html
 - Gamification: show how much my today's observations increased pv-summa
     - User logs in
     - User gives square and date
@@ -121,7 +122,6 @@ Build image from Dockerfile:
     - Calculate pv-sum by going through each species, and doing if/else checking if D, C, or B exist.
     - Get similar aggregate, but only my observations only today
     - Calculate how much pv-sum increases by going through my observations each species, and comparing to class of previous aggregate 
-- Species page with time graph (x: time, y: atlascode) 
 - People lists:
     - People with complete lists from most squares: https://ebird.org/atlasny/top100?region=New+York&locInfo.regionCode=US-NY&rankedBy=blocks_with_complete
         - needs complete checklist search
@@ -129,20 +129,7 @@ Build image from Dockerfile:
 - manage secrets with secret manager (https://cloud.google.com/run/docs/configuring/secrets).
 - Optimize gunicorn & dockerfile?
 - Port as env var, instead of setting on deploy-time or using default (8080?)
-- Secret management
-
-## Nice
-
-- Refactor templating & separate html from code
-- Lajit yleisyysjärjestyksessä, tai ainakin rarimmat myös
-- Reloading with inotify, see https://docs.gunicorn.org/en/stable/settings.html
-
-## Ideas
-
-- Ruutulomake
-   - link to map
 - Geographic center of observations, day by day, on a xy-chart with Finnish border 
-
 - One grid observation count or breeding index graph
 - Better debug https://trstringer.com/python-flask-debug-docker-compose/
 
