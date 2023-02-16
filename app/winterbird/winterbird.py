@@ -34,7 +34,7 @@ def get_habitat_photos(collection_id, dev_secret = 1):
     # Documents with photos:
     # DESC = newest first
     page_size = 200
-#    page_size = 10 # debug
+    page_size = 10 # debug
     page = 1
     api_url = f"https://api.laji.fi/v0/warehouse/query/gathering/aggregate?aggregateBy=gathering.conversions.wgs84CenterPoint.lat%2Cgathering.conversions.wgs84CenterPoint.lon%2Cdocument.documentId%2Cgathering.displayDateTime&orderBy=gathering.displayDateTime DESC&onlyCount=true&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize={page_size}&page={page}&cache=true&collectionId={collection_id}&hasGatheringMedia=true&access_token="
 
@@ -74,8 +74,8 @@ def get_habitat_photos(collection_id, dev_secret = 1):
             else:
                 taxa_count = 0
 
-            photo_html += f"<h3>{ locality } - { date }</h3>\n"
-            photo_html += f"<p><img src='{ map_filename }' class='minimap' alt=''><a href='{ document_id }'>{ document_id }</a> - { taxa_count } havainto(a), { photo_count } habitaattikuva(a)</p>\n"
+            photo_html += f"<h3 class='winterbird-route'><a href='{ document_id }'>{ locality } - { date }</a></h3>\n"
+            photo_html += f"<p><img src='{ map_filename }' class='minimap' alt='' title='Kartta näyttää reitin summittaisen sijainnin.'><strong><a href='{ document_id }'>Laskennan havainnot ja kaikki kuvat</a></strong> - { taxa_count } havainto(a), { photo_count } habitaattikuva(a)</p>\n"
 
             photo_html += "<div class='route-photos'>"
             # Each photo

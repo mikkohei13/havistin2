@@ -47,7 +47,7 @@ a:visited {
 
 #navi {
     margin: -10px -10px 20px -10px;
-    padding: 15px 10px 15px 30px;
+    padding: 15px 10px 15px 20px;
     color: #333;
 }
 
@@ -105,13 +105,15 @@ h2, h3, h3 {
 
 #allwrapper {
     margin: 0;
-    padding: 10px;
+    padding: 10px 10px 10px 1.2em;
     background: transparent url("/static/web_bottom.jpg") bottom left no-repeat;
+    max-width: 2200px;
 }
 
 #cc {
-    margin: 3em -10px 0 -10px;
-    padding: 10px 10px 30px 10px;
+    clear: both;
+    margin: 0 -10px 0 -10px;
+    padding: 3em 10px 30px 10px;
 /*    border-top: 4px solid #B3EFED; */ /* v2 light turquoise */
     font-style: italic;
 }
@@ -366,6 +368,11 @@ figure {
 
 .route-photos {
     margin-left: 100px;
+}
+
+.winterbird-route a {
+    color: #000;
+    text-decoration: none;
 }
 
 /* Printer */
