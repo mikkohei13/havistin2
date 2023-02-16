@@ -72,7 +72,6 @@ print("-------------- BEGIN --------------", file = sys.stdout)
 @app.route("/")
 def root():
     html = index.index.main()
-#    html = atlas.atlas.main()
     return render_template("index.html", html=html)
 
 @app.route("/atlas")
@@ -159,7 +158,7 @@ def taxa_specieslist(taxon_id_untrusted):
 
 @app.route("/taxa")
 @app.route("/taxa/")
-@cache.cached(timeout=10)
+@cache.cached(timeout=3600)
 def taxa_root():
     html = taxa.taxa.main()
     return render_template("taxa.html", html=html)

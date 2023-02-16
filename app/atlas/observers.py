@@ -6,21 +6,21 @@ from helpers import common_helpers
 
 def observer_name(user_id):
     user_qname = user_id.replace("http://tun.fi/", "")
-    filename = "./cache/" + user_qname + ".txt"
+#    filename = "./cache/" + user_qname + ".txt"
 
     # Get from cache
-    if os.path.exists(filename):
-        with open(filename) as f:
-            name = f.readlines()
-        return name[0]
+#    if os.path.exists(filename):
+#        with open(filename) as f:
+#            name = f.readlines()
+#        return name[0]
 
     # Get from API, save to cache 
     api_url = f"https://api.laji.fi/v0/person/by-id/{user_qname}?access_token="
     data = common_helpers.fetch_finbif_api(api_url)
     name = data["fullName"]
 
-    with open(filename, 'w') as f:
-        f.write(name)
+#    with open(filename, 'w+') as f:
+#        f.write(name)
     return name
 
 
