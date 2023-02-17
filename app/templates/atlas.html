@@ -44,11 +44,15 @@
     <h3><a href='/atlas/havainnoijat'>Havainnoijatilastoja</a></h3>
     <p>Aktiivisimpia havainnoijia</p>
 
+    <h3><a href='https://www.biomi.org/2023/02/17/mitka-lintulajit-suosivat-vanhoja-metsia/'>Mitkä lintulajit suosivat vanhoja metsiä?</a></h3>
+    <p>Atlashavaintojen ja puuston tilavuuden perusteella laskettuja tunnuslukuja. (biomi.org/blogi)</p>
+
+
     {{ html["collections_table"]|safe }}
 
     {{ html["accuracy_table"]|safe }}
 
-    <h3>Havaintojen kertyminen</h3>
+    <h3>Havaintojen kertyminen vuonna 2023</h3>
     <p>Huomaa että Tiiran havainnot tulevat Lajitietokeskukseen tallennusta seuraavana aamuna, joten esim. sunnuntaina tallennetut havainnot näkyvät tässä maanantain kohdalla.</p>
 
     <div>
@@ -59,11 +63,9 @@
         <canvas id="daily_chart"></canvas>
     </div>
 
-    <h4>Havaintojen kertyminen vuonna 2022</h4>
+    <h3>Havaintojen kertyminen vuonna 2022</h3>
 
-    <p class="img-chart"><img src="/static/images/havainnot-kumul-2022.png" alt=""></p>
-
-    <p class="img-chart"><img src="/static/images/havainnot-paivitt-2022.png" alt=""></p>
+    <p class="img-chart"><img src="/static/images/havainnot-2022.png" alt=""></p>
 
     <script type="text/javascript">
         json = '{{ html["cumulative_datechart_data_vihko"]|safe }}';
@@ -80,16 +82,19 @@
                 { 
                     data: vihko_data,
                     borderColor: '#FA5428',
+                    pointStyle: false,
                     label: "Vihko, lintuatlas- ja retkilomake"
                 },
                 { 
                     data: tiira_data,
                     borderColor: '#99019C',
+                    pointStyle: false,
                     label: "Tiira"
                 },
                 { 
                     data: tipu_data,
                     borderColor: '#74AC00',
+                    pointStyle: false,
                     label: "Rengastukset"
                 }
             ]
@@ -119,16 +124,19 @@
                 { 
                     data: vihko_data,
                     borderColor: '#FA5428',
+                    pointStyle: false,
                     label: "Vihko, lintuatlas- ja retkilomake"
                 },
                 { 
                     data: tiira_data,
                     borderColor: '#99019C',
+                    pointStyle: false,
                     label: "Tiira"
                 },
                 { 
                     data: tipu_data,
                     borderColor: '#74AC00',
+                    pointStyle: false,
                     label: "Rengastukset"
                 }
             ]

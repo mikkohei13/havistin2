@@ -48,10 +48,12 @@ def collections_data():
     collections_table += "<tbody>"
 
     for i in data_dict["results"]:
-        collections_table += "<tr><td>" + convert_collection_name(i["aggregateBy"]["document.collectionId"]) + "</td>"
+        collection_id = i["aggregateBy"]["document.collectionId"]
+        collection_name = convert_collection_name(i["aggregateBy"]["document.collectionId"])
+
+        collections_table += f"<tr><td><a href='{ collection_id }'>{ collection_name }</a></td>"
         collections_table += "<td>" + str(i["count"]) + "</td>"
         collections_table += "<td>" + str(round((i["count"] / total_obs_count) * 100, 1)) + " %</td></tr>"
-#        print(data_dict["results"]["aggregateBy"]["count"], file = sys.stdout)
 
     collections_table += f"<tr><td>Yhteensä</td><td>{total_obs_count}</td></tr>"
     collections_table += "</tbody></table>"
