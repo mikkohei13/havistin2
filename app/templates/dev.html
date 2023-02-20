@@ -19,29 +19,36 @@
     {{ html["coordinates"]|safe }}
 
     <script>
-        var map = L.map('largemap', { scrollWheelZoom: true }).setView([63,25], 6);
-        
-        // Set max zoom, since too much zooming gives wrong impression of inaccurate obs locations.
-        // But: this affects heat map calculations!
-        //map.options.maxZoom = 14;
+        var map = L.map('largemap', { scrollWheelZoom: true }).setView([65,25], 6);
         
         var tiles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
         }).addTo(map);
-
-        /*
-        var polyLatLon = [ [60.21381179,24.83217643], [60.21663638,25.01244258], [60.30633495,25.0069948], [60.30350014,24.82623548], [60.21381179,24.83217643] ];
-        var polyline = L.polyline(polyLatLon, {color: 'red'}).addTo(map);
-        */
 
         // Array of arrays containing polygon coordinates
         var polygons = [ {{ html["coordinates"]|safe }} ];
 
         // Loop through the polygons array and create a separate L.polyline object for each polygon
         for (var i = 0; i < polygons.length; i++) {
-            var polyline = L.polyline(polygons[i], {color: 'blue'}).addTo(map);
-        }
+            // Create a closure to capture the value of i
+            (function(i) {
+                var polygon = L.polygon(polygons[i].coords, {
+                    fillColor: polygons[i].color,
+                    fillOpacity: 1,
+                    color: 'black',
+                    weight: 0
+                }).addTo(map);
 
+                // Add a click event listener to the polygon
+                polygon.on('click', function(event) {
+                    // Create a popup with the data associated with the polygon
+                    L.popup()
+                    .setLatLng(event.latlng)
+                    .setContent(polygons[i].text)
+                    .openOn(map);
+                });
+            })(i); // Call the closure function with the current value of i
+        }
 
     </script>        
 
