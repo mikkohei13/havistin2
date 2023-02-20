@@ -252,6 +252,13 @@ h2, h3, h3 {
     border-radius: 10px; 
 }
 
+#largemap {
+    margin: 1em auto;
+    width: 99%;
+    height: 700px;
+    border-radius: 10px; 
+}
+
 #speciesmap {
     width: 300px;
     height: 430px;

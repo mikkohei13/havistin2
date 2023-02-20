@@ -200,7 +200,7 @@ def winterbird_root(dev_secret = 1):
     return render_template("winterbird.html", html=html)
 
 @app.route("/dev/<string:taxon_id_untrusted>")
-@cache.cached(timeout=60)
+@cache.cached(timeout=1)
 def dev_root(taxon_id_untrusted):
 #    html = devcache.get_cached("/dev/" + taxon_id_untrusted)
 #    if not html:
