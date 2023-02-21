@@ -153,7 +153,7 @@ def atlas_observers():
 
 @app.route("/atlas/listat")
 @app.route("/atlas/listat/")
-@cache.cached(timeout=1)
+@cache.cached(timeout=86400)
 def atlas_completelists():
     html = atlas.completelists.main()
     return render_template("atlas_completelists.html", html=html)

@@ -90,8 +90,10 @@ a:visited {
     font-weight: bold;
 }
 
-#links a {
-
+h3 em {
+    vertical-align: super;
+    color: #d00;
+    font-style: normal;
 }
 
 h2, h3, h3 {
