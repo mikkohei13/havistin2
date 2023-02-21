@@ -17,6 +17,7 @@ import atlas.singlespecies
 import atlas.squares
 import atlas.observers
 import atlas.species_proportions
+import atlas.completelists
 
 import taxa.taxa
 import taxa.specieslist
@@ -149,6 +150,13 @@ def atlas_squares():
 def atlas_observers():
     html = atlas.observers.main()
     return render_template("atlas_observers.html", html=html)
+
+@app.route("/atlas/listat")
+@app.route("/atlas/listat/")
+@cache.cached(timeout=1)
+def atlas_completelists():
+    html = atlas.completelists.main()
+    return render_template("atlas_completelists.html", html=html)
 
 @app.route("/taxa/<string:taxon_id_untrusted>")
 @cache.cached(timeout=3600)

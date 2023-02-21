@@ -13,7 +13,7 @@ Uses Python, Flask, Redis (for caching), MongoDB (for weather data), Chart.js, D
 
 Based on https://medium.com/thedevproject/setup-flask-project-using-docker-and-gunicorn-4dcaaa829620
 
-Flush cache: root-URL/flush
+Flush cache: localhost/flush
 
 ## Setting weather messaging
 
@@ -104,7 +104,7 @@ Build image from Dockerfile:
 - Complete lists per square:
     - router, page and template
     - fetch data from api
-        - https://api.laji.fi/v0/warehouse/query/gathering/aggregate?aggregateBy=gathering.conversions.ykj10km.lat%2Cgathering.conversions.ykj10km.lon&onlyCount=true&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=1000&page=1&cache=false&countryId=ML.206&time=2022%2F2025&qualityIssues=NO_ISSUES&completeListTaxonId=MX.37580&completeListType=MY.completeListTypeCompleteWithBreedingStatus%2CMY.completeListTypeComplete&access_token=
+        - 
     - add map functions into the common helper file
     - call common helpers/squares_with_data
     - define color function: grayscale capped 100

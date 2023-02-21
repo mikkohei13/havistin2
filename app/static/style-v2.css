@@ -108,7 +108,7 @@ h2, h3, h3 {
     margin: 0;
     padding: 10px 10px 10px 1.2em;
     background: transparent url("/static/web_bottom.jpg") bottom left no-repeat;
-    max-width: 2200px;
+    max-width: 2000px;    
 }
 
 #cc {
@@ -255,7 +255,7 @@ h2, h3, h3 {
 #largemap {
     margin: 1em auto;
     width: 99%;
-    height: 1100px;
+    height: 800px;
     border-radius: 10px; 
 }
 
