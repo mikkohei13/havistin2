@@ -10,13 +10,14 @@ import numpy as np
 
 def color_viridis_capped(value):
     value = value["list_count"]
+    cap = 100
 
     # Cap value
-    if value > 100:
-        value = 100
+    if value > cap:
+        value = cap
     
     # Normalize value to range [0, 1]
-    normalized_value = value / 100
+    normalized_value = value / cap
 
     # Get RGB color value along viridis color scale
     #  viridis, inferno, plasma, magma, jet (spectrum), cool, hot
