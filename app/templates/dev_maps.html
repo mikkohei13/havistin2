@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+    {% block head %}
+    <title>Lintuatlaksen tilastoja (biomi.org)</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+    crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+    <script src="/static/leaflet-heat.js"></script> 
+    {% endblock %}
+
+    {% block breadcrumb %}
+    <a href="../../../">Lintuatlas</a> &raquo; Kartta
+    {% endblock %}
+
+    {% block body %}
+
+    <div id="largemap"></div>
+
+    <script>
+        var map = L.map('largemap', { scrollWheelZoom: true }).setView([65,25], 6);
+        
+        var tiles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+        }).addTo(map);
+
+        // Array of arrays containing polygon coordinates
+        var polygons = [ {{ html["coordinates"]|safe }} ];
+
+        // Loop through the polygons array and create a separate L.polyline object for each polygon
+        for (var i = 0; i < polygons.length; i++) {
+            // Create a closure to capture the value of i
+            (function(i) {
+                var polygon = L.polygon(polygons[i].coords, {
+                    fillColor: polygons[i].color,
+                    fillOpacity: 1,
+                    color: 'black',
+                    weight: 0
+                }).addTo(map);
+
+                // Add a click event listener to the polygon
+                polygon.on('click', function(event) {
+                    // Create a popup with the data associated with the polygon
+                    L.popup()
+                    .setLatLng(event.latlng)
+                    .setContent(polygons[i].text)
+                    .openOn(map);
+                });
+            })(i); // Call the closure function with the current value of i
+        }
+
+    </script>        
+
+    {% endblock %}
