@@ -136,13 +136,9 @@ def datatable(society_id, year_month):
     df['Yht.'] = sum_column
 
     # Add sum row
-    sum_row = df.sum(axis=0)
-    print(sum_row)
-    new_df = pd.DataFrame(columns=df.columns)
-    new_df = new_df.append(sum_row, ignore_index=True)
-    new_df = new_df.set_index(pd.Index(['Yhteensä']))
-
-    df_with_sums = pd.concat([df, new_df])
+    sums = pd.DataFrame(df.sum(axis=0)).T
+    sums.index = ['Yhteensä']
+    df_with_sums = pd.concat([df, sums], axis=0)
 
 #    df = df.transpose()
 

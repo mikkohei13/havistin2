@@ -417,6 +417,9 @@ figure {
     overflow: hidden;
 }
 
+.dataframe tr:last-child, .dataframe td:last-child {
+    font-weight: bold;
+}
 
 
 /* Printer */
