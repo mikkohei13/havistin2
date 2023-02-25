@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <title>Talvilintulaskennat - Havistin (biomi.org)</title>
+{% endblock %}
+
+{% block breadcrumb %}
+    <a href="/">Havistin</a> &raquo; Talvilintulaskennat
+{% endblock %}
+
+{% block body %}
+
+    <h1>Talvilintulaskennat</h1>
+
+    <div id="test">{{ html["count"]|safe }} laskettua reittiä</div>    
+
+    <div id="data">{{ html["data"]|safe }}</div>
+
+
+{% endblock %}

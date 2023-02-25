@@ -26,6 +26,7 @@ import taxa.new
 import taxa.common_photos
 
 import winterbird.winterbird
+import winterbird.census
 
 import weather.change
 
@@ -206,6 +207,12 @@ def weather_change(messaging_on = 0):
 def winterbird_root(dev_secret = 1):
     html = winterbird.winterbird.main(dev_secret)
     return render_template("winterbird.html", html=html)
+
+@app.route("/talvilinnut/laskenta/<string:society_id>")
+@cache.cached(timeout=1)
+def winterbird_census(society_id = False):
+    html = winterbird.census.main(society_id)
+    return render_template("winterbird_census.html", html=html)
 
 @app.route("/dev/<string:taxon_id_untrusted>")
 @cache.cached(timeout=1)
