@@ -9,45 +9,6 @@ import pandas as pd
 #import matplotlib.cm as cm
 #import numpy as np
 
-def datatable():
-    '''
-    V2
-    1) get named places and documents
-    2) get bird taxa for each named place, aggregated by document (so that documents can be handled separately)
-    '''
-
-    # Documents and named places
-    year_month = "2022-12%2F2023-01"
-    per_page = 10
-
-    association_id = "ML.1091" # Tringa
-
-    # This sorts the document based on gathering count DESC, i.e. how many units have coordinates.
-    url = f"https://api.laji.fi/v0/warehouse/query/gathering/statistics?aggregateBy=document.documentId%2Cdocument.namedPlaceId&orderBy=%2Cdocument.documentId%2Cdocument.namedPlaceId&onlyCount=true&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize={ per_page }&page=1&cache=true&birdAssociationAreaId={ association_id }&yearMonth={ year_month }&collectionId=HR.39&qualityIssues=NO_ISSUES&access_token=";
-
-    data_dict = common_helpers.fetch_finbif_api(url)
-    print(data_dict)
-
-    for i, document in enumerate(data_dict["results"]):
-        print(i, document["aggregateBy"]["document.namedPlaceId"])
-
-        named_place_id = document["aggregateBy"]["document.namedPlaceId"]
-
-        # v1
-        url = f"https://api.laji.fi/v0/warehouse/query/unit/statistics?aggregateBy=unit.linkings.taxon.speciesNameFinnish%2Cunit.linkings.taxon.speciesTaxonomicOrder&orderBy=%2Cunit.linkings.taxon.speciesTaxonomicOrder&onlyCount=true&taxonCounts=false&gatheringCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=100&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&namedPlaceId={ named_place_id }&yearMonth=2022-12%2F2023-01&collectionId=HR.39&individualCountMin=1&qualityIssues=NO_ISSUES&access_token="
-
-        # v2
-        url = f"https://api.laji.fi/v0/warehouse/query/unit/statistics?aggregateBy=document.documentId%2Cdocument.namedPlace.id%2Cunit.linkings.taxon.nameFinnish%2Cunit.linkings.taxon.orderId&orderBy=document.namedPlace.id%2Cunit.linkings.taxon.orderId&onlyCount=true&taxonCounts=false&gatheringCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=100&page=1&cache=false&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&namedPlaceId={ named_place_id }&yearMonth=2022-12%2F2023-01&collectionId=HR.39&individualCountMin=1&qualityIssues=NO_ISSUES&access_token="
-
-        data_dict = common_helpers.fetch_finbif_api(url)
-        print(data_dict)
-
-
-    # https://api.laji.fi/warehouse/query/unit/statistics?taxonId=
-    # &collectionId=HR.39&namedPlaceId=MNP.25278
-    # 
-    # &aggregateBy=unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesNameFinnish,gathering.conversions.year,gathering.conversions.month,unit.linkings.taxon.speciesTaxonomicOrder&selected=unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesNameFinnish,gathering.conversions.year,gathering.conversions.month,unit.linkings.taxon.speciesTaxonomicOrder&orderBy=unit.linkings.taxon.speciesTaxonomicOrder&page=1&pageSize=10000&onlyCount=false&access_token=bOzxQvW7EppFyAww5nskaGFxGgIdh4olBF1RmQvd8tAZPbMYsA9bUTaWYu2WFeZR
-
 
 def id_to_qname_link(id):
     qname = id.replace("http://tun.fi/", "")
@@ -59,7 +20,7 @@ def clean_name(name):
     return name[:second_comma_index]
 
 
-def datatable2():
+def datatable():
     '''
     1) Get all bird taxa, aggregated by named place and document
     '''
@@ -158,7 +119,7 @@ def datatable2():
 def main(some):
     html = dict()
 
-    html["data"], html["count"] = datatable2()
+    html["data"], html["count"] = datatable()
 
 
     return html
