@@ -6,6 +6,9 @@ from helpers import common_helpers
 
 import pandas as pd
 
+def format_with_point(x):
+    return '{:,.0f}'.format(x).replace(',', '.')
+
 
 def validate_society_id(id):
     if re.search(r'ML\.\d+', id):
@@ -132,7 +135,6 @@ def datatable(society_id, year_month):
 
     # Add sum column
     sum_column = df.sum(axis=1)
-    print(sum_column)
     df['Yht.'] = sum_column
 
     # Add sum row
@@ -144,7 +146,7 @@ def datatable(society_id, year_month):
 
 #    print(df_with_sums)
 
-    datatable_html = df_with_sums.to_html(border=0, na_rep="", float_format='{:,.0f}'.format, escape=False)
+    datatable_html = df_with_sums.to_html(border=0, na_rep="", float_format='{:,.0f}'.format, escape=False, formatters={col: format_with_point for col in df.columns})
     census_count = df_with_sums.shape[1] - 1 # Excludes title column
 
     return datatable_html, census_count

@@ -421,6 +421,10 @@ figure {
     font-weight: bold;
 }
 
+#wbc_navigation .empty {
+    color: #999;
+}
+
 
 /* Printer */
 

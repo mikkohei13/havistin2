@@ -12,51 +12,72 @@
 
     <h1>Talvilintulaskennat</h1>
 
-		<select id="dropdown1" name="dropdown1">
-			<option value="x">Yhdistys</option>
-			<option value="ML.1093">Tringa</option>
-			<option value="ML.1093">TLY</option>
-			<option value="ML.1093">Porvoo</option>
+    <form id="wbc_navigation">   
+        <select id="field1" name="field1">
+            <option value="x">valitse yhdistys</option>
+            <option value="ML.1088">Ålands Fågelskyddsförening</option>
+            <option value="ML.1089">Turun Lintutieteellinen Yhdistys</option>
+            <option value="ML.1090">Porin Lintutieteellinen Yhdistys</option>
+            <option value="ML.1091">Helsingin Seudun Lintutieteellinen Yhdistys - Tringa</option>
+            <option value="ML.1092">Keski- ja Pohjois-Uudenmaan Lintuharrastajat - Apus</option>
+            <option value="ML.1093">Porvoon Seudun Lintuyhdistys</option>
+            <option value="ML.1094">Kymenlaakson Lintutieteellinen Yhdistys</option>
+            <option value="ML.1095">Etelä-Karjalan Lintutieteellinen Yhdistys</option>
+            <option value="ML.1096">Lounais-Hämeen Lintuharrastajat</option>
+            <option value="ML.1097">Kanta-Hämeen Lintutieteellinen Yhdistys</option>
+            <option value="ML.1098">Päijät-Hämeen Lintutieteellinen Yhdistys</option>
+            <option value="ML.1099">Pirkanmaan Lintutieteellinen Yhdistys</option>
+            <option value="ML.1101">Etelä-Savon Lintuharrastajat - Oriolus</option>
+            <option value="ML.1102">Pohjois-Savon Lintuyhdistys - Kuikka</option>
+            <option value="ML.1103">Pohjois-Karjalan Lintutieteellinen Yhdistys</option>
+            <option value="ML.1104">Keski-Suomen Lintutieteellinen Yhdistys</option>
+            <option value="ML.1105">Suomenselän Lintutieteellinen Yhdistys</option>
+            <option value="ML.1106">Suupohjan Lintutieteellinen Yhdistys</option>
+            <option value="ML.1107">Merenkurkun Lintutieteellinen Yhdistys</option>
+            <option value="ML.1108">Keski-Pohjanmaan Lintutieteellinen Yhdistys</option>
+            <option value="ML.1109">Pohjois-Pohjanmaan Lintutieteellinen Yhdistys</option>
+            <option value="ML.1110">Kainuun Lintutieteellinen Yhdistys</option>
+            <option value="ML.1111">Kemi-Tornion Lintuharrastajat - Xenus</option>
+            <option value="ML.1112">Lapin Lintutieteellinen Yhdistys</option>
+            <option value="ML.1113">Kuusamon lintukerho</option>
+            <option value="ML.1114">Lohjan Lintutieteellinen Yhdistys - Hakki</option>
+            <option value="ML.1116">Rauman Seudun Lintuharrastajat</option>
+            <option value="ML.1267">Ostrobothnia Australis</option>
 		</select>
 
-		<select id="dropdown2" name="dropdown2">
-			<option value="x">Syksyn vuosi</option>
-			<option value="2022">2022</option>
-			<option value="2021">2021</option>
-			<option value="2020">2020</option>
-		</select>
+		<input type="text" id="field2" name="field2" placeholder="syksyn vuosi">
 
-		<select id="dropdown3" name="dropdown3">
-			<option value="x">Kausi</option>
+		<select id="field3" name="field3">
+			<option value="x" class="empty">valitse kausi</option>
 			<option value="1">syksy</option>
 			<option value="2">talvi</option>
 			<option value="3">kevät</option>
 		</select>
 
-		<button type="button" id="navigate" onclick="navigateToUrl()">Valitse</button>
+		<button type="button" id="wbc_navigate" onclick="navigateToUrl()">Valitse</button>
 	</form>   
 
     <h3>{{ html["society_name"] }}: {{ html["count"] }} laskettua reittiä kaudelta {{ html["season"] }}</h3>    
 
     <div id="data">{{ html["data"]|safe }}</div>
 
-
     <script>
 		function navigateToUrl() {
-            var button = document.getElementById("navigate");
+            var button = document.getElementById("wbc_navigate");
             button.disabled = true;
 
-			var dropdown1 = document.getElementById("dropdown1").value;
-			var dropdown2 = document.getElementById("dropdown2").value;
-			var dropdown3 = document.getElementById("dropdown3").value;
+			var field1 = document.getElementById("field1").value;
+			var field2 = document.getElementById("field2").value;
+			var field3 = document.getElementById("field3").value;
 
-            if ("x" == dropdown1 || "x" == dropdown3 || "x" == dropdown3) {
+            if ("x" == field1 || "" == field2 || "x" == field3) {
                 alert("Valitse arvo kaikkiin kolmeen kenttään")
                 button.disabled = false;
                 return
             }
 
-			var url = "/talvilinnut/laskenta/" + dropdown1 + "/" + dropdown2 + "-" + dropdown3;
+			var url = "/talvilinnut/laskenta/" + field1 + "/" + field2 + "-" + field3;
+            console.log(url)
 			window.location.href = url;
 		}
 	</script>
