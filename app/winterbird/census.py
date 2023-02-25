@@ -116,19 +116,13 @@ def datatable(society_id, year_month):
         # Observations
         census_observations[heading][observation["aggregateBy"]["unit.linkings.taxon.nameFinnish"]] = observation["individualCountSum"]
 
-    print(taxon_order_dict)
-
     # Once the order_dict is filled with all taxa in the data, sort it by taxonomic sort order number. 
     sorted_taxon_order_dict = dict(sorted(taxon_order_dict.items(), key=lambda x: int(x[0])))
-
-    print(sorted_taxon_order_dict)
 
     # Make a sorted list with only the taxon names to be sorted
     sorted_taxon_order_list = []
     for k, v in sorted_taxon_order_dict.items():
         sorted_taxon_order_list.append(v)
-
-    print(sorted_taxon_order_list)
 
     # Create dataframe
     df = pd.DataFrame.from_dict(census_observations, orient='columns')
@@ -136,12 +130,26 @@ def datatable(society_id, year_month):
     # Sort the dataframe based on taxon names 
     df = df.sort_index(key=lambda x: [sorted_taxon_order_list.index(i) for i in x])
 
+    # Add sum column
+    sum_column = df.sum(axis=1)
+    print(sum_column)
+    df['Yht.'] = sum_column
+
+    # Add sum row
+    sum_row = df.sum(axis=0)
+    print(sum_row)
+    new_df = pd.DataFrame(columns=df.columns)
+    new_df = new_df.append(sum_row, ignore_index=True)
+    new_df = new_df.set_index(pd.Index(['Yhteensä']))
+
+    df_with_sums = pd.concat([df, new_df])
+
 #    df = df.transpose()
 
-#    print(df)
+#    print(df_with_sums)
 
-    datatable_html = df.to_html(border=0, na_rep="", float_format='{:,.0f}'.format, escape=False)
-    census_count = df.shape[1] - 1 # Excludes title column
+    datatable_html = df_with_sums.to_html(border=0, na_rep="", float_format='{:,.0f}'.format, escape=False)
+    census_count = df_with_sums.shape[1] - 1 # Excludes title column
 
     return datatable_html, census_count
  
