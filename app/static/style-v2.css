@@ -385,6 +385,41 @@ figure {
     text-decoration: none;
 }
 
+
+.dataframe {
+    border: 1px solid #69bfcd;
+    border-collapse: collapse;
+}
+
+.dataframe th {
+    font-weight: normal;
+    text-align: left;
+    background-color: #bcedf5;
+    vertical-align: top;
+    position: sticky;
+    top: 0;
+}
+
+.dataframe th:first-child {
+    left: 0;
+    z-index: 1;
+}
+
+.dataframe th, .dataframe td {
+    border: 1px solid #69bfcd;
+    padding: 0.2em;
+}
+
+.dataframe td {
+    text-align: right;
+    width: 4em;
+    vertical-align: top;
+    background-color: #fff;
+    overflow: hidden;
+}
+
+
+
 /* Printer */
 
 @media print {

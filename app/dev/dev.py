@@ -1,6 +1,7 @@
 
 #import json
 #import random
+import re
 import atlas.common_atlas as common_atlas
 from helpers import common_helpers
 
@@ -48,21 +49,14 @@ def datatable():
     # &aggregateBy=unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesNameFinnish,gathering.conversions.year,gathering.conversions.month,unit.linkings.taxon.speciesTaxonomicOrder&selected=unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesNameFinnish,gathering.conversions.year,gathering.conversions.month,unit.linkings.taxon.speciesTaxonomicOrder&orderBy=unit.linkings.taxon.speciesTaxonomicOrder&page=1&pageSize=10000&onlyCount=false&access_token=bOzxQvW7EppFyAww5nskaGFxGgIdh4olBF1RmQvd8tAZPbMYsA9bUTaWYu2WFeZR
 
 
-desired_order = [
-    'Reitti',
-    'Päivä',
-    'Erä',
-    'käpytikka',
-    'harakka',
-    'hippiäinen',
-    'mustarastas',
-    'naakka',
-    'närhi',
-    'punatulkku',
-    'sinitiainen',
-    'talitiainen',
-    'töyhtötiainen'
-    ]
+def id_to_qname(id):
+    return id.replace("http://tun.fi/", "")
+
+
+def clean_name(name):
+    second_comma_index = name.index(',', name.index(',') + 1)
+    return name[:second_comma_index]
+
 
 def datatable2():
     '''
@@ -71,8 +65,11 @@ def datatable2():
 
     # Documents
     year_month = "2022-12%2F2023-01"
-    per_page = 100
+    year_month = "2023-02%2F2023-03"
 
+    per_page = 10000
+
+    association_id = "ML.1089" # TLY
     association_id = "ML.1091" # Tringa
 
     # Named places
@@ -93,64 +90,67 @@ def datatable2():
     data_dict = common_helpers.fetch_finbif_api(url)
 #    print(data_dict)
 
-    order_dict = dict()
+    # order_dict contains all taxa in the data, with taxonomic sort order number
+    taxon_order_dict = dict()
 
     census_observations = dict()
     for i, observation in enumerate(data_dict["results"]):
-        document_id = observation["aggregateBy"]["document.documentId"]
+        document_qname = id_to_qname(observation["aggregateBy"]["document.documentId"])
         named_place_id = observation["aggregateBy"]["document.namedPlace.id"].replace("http://tun.fi/", "")
-        named_place_name = named_places_lookup[named_place_id]
+        named_place_name = clean_name(named_places_lookup[named_place_id])
 
         # Fill in sort order that contains all the taxa included in the results
-        order_dict[ int(observation["aggregateBy"]["unit.linkings.taxon.taxonomicOrder"]) ] = observation["aggregateBy"]["unit.linkings.taxon.nameFinnish"]
+        taxon_order_dict[ int(observation["aggregateBy"]["unit.linkings.taxon.taxonomicOrder"]) ] = observation["aggregateBy"]["unit.linkings.taxon.nameFinnish"]
+
+        # Metadata
+        heading = f"{document_qname} {named_place_name} {observation['oldestRecord']}"
+        if heading not in census_observations:
+            census_observations[heading] = dict()
 
         # Create & fill in observations data dict
+        '''
         if document_id not in census_observations:
             census_observations[document_id] = dict()
 
-        # Metadata
-        if document_id not in census_observations[document_id]:
-            census_observations[document_id]["Erä"] = document_id
 
         if named_place_name not in census_observations[document_id]:
             census_observations[document_id]["Reitti"] = named_place_name
 
         if "Päivä" not in census_observations[document_id]:
             census_observations[document_id]["Päivä"] = observation["oldestRecord"]
+        '''
         
         # Observations
-        census_observations[document_id][observation["aggregateBy"]["unit.linkings.taxon.nameFinnish"]] = observation["individualCountSum"]
+        census_observations[heading][observation["aggregateBy"]["unit.linkings.taxon.nameFinnish"]] = observation["individualCountSum"]
 
-#    print(place_taxa)
+    print(taxon_order_dict)
 
-    order_dict[1] = "Reitti"
-    order_dict[2] = "Päivä"
-    order_dict[3] = "Erä"
+    # Once the order_dict is filled with all taxa in the data, sort it by taxonomic sort order number. 
+    sorted_taxon_order_dict = dict(sorted(taxon_order_dict.items(), key=lambda x: int(x[0])))
 
-#    print(order_dict)
+    print(sorted_taxon_order_dict)
 
-    sorted_order_dict = dict(sorted(order_dict.items(), key=lambda x: int(x[0])))
+    # Make a sorted list with only the taxon names to be sorted
+    sorted_taxon_order_list = []
+    for k, v in sorted_taxon_order_dict.items():
+        sorted_taxon_order_list.append(v)
 
-    print(sorted_order_dict)
+    print(sorted_taxon_order_list)
 
-    newsort = []
-    for k, v in sorted_order_dict.items():
-        newsort.append(v)
-
-    print(newsort)
-
-    # Create table
+    # Create dataframe
     df = pd.DataFrame.from_dict(census_observations, orient='columns')
 
-    # Sort
-    df = df.sort_index(key=lambda x: [newsort.index(i) for i in x])
-#    df = df.sort_values(by='index', key=lambda x: x.map(sorted_order_dict)) # error
-#    df = df.sort_index(key=lambda x: x.map(sorted_order_dict)) # does not work
+    # Sort the dataframe based on taxon names 
+    df = df.sort_index(key=lambda x: [sorted_taxon_order_list.index(i) for i in x])
 
-    print(df)
+#    df = df.transpose()
 
+#    print(df)
 
-    return "foo", p
+    datatable_html = df.to_html(border=0, na_rep="", float_format='{:,.0f}'.format)
+    census_count = df.shape[1] - 1 # Excludes title column
+
+    return datatable_html, census_count
  
 
 
