@@ -154,20 +154,20 @@ def datatable(society_id, year_month):
 
 
 def main(society_id_dirty, season_dirty):
-
-    society_id = validate_society_id(society_id_dirty)
-
-    season = validate_season(season_dirty)
-
     html = dict()
 
-    html["society_name"] = get_society_info(society_id)
-    html["season"] = season
-
-    season_year_month = season_to_year_month(season)
-    print(season_year_month)
-
-    html["data"], html["count"] = datatable(society_id, season_year_month)
-
+    if "" == society_id_dirty and "" == season_dirty:
+        html["society_name"] = ""
+        html["season"] = ""
+        html["data"] = ""
+        html["count"] = 0
+    
+    else:
+        society_id = validate_society_id(society_id_dirty)
+        season = validate_season(season_dirty)
+        html["society_name"] = get_society_info(society_id)
+        html["season"] = season
+        season_year_month = season_to_year_month(season)
+        html["data"], html["count"] = datatable(society_id, season_year_month)
 
     return html

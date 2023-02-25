@@ -209,6 +209,8 @@ def winterbird_root(dev_secret = 1):
     return render_template("winterbird.html", html=html)
 
 @app.route("/talvilinnut/laskenta/<string:society_id>/<string:season>")
+@app.route("/talvilinnut/laskenta/")
+@app.route("/talvilinnut/laskenta")
 @cache.cached(timeout=1)
 def winterbird_census(society_id = "", season = ""):
     html = winterbird.census.main(society_id, season)
@@ -256,7 +258,7 @@ def handle_bad_request(e):
 def handle_value_error(e):
     print("Havistin main error handler: ValueError " + str(e), file = sys.stdout)
     print(traceback.format_exc(), sep="\n", file = sys.stdout)
-    return 'Antamasi ruudun numero tai lajin nimi on virheellinen. (ValueError)', 404
+    return 'Antamasi tieto on virheellinen (ruutu, lajin nimi, vuosiluku tms.) (ValueError)', 404
 
 # This should cathc any generic errors raised in the app by 'raise Exception("Your custom error message")'
 @app.errorhandler(Exception)

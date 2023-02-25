@@ -55,11 +55,15 @@
 		</select>
 
 		<button type="button" id="wbc_navigate" onclick="navigateToUrl()">Valitse</button>
-	</form>   
+	</form>
 
-    <h3>{{ html["society_name"] }}: {{ html["count"] }} laskettua reittiä kaudelta {{ html["season"] }}</h3>    
-
-    <div id="data">{{ html["data"]|safe }}</div>
+    {% if html["data"] is not none and html["data"] != "" %}
+        <!--Content-->
+        <h3>{{ html["society_name"] }}: {{ html["count"] }} laskettua reittiä kaudelta {{ html["season"] }}</h3>    
+        <div id="data">{{ html["data"]|safe }}</div>    
+    {% else %}
+        <p>Valitse lintuyhdistys, vuosi (syksyn vuosiluvun mukaan) ja kausi, jolta haluat nähdä talvilintulaskentojen tuloksia.</p>
+    {% endif %}
 
     <script>
 		function navigateToUrl() {
