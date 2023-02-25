@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block head %}
-    <title>Talvilintulaskennat - Havistin (biomi.org)</title>
+    <title>{{ html["society_name"] }} - Talvilintulaskennat - Havistin (biomi.org)</title>
 {% endblock %}
 
 {% block breadcrumb %}
@@ -10,9 +10,9 @@
 
 {% block body %}
 
-    <h1>Talvilintulaskennat</h1>
+    <h1>{{ html["society_name"] }} - talvilintulaskennat</h1>
 
-    <div id="test">{{ html["count"]|safe }} laskettua reittiä</div>    
+    <h3>{{ html["count"]|safe }} laskettua reittiä</h3>    
 
     <div id="data">{{ html["data"]|safe }}</div>
 

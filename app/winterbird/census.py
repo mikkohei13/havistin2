@@ -7,6 +7,20 @@ from helpers import common_helpers
 import pandas as pd
 
 
+def validate_society_id(id):
+    if re.search(r'ML\.\d+', id):
+        return id
+
+    common_helpers.print_log("ERROR: Yhdistyksen id ei kelpaa")
+    raise ValueError
+
+
+def get_society_info(society_id):
+    url = f"https://api.laji.fi/v0/areas/{ society_id }?lang=fi&access_token="
+    data_dict = common_helpers.fetch_finbif_api(url)
+    return data_dict["name"]
+
+
 def id_to_qname_link(id):
     qname = id.replace("http://tun.fi/", "")
     return f"<a href='{id}' target='_blank'>{qname}</a>"
@@ -113,10 +127,15 @@ def datatable(society_id):
  
 
 
-def main(soceity_id_dirty):
+def main(society_id_dirty):
+
+    society_id = validate_society_id(society_id_dirty)
+
     html = dict()
 
-    html["data"], html["count"] = datatable(soceity_id_dirty)
+    html["society_name"] = get_society_info(society_id)
+
+    html["data"], html["count"] = datatable(society_id)
 
 
     return html
