@@ -211,7 +211,7 @@ def winterbird_root(dev_secret = 1):
 @app.route("/talvilinnut/laskenta/<string:society_id>/<string:season>")
 @app.route("/talvilinnut/laskenta/")
 @app.route("/talvilinnut/laskenta")
-@cache.cached(timeout=1)
+@cache.cached(timeout=86400)
 def winterbird_census(society_id = "", season = ""):
     html = winterbird.census.main(society_id, season)
     return render_template("winterbird_census.html", html=html)
@@ -219,10 +219,6 @@ def winterbird_census(society_id = "", season = ""):
 @app.route("/dev/<string:taxon_id_untrusted>")
 @cache.cached(timeout=1)
 def dev_root(taxon_id_untrusted):
-#    html = devcache.get_cached("/dev/" + taxon_id_untrusted)
-#    if not html:
-#        html = dev.dev.main(taxon_id_untrusted)
-#        devcache.set_cached("/dev/" + taxon_id_untrusted, html)
     html = dev.dev.main(taxon_id_untrusted)
     return render_template("dev.html", html=html)
 
@@ -230,7 +226,6 @@ def dev_root(taxon_id_untrusted):
 Debugging help:
 - If getting error "AttributeError: 'function' object has no attribute", you have used same name for function and the file it calls. Use foo_root() or such name instead.
 - 
-
 '''
 
 # Tools
