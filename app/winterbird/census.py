@@ -10,8 +10,14 @@ import pandas as pd
 def validate_society_id(id):
     if re.search(r'ML\.\d+', id):
         return id
-
     common_helpers.print_log("ERROR: Yhdistyksen id ei kelpaa")
+    raise ValueError
+
+
+def validate_season(validate_season):
+    if re.fullmatch(r'\d{4}-\d', validate_season):
+        return validate_season
+    common_helpers.print_log("ERROR: Kauden id ei kelpaa")
     raise ValueError
 
 
@@ -27,18 +33,32 @@ def id_to_qname_link(id):
 
 
 def clean_name(name):
+    return name
     second_comma_index = name.index(',', name.index(',') + 1)
     return name[:second_comma_index]
 
 
-def datatable(society_id):
+def season_to_year_month(season):
+    pieces = season.split("-")
+    year = int(pieces[0])
+    subseason = int(pieces[1])
+
+    print(f"/{subseason}/")
+
+    if 1 == subseason:
+        return f"{ year }-10%2F{ year }-11"
+    if 2 == subseason:
+        return f"{ year }-12%2F{ year + 1 }-01"
+    if 3 == subseason:
+        return f"{ year + 1 }-02%2F{ year + 1 }-03"
+    common_helpers.print_log("ERROR: Laskennan numero ei kelpaa")
+    raise ValueError
+
+
+def datatable(society_id, year_month):
     '''
     1) Get all bird taxa, aggregated by named place and document
     '''
-
-    # Documents
-    year_month = "2022-12%2F2023-01"
-    year_month = "2023-02%2F2023-03"
 
     per_page = 10000
 
@@ -127,15 +147,21 @@ def datatable(society_id):
  
 
 
-def main(society_id_dirty):
+def main(society_id_dirty, season_dirty):
 
     society_id = validate_society_id(society_id_dirty)
+
+    season = validate_season(season_dirty)
 
     html = dict()
 
     html["society_name"] = get_society_info(society_id)
+    html["season"] = season
 
-    html["data"], html["count"] = datatable(society_id)
+    season_year_month = season_to_year_month(season)
+    print(season_year_month)
+
+    html["data"], html["count"] = datatable(society_id, season_year_month)
 
 
     return html
