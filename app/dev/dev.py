@@ -49,8 +49,9 @@ def datatable():
     # &aggregateBy=unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesNameFinnish,gathering.conversions.year,gathering.conversions.month,unit.linkings.taxon.speciesTaxonomicOrder&selected=unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesNameFinnish,gathering.conversions.year,gathering.conversions.month,unit.linkings.taxon.speciesTaxonomicOrder&orderBy=unit.linkings.taxon.speciesTaxonomicOrder&page=1&pageSize=10000&onlyCount=false&access_token=bOzxQvW7EppFyAww5nskaGFxGgIdh4olBF1RmQvd8tAZPbMYsA9bUTaWYu2WFeZR
 
 
-def id_to_qname(id):
-    return id.replace("http://tun.fi/", "")
+def id_to_qname_link(id):
+    qname = id.replace("http://tun.fi/", "")
+    return f"<a href='{id}' target='_blank'>{qname}</a>"
 
 
 def clean_name(name):
@@ -95,7 +96,7 @@ def datatable2():
 
     census_observations = dict()
     for i, observation in enumerate(data_dict["results"]):
-        document_qname = id_to_qname(observation["aggregateBy"]["document.documentId"])
+        document_qname_link = id_to_qname_link(observation["aggregateBy"]["document.documentId"])
         named_place_id = observation["aggregateBy"]["document.namedPlace.id"].replace("http://tun.fi/", "")
         named_place_name = clean_name(named_places_lookup[named_place_id])
 
@@ -103,7 +104,7 @@ def datatable2():
         taxon_order_dict[ int(observation["aggregateBy"]["unit.linkings.taxon.taxonomicOrder"]) ] = observation["aggregateBy"]["unit.linkings.taxon.nameFinnish"]
 
         # Metadata
-        heading = f"{document_qname} {named_place_name} {observation['oldestRecord']}"
+        heading = f"{named_place_name} {observation['oldestRecord']} {document_qname_link}"
         if heading not in census_observations:
             census_observations[heading] = dict()
 
@@ -147,7 +148,7 @@ def datatable2():
 
 #    print(df)
 
-    datatable_html = df.to_html(border=0, na_rep="", float_format='{:,.0f}'.format)
+    datatable_html = df.to_html(border=0, na_rep="", float_format='{:,.0f}'.format, escape=False)
     census_count = df.shape[1] - 1 # Excludes title column
 
     return datatable_html, census_count
