@@ -1,8 +1,8 @@
 
 
 import re
-import atlas.common_atlas as common_atlas
 from helpers import common_helpers
+import datetime
 
 import pandas as pd
 
@@ -17,9 +17,24 @@ def validate_society_id(id):
     raise ValueError
 
 
-def validate_season(validate_season):
-    if re.fullmatch(r'\d{4}-\d', validate_season):
-        return validate_season
+def validate_season(season):
+    # By giving special keyword "nyt" the season is set automatically
+    if "nyt" == season:
+        now = datetime.datetime.now()
+        month_now = now.month
+        year_now = now.year
+        if 10 == month_now or 11 == month_now:
+            return f"{ year_now }-1"
+        if 12 == month_now:
+            return f"{ year_now }-2"
+        if 1 == month_now:
+            return f"{ year_now - 1 }-2"
+        else:
+            return f"{ year_now - 1 }-3"
+
+    # Otherwise validate season given by user
+    if re.fullmatch(r'\d{4}-\d', season):
+        return season
     common_helpers.print_log("ERROR: Kauden id ei kelpaa")
     raise ValueError
 
