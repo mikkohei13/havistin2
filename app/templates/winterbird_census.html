@@ -10,11 +10,56 @@
 
 {% block body %}
 
-    <h1>{{ html["society_name"] }} - talvilintulaskennat</h1>
+    <h1>Talvilintulaskennat</h1>
 
-    <h3>{{ html["count"] }} laskettua reittiä kaudelta {{ html["season"] }}</h3>    
+		<select id="dropdown1" name="dropdown1">
+			<option value="x">Yhdistys</option>
+			<option value="ML.1093">Tringa</option>
+			<option value="ML.1093">TLY</option>
+			<option value="ML.1093">Porvoo</option>
+		</select>
+
+		<select id="dropdown2" name="dropdown2">
+			<option value="x">Syksyn vuosi</option>
+			<option value="2022">2022</option>
+			<option value="2021">2021</option>
+			<option value="2020">2020</option>
+		</select>
+
+		<select id="dropdown3" name="dropdown3">
+			<option value="x">Kausi</option>
+			<option value="1">syksy</option>
+			<option value="2">talvi</option>
+			<option value="3">kevät</option>
+		</select>
+
+		<button type="button" id="navigate" onclick="navigateToUrl()">Valitse</button>
+	</form>   
+
+    <h3>{{ html["society_name"] }}: {{ html["count"] }} laskettua reittiä kaudelta {{ html["season"] }}</h3>    
 
     <div id="data">{{ html["data"]|safe }}</div>
+
+
+    <script>
+		function navigateToUrl() {
+            var button = document.getElementById("navigate");
+            button.disabled = true;
+
+			var dropdown1 = document.getElementById("dropdown1").value;
+			var dropdown2 = document.getElementById("dropdown2").value;
+			var dropdown3 = document.getElementById("dropdown3").value;
+
+            if ("x" == dropdown1 || "x" == dropdown3 || "x" == dropdown3) {
+                alert("Valitse arvo kaikkiin kolmeen kenttään")
+                button.disabled = false;
+                return
+            }
+
+			var url = "/talvilinnut/laskenta/" + dropdown1 + "/" + dropdown2 + "-" + dropdown3;
+			window.location.href = url;
+		}
+	</script>
 
 
 {% endblock %}
