@@ -29,7 +29,7 @@ def valid_square_id(square_id):
     if match is not None:
         return square_id
     else:
-        common_helpers.print_log("ERROR: Coordinates invalid: " + square_id)
+        common_helpers.print_log("ERROR: Coordinates invalid")
         raise ValueError
 
 

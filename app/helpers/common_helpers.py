@@ -1,8 +1,6 @@
 import requests
 import json
 import sys
-import matplotlib.cm as cm
-import numpy as np
 
 import app_secrets
 
@@ -101,36 +99,8 @@ def fetch_api(api_url, log = False):
     return dataDict
 
 
-def color_viridis_capped(value):
-    value = value["list_count"]
-    cap = 100
-
-    # Cap value
-    if value > cap:
-        value = cap
-    
-    # Normalize value to range [0, 1]
-    normalized_value = value / cap
-
-    # Get RGB color value along viridis color scale
-    #  viridis, inferno, plasma, magma, jet (spectrum), cool, hot
-    # Suffix "_r" reverts the scale
-    color = cm.viridis_r(normalized_value)
-
-    r, g, b = tuple(np.array(color[:3]) * 255)
-    color = f"rgba({round(r,0)}, {round(g,0)}, {round(b,0)}, 0.9)"
-
-    return color
-
-
-def text_completelists(value, square_id, square_data):
-    if 1 == value["list_count"]:
-        text = f"{square_id} {square_data['kunta']}, {square_data['nimi']}:<br>yksi täydellinen lista:<br>{ value['text'] }"
-    else:
-        text = f"{square_id} {square_data['kunta']}, {square_data['nimi']}:<br>{ value['list_count'] } täydellistä listaa:<br>{ value['text'] }"
-    return text
-
-
+# Expects data as:
+# { "668:338": 0, "669:338": 10, "670:338": 20  }
 def squares_with_data(square_data, colorfunction, textfunction):
     with open("data/atlas-grids.json") as f:
         squares = json.load(f)
