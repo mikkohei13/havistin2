@@ -79,7 +79,7 @@ def root():
 
 @app.route("/atlas")
 @app.route("/atlas/")
-@cache.cached(timeout=3600)
+@cache.cached(timeout=1)
 def atlas_root():
     html = atlas.atlas.main()
     return render_template("atlas.html", html=html)
@@ -155,19 +155,19 @@ def atlas_observers():
 
 @app.route("/atlas/listat")
 @app.route("/atlas/listat/")
-@cache.cached(timeout=1) # 86400
+@cache.cached(timeout=3600)
 def atlas_completelists():
     html = atlas.completelists.main()
     return render_template("atlas_completelists.html", html=html)
 
 @app.route("/atlas/luokka/<string:class_untrusted>")
-@cache.cached(timeout=1) # 86400
+@cache.cached(timeout=3600)
 def atlas_summap(class_untrusted):
     html = atlas.summap.main(class_untrusted)
     return render_template("atlas_summap.html", html=html)
 
 @app.route("/taxa/<string:taxon_id_untrusted>")
-@cache.cached(timeout=3600)
+@cache.cached(timeout=86400)
 def taxa_specieslist(taxon_id_untrusted):
     html = taxa.specieslist.main(taxon_id_untrusted)
     return render_template("taxa_specieslist.html", html=html)

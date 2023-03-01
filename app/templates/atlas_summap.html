@@ -15,9 +15,11 @@
 
     {% if "tyydyttävä-selvitysaste" == html["target_class_name"] %}
         <h1>Ruutujen tyydyttävä selvitysasteraja</h1>
+        <p id='rownavi'><span>Näytä:</span> <a href='./satunnaishavaintoja'>Satunnaishavaintoja</a> | <a href='./välttävä'>Välttävä</a> | <a href='./tyydyttävä'>Tyydyttävä</a> | <a href='./hyvä'>Hyvä</a> | <a href='./erinomainen'>Erinomainen</a> | <a href='./tyydyttävä-selvitysaste'>Tyydyttävän raja-arvot</a></p>
         <p>Kartta näyttää pesimävarmuussumman, joka vaaditaan tyydyttävän selvitysasteen saavuttamiseen.</p>
     {% else %}
         <h1>Ruudut suhteessa selvitysasteeseen {{ html["target_class_name"] }}</h1>
+        <p id='rownavi'><span>Näytä:</span> <a href='./satunnaishavaintoja'>Satunnaishavaintoja</a> | <a href='./välttävä'>Välttävä</a> | <a href='./tyydyttävä'>Tyydyttävä</a> | <a href='./hyvä'>Hyvä</a> | <a href='./erinomainen'>Erinomainen</a> | <a href='./tyydyttävä-selvitysaste'>Tyydyttävän raja-arvot</a></p>
         <p>Ruuduista {{ html["count_squares_reached"] }} ({{ html["proportion_squares_reached"] }} %) on saavuttanut selvitysasteen {{ html["target_class_name"] }}.</p>
     {% endif %}
 
