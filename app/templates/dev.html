@@ -1,18 +1,15 @@
-{% extends "base.html" %}
-
-    {% block head %}
-    <title>Luontotilastoja (biomi.org)</title>
-    {% endblock %}
-
-    {% block breadcrumb %}
-    <a href="../../../">Lintuatlas</a> &raquo; Kartta
-    {% endblock %}
-
-    {% block body %}
-
-    <div id="test">{{ html["count"]|safe }} laskettua reittiä</div>    
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PWA</title>
+    <link rel="icon" type="image/x-icon" href="/static/app/icon-192.png">
+    <link rel="manifest" href="/static/app/manifest.json">
+</head>
+<body>
     <div id="data">{{ html["data"]|safe }}</div>
-
-
-    {% endblock %}
+    <button id="recordBtn">Record 5 seconds</button>
+    <script src="/static/app/main.js"></script>
+</body>
+</html>
