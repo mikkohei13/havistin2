@@ -1,41 +1,19 @@
-const recordBtn = document.getElementById('recordBtn');
-const saveBtn = document.createElement('button');
-let audioBlob;
 
-recordBtn.addEventListener('click', async () => {
+const globalState = {
+  latestLatitude: null,
+  latestLongitude: null,
+  audioBlob: null
+};
+
+async function saveAudio(saveBtn) {
   try {
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    if (globalState.audioBlob === null) {
+      throw new Error('No audio data to save');
+    }
 
-    const mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm; codecs=pcm' });
-    const audioChunks = [];
-
-    mediaRecorder.addEventListener('dataavailable', (event) => {
-      audioChunks.push(event.data);
-    });
-
-    mediaRecorder.start();
-
-    setTimeout(() => {
-      mediaRecorder.stop();
-    }, 5000);
-
-    mediaRecorder.addEventListener('stop', async () => {
-      const webmBlob = new Blob(audioChunks, { type: 'audio/webm' });
-      audioBlob = await convertWebmToWav(webmBlob);
-
-      saveBtn.textContent = 'Save';
-      recordBtn.after(saveBtn);
-      saveBtn.addEventListener('click', saveAudio, { once: true });
-    });
-  } catch (err) {
-    console.error('Error recording audio:', err);
-  }
-});
-
-async function saveAudio() {
-  try {
     const datetime = new Date().toISOString().replace(/[-:.]/g, '');
-    const fileName = `Recording_${datetime}.wav`;
+    const fileName = `Recording_${datetime}.webm`;
+    const jsonFileName = `Recording_${datetime}.json`;
 
     const fileHandle = await window.showSaveFilePicker({
       suggestedName: fileName,
@@ -43,88 +21,143 @@ async function saveAudio() {
         {
           description: 'Audio files',
           accept: {
-            'audio/*': ['.wav'],
+            'audio/*': ['.webm'],
           },
         },
       ],
     });
 
     const writableStream = await fileHandle.createWritable();
-    await writableStream.write(audioBlob);
+    const arrayBuffer = await globalState.audioBlob.arrayBuffer();
+    const uint8Array = new Uint8Array(arrayBuffer);
+    await writableStream.write({ type: 'write', data: uint8Array });
     await writableStream.close();
 
-    saveBtn.remove();
+    // Save the JSON file only if coordinates are available
+    if (globalState.latestLatitude !== null && globalState.latestLongitude !== null) {
+      const jsonFileHandle = await window.showSaveFilePicker({
+        suggestedName: jsonFileName,
+        types: [
+          {
+            description: 'JSON files',
+            accept: {
+              'application/json': ['.json'],
+            },
+          },
+        ],
+      });
+
+      const jsonWritableStream = await jsonFileHandle.createWritable();
+      const coordinates = {
+        latitude: globalState.latestLatitude,
+        longitude: globalState.latestLongitude,
+      };
+      const jsonUint8Array = new Uint8Array(new TextEncoder().encode(JSON.stringify(coordinates)));
+      await jsonWritableStream.write({ type: 'write', data: jsonUint8Array });
+      await jsonWritableStream.close();
+    }
   } catch (err) {
-    console.error('Error saving audio:', err);
-  }
+      console.error('Error saving audio and JSON:', err);
+    } finally {
+      saveBtn.remove();
+    }
 }
 
-async function convertWebmToWav(webmBlob) {
-  return new Promise(async (resolve) => {
-    const arrayBuffer = await webmBlob.arrayBuffer();
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
 
-    const numberOfChannels = audioBuffer.numberOfChannels;
-    const sampleRate = audioBuffer.sampleRate;
-    const format = {
-      numberOfChannels: numberOfChannels,
-      sampleRate: sampleRate,
-    };
 
-    const wavData = audioBufferToWav(audioBuffer, format);
-    const wavBlob = new Blob([wavData], { type: 'audio/wav' });
-    resolve(wavBlob);
+function startTracking() {
+  const gpsStatus = document.getElementById('gpsStatus');
+
+  return navigator.geolocation.watchPosition(
+    position => {
+      globalState.latestLatitude = position.coords.latitude;
+      globalState.latestLongitude = position.coords.longitude;
+      gpsStatus.textContent = 'GPS fix acquired';
+    },
+    error => {
+      if (error.code === error.TIMEOUT) {
+        gpsStatus.textContent = 'Waiting for GPS fix...';
+      } else {
+        console.error('Error:', error);
+        gpsStatus.textContent = `GPS error: ${error.message}`;
+      }
+    },
+    {
+      enableHighAccuracy: true,
+      timeout: 5000,
+      maximumAge: 0
+    }
+  );
+}
+
+function getCoords() {
+  // Do something with globalState.latestLatitude and globalState.latestLongitude
+  console.log('Function Latitude:', globalState.latestLatitude);
+  console.log('Function Longitude:', globalState.latestLongitude);
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+
+  console.log("version 0.23")
+
+  const recordBtn = document.getElementById('recordBtn');
+  const saveBtn = document.createElement('button');
+  const recordStatus = document.getElementById('recordStatus');
+
+  const gpsButton = document.getElementById('gpsButton');
+  const gpsStatus = document.getElementById('gpsStatus');
+
+  let watchID;
+  let isTracking = false;
+
+  recordBtn.addEventListener('click', async () => {
+      try {
+        recordStatus.textContent = 'recording on';
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    
+        const mediaRecorder = new MediaRecorder(stream);
+        const audioChunks = [];
+    
+        mediaRecorder.addEventListener('dataavailable', (event) => {
+          audioChunks.push(event.data);
+        });
+    
+        mediaRecorder.start();
+    
+        setTimeout(() => {
+          mediaRecorder.stop();
+        }, 5000);
+    
+        mediaRecorder.addEventListener('stop', async () => {
+          recordStatus.textContent = '-';
+          globalState.audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+    
+          saveBtn.textContent = 'Save';
+          recordBtn.after(saveBtn);
+          saveBtn.addEventListener('click', () => saveAudio(saveBtn), { once: true });
+        });
+      } catch (err) {
+        console.error('Error recording audio:', err);
+      }
+    });
+        
+
+  gpsButton.addEventListener('click', () => {
+      if (!isTracking) {
+          if ('geolocation' in navigator) {
+              watchID = startTracking();
+              gpsButton.textContent = 'Stop GPS';
+              gpsStatus.textContent = 'GPS on';
+              isTracking = true;
+          } else {
+              alert('Geolocation is not supported by your browser.');
+          }
+      } else {
+          navigator.geolocation.clearWatch(watchID);
+          gpsButton.textContent = 'Start GPS';
+          gpsStatus.textContent = 'GPS off';
+          isTracking = false;
+      }
   });
-}
-
-function audioBufferToWav(buffer, format) {
-  const data = encodeWav(buffer, format);
-  return new Uint8Array(data).buffer;
-}
-
-function encodeWav(buffer, format) {
-  const numberOfChannels = format.numberOfChannels;
-  const sampleRate = format.sampleRate;
-  const bitDepth = 16;
-
-  const byteRate = (sampleRate * numberOfChannels * bitDepth) / 8;
-  const dataSize = buffer.getChannelData(0).length * numberOfChannels * (bitDepth / 8);
-  const bufferLength = 44 + dataSize;
-
-  const dataView = new DataView(new ArrayBuffer(bufferLength));
-
-  writeString(dataView, 0, 'RIFF');
-  dataView.setUint32(4, 36 + dataSize, true);
-    writeString(dataView, 8, 'WAVE');
-    writeString(dataView, 12, 'fmt ');
-    dataView.setUint32(16, 16, true);
-    dataView.setUint16(20, 1, true);
-    dataView.setUint16(22, numberOfChannels, true);
-    dataView.setUint32(24, sampleRate, true);
-    dataView.setUint32(28, byteRate, true);
-    dataView.setUint16(32, numberOfChannels * (bitDepth / 8), true);
-    dataView.setUint16(34, bitDepth, true);
-    writeString(dataView, 36, 'data');
-    dataView.setUint32(40, dataSize, true);
-
-    const channelDataArrays = [];
-    for (let channel = 0; channel < numberOfChannels; channel++) {
-        channelDataArrays.push(new Int16Array(buffer.getChannelData(channel).map(sample => sample * 32767)));
-    }
-
-    for (let i = 0; i < channelDataArrays[0].length; i++) {
-        for (let channel = 0; channel < numberOfChannels; channel++) {
-        dataView.setInt16(44 + (i * numberOfChannels + channel) * 2, channelDataArrays[channel][i], true);
-        }
-    }
-
-    return dataView;
-    }
-
-    function writeString(dataView, offset, string) {
-    for (let i = 0; i < string.length; i++) {
-        dataView.setUint8(offset + i, string.charCodeAt(i));
-    }
-    }
-  
+});

@@ -8,8 +8,19 @@
     <link rel="manifest" href="/static/app/manifest.json">
 </head>
 <body>
-    <div id="data">{{ html["data"]|safe }}</div>
-    <button id="recordBtn">Record 5 seconds</button>
-    <script src="/static/app/main.js"></script>
+    <div id="data">PWA</div>
+
+    <div>
+        <button id="recordBtn">Record 5 seconds</button>
+        <p id="recordStatus">-</p>
+    </div>
+
+    <div>
+        <button id="gpsButton">Start GPS</button>
+        <p id="gpsStatus">GPS off</p>
+    </div>
+
+
+    <script src="/tools/obs-recorder/main.js"></script>
 </body>
 </html>
