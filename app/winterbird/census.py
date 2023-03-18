@@ -97,6 +97,11 @@ def datatable(society_id, year_month):
     for i, observation in enumerate(data_dict["results"]):
         document_qname_link = id_to_qname_link(observation["aggregateBy"]["document.documentId"])
         named_place_id = observation["aggregateBy"]["document.namedPlace.id"].replace("http://tun.fi/", "")
+
+        # Skip routes which cannot be found - routes that are on the area of society A, but have been assigned incorrectly for society B
+        if named_place_id not in named_places_lookup:
+            continue
+
         named_place_name = clean_name(named_places_lookup[named_place_id])
 
         # Fill in sort order that contains all the taxa included in the results
