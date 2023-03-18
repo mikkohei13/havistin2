@@ -222,22 +222,22 @@ def main(messaging_on):
     # 10 min
     secs = 600
     change = obs_indexed[0][key] - obs_indexed[secs][key]
-    html = evaluate_change(change, 2, key, secs, obs_indexed[0][key]) + html
+    html = evaluate_change(change, 2.5, key, secs, obs_indexed[0][key]) + html
 
     # 1 hour
     secs = 3600
     change = obs_indexed[0][key] - obs_indexed[secs][key]
-    html = evaluate_change(change, 4, key, secs, obs_indexed[0][key]) + html
+    html = evaluate_change(change, 5, key, secs, obs_indexed[0][key]) + html
 
     # 1,5 hours
     secs = 5400
     change = obs_indexed[0][key] - obs_indexed[secs][key]
-    html = evaluate_change(change, 6, key, secs, obs_indexed[0][key]) + html
+    html = evaluate_change(change, 7, key, secs, obs_indexed[0][key]) + html
 
     # DEBUG temp in production
-    secs = 5400
-    change = obs_indexed[0][key] - obs_indexed[secs][key]
-    html = evaluate_change(change, 2, key, secs, obs_indexed[0][key]) + html
+#    secs = 5400
+#    change = obs_indexed[0][key] - obs_indexed[secs][key]
+#    html = evaluate_change(change, 2, key, secs, obs_indexed[0][key]) + html
 
     # Wind
     key = "WindSpeedMS"
@@ -261,11 +261,11 @@ def main(messaging_on):
     # 20 min
     secs = 1200
     change = obs_indexed[0][key] - obs_indexed[secs][key]
-    html = evaluate_change(change, 4, key, secs, obs_indexed[0][key]) + html
+    html = evaluate_change(change, 6, key, secs, obs_indexed[0][key]) + html
     # 1.5 h
     secs = 5400
     change = obs_indexed[0][key] - obs_indexed[secs][key]
-    html = evaluate_change(change, 6, key, secs, obs_indexed[0][key]) + html
+    html = evaluate_change(change, 7, key, secs, obs_indexed[0][key]) + html
 
     # Snow depth
     key = "SnowDepth"
