@@ -266,10 +266,12 @@ def handle_value_error(e):
 @app.errorhandler(Exception)
 def handle_exception(e):
     # TODO: What tries to fetch this url? Something in Docker?
-    if "http://wpad.home/wpad.dat" == request.url:
-        print(f"Havistin generic Exception for specific case url {request.url}: {str(e)}", file = sys.stdout)
+    if "wpad.dat" in request.url:
+#        print(f"Havistin generic Exception for specific case url {request.url}: {str(e)}", file = sys.stdout)
         return "404", 404
-    else:
-        print(f"Havistin generic Exception for url {request.url}: {str(e)}", file = sys.stdout)
-        print(traceback.format_exc(), sep="\n", file = sys.stdout)
-        return "Lajitietokeskuksen rajapinta ei juuri nyt toimi, tai tässä palvelussa on jokin vika. Ole hyvä ja yritä myöhemmin uudelleen. (Exception)", 500
+    if "favicon.ico" in request.url:
+#        print(f"Havistin generic Exception for specific case url {request.url}: {str(e)}", file = sys.stdout)
+        return "404", 404
+    print(f"Havistin generic Exception for url {request.url}: {str(e)}", file = sys.stdout)
+    print(traceback.format_exc(), sep="\n", file = sys.stdout)
+    return "Lajitietokeskuksen rajapinta ei juuri nyt toimi, tai tässä palvelussa on jokin vika. Ole hyvä ja yritä myöhemmin uudelleen. (Exception)", 500
