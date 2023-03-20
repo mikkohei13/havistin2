@@ -276,6 +276,23 @@ h2, h3, h3 {
     max-height: 600px;
 }
 
+.proportion_bar {
+    display: block;
+    background-color: #00657e;
+    height: 10px;
+}
+
+.capped {
+    background-color: #000 !important;
+}
+
+.positive {
+    background-color: #E3578B !important;
+}
+
+.negative {
+    background-color: #00a0ab !important;
+}
 
 /* Generic tables */
 /* https://dev.to/dcodeyt/creating-beautiful-html-tables-with-css-428l */
