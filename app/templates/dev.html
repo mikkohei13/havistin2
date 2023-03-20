@@ -3,24 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PWA</title>
-    <link rel="icon" type="image/x-icon" href="/static/app/icon-192.png">
-    <link rel="manifest" href="/static/app/manifest.json">
+    <title>Dev</title>
 </head>
 <body>
-    <div id="data">PWA</div>
+    <div id="data">Dev</div>
 
-    <div>
-        <button id="recordBtn">Record 5 seconds</button>
-        <p id="recordStatus">-</p>
-    </div>
+    {{ html["data"]|safe }}
 
-    <div>
-        <button id="gpsButton">Start GPS</button>
-        <p id="gpsStatus">GPS off</p>
-    </div>
-
-
-    <script src="/tools/obs-recorder/main.js"></script>
 </body>
 </html>

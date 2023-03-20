@@ -120,6 +120,8 @@ Build image from Dockerfile:
 
 ## Nice / Ideas
 
+- Last week bird abundance vs. week before
+- Animated species distribution over time
 - Refactor templating & separate html from code
 - Lajit yleisyysjärjestyksessä, tai ainakin rarimmat myös
 - Reloading with inotify, see https://docs.gunicorn.org/en/stable/settings.html
