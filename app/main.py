@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request
+from flask import Flask, render_template, redirect, request, make_response
 #from werkzeug.exceptions import HTTPException
 from flask_caching import Cache
 
@@ -35,7 +35,7 @@ import dev.dev
 import app_secrets
 #import dev.cache as devcache
 
-#import app_secrets
+import requests
 
 '''
 # Filesystem cache (works inconsistently on services that have ephemeral storage)
@@ -101,6 +101,35 @@ def squareform_redirect(square_id_untrusted, show_untrusted):
 def squareform(square_id_untrusted, show_untrusted):
     html = atlas.squareform.main(square_id_untrusted, show_untrusted)
     return render_template("squareform.html", html=html)
+
+
+# TODO: Temporary test for making PDF's, remove of move to separate file
+@app.route("/atlas/ruutupdf/<string:square_id_untrusted>/<string:show_untrusted>")
+@cache.cached(timeout=1)
+def squarepdf(square_id_untrusted, show_untrusted):
+    html = atlas.squareform.main(square_id_untrusted, show_untrusted)
+    html_page = render_template("squarepdf.html", html=html)
+#    return html_page
+
+    print(html_page)
+
+    url = "https://api.laji.fi/v0/html-to-pdf?access_token=" + app_secrets.finbif_api_token
+    data = html_page
+    headers = {
+        "Content-Type": "text/xml",
+        "Accept": "application/pdf"
+    }
+
+    response = requests.post(url, data=data, headers=headers)
+    print("Status Code:", response.status_code)
+    print("Headers:", response.headers)
+    print("Text:", response.text)
+
+    res = make_response(response.content)
+    res.headers.set('Content-Type', 'application/pdf')
+    res.headers.set('Content-Disposition', 'inline; filename=ruutulomake.pdf')
+    return res
+
 
 @app.route("/atlas/puutelista/<string:square_id_untrusted>")
 @cache.cached(timeout=86400)
@@ -210,7 +239,7 @@ def weather_change(messaging_on = 0):
 @app.route("/talvilinnut/<int:dev_secret>")
 @app.route("/talvilinnut/")
 @app.route("/talvilinnut")
-@cache.cached(timeout=86400)
+@cache.cached(timeout=2592000) # 2592000 = 30 pv
 def winterbird_root(dev_secret = 1):
     html = winterbird.winterbird.main(dev_secret)
     return render_template("winterbird.html", html=html)

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <title>{{ html["title"] }} - Lintuatlas (biomi.org)</title>
+{% endblock %}
+
+{% block body %}
+
+    <div id="heading">
+        <h1>{{ html["heading"]|safe }}</h1>
+    </div>
+
+    <div id="info_top">
+        <div id="info">
+            {{ html["info_top"]|safe }}
+        </div>
+        <div id="fillable">
+            <span id="paikka">Paikka:</span>
+            <span id="pvm">Pvm:</span>
+            <span id="klo">Klo alku & loppu:</span>
+            <span id="havainnoijat">Havainnoijat:</span>
+            <span id="taydellinen"><strong>[ ]</strong> Täydellinen lista</span>
+            <span id="tallennettu">Tallennettu: <strong>[ ]</strong> Vihko <strong>[ ]</strong> Tiira <strong>[ ]</strong> iNaturalist</span>
+        </div>
+    </div>
+
+    <div id="species_table">
+        {{ html["species"]|safe }}
+    </div>
+
+    <div id="info_bottom">
+        <p>
+            {{ html["info_bottom"]|safe }}
+            <strong>Lihavoituna</strong> lajit, joista on tehty eniten todennäköisiä tai varmistettuja pesintöjä viime aikoina. 3. sarake = pesimävarmuusluokka 3. atlaksessa: V=varma, T=todennäköinen, M=mahdollinen, e=epätodennäköinen. 4. sarake: korkein pesimävarmuusindeksi 4. atlaksessa. Havainnot on tallennettava sähköiseksi itse.
+        </p>
+    </div>
+
+{% endblock %}
+
