@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+    {% block head %}
+    <title>Linnut: tämä viikko verrattuna viime vuoteen (biomi.org)</title>
+    {% endblock %}
+
+    {% block breadcrumb %}
+        <a href='/'>Havistin</a> &raquo; <a href='/taxa'>Lajitietoa</a> &raquo; Vuosivertailu
+    {% endblock %}
+
+    {% block body %} 
+
+    <h1>Tämän viikon linnut vertailtuna viime vuoden samaan viikkoon</h1>
+    <p>Koko Suomen lintuhavaintojen määrä pois lukien rengastustietokanta. Suhdeluku on normalisoitu kokonaishavaintomäärään.</p>
+    
+    {{ html["data"]|safe }}
+
+    {% endblock %}

@@ -25,9 +25,11 @@ import taxa.specieslist
 import taxa.species
 import taxa.new
 import taxa.common_photos
+import taxa.compare_years
 
 import winterbird.winterbird
 import winterbird.census
+
 
 import weather.change
 
@@ -229,6 +231,12 @@ def taxa_new(page_name_untrusted):
 def taxa_photos_data(taxon_id_untrusted):
     html = taxa.common_photos.main(taxon_id_untrusted)
     return render_template("taxa_photos_data.html", html=html)
+
+@app.route("/taxa/compare_years/<string:taxon_id_untrusted>")
+@cache.cached(timeout=1)
+def taxa_compare_years(taxon_id_untrusted):
+    html = taxa.compare_years.main(taxon_id_untrusted)
+    return render_template("taxa_compare_years.html", html=html)
 
 @app.route("/weather/change/<int:messaging_on>")
 @app.route("/weather/change")
