@@ -261,6 +261,11 @@ h2, h3, h3 {
     border-radius: 10px; 
 }
 
+#largemap.narrowmap {
+    width: 500px;
+    margin: 1em 0;
+}
+
 #speciesmap {
     width: 300px;
     height: 430px;
@@ -269,6 +274,9 @@ h2, h3, h3 {
     float: right;
 }
 
+#counter {
+    font-weight: bold;
+}
 
 #cumulative_chart, #daily_chart {
     max-width: 1000px;

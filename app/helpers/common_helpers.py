@@ -1,6 +1,7 @@
 import requests
 import json
 import sys
+import re
 
 import app_secrets
 
@@ -114,3 +115,33 @@ def squares_with_data(square_data, colorfunction, textfunction):
         coordinates = coordinates + f"{{ coords: [[{squares[square_id]['sw-n']},{squares[square_id]['sw-e']}], [{squares[square_id]['nw-n']},{squares[square_id]['nw-e']}], [{squares[square_id]['ne-n']},{squares[square_id]['ne-e']}], [{squares[square_id]['se-n']},{squares[square_id]['se-e']}]], color: '{color}', text: '{text}' }},\n"
     
     return coordinates
+
+
+def valid_qname(qname):
+    pattern = r'[A-Z]+\.[A-Z0-9]+'
+    match = re.fullmatch(pattern, qname)
+
+    if match is not None:
+        return qname
+    else:
+        print_log("ERROR: Qname invalid: " + qname)
+        raise ValueError
+
+
+def taxon_data(taxon_qname):
+
+    url = f"https://api.laji.fi/v0/taxa/{ taxon_qname }?lang=fi&langFallback=true&maxLevel=0&includeHidden=false&includeMedia=false&includeDescriptions=false&includeRedListEvaluations=false&sortOrder=taxonomic&access_token="
+    data = fetch_finbif_api(url)
+
+    taxon_data = dict()
+    taxon_data['sci_name'] = data['scientificName']
+    taxon_data['fi_name'] = data['vernacularName']
+    taxon_data['is_cursive'] = data['cursiveName']
+
+    if data['cursiveName']:
+        taxon_data['display_name'] = f"{ data['vernacularName'].capitalize() } (<em>{ data['scientificName'] }</em>)"
+    else:
+        taxon_data['display_name'] = f"{ data['vernacularName'].capitalize() } ({ data['scientificName'] })"
+
+    return taxon_data
+

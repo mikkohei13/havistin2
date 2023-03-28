@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
     {% block head %}
-    <title>Lintuatlaksen tilastoja (biomi.org)</title>
+    <title>{{ html["taxon_data"]["display_name"]|safe }}, vuodenkierto - Havistin (biomi.org)</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
     crossorigin=""/>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
@@ -12,83 +12,18 @@
     {% endblock %}
 
     {% block body %} 
+
+    <h1>{{ html["taxon_data"]["display_name"]|safe }}</h1>
     
-    <h2 id="counter">Day: 1</h2>
-    <div id="largemap"></div>
+    <p id="counter">1. tammikuuta</p>
+    
+    <div id="largemap" class="narrowmap"></div>
 
     <script>
         const events = [
         // Add your events here in the following format:
         // { day: 1, lat: 40.7128, lng: -74.0060 }
             {{ html["observations_string"]|safe }}
-            /*
-            {day: 1, lat: 60.957286, lng: 21.440474},
-            {day: 2, lat: 62.222728, lng: 29.784974},
-            {day: 3, lat: 62.039524, lng: 29.959424},
-            {day: 4, lat: 61.132799, lng: 21.562649},
-            {day: 5, lat: 60.03269, lng: 20.622066},
-            {day: 6, lat: 61.52223, lng: 24.01284},
-            {day: 7, lat: 65.120196, lng: 25.338563},
-            {day: 8, lat: 60.694288, lng: 21.471768},
-            {day: 9, lat: 60.440007, lng: 22.374602},
-            {day: 10, lat: 60.365375, lng: 26.543892},
-            {day: 11, lat: 60.014935, lng: 20.265732},
-            {day: 12, lat: 60.414652, lng: 21.09322},
-            {day: 13, lat: 62.898445, lng: 21.954596},
-            {day: 14, lat: 60.170408, lng: 24.925127},
-            {day: 15, lat: 60.043388, lng: 24.034423},
-            {day: 16, lat: 60.308882, lng: 20.749549},
-            {day: 17, lat: 62.210212, lng: 25.749804},
-            {day: 18, lat: 60.427936, lng: 22.200522},
-            {day: 19, lat: 60.398624, lng: 23.095195},
-            {day: 20, lat: 60.160822, lng: 24.38512},
-            {day: 21, lat: 60.951002, lng: 23.581804},
-            {day: 22, lat: 62.214484, lng: 30.168904},
-            {day: 23, lat: 62.960679, lng: 25.518443},
-            {day: 24, lat: 66.643869, lng: 26.205056},
-            {day: 25, lat: 60.121888, lng: 20.604747},
-            {day: 26, lat: 64.222617, lng: 27.717504},
-            {day: 27, lat: 60.08529, lng: 19.890641},
-            {day: 28, lat: 60.158909, lng: 24.67041},
-            {day: 29, lat: 60.193199, lng: 20.229079},
-            {day: 30, lat: 61.180442, lng: 22.254188},
-            {day: 31, lat: 64.827118, lng: 25.381258},
-            {day: 32, lat: 59.932183, lng: 24.301556},
-            {day: 33, lat: 60.272988, lng: 20.031152},
-            {day: 34, lat: 60.291419, lng: 20.390122},
-            {day: 35, lat: 61.431212, lng: 21.898039},
-            {day: 36, lat: 60.170379, lng: 24.925005},
-            {day: 37, lat: 60.380573, lng: 20.371987},
-            {day: 38, lat: 60.154546, lng: 19.51402},
-            {day: 39, lat: 60.113099, lng: 20.426049},
-            {day: 40, lat: 60.468502, lng: 22.318151},
-            {day: 41, lat: 61.524406, lng: 21.82494},
-            {day: 42, lat: 60.275533, lng: 24.442753},
-            {day: 43, lat: 59.932183, lng: 24.301556},
-            {day: 44, lat: 62.27757, lng: 21.37762},
-            {day: 45, lat: 61.672906, lng: 22.259305},
-            {day: 46, lat: 66.763933, lng: 23.963225},
-            {day: 47, lat: 60.625729, lng: 22.319558},
-            {day: 48, lat: 60.183896, lng: 20.050132},
-            {day: 49, lat: 60.430536, lng: 22.151637},
-            {day: 50, lat: 60.439459, lng: 24.907863},
-            {day: 51, lat: 62.238565, lng: 25.16906},
-            {day: 52, lat: 60.219662, lng: 20.766606},
-            {day: 53, lat: 62.880757, lng: 24.820882},
-            {day: 54, lat: 62.620846, lng: 24.058686},
-            {day: 55, lat: 61.258175, lng: 25.78563},
-            {day: 56, lat: 60.023932, lng: 20.443843},
-            {day: 57, lat: 60.531885, lng: 25.084099},
-            {day: 58, lat: 62.0353, lng: 30.150233},
-            {day: 59, lat: 60.464862, lng: 22.359115},
-            {day: 60, lat: 60.005698, lng: 20.087735},
-            {day: 61, lat: 60.418044, lng: 22.292656},
-            {day: 62, lat: 60.104069, lng: 20.247463},
-            {day: 63, lat: 60.202261, lng: 20.408142},
-            {day: 64, lat: 62.226452, lng: 29.592923},
-            {day: 65, lat: 60.253592, lng: 19.672664},
-            {day: 66, lat: 60.243532, lng: 19.493608}
-            */
         ];
 
         const map = L.map('largemap').setView([64, 24], 5);
@@ -102,8 +37,14 @@
 
         const counter = document.getElementById('counter');
 
-        function updateCounter(day) {
-            counter.innerText = `Day: ${day}`;
+        function updateCounter(date) {
+            const monthNames = [
+                'tammikuuta', 'helmikuuta', 'maaliskuuta', 'huhtikuuta', 'toukokuuta', 'kesäkuuta', 'heinäkuuta', 'elokuuta', 'syyskuuta', 'lokakuuta', 'marraskuuta', 'joulukuuta'
+            ];
+            
+            const day = date.getDate();
+            const month = monthNames[date.getMonth()];
+            counter.innerText = `${day}. ${month}`;
         }
 
         function displayEvent(event) {
@@ -148,18 +89,18 @@
         function animateEvents() {
             const currentDate = new Date(startDate);
             let dayCounter = 1;
+            updateCounter(currentDate);
 
             const animationInterval = setInterval(() => {
                 events.forEach(event => {
                     if (event.day === dayCounter) {
                         displayEvent(event);
-                        console.log("Here")
                     }
                 });
 
                 currentDate.setDate(currentDate.getDate() + 1);
                 dayCounter++;
-                updateCounter(dayCounter);
+                updateCounter(currentDate);
 
                 if (dayCounter > 365) {
                     clearInterval(animationInterval);

@@ -34,23 +34,22 @@ def get_species_dates(taxon, year):
     return observations_string, observations_count
 
 
-def main(taxon_unsafe):
+def main(taxon_qname_untrusted):
+    html = dict()
+
+    taxon_qname = common_helpers.valid_qname(taxon_qname_untrusted)
+    html['taxon_data'] = common_helpers.taxon_data(taxon_qname)
 
     # MX.36237 peippo, 17k
     # MX.36239 järri, 4800
     # MX.28895 pöllöt
     # MX.33638 Acrocephalus
+    # MX.37992 Betula
 
-    # TODO: Clean taxon_unsafe
-    taxon = taxon_unsafe
-
-    html = dict()
-
-    observations_string, observations_count = get_species_dates(taxon, 2022)
+    observations_string, observations_count = get_species_dates(taxon_qname, 2022)
     print(observations_count)
 #    print(observations_string)
 
     html["observations_string"] = observations_string
-    html["data"] = "Lintu"
 
     return html
