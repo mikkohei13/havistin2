@@ -16,7 +16,7 @@
     <h1>{{ html["taxon_data"]["display_name"]|safe }}</h1>
     
     <p id="counter">1. tammikuuta</p>
-    
+    <button id="restart-button">Käynnistä alusta</button>
     <div id="largemap" class="narrowmap"></div>
 
     <script>
@@ -36,6 +36,8 @@
         const startDate = new Date(2022, 0, 1); // January 1st
 
         const counter = document.getElementById('counter');
+        const restartButton = document.getElementById('restart-button');
+        const markers = [];
 
         function updateCounter(date) {
             const monthNames = [
@@ -58,15 +60,16 @@
             const fadeDuration = animationDuration * millisecondsPerDay;
             const fadeInterval = 100; // Adjust this value for smoother or quicker fading
             const fadeStep = (fadeInterval / fadeDuration) * 1; // Calculate the opacity reduction per step
+            markers.push(marker);
 
             let currentOpacity = 1;
             const fadeMarker = setInterval(() => {
                 currentOpacity -= fadeStep;
                 if (currentOpacity <= 0) {
-                map.removeLayer(marker);
-                clearInterval(fadeMarker);
+                    map.removeLayer(marker);
+                    clearInterval(fadeMarker);
                 } else {
-                marker.setStyle({ fillOpacity: currentOpacity });
+                    marker.setStyle({ fillOpacity: currentOpacity });
                 }
             }, fadeInterval);
         }
@@ -106,9 +109,29 @@
                     clearInterval(animationInterval);
                 }
             }, millisecondsPerDay);
+
+            return animationInterval;
         }
 
-        animateEvents();
+        function clearMarkers() {
+            markers.forEach(marker => {
+                map.removeLayer(marker);
+            });
+            markers.length = 0;
+        }
+
+        function restartAnimation() {
+            clearInterval(animationInterval); // Stop the current animation
+            clearMarkers(); // Clear all markers from the map
+            dayCounter = 1; // Reset the day counter
+            currentDate = new Date(startDate); // Reset the current date to January 1st
+            animationInterval = animateEvents(); // Restart the animation and store the new interval
+        }
+
+        // Add a click event listener for the restart button
+        restartButton.addEventListener('click', restartAnimation);
+
+        let animationInterval = animateEvents(); 
 
 
     </script> 
