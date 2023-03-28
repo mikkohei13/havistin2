@@ -5,6 +5,49 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
     crossorigin=""/>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+    <style>
+        #autocomplete-list {
+          position: absolute;
+          background-color: rgb(220, 245, 255);
+          list-style-type: none;
+          padding: 0;
+          margin: 0;
+          max-height: 200px;
+          overflow-y: auto;
+          width: 200px;
+          margin-top: -10px;
+          z-index: 10000;
+        }
+    
+        #autocomplete-list li {
+          padding: 5px;
+          cursor: pointer;
+        }
+    
+        #autocomplete-list li:hover {
+          background-color: #eee;
+        }
+
+        #largemap.narrowmap {
+            width: 400px;
+            height: 600px;
+            margin: 1em 0;
+        }
+
+        #counter {
+            font-weight: bold;
+        }
+
+        form p {
+            margin-top: 0.1em;
+        }
+
+        h1 span {
+            font-weight: normal;
+            font-size: 80%;
+        }
+
+    </style>
     {% endblock %}
 
     {% block breadcrumb %}
@@ -13,20 +56,30 @@
 
     {% block body %} 
 
-    <h1>{{ html["taxon_data"]["display_name"]|safe }}</h1>
+    <h1>{{ html["taxon_data"]["display_name"]|safe }} <span>{{ html["observations_count"] }} havaintoa</span></h1>
     
-    <p id="counter">1. tammikuuta</p>
-    <button id="restart-button">Käynnistä alusta</button>
-    <div id="largemap" class="narrowmap"></div>
+    <div id="animation-wrapper">
+        <form>
+            <label for="species">Hae taksonia:</label>
+            <p>
+                <input type="text" id="species" name="species" autocomplete="off">
+                <button type="button" id="go-to-species">Valitse</button>
+                <ul id="autocomplete-list"></ul>
+                <input type="hidden" id="species-id" name="species-id">
+            </p>
+        </form>
+        <button id="restart-button">Käynnistä alusta</button>
+
+        <p id="counter">1. tammikuuta</p>
+        <div id="largemap" class="narrowmap"></div>
+    </div>
 
     <script>
         const events = [
-        // Add your events here in the following format:
-        // { day: 1, lat: 40.7128, lng: -74.0060 }
             {{ html["observations_string"]|safe }}
         ];
 
-        const map = L.map('largemap').setView([64, 24], 5);
+        const map = L.map('largemap').setView([65.5, 25.5], 5);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
@@ -74,21 +127,6 @@
             }, fadeInterval);
         }
 
-        /*
-        function displayEvent(event) {
-            const marker = L.circleMarker([event.lat, event.lng], {
-                color: 'red',
-                fillColor: '#f03',
-                fillOpacity: 0.5,
-                radius: 5
-            }).addTo(map);
-
-            setTimeout(() => {
-                map.removeLayer(marker);
-            }, animationDuration * millisecondsPerDay);
-        }
-        */
-
         function animateEvents() {
             const currentDate = new Date(startDate);
             let dayCounter = 1;
@@ -134,6 +172,69 @@
         let animationInterval = animateEvents(); 
 
 
-    </script> 
+    </script>
+
+    <script>
+        const speciesInput = document.getElementById('species');
+        const speciesIdInput = document.getElementById('species-id');
+        const autocompleteList = document.getElementById('autocomplete-list');
+        let timeout;
+        const waitTimeMs = 200
+
+        speciesInput.addEventListener('input', (event) => {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => fetchSuggestions(event.target.value), waitTimeMs);
+        });
+
+        function fetchSuggestions(query) {
+        if (!query) {
+            autocompleteList.innerHTML = '';
+            return;
+        }
+
+        fetch(`https://api.laji.fi/v0/taxa/search?query=${encodeURIComponent(query)}&limit=10&matchType=partial&onlySpecies=false&onlyFinnish=true&onlyInvasive=false&observationMode=false&access_token={{html["finbif_api_token"] }}`)
+            .then((response) => response.json())
+            .then((data) => {
+            if (data && Array.isArray(data)) {
+                displaySuggestions(data);
+            } else {
+                autocompleteList.innerHTML = '';
+            }
+            });
+        }
+
+        function displaySuggestions(suggestions) {
+        autocompleteList.innerHTML = '';
+
+        suggestions.forEach((item) => {
+            const listItem = document.createElement('li');
+            listItem.textContent = item.matchingName;
+            listItem.addEventListener('click', () => {
+            speciesInput.value = item.matchingName;
+            speciesIdInput.value = item.id;
+            autocompleteList.innerHTML = '';
+            });
+
+            autocompleteList.appendChild(listItem);
+        });
+        }
+
+        document.addEventListener('click', (event) => {
+        if (!event.target.closest('#species')) {
+            autocompleteList.innerHTML = '';
+        }
+        });
+
+        const goToSpeciesButton = document.getElementById('go-to-species');
+
+        goToSpeciesButton.addEventListener('click', () => {
+            const speciesId = speciesIdInput.value;
+            if (speciesId) {
+                window.location.href = `/dev/${speciesId}`;
+            } else {
+                console.log('Please select a species before proceeding.');
+            }
+        });
+    </script>
 
     {% endblock %}

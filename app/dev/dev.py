@@ -1,5 +1,6 @@
 
 from helpers import common_helpers
+import app_secrets
 
 def get_species_dates(taxon, year):
     
@@ -37,19 +38,14 @@ def get_species_dates(taxon, year):
 def main(taxon_qname_untrusted):
     html = dict()
 
+    html["finbif_api_token"] = app_secrets.finbif_api_token
+
     taxon_qname = common_helpers.valid_qname(taxon_qname_untrusted)
     html['taxon_data'] = common_helpers.taxon_data(taxon_qname)
 
-    # MX.36237 peippo, 17k
-    # MX.36239 järri, 4800
-    # MX.28895 pöllöt
-    # MX.33638 Acrocephalus
-    # MX.37992 Betula
-
     observations_string, observations_count = get_species_dates(taxon_qname, 2022)
-    print(observations_count)
-#    print(observations_string)
 
     html["observations_string"] = observations_string
+    html["observations_count"] = observations_count
 
     return html
