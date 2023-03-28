@@ -134,14 +134,15 @@ def taxon_data(taxon_qname):
     data = fetch_finbif_api(url)
 
     taxon_data = dict()
-    taxon_data['sci_name'] = data['scientificName']
-    taxon_data['fi_name'] = data['vernacularName']
-    taxon_data['is_cursive'] = data['cursiveName']
+    # TODO: prepare for no vernacular name
+    taxon_data['sci_name'] = data.get('scientificName', 'no name')
+    taxon_data['fi_name'] = data.get('vernacularName', '')
+    taxon_data['is_cursive'] = data.get('cursiveName', False)
 
     if data['cursiveName']:
-        taxon_data['display_name'] = f"{ data['vernacularName'].capitalize() } (<em>{ data['scientificName'] }</em>)"
+        taxon_data['display_name'] = f"{ taxon_data['fi_name'].capitalize() } (<em>{ taxon_data['sci_name'] }</em>)"
     else:
-        taxon_data['display_name'] = f"{ data['vernacularName'].capitalize() } ({ data['scientificName'] })"
+        taxon_data['display_name'] = f"{ taxon_data['fi_name'].capitalize() } ({ taxon_data['sci_name'] })"
 
     return taxon_data
 
