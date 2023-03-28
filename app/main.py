@@ -118,7 +118,7 @@ def squarepdf(square_id_untrusted, show_untrusted):
     url = "https://api.laji.fi/v0/html-to-pdf?access_token=" + app_secrets.finbif_api_token
     data = html_page
     headers = {
-        "Content-Type": "text/xml",
+        "Content-Type": "text/plain",
         "Accept": "application/pdf"
     }
 
