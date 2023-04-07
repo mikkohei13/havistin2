@@ -101,6 +101,7 @@ Build image from Dockerfile:
 
 # Todo
 
+- Why this doesn't work: http://localhost/taxa/species/MX.205966
 - Complete lists per square:
     - router, page and template
     - fetch data from api
