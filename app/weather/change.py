@@ -222,17 +222,17 @@ def main(messaging_on):
     # 10 min
     secs = 600
     change = obs_indexed[0][key] - obs_indexed[secs][key]
-    html = evaluate_change(change, 2.5, key, secs, obs_indexed[0][key]) + html
+    html = evaluate_change(change, 2, key, secs, obs_indexed[0][key]) + html
 
     # 1 hour
     secs = 3600
     change = obs_indexed[0][key] - obs_indexed[secs][key]
-    html = evaluate_change(change, 5, key, secs, obs_indexed[0][key]) + html
+    html = evaluate_change(change, 3, key, secs, obs_indexed[0][key]) + html
 
     # 1,5 hours
     secs = 5400
     change = obs_indexed[0][key] - obs_indexed[secs][key]
-    html = evaluate_change(change, 7, key, secs, obs_indexed[0][key]) + html
+    html = evaluate_change(change, 5, key, secs, obs_indexed[0][key]) + html
 
     # DEBUG temp in production
 #    secs = 5400
@@ -257,6 +257,7 @@ def main(messaging_on):
     html = evaluate_change(change, 5, key, secs, obs_indexed[0][key]) + html
 
     # Cloud cover
+    '''
     key = "TotalCloudCover"
     # 20 min
     secs = 1200
@@ -266,6 +267,7 @@ def main(messaging_on):
     secs = 5400
     change = obs_indexed[0][key] - obs_indexed[secs][key]
     html = evaluate_change(change, 7, key, secs, obs_indexed[0][key]) + html
+    '''
 
     # Snow depth
     key = "SnowDepth"
