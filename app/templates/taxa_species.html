@@ -5,8 +5,17 @@
 {% endblock %}
 
 {% block breadcrumb %}
-    <!-- TODO: Remove hardcoded parent level --->
-    <a href='/'>Havistin</a> &raquo; <a href='/taxa'>Lajitietoa</a> &raquo; <a href='../{{ html["raw_data"]["parent"]["suborder"]["id"] }}'>{{ html["raw_data"]["parent"]["suborder"]["scientificName"] }}</a> &raquo; {{ html["raw_data"]["scientificName"] }}
+    {% if "suborder" in html["raw_data"]["parent"] %}
+        <a href='/'>Havistin</a> &raquo; <a href='/taxa'>Lajitietoa</a> &raquo; <a href='../{{ html["raw_data"]["parent"]["suborder"]["id"] }}'>{{ html["raw_data"]["parent"]["suborder"]["scientificName"] }}</a> &raquo; {{ html["raw_data"]["scientificName"] }}
+
+    {% elif "order" in html["raw_data"]["parent"] %}
+        <a href='/'>Havistin</a> &raquo; <a href='/taxa'>Lajitietoa</a> &raquo; <a href='../{{ html["raw_data"]["parent"]["order"]["id"] }}'>{{ html["raw_data"]["parent"]["order"]["scientificName"] }}</a> &raquo; {{ html["raw_data"]["scientificName"] }}
+
+    {% else %}
+        <a href='/'>Havistin</a> &raquo; <a href='/taxa'>Lajitietoa</a> &raquo; {{ html["raw_data"]["scientificName"] }}
+
+    {% endif %}
+
 {% endblock %}
 
 {% block body %}
