@@ -227,12 +227,12 @@ def main(messaging_on):
     # 1 hour
     secs = 3600
     change = obs_indexed[0][key] - obs_indexed[secs][key]
-    html = evaluate_change(change, 3, key, secs, obs_indexed[0][key]) + html
+    html = evaluate_change(change, 4, key, secs, obs_indexed[0][key]) + html
 
     # 1,5 hours
     secs = 5400
     change = obs_indexed[0][key] - obs_indexed[secs][key]
-    html = evaluate_change(change, 5, key, secs, obs_indexed[0][key]) + html
+    html = evaluate_change(change, 6, key, secs, obs_indexed[0][key]) + html
 
     # DEBUG temp in production
 #    secs = 5400
