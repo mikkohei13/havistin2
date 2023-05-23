@@ -225,11 +225,6 @@ h2, h3, h3 {
     margin-right: 1em;
 }
 
-#info_top strong {
-    font-weight: normal;
-    letter-spacing: 0.2em;
-}
-
 #klo {
     width: 12em;
 }
@@ -291,6 +286,10 @@ h2, h3, h3 {
 
 .negative {
     background-color: #00a0ab !important;
+}
+
+.easy .atlas_code {
+    font-weight: bold;
 }
 
 /* Generic tables */

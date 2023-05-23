@@ -10,6 +10,7 @@ import index.index
 import atlas.atlas
 import atlas.squareform
 import atlas.misslist
+import atlas.misslist_old
 import atlas.squaremap
 import atlas.species
 import atlas.specieslist
@@ -134,10 +135,16 @@ def squarepdf(square_id_untrusted, show_untrusted):
 
 
 @app.route("/atlas/puutelista/<string:square_id_untrusted>")
-@cache.cached(timeout=86400)
+@cache.cached(timeout=1)
 def misslist(square_id_untrusted):
     html = atlas.misslist.main(square_id_untrusted)
     return render_template("atlas_misslist.html", html=html)
+
+@app.route("/atlas/puutelista_vanha/<string:square_id_untrusted>")
+@cache.cached(timeout=1)
+def misslist_old(square_id_untrusted):
+    html = atlas.misslist_old.main(square_id_untrusted)
+    return render_template("atlas_misslist_old.html", html=html)
 
 @app.route("/ruutu/<string:square_id_untrusted>")
 # Redirect
