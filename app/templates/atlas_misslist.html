@@ -39,7 +39,13 @@
                 <a href="/atlas/puutelista/{{ html["neighbour_ids"]["e"] }}">E &raquo;</a>
             </span>
             <span>
-                <a href="https://laji.fi/map?gridsquare={{ html["square_id"] }}&layers=maastokartta,atlasGrid&print=true">Tulostettava kartta</a>
+                <a href="https://laji.fi/map?gridsquare={{ html['square_id'] }}&layers=maastokartta,atlasGrid&print=true">Tulostettava kartta</a>
+            </span>
+            <span>
+                <a href="https://tulokset.lintuatlas.fi/grid/{{ html['square_id'] }}">Tulospalvelu</a>
+            </span>
+            <span>
+                <a href="https://laji.fi/observation/map?informalTaxonGroupId=MVL.1&countryId=ML.206&time=2022-01-01%2F2025-12-31&coordinates={{ html['square_id'] }}:YKJ:0.7&recordQuality=COMMUNITY_VERIFIED,NEUTRAL,EXPERT_VERIFIED&atlasClass=MY.atlasClassEnumB,MY.atlasClassEnumC,MY.atlasClassEnumD">Laji.fi</a>
             </span>
     </div>
 
@@ -59,7 +65,7 @@
         -->
     </div>
 
-    <p>Puutelistalla on lajit, jotka ennustemallin mukaan esiintyvät tällä ruudulla, mutta joiden pesintää ei ole varmistettu. Pistearvo lasketaan ennustetun pesimävarmuusluokan ja nykyisen pesimävarmuusluokan erotuksena. Mitä suurempi arvo, sitä enemmän pesimävarmuutta voisi ennusteen mukaan korottaa, jotta ruudun selvitysasteeksi tulisi vähintään tyydyttävä. Puutelistalla ei ole lajeja, joiden pesintä on jo varmistettu.</p>
+    <p class="noprint">Puutelistalla on ne lajit, jotka <a href='https://www.biomi.org/2023/05/23/lintulajien-levinneisyysmallinnus-koneoppimisella/'>tekoälypohjaisen ennustemallin</a> mukaan esiintyvät tällä ruudulla, mutta joiden pesintää ei ole varmistettu. <strong>Pistearvo lasketaan ennustetun pesimävarmuusluokan (0-3) ja nykyisen pesimävarmuusluokan erotuksena.</strong> Mitä suurempi arvo, sitä enemmän pesimävarmuutta voisi ennusteen mukaan korottaa. Yhden pisteen korotus tarkoittaa esim. muutosta mahdollisesta todennäköiseksi. Naapuriruutujen tai kolmannen atlaksen havainnot eivät vaikuta ennusteeseen.</p>
 
     <div id="species_table">
         {{ html["species_table"]|safe }}

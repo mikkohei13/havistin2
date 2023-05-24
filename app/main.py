@@ -142,7 +142,7 @@ def squarepdf(square_id_untrusted, show_untrusted):
 
 @app.route("/atlas/puutelista/<string:square_id_untrusted>")
 #@cache.cached(timeout=1)
-@robust_cached(timeout=5)
+@robust_cached(timeout=3600)
 def misslist(square_id_untrusted):
     html = atlas.misslist.main(square_id_untrusted)
     return render_template("atlas_misslist.html", html=html)

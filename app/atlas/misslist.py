@@ -97,29 +97,13 @@ def get_species_missvalues(species_predictions, atlas4_species):
         else:
             missvalue = round(predicted_class, 1)
 
-        missvalues[species] = missvalue
+        # Ignore too improbable species
+        if missvalue > 0.1:
+            missvalues[species] = missvalue
 
 #        species_predictions_simple[species] = predicted_class
 
     return missvalues
-
-    for species, current_data in atlas4_species.items():
-
-        # Skip uncommon species
-        if species not in species_predictions_simple:
-            continue
-
-        current_class = atlas_class_to_value(current_data["atlasClass"]["key"])
-        missvalue = species_predictions_simple[species] - current_class
-        if missvalue < 0:
-            missvalue = 0
-        else:
-            missvalue = round(missvalue, 2)
-
-        missvalues[species] = missvalue
-    
-    return missvalues
-
 
 
 def main(square_id_untrusted):

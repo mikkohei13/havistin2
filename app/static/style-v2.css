@@ -445,14 +445,23 @@ figure {
 
 @media print {
 
+    body {
+        padding-top: 0;
+    }
+
     .noprint, #navi, #subnavi, #links {
       display: none;
     }
 
     h1 {
         font-size: 120%;
+        margin-top: 0;
     }
     
+    #species_table {
+        padding-top: 0;
+    }
+
     .styled-table td {
         padding: 0.1em 0.5em;
     }
