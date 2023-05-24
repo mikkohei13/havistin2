@@ -88,14 +88,14 @@ def root():
 
 @app.route("/atlas")
 @app.route("/atlas/")
-@cache.cached(timeout=1)
+@robust_cached(timeout=1)
 def atlas_root():
     html = atlas.atlas.main()
     return render_template("atlas.html", html=html)
 
 @app.route("/atlas/havaintosuhteet")
 @app.route("/atlas/havaintosuhteet/")
-@cache.cached(timeout=10800)
+@robust_cached(timeout=10800)
 def species_proportions():
     html = atlas.species_proportions.main()
     return render_template("species_proportions.html", html=html)
@@ -106,7 +106,7 @@ def squareform_redirect(square_id_untrusted, show_untrusted):
     return redirect('/atlas/ruutulomake/' + square_id_untrusted + "/" + show_untrusted)
 
 @app.route("/atlas/ruutulomake/<string:square_id_untrusted>/<string:show_untrusted>")
-@cache.cached(timeout=3600)
+@robust_cached(timeout=3600)
 def squareform(square_id_untrusted, show_untrusted):
     html = atlas.squareform.main(square_id_untrusted, show_untrusted)
     return render_template("squareform.html", html=html)
@@ -114,7 +114,7 @@ def squareform(square_id_untrusted, show_untrusted):
 
 # TODO: Temporary test for making PDF's, remove of move to separate file
 @app.route("/atlas/ruutupdf/<string:square_id_untrusted>/<string:show_untrusted>")
-@cache.cached(timeout=1)
+@robust_cached(timeout=1)
 def squarepdf(square_id_untrusted, show_untrusted):
     html = atlas.squareform.main(square_id_untrusted, show_untrusted)
     html_page = render_template("squarepdf.html", html=html)
@@ -141,14 +141,13 @@ def squarepdf(square_id_untrusted, show_untrusted):
 
 
 @app.route("/atlas/puutelista/<string:square_id_untrusted>")
-#@cache.cached(timeout=1)
 @robust_cached(timeout=3600)
 def misslist(square_id_untrusted):
     html = atlas.misslist.main(square_id_untrusted)
     return render_template("atlas_misslist.html", html=html)
 
 @app.route("/atlas/puutelista_vanha/<string:square_id_untrusted>")
-@cache.cached(timeout=3600)
+@robust_cached(timeout=3600)
 def misslist_old(square_id_untrusted):
     html = atlas.misslist_old.main(square_id_untrusted)
     return render_template("atlas_misslist_old.html", html=html)
@@ -159,79 +158,79 @@ def squaremap_redirect(square_id_untrusted):
     return redirect('/atlas/ruutu/' + square_id_untrusted)
 
 @app.route("/atlas/ruutu/<string:square_id_untrusted>")
-@cache.cached(timeout=10800)
+@robust_cached(timeout=10800)
 def squaremap(square_id_untrusted):
     html = atlas.squaremap.main(square_id_untrusted)
     return render_template("squaremap.html", html=html)
 
 @app.route("/atlas/lajiluettelo")
 @app.route("/atlas/lajiluettelo/")
-@cache.cached(timeout=10800)
+@robust_cached(timeout=10800)
 def atlas_specieslist():
     html = atlas.specieslist.main()
     return render_template("atlas_specieslist.html", html=html)
 
 @app.route("/atlas/laji/<string:species_name_untrusted>")
-@cache.cached(timeout=86400) # 86400
+@robust_cached(timeout=86400) # 86400
 def atlas_singlespecies(species_name_untrusted):
     html = atlas.singlespecies.main(species_name_untrusted)
     return render_template("atlas_singlespecies.html", html=html)
 
 @app.route("/atlas/lajit")
 @app.route("/atlas/lajit/")
-@cache.cached(timeout=10800)
+@robust_cached(timeout=10800)
 def atlas_species():
     html = atlas.species.main()
     return render_template("atlas_species.html", html=html)
 
 @app.route("/atlas/ruudut")
 @app.route("/atlas/ruudut/")
-@cache.cached(timeout=10800)
+@robust_cached(timeout=10800)
 def atlas_squares():
     html = atlas.squares.main()
     return render_template("atlas_squares.html", html=html)
 
 @app.route("/atlas/havainnoijat")
 @app.route("/atlas/havainnoijat/")
-@cache.cached(timeout=10800)
+@robust_cached(timeout=10800)
 def atlas_observers():
     html = atlas.observers.main()
     return render_template("atlas_observers.html", html=html)
 
 @app.route("/atlas/listat")
 @app.route("/atlas/listat/")
-@cache.cached(timeout=10800)
+@robust_cached(timeout=10800)
 def atlas_completelists():
     html = atlas.completelists.main()
     return render_template("atlas_completelists.html", html=html)
 
 @app.route("/atlas/luokka/<string:class_untrusted>")
-@cache.cached(timeout=10800)
+@robust_cached(timeout=10800)
 def atlas_summap(class_untrusted):
     html = atlas.summap.main(class_untrusted)
     return render_template("atlas_summap.html", html=html)
 
 @app.route("/taxa/<string:taxon_id_untrusted>")
-@cache.cached(timeout=86400)
+@robust_cached(timeout=86400)
 def taxa_specieslist(taxon_id_untrusted):
     html = taxa.specieslist.main(taxon_id_untrusted)
     return render_template("taxa_specieslist.html", html=html)
 
 @app.route("/taxa")
 @app.route("/taxa/")
-@cache.cached(timeout=10800)
+@robust_cached(timeout=10800)
 def taxa_root():
     html = taxa.taxa.main()
     return render_template("taxa.html", html=html)
 
 @app.route("/taxa/species/<string:taxon_id_untrusted>")
-@cache.cached(timeout=1) # 86400
+@robust_cached(timeout=1) # 86400
 def taxa_species(taxon_id_untrusted):
     html = taxa.species.main(taxon_id_untrusted)
     return render_template("taxa_species.html", html=html)
 
 @app.route("/taxa/id/<string:page_name_untrusted>")
-@cache.cached(timeout=86400)
+@robust_cached(timeout=86400)
 def taxa_new(page_name_untrusted):
 #    html = devcache.get_cached("/taxa/id/" + page_name_untrusted, 86400)
 #    if not html:
@@ -241,13 +240,13 @@ def taxa_new(page_name_untrusted):
     return render_template("taxa_new.html", html=html)
 
 @app.route("/taxa/photos_data/<string:taxon_id_untrusted>")
-@cache.cached(timeout=10800)
+@robust_cached(timeout=10800)
 def taxa_photos_data(taxon_id_untrusted):
     html = taxa.common_photos.main(taxon_id_untrusted)
     return render_template("taxa_photos_data.html", html=html)
 
 @app.route("/taxa/compare_years/<string:taxon_id_untrusted>")
-@cache.cached(timeout=1)
+@robust_cached(timeout=1)
 def taxa_compare_years(taxon_id_untrusted):
     html = taxa.compare_years.main(taxon_id_untrusted)
     return render_template("taxa_compare_years.html", html=html)
@@ -261,7 +260,7 @@ def weather_change(messaging_on = 0):
 @app.route("/talvilinnut/<int:dev_secret>")
 @app.route("/talvilinnut/")
 @app.route("/talvilinnut")
-@cache.cached(timeout=2592000) # 2592000 = 30 pv
+@robust_cached(timeout=2592000) # 2592000 = 30 pv
 def winterbird_root(dev_secret = 1):
     html = winterbird.winterbird.main(dev_secret)
     return render_template("winterbird.html", html=html)
@@ -269,13 +268,13 @@ def winterbird_root(dev_secret = 1):
 @app.route("/talvilinnut/laskenta/<string:society_id>/<string:season>")
 @app.route("/talvilinnut/laskenta/")
 @app.route("/talvilinnut/laskenta")
-@cache.cached(timeout=86400)
+@robust_cached(timeout=86400)
 def winterbird_census(society_id = "", season = ""):
     html = winterbird.census.main(society_id, season)
     return render_template("winterbird_census.html", html=html)
 
 @app.route("/dev/<string:taxon_id_untrusted>")
-@cache.cached(timeout=1)
+@robust_cached(timeout=1)
 def dev_root(taxon_id_untrusted):
     html = dev.dev.main(taxon_id_untrusted)
     return render_template("dev.html", html=html)
@@ -289,7 +288,7 @@ Debugging help:
 # Tools
 
 @app.route("/robots.txt")
-@cache.cached(timeout=86400)
+@robust_cached(timeout=86400)
 def robots():
     return render_template("robots.txt")
 
