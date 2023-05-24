@@ -40,15 +40,21 @@ import app_secrets
 
 import requests
 
-'''
-# Filesystem cache (works inconsistently on services that have ephemeral storage)
-config = {
-    "DEBUG": True,
-    "CACHE_TYPE": "FileSystemCache",
-    "CACHE_DIR": "/havistin2/app/cache",
-    "CACHE_DEFAULT_TIMEOUT": 600 # Seconds
-}
-'''
+from redis.exceptions import ConnectionError
+from functools import wraps
+
+def robust_cached(timeout=None, key_prefix='view/%s', unless=None):
+    def decorator(f):
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            try:
+                # Use the cached decorator as usual
+                return cache.cached(timeout, key_prefix, unless)(f)(*args, **kwargs)
+            except ConnectionError:
+                # If a Redis connection error occurs, call the original function
+                return f(*args, **kwargs)
+        return decorated_function
+    return decorator
 
 # Redis cache
 config = {
@@ -100,7 +106,7 @@ def squareform_redirect(square_id_untrusted, show_untrusted):
     return redirect('/atlas/ruutulomake/' + square_id_untrusted + "/" + show_untrusted)
 
 @app.route("/atlas/ruutulomake/<string:square_id_untrusted>/<string:show_untrusted>")
-@cache.cached(timeout=86400)
+@cache.cached(timeout=3600)
 def squareform(square_id_untrusted, show_untrusted):
     html = atlas.squareform.main(square_id_untrusted, show_untrusted)
     return render_template("squareform.html", html=html)
@@ -135,13 +141,14 @@ def squarepdf(square_id_untrusted, show_untrusted):
 
 
 @app.route("/atlas/puutelista/<string:square_id_untrusted>")
-@cache.cached(timeout=1)
+#@cache.cached(timeout=1)
+@robust_cached(timeout=5)
 def misslist(square_id_untrusted):
     html = atlas.misslist.main(square_id_untrusted)
     return render_template("atlas_misslist.html", html=html)
 
 @app.route("/atlas/puutelista_vanha/<string:square_id_untrusted>")
-@cache.cached(timeout=1)
+@cache.cached(timeout=3600)
 def misslist_old(square_id_untrusted):
     html = atlas.misslist_old.main(square_id_untrusted)
     return render_template("atlas_misslist_old.html", html=html)
@@ -318,4 +325,4 @@ def handle_exception(e):
         return "404", 404
     print(f"Havistin generic Exception for url {request.url}: {str(e)}", file = sys.stdout)
     print(traceback.format_exc(), sep="\n", file = sys.stdout)
-    return "Lajitietokeskuksen rajapinta ei juuri nyt toimi, tai tässä palvelussa on jokin vika. Ole hyvä ja yritä myöhemmin uudelleen. (Exception)", 500
+    return "Lajitietokeskuksen rajapinta ei juuri nyt toimi, tai tässä palvelussa on jokin vika. Kokeile ladata sivu uudelleen tai yritä myöhemmin uudelleen. (Exception)", 500
