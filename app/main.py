@@ -7,6 +7,7 @@ import traceback
 
 import index.index
 
+import atlas.here
 import atlas.atlas
 import atlas.squareform
 import atlas.misslist
@@ -139,6 +140,11 @@ def squarepdf(square_id_untrusted, show_untrusted):
     res.headers.set('Content-Disposition', 'inline; filename=ruutulomake.pdf')
     return res
 
+@app.route("/atlas/here/<string:square_id_untrusted>")
+@robust_cached(timeout=1)
+def here(square_id_untrusted):
+    html = atlas.here.main(square_id_untrusted)
+    return render_template("atlas_here.html", html=html)
 
 @app.route("/atlas/puutelista/<string:square_id_untrusted>")
 @robust_cached(timeout=3600)

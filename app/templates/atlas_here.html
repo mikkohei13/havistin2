@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+    {% block head %}
+    <title>Lintuatlaksen tilastoja (biomi.org)</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+    crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+    <script src="/static/leaflet-heat.js"></script> 
+    {% endblock %}
+
+    {% block breadcrumb %}
+    <a href="../../../">Lintuatlas</a> &raquo; Tämä ruutu
+    {% endblock %}
+
+    {% block body %}
+
+    <div id="heading">
+        <h1>{{ html["heading"]|safe }}</h1>
+        <p id="links">
+            <span>
+                <a href="/atlas/ruutulomake/{{ html["square_id"] }}/vakio">Maastolomake</a>
+            </span>
+            <span>
+                <a href="/atlas/puutelista/{{ html["square_id"] }}">Puutelista</a>
+            </span>
+            <span>
+                <a href="https://laji.fi/map?gridsquare={{ html["square_id"] }}&layers=maastokartta,atlasGrid&print=true">Maastokartta</a>
+            </span>
+        </p>
+    </div>
+
+    <div id="map"></div>
+
+    <button id="locate">Locate me</button>
+    <p id="position"></p>
+
+<script>
+
+// Map
+var map = L.map('map', { scrollWheelZoom: false }).setView([{{ html["centerpoint"]|safe }}], 11);
+
+// Set max zoom, since too much zooming gives wrong impression of inaccurate obs locations.
+// But: this affects heat map calculations!
+//map.options.maxZoom = 14;
+
+var tiles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+}).addTo(map);
+
+var polyLatLon = [ {{ html["cornerpoints"]|safe }} ];
+var polyline = L.polyline(polyLatLon, {color: 'red'}).addTo(map);
+
+var marker
+
+// Locator
+document.getElementById('locate').addEventListener('click', function() {
+    if (!navigator.geolocation) {
+        document.getElementById('position').innerHTML = "Geolocation is not supported by your browser";
+    } else {
+        document.getElementById('position').innerHTML = "Locating...";
+        navigator.geolocation.watchPosition(success, error);
+    }
+});
+
+function success(position) {
+    if(position.coords.accuracy < 100) {
+        var latitude  = position.coords.latitude;
+        var longitude = position.coords.longitude;
+        var accuracy = position.coords.accuracy;
+
+        document.getElementById('position').innerHTML = 'Latitude: ' + latitude + '°<br>Longitude: ' + longitude + '°<br>Accuracy: ' + accuracy + ' meters';
+
+        // update or add the marker
+        if (marker) {
+            marker.setLatLng([latitude, longitude]);
+        } else {
+            marker = L.marker([latitude, longitude]).addTo(map);
+        }
+
+        navigator.geolocation.clearWatch(success);
+    }
+}
+
+function error() {
+    document.getElementById('position').innerHTML = "Unable to retrieve your location";
+}
+
+</script>        
+
+    {% endblock %}
