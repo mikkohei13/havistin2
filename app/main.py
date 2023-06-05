@@ -7,11 +7,12 @@ import traceback
 
 import index.index
 
-import atlas.here
 import atlas.atlas
 import atlas.squareform
 import atlas.misslist
 import atlas.misslist_old
+import atlas.here
+import atlas.gps
 import atlas.squaremap
 import atlas.species
 import atlas.specieslist
@@ -139,6 +140,14 @@ def squarepdf(square_id_untrusted, show_untrusted):
     res.headers.set('Content-Type', 'application/pdf')
     res.headers.set('Content-Disposition', 'inline; filename=ruutulomake.pdf')
     return res
+
+
+@app.route("/atlas/gps")
+@app.route("/atlas/gps/")
+@robust_cached(timeout=1)
+def gps():
+    html = atlas.gps.main()
+    return render_template("atlas_gps.html", html=html)
 
 @app.route("/atlas/here/<string:square_id_untrusted>")
 @robust_cached(timeout=1)

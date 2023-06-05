@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+    {% block head %}
+    <title>Etsii sijaintiasi</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.7.5/proj4.js"></script>
+    {% endblock %}
+
+    {% block body %}
+    <p id="message"></p>
+
+    <h1>Locate Me!</h1>
+    <button id="locate">Locate me</button>
+    <p id="position"></p>
+    
+<script>
+
+document.getElementById('locate').addEventListener('click', function() {
+    if (!navigator.geolocation) {
+        document.getElementById('position').innerHTML = "Geolocation is not supported by your browser";
+    } else {
+        document.getElementById('position').innerHTML = "Locating...";
+        navigator.geolocation.watchPosition(success, error);
+    }
+});
+
+function success(position) {
+    if(position.coords.accuracy < 100) {
+        var latitude  = position.coords.latitude;
+        var longitude = position.coords.longitude;
+        var accuracy = position.coords.accuracy;
+
+        // Define WGS84 and EPSG:2393 projection
+        var wgs84 = 'EPSG:4326';
+        var epsg2393 = '+proj=tmerc +lat_0=0 +lon_0=27 +k=1 +x_0=3500000 +y_0=0 +ellps=intl +towgs84=-96.062,-82.428,-121.753,4.801,0.345,-1.376,1.496 +units=m +no_defs';
+
+        // Convert coordinates
+        var epsg2393Coords = proj4(wgs84, epsg2393, [longitude, latitude]);
+
+        document.getElementById('position').innerHTML = 
+            'WGS84<br>Latitude: ' + latitude + '°<br>Longitude: ' + longitude + '°<br>Accuracy: ' + accuracy + ' meters<br>' +
+            'EPSG:2393<br>Northing: ' + epsg2393Coords[1].toFixed(2) + ' m<br>Easting: ' + epsg2393Coords[0].toFixed(2) + ' m';
+        navigator.geolocation.clearWatch(success);
+    }
+}
+
+function error() {
+    document.getElementById('position').innerHTML = "Unable to retrieve your location";
+}
+
+
+</script>
+    {% endblock %}
