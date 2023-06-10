@@ -144,3 +144,11 @@ Build image from Dockerfile:
 - One grid observation count or breeding index graph
 - Better debug https://trstringer.com/python-flask-debug-docker-compose/
 
+## GPS working logic
+
+- As user, I might want to 
+    - Have GPS define my location, and see square informatn with a map that confirms where I am
+    - Select the square by myself
+    - Redfine my location when I have moved
+- GPS Page A, that gets location from GPS, and redirects to square page B
+- Square page B, that shows square information. Has two features: a) link to page A ("Hae sijaintini uudelleen") and b) selection for square ("valitse ruutu")

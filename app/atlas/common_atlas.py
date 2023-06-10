@@ -440,7 +440,7 @@ def get_info_top_html(atlas4_square_info_dict):
     satisfactory_proportion = round(satisfactory_proportion, 1)
 
     html = ""
-    html += f"<p id='paragraph3'>Selvitysaste: <strong>{current_level}</strong>, summa: {atlas4_square_info_dict['breeding_sum']} (rajat: välttävä {level2}, tyydyttävä {level3}, hyvä {level4}, erinomainen {level5}), summasta puuttuu tyydyttävään {until_satisfactory}, tyydyttävästä saavutettu {satisfactory_proportion} %</p>"
+    html += f"<p id='paragraph3'>Selvitysaste <strong>{current_level}, summa {atlas4_square_info_dict['breeding_sum']}</strong>, rajat: välttävä {level2}, tyydyttävä {level3}, hyvä {level4}, erinomainen {level5}.<br>Summasta puuttuu tyydyttävään {until_satisfactory}, <strong>tyydyttävästä saavutettu {satisfactory_proportion} %</strong></p>"
 
     return html
 
@@ -475,3 +475,62 @@ def get_atlas4_square_data(square_id):
 
     return species_dict, square_info_dict
 
+
+
+def get_species_predictions(square_id):
+    square_filename = square_id.replace(":", "_")
+    filename = f"./data/atlas_predictions/{ square_filename }.json"
+    f = open(filename)       
+
+    species_dict = json.load(f)
+
+    f.close()
+    return species_dict
+
+
+def atlas_class_to_value(class_value):
+    if "MY.atlasClassEnumA" == class_value:
+        return 0
+    if "MY.atlasClassEnumB" == class_value:
+        return 1
+    if "MY.atlasClassEnumC" == class_value:
+        return 2
+    if "MY.atlasClassEnumD" == class_value:
+        return 3
+    return 0
+
+
+def get_species_missvalues(species_predictions, atlas4_species):
+
+    # Count missvalues
+    missvalues = dict()
+
+    for species, data in species_predictions.items():
+
+        # Get capped predicted class
+        predicted_class = data["predictions"][0]["value"]
+        if predicted_class < 0:
+            predicted_class = 0
+        elif predicted_class > 3:
+            predicted_class = 3
+
+        # If observed in 4th atlas, calculate difference
+        if species in atlas4_species:
+            current_class = atlas_class_to_value(atlas4_species[species]["atlasClass"]["key"])
+            missvalue = predicted_class - current_class
+
+            # if already higher than predicted value
+            if missvalue < 0:
+                missvalue = 0
+
+            missvalue = round(missvalue, 1)
+            
+        # if not observed, just use predicted value
+        else:
+            missvalue = round(predicted_class, 1)
+
+        # Ignore too improbable species
+        if missvalue > 0.1:
+            missvalues[species] = missvalue
+
+    return missvalues

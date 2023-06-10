@@ -79,6 +79,11 @@ a:visited {
     width: 5em;
 }
 
+#subnavi #subnavi_p {
+    margin: 1em 0 0 0;
+    font-weight: bold;
+}
+
 #links {
     margin: -0.7em -10px 1.5em;
     padding: 0.5em 1em;
@@ -289,6 +294,10 @@ h2, h3, h3 {
 }
 
 .easy .atlas_code {
+    color: #999;
+}
+
+.hard .atlas_code {
     font-weight: bold;
 }
 
@@ -299,7 +308,7 @@ h2, h3, h3 {
     margin: 25px 0;
     font-size: 0.9em;
     min-width: 400px;
-        min-width: 30em;
+        min-width: 20em;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
         box-shadow: none;
 }

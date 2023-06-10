@@ -9,7 +9,7 @@
     {% endblock %}
 
     {% block breadcrumb %}
-    <a href="../../../">Lintuatlas</a> &raquo; Tämä ruutu
+    <a href="../../../">Lintuatlas</a> &raquo; <a href="/atlas/gps">Hae sijainti</a> &raquo;
     {% endblock %}
 
     {% block body %}
@@ -23,15 +23,31 @@
             <span>
                 <a href="/atlas/puutelista/{{ html["square_id"] }}">Puutelista</a>
             </span>
-            <span>
-                <a href="https://laji.fi/map?gridsquare={{ html["square_id"] }}&layers=maastokartta,atlasGrid&print=true">Maastokartta</a>
-            </span>
         </p>
     </div>
 
-    <div id="map"></div>
+    <div id="subnavi">
+        <form id="squareselection" action="" method="get">
+            <input id="mode" type="hidden" value="squareform">
+            <label id="square-label">
+                Ruutu:
+                <input type="text" id="square" name="square">
+            </label>
+            <input type="submit" value="Valitse"> <span>(esim. 668:338)</span>
+        </form>
+        <p id="subnavi_p"><a href="/atlas/gps">Hae sijaintisi uudelleen</a></p>
+    </div>
 
-    <button id="locate">Locate me</button>
+    <div id="map" style="height: 300px"></div>
+
+    <div>{{ html["info_top"]|safe }}</div>
+
+    <p>{{ html["observation_count"] }} atlashavaintoa tästä ruudusta.</p>
+
+    <p>Ruudulla todennäköisesti esiintyvät lajit ja suurin imoitettu pesimävarmuusindeksi:</p>
+    {{ html["species_table"]|safe }}
+    
+
     <p id="position"></p>
 
 <script>
@@ -52,23 +68,23 @@ var polyline = L.polyline(polyLatLon, {color: 'red'}).addTo(map);
 
 var marker
 
-// Locator
-document.getElementById('locate').addEventListener('click', function() {
+// On page load
+window.onload = function() {
     if (!navigator.geolocation) {
-        document.getElementById('position').innerHTML = "Geolocation is not supported by your browser";
+        document.getElementById('position').innerHTML = "Selaimesi ei tuo paikannusta";
     } else {
-        document.getElementById('position').innerHTML = "Locating...";
+        document.getElementById('position').innerHTML = "Paikantaa...";
         navigator.geolocation.watchPosition(success, error);
     }
-});
+};
 
 function success(position) {
-    if(position.coords.accuracy < 100) {
-        var latitude  = position.coords.latitude;
-        var longitude = position.coords.longitude;
-        var accuracy = position.coords.accuracy;
+    if(position.coords.accuracy < 200) {
+        var latitude  = Math.round(position.coords.latitude * 10000) / 10000;
+        var longitude = Math.round(position.coords.longitude* 10000) / 10000;
+        var accuracy = Math.round(position.coords.accuracy);
 
-        document.getElementById('position').innerHTML = 'Latitude: ' + latitude + '°<br>Longitude: ' + longitude + '°<br>Accuracy: ' + accuracy + ' meters';
+        document.getElementById('position').innerHTML = 'N: ' + latitude + '°<br>E: ' + longitude + '°<br>Tarkkuus: ' + accuracy + ' m';
 
         // update or add the marker
         if (marker) {
@@ -82,7 +98,7 @@ function success(position) {
 }
 
 function error() {
-    document.getElementById('position').innerHTML = "Unable to retrieve your location";
+    document.getElementById('position').innerHTML = "Sijaintiasi ei voitu paikantaa.";
 }
 
 </script>        

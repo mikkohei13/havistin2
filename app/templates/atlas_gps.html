@@ -8,26 +8,28 @@
     {% block body %}
     <p id="message"></p>
 
-    <h1>Locate Me!</h1>
-    <button id="locate">Locate me</button>
+    <button id="locate">Paikanna minut</button>
     <p id="position"></p>
     
 <script>
 
 document.getElementById('locate').addEventListener('click', function() {
     if (!navigator.geolocation) {
-        document.getElementById('position').innerHTML = "Geolocation is not supported by your browser";
+        document.getElementById('position').innerHTML = "Selaimesi ei tuo paikannusta.";
     } else {
-        document.getElementById('position').innerHTML = "Locating...";
-        navigator.geolocation.watchPosition(success, error);
+        document.getElementById('position').innerHTML = "Paikantaa...";
+        const options = {
+            maximumAge: 10000
+        }
+        navigator.geolocation.watchPosition(success, error, options);
     }
 });
 
 function success(position) {
-    if(position.coords.accuracy < 100) {
+    if(position.coords.accuracy < 200) {
         var latitude  = position.coords.latitude;
         var longitude = position.coords.longitude;
-        var accuracy = position.coords.accuracy;
+        var accuracyRounded = Math.round(position.coords.accuracy);
 
         // Define WGS84 and EPSG:2393 projection
         var wgs84 = 'EPSG:4326';
@@ -35,11 +37,18 @@ function success(position) {
 
         // Convert coordinates
         var epsg2393Coords = proj4(wgs84, epsg2393, [longitude, latitude]);
+        var n = epsg2393Coords[1].toString().substring(0, 3);
+        var e = epsg2393Coords[0].toString().substring(0, 3);
 
         document.getElementById('position').innerHTML = 
-            'WGS84<br>Latitude: ' + latitude + '°<br>Longitude: ' + longitude + '°<br>Accuracy: ' + accuracy + ' meters<br>' +
-            'EPSG:2393<br>Northing: ' + epsg2393Coords[1].toFixed(2) + ' m<br>Easting: ' + epsg2393Coords[0].toFixed(2) + ' m';
+            'WGS84<br>Leveys: ' + latitude + '°<br>Pituus: ' + longitude + '°<br>Tarkkuus: ' + accuracyRounded + ' m<br>' +
+            'YKJ<br>N: ' + n + '<br>E: ' + e;
         navigator.geolocation.clearWatch(success);
+        window.location.href = '/atlas/here/' + n + ':' + e;
+    }
+    else {
+        var accuracyRounded = Math.round(position.coords.accuracy)
+        document.getElementById('position').innerHTML = "Paikantaa... tarkkuus " + accuracyRounded + ' m';
     }
 }
 

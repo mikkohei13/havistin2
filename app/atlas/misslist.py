@@ -9,7 +9,7 @@ import atlas.common_atlas as common_atlas
 from helpers import common_helpers
 
 
-def make_table(sorted_missvalues, atlas4_species):
+def make_misstable(sorted_missvalues, atlas4_species):
     html = "<table class='styled-table'>"
     html += "<thead><tr><th>Laji</th><th>Pistearvo</th><th>Korkein indeksi tällä ruudulla</th></tr></thead><tbody>"
 
@@ -42,70 +42,6 @@ def make_table(sorted_missvalues, atlas4_species):
     return html
 
 
-def get_species_predictions(square_id):
-    square_filename = square_id.replace(":", "_")
-    filename = f"./data/atlas_predictions/{ square_filename }.json"
-    f = open(filename)       
-
-    species_dict = json.load(f)
-
-    f.close()
-    return species_dict
-
-
-def atlas_class_to_value(class_value):
-    if "MY.atlasClassEnumA" == class_value:
-        return 0
-    if "MY.atlasClassEnumB" == class_value:
-        return 1
-    if "MY.atlasClassEnumC" == class_value:
-        return 2
-    if "MY.atlasClassEnumD" == class_value:
-        return 3
-    return 0
-
-
-def get_species_missvalues(species_predictions, atlas4_species):
-
-    # Create new and simpler dictionary of the predicted value
-    species_predictions_simple = dict()
-
-    # Count missvalues
-    missvalues = dict()
-
-    for species, data in species_predictions.items():
-
-        # Get capped predicted class
-        predicted_class = data["predictions"][0]["value"]
-        if predicted_class < 0:
-            predicted_class = 0
-        elif predicted_class > 3:
-            predicted_class = 3
-
-        # If observed in 4th atlas, calculate difference
-        if species in atlas4_species:
-            current_class = atlas_class_to_value(atlas4_species[species]["atlasClass"]["key"])
-            missvalue = predicted_class - current_class
-
-            # if already higher than predicted value
-            if missvalue < 0:
-                missvalue = 0
-
-            missvalue = round(missvalue, 1)
-            
-        # if not observed, just use predicted value
-        else:
-            missvalue = round(predicted_class, 1)
-
-        # Ignore too improbable species
-        if missvalue > 0.1:
-            missvalues[species] = missvalue
-
-#        species_predictions_simple[species] = predicted_class
-
-    return missvalues
-
-
 def main(square_id_untrusted):
     html = dict()
 
@@ -120,15 +56,15 @@ def main(square_id_untrusted):
     atlas4_species, atlas4_square_info = common_atlas.get_atlas4_square_data(square_id)
 
     # Get prediction data
-    species_predictions = get_species_predictions(square_id)
+    species_predictions = common_atlas.get_species_predictions(square_id)
 
     # Calculate missvalues
-    missvalues = get_species_missvalues(species_predictions, atlas4_species)
+    missvalues = common_atlas.get_species_missvalues(species_predictions, atlas4_species)
     sorted_missvalues = {k: v for k, v in sorted(missvalues.items(), key=lambda item: item[1], reverse=True)}
-    print(sorted_missvalues)
+#    print(sorted_missvalues)
 
     # Generate HTML
-    html["species_table"] = make_table(sorted_missvalues, atlas4_species)
+    html["species_table"] = make_misstable(sorted_missvalues, atlas4_species)
     html["title"] = f"Atlasruudun {atlas4_square_info['coordinates']} puutelista"
     html["heading"] = f"{atlas4_square_info['coordinates']} {atlas4_square_info['name']} <span> - {atlas4_square_info['birdAssociationArea']['value']}</span>"
     html["info_top"] = common_atlas.get_info_top_html(atlas4_square_info)
