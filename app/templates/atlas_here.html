@@ -1,7 +1,8 @@
 {% extends "base.html" %}
 
     {% block head %}
-    <title>Lintuatlaksen tilastoja (biomi.org)</title>
+    <title>{{ html["heading"] }} - Lintuatlas (biomi.org)</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.7.5/proj4.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
     crossorigin=""/>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
@@ -9,13 +10,13 @@
     {% endblock %}
 
     {% block breadcrumb %}
-    <a href="../../../">Lintuatlas</a> &raquo; <a href="/atlas/gps">Hae sijainti</a> &raquo;
+    <a href="../../../">Lintuatlas</a> &raquo; <a href="/atlas/gps">Sijaintisi</a> &raquo;
     {% endblock %}
 
     {% block body %}
 
     <div id="heading">
-        <h1>{{ html["heading"]|safe }}</h1>
+        <h1>{{ html["heading"] }}</h1>
         <p id="links">
             <span>
                 <a href="/atlas/ruutulomake/{{ html["square_id"] }}/vakio">Maastolomake</a>
@@ -50,7 +51,7 @@
     <p>Biotoopit, joista puuttuvia pesimälajeja todennäköisesti löytyy eniten:</p>
     {{ html["biotope_table"]|safe }}
 
-    <p>Ruudulla todennäköisesti esiintyvät lajit ja suurin imoitettu pesimävarmuusindeksi:</p>
+    <p>Ruudulla todennäköisesti esiintyvät, mutta vielä varmistamattomat lajit ja suurin kirjattu pesimävarmuusindeksi (<a href="https://www.biomi.org/2023/05/23/lintulajien-levinneisyysmallinnus-koneoppimisella/" target="_blank">lue menetelmästä</a>):</p>
     {{ html["species_table"]|safe }}
 
 <script>
@@ -71,13 +72,19 @@ var polyline = L.polyline(polyLatLon, {color: 'red'}).addTo(map);
 
 var marker
 
+const page_square_id = "{{ html["square_id"] }}";
+
 // On page load
 window.onload = function() {
     if (!navigator.geolocation) {
         document.getElementById('position').innerHTML = "Selaimesi ei tuo paikannusta";
     } else {
         document.getElementById('position').innerHTML = "Paikantaa...";
-        navigator.geolocation.watchPosition(success, error);
+        const options = {
+            maximumAge: 10000,
+            enableHighAccuracy: true
+        }
+        navigator.geolocation.watchPosition(success, error, options);
     }
 };
 
@@ -87,7 +94,26 @@ function success(position) {
         var longitude = Math.round(position.coords.longitude* 10000) / 10000;
         var accuracy = Math.round(position.coords.accuracy);
 
-        document.getElementById('position').innerHTML = 'N: ' + latitude + '°<br>E: ' + longitude + '°<br>Tarkkuus: ' + accuracy + ' m';
+        // Define WGS84 and EPSG:2393 projection
+        var wgs84 = 'EPSG:4326';
+        var epsg2393 = '+proj=tmerc +lat_0=0 +lon_0=27 +k=1 +x_0=3500000 +y_0=0 +ellps=intl +towgs84=-96.062,-82.428,-121.753,4.801,0.345,-1.376,1.496 +units=m +no_defs';
+
+        // Convert coordinates
+        var epsg2393Coords = proj4(wgs84, epsg2393, [longitude, latitude]);
+        var ykj_n = epsg2393Coords[1].toString().substring(0, 7);
+        var ykj_e = epsg2393Coords[0].toString().substring(0, 7);
+        var square_n = ykj_n.substring(0, 3);
+        var square_e = ykj_e.substring(0, 3);
+        var square_id = square_n + ":" + square_e
+
+        if (page_square_id == square_id) {
+            warning = ""
+        }
+        else {
+            warning = "<br><strong class='warning'>Et ole tällä ruudulla, päivitä sijaintisi!</strong>"
+        }
+
+        document.getElementById('position').innerHTML = ykj_n + ':' + ykj_e + ', tarkkuus: ' + accuracy + ' m' + warning;
 
         // update or add the marker
         if (marker) {
@@ -97,6 +123,10 @@ function success(position) {
         }
 
         navigator.geolocation.clearWatch(success);
+    }
+    else {
+        var accuracyRounded = Math.round(position.coords.accuracy)
+        document.getElementById('position').innerHTML = "Paikantaa... tarkkuus " + accuracyRounded + ' m';
     }
 }
 

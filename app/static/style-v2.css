@@ -301,6 +301,10 @@ h2, h3, h3 {
     font-weight: bold;
 }
 
+.warning {
+    color: #d00;
+}
+
 /* Generic tables */
 /* https://dev.to/dcodeyt/creating-beautiful-html-tables-with-css-428l */
 .styled-table {

@@ -66,15 +66,15 @@ def make_biotopetable(biotope_values):
     for biotope_abbr, biotope_value in biotope_values.items():
         biotope = "muu"
         if "p" == biotope_abbr:
-            biotope = "perinneympäristö"
+            biotope = "maaseutu- ja rakennetut ympäristöt"
         if "m" == biotope_abbr:
-            biotope = "metsä"
+            biotope = "metsät"
         if "v" == biotope_abbr:
-            biotope = "vesi"
+            biotope = "vesistöt"
         if "t" == biotope_abbr:
             biotope = "tunturipaljakka"
         if "s" == biotope_abbr:
-            biotope = "avosuo"
+            biotope = "avosuot"
 
         biotope_value = round(biotope_value, 1)
 
@@ -147,7 +147,9 @@ def main(square_id_untrusted):
 #    html["heading"] = f"{atlas4_square_info['coordinates']} {atlas4_square_info['name']} <span> - {atlas4_square_info['birdAssociationArea']['value']}</span>"
     html["info_top"] = common_atlas.get_info_top_html(atlas4_square_info)
 
+    html["society"] = society
     html["observation_count"] = total_obs_count
+    html["square_id"] = f"{square_id}"
     html["heading"] = f"{square_id} {square_name}"
     html["centerpoint"] = centerpoint
     html["cornerpoints"] = cornerpoints

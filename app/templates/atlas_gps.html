@@ -5,13 +5,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.7.5/proj4.js"></script>
     {% endblock %}
 
+    {% block breadcrumb %}
+    <a href="../../../">Lintuatlas</a> &raquo; Sijaintisi
+    {% endblock %}
+
     {% block body %}
 
-    <h3>Odota hetki...</h3>
-    <p id="message"></p>
+    <h3>Paikannus käynnissä, odota hetki...</h3>
 
 <!--    <button id="locate">Paikanna minut</button>-->
-    <p id="position"></p>
+    <p id="position">Voit kokeilla nopeuttaa paikantamista avaamalla sovelluksen, joka käyttää GPS:aa, esim. Google Mapsin. Palaa takaisin tähän sovellukseen, kun se on löytänyt tarkan paikkasi.</p>
     
 <script>
 
@@ -20,9 +23,10 @@ window.onload = function() {
     if (!navigator.geolocation) {
         document.getElementById('position').innerHTML = "Selaimesi ei tuo paikannusta.";
     } else {
-        document.getElementById('position').innerHTML = "Paikantaa...";
+//        document.getElementById('position').innerHTML = "Paikantaa...";
         const options = {
-            maximumAge: 10000
+            maximumAge: 10000,
+            enableHighAccuracy: true
         }
         navigator.geolocation.watchPosition(success, error, options);
     }
@@ -43,9 +47,11 @@ function success(position) {
         var n = epsg2393Coords[1].toString().substring(0, 3);
         var e = epsg2393Coords[0].toString().substring(0, 3);
 
+//        document.getElementById('position').innerHTML = 
+//            'WGS84<br>Leveys: ' + latitude + '°<br>Pituus: ' + longitude + '°<br>Tarkkuus: ' + accuracyRounded + ' m<br>' +
+//            'YKJ<br>N: ' + n + '<br>E: ' + e;
         document.getElementById('position').innerHTML = 
-            'WGS84<br>Leveys: ' + latitude + '°<br>Pituus: ' + longitude + '°<br>Tarkkuus: ' + accuracyRounded + ' m<br>' +
-            'YKJ<br>N: ' + n + '<br>E: ' + e;
+            'Ohjataan ruudun sivulle...';
         navigator.geolocation.clearWatch(success);
         window.location.href = '/atlas/here/' + n + ':' + e;
     }
