@@ -59,6 +59,58 @@ def make_misstable(sorted_missvalues, atlas4_species):
     return html
 
 
+def make_biotopetable(biotope_values):
+    html = "<table class='styled-table'>"
+    html += "<thead><tr><th>Laji</th><th>Puute</th></tr></thead><tbody>"
+
+    for biotope_abbr, biotope_value in biotope_values.items():
+        biotope = "muu"
+        if "p" == biotope_abbr:
+            biotope = "perinneympäristö"
+        if "m" == biotope_abbr:
+            biotope = "metsä"
+        if "v" == biotope_abbr:
+            biotope = "vesi"
+        if "t" == biotope_abbr:
+            biotope = "tunturipaljakka"
+        if "s" == biotope_abbr:
+            biotope = "avosuo"
+
+        biotope_value = round(biotope_value, 1)
+
+        html += "<tr>\n"
+        html += f"<td>{ biotope }</td>"
+        html += f"<td>{ biotope_value }</td>"
+        html += "</tr>\n"
+
+    html += "</tbody></table>"
+
+    return html
+
+
+def calculate_biotope_values(sorted_missvalues, species_biotopes):
+    biotope_values = dict()
+    for species, missvalue in sorted_missvalues.items():
+
+        species_data = species_biotopes[species]
+
+        # Skip if species does not have biotope value
+        if "bio" not in species_data:
+            continue
+
+        biotope = species_data["bio"]
+
+        # Init empty biotope values
+        if biotope not in biotope_values:
+            biotope_values[biotope] = 0
+
+        # Add raw biotope value
+        biotope_values[biotope] = biotope_values[biotope] + missvalue
+
+    biotope_values = {k: v for k, v in sorted(biotope_values.items(), key=lambda item: item[1], reverse=True)}
+    return biotope_values
+
+
 def main(square_id_untrusted):
     html = dict()
 
@@ -80,6 +132,15 @@ def main(square_id_untrusted):
     missvalues = common_atlas.get_species_missvalues(species_predictions, atlas4_species)
     sorted_missvalues = {k: v for k, v in sorted(missvalues.items(), key=lambda item: item[1], reverse=True)}
     print(sorted_missvalues)
+
+    # Get biotope data
+    species_biotopes = common_atlas.read_json_to_dict("species-data.json")
+
+#    print(sorted_missvalues)
+
+    biotope_values = calculate_biotope_values(sorted_missvalues, species_biotopes)
+    html["biotope_table"] = make_biotopetable(biotope_values)
+
 
     # Generate HTML
     html["species_table"] = make_misstable(sorted_missvalues, atlas4_species)

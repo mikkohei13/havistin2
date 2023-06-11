@@ -27,6 +27,8 @@
     </div>
 
     <div id="subnavi">
+        <p id="position"></p>
+        <!--
         <form id="squareselection" action="" method="get">
             <input id="mode" type="hidden" value="squareform">
             <label id="square-label">
@@ -35,6 +37,7 @@
             </label>
             <input type="submit" value="Valitse"> <span>(esim. 668:338)</span>
         </form>
+        -->
         <p id="subnavi_p"><a href="/atlas/gps">Hae sijaintisi uudelleen</a></p>
     </div>
 
@@ -44,11 +47,11 @@
 
     <p>{{ html["observation_count"] }} atlashavaintoa tästä ruudusta.</p>
 
+    <p>Biotoopit, joista puuttuvia pesimälajeja todennäköisesti löytyy eniten:</p>
+    {{ html["biotope_table"]|safe }}
+
     <p>Ruudulla todennäköisesti esiintyvät lajit ja suurin imoitettu pesimävarmuusindeksi:</p>
     {{ html["species_table"]|safe }}
-    
-
-    <p id="position"></p>
 
 <script>
 
