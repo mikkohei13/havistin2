@@ -150,7 +150,7 @@ def gps():
     return render_template("atlas_gps.html", html=html)
 
 @app.route("/atlas/here/<string:square_id_untrusted>")
-@robust_cached(timeout=1)
+@robust_cached(timeout=3600)
 def here(square_id_untrusted):
     html = atlas.here.main(square_id_untrusted)
     return render_template("atlas_here.html", html=html)
