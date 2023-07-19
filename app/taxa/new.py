@@ -56,6 +56,7 @@ def get_species_qnames(page_name_untrusted):
         species.append("MX.230068")
         species.append("MX.4994287")
         species.append("MX.230095")
+        species.append("MX.5103021") # Agnocoris reclairei
 
     elif "heteroptera_new_2" == page_name_untrusted:
 
@@ -68,6 +69,7 @@ def get_species_qnames(page_name_untrusted):
         species.append("MX.4994292")
         species.append("MX.230173")
         species.append("MX.5082045")
+        species.append("MX.5093828") # Mezira tremulae 
         species.append("MX.230230")
         species.append("MX.4994293")
         species.append("MX.5075004")
@@ -101,6 +103,7 @@ def get_species_qnames(page_name_untrusted):
         species.append("MX.5093786")
         species.append("MX.5093843")
         species.append("MX.5093779")
+        # TODO: Deraeocoris trifasciatus, ei vielä MX-koodia
         species.append("MX.5093781")
         species.append("MX.5093784")
         species.append("MX.5093787")
