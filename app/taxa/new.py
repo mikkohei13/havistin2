@@ -33,6 +33,7 @@ def get_species_qnames(page_name_untrusted):
         species.append("MX.5080747")
         species.append("MX.5074723")
         species.append("MX.4994279")
+        species.append("MX.5093842") # Tingis ampliata
         species.append("MX.5074543")
         species.append("MX.229795")
         species.append("MX.229799")
@@ -57,6 +58,7 @@ def get_species_qnames(page_name_untrusted):
         species.append("MX.4994287")
         species.append("MX.230095")
         species.append("MX.5103021") # Agnocoris reclairei
+        species.append("MX.5102558") # Pilophorus pusillus
 
     elif "heteroptera_new_2" == page_name_untrusted:
 
