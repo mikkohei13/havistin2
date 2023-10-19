@@ -272,13 +272,16 @@ def weather_change(messaging_on = 0):
     html = weather.change.main(messaging_on)
     return render_template("weather_change.html", html=html)
 
+# ABBA
 @app.route("/talvilinnut/<int:dev_secret>")
 @app.route("/talvilinnut/")
 @app.route("/talvilinnut")
-@robust_cached(timeout=2592000) # 2592000 = 30 pv
+@robust_cached(timeout=1) # 2592000 = 30 pv
 def winterbird_root(dev_secret = 1):
-    html = winterbird.winterbird.main(dev_secret)
-    return render_template("winterbird.html", html=html)
+    return redirect('/')
+# Page removed due to too heavy API calls
+#    html = winterbird.winterbird.main(dev_secret)
+#    return render_template("winterbird.html", html=html)
 
 @app.route("/talvilinnut/laskenta/<string:society_id>/<string:season>")
 @app.route("/talvilinnut/laskenta/")
