@@ -25,11 +25,11 @@ It's better to call this at 5, 15, 25, 35 45 and 55 past, so that data has been 
 
 First build the image, and tag it with a version number and/or as latest:
 
-    docker build -t havistin2-gunicorn:VERSIONNUMBER -t havistin2-gunicorn:latest .
+    docker build -t havistin2-gunicorn:latest .
 
 Or set a version number:
 
-    docker build -t havistin2-gunicorn:VERSIONNUMBER -t havistin2-gunicorn:latest .
+    docker build -t havistin2-gunicorn:VERSIONNUMBER -t havistin2-gunicorn:0.1 .
 
 Check which version numbers have been used:
 

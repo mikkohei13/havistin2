@@ -4,6 +4,11 @@ FROM python:3-slim
 # Allow statements and log messages to immediately appear in the Knative logs
 ENV PYTHONUNBUFFERED True
 
+RUN apt-get update
+RUN apt-get upgrade -y
+RUN apt-get install -y gcc
+RUN pip3 install --upgrade pip
+
 COPY requirements.txt /tmp/requirements.txt
 RUN pip3 install -r /tmp/requirements.txt
 
