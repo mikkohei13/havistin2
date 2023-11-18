@@ -5,6 +5,8 @@ export/
 import/
 test*
 cache/
+app/static/dynamic/*
+app/info/*.png
 
 
 # Byte-compiled / optimized / DLL files

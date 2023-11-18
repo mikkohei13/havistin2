@@ -33,6 +33,7 @@ import taxa.compare_years
 import winterbird.winterbird
 import winterbird.census
 
+import info.dev
 
 import weather.change
 
@@ -291,10 +292,15 @@ def winterbird_census(society_id = "", season = ""):
     html = winterbird.census.main(society_id, season)
     return render_template("winterbird_census.html", html=html)
 
+@app.route("/info/dev")
+def info_dev():
+    html = info.dev.main()
+    return render_template("info_dev.html", html=html)
+
 @app.route("/dev/<string:taxon_id_untrusted>")
 @robust_cached(timeout=1)
 def dev_root(taxon_id_untrusted):
-    html = dev.dev.main(taxon_id_untrusted)
+    html = info.dev.main(taxon_id_untrusted)
     return render_template("dev.html", html=html)
 
 '''
