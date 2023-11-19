@@ -108,6 +108,8 @@ def simiplify_image(image_path, colors_to_keep_dict):
         # Draw the red spot (circle)
         draw.ellipse([left, top, right, bottom], fill='red')
 
+        # Todo: draw box around where rain intensity is calculated
+
         return img
 
 
