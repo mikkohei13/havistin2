@@ -38,10 +38,8 @@ def get_image(url, local_filepath):
     return False
 
 
-def count_pixels_with_color(image_path, hex_color):
-    # Convert hex color to an RGB tuple
-    hex_color = hex_color.lstrip('#')
-    target_color = tuple(int(hex_color[i:i+2], 16) for i in (0, 2, 4))
+def count_pixels_with_color(image_path, color_dict):
+    total_rain_value = 0
 
     # Load the image
     with Image.open(image_path) as img:
@@ -50,7 +48,7 @@ def count_pixels_with_color(image_path, hex_color):
 
         # Crop to square
         output_size = 508
-        output_size = 200
+        output_size = 300
         left = (width - output_size) / 2
         top = (height - output_size) / 2
         right = (width + output_size) / 2
@@ -58,21 +56,36 @@ def count_pixels_with_color(image_path, hex_color):
 
         cropped_img = img.crop((left, top, right, bottom))
 
+        for color_value, color_hex in color_dict.items():
+            # Convert hex color to an RGB tuple
+            color_hex = color_hex.lstrip('#')
+            target_color = tuple(int(color_hex[i:i+2], 16) for i in (0, 2, 4))
+
+            # Iterate over pixels and count the matches
+            count = 0
+            for pixel in cropped_img.getdata():
+                if pixel == target_color:
+                    count += 1
+            
+            # Multiply with rain intensity
+            count = count * int(color_value)
+            total_rain_value = total_rain_value + count
+
         # Todo: move to settings
         cropped_img.save('./static/dynamic/latest_rain_cropped_for_calculation.png')
 
-        # Iterate over pixels and count the matches
-        count = 0
-        for pixel in cropped_img.getdata():
-            if pixel == target_color:
-                count += 1
+    # Calculate rain value relative to area
+    area = output_size * output_size
+    total_rain_value = round(total_rain_value / area, 3)
 
-    return count
+    return total_rain_value
 
 
-def simiplify_image(image_path, colors_to_keep):
+def simiplify_image(image_path, colors_to_keep_dict):
     # Convert hex colors to RGB tuples
-    colors_to_keep = [tuple(int(color.lstrip('#')[i:i+2], 16) for i in (0, 2, 4)) for color in colors_to_keep]
+#    colors_to_keep = [tuple(int(color.lstrip('#')[i:i+2], 16) for i in (0, 2, 4)) for color in colors_to_keep] # list
+    colors_to_keep = [tuple(int(hex_color.lstrip('#')[i:i+2], 16) for i in (0, 2, 4)) for hex_color in colors_to_keep_dict.values()] # dict
+
 
     with Image.open(image_path) as img:
         img = img.convert('RGB')
@@ -108,26 +121,21 @@ def main():
     url = "https://testbed.fmi.fi/?imgtype=radar&t=5&n=1"
     get_image(url, raw_image_path)
 
-    color_50 = "#FA78FF" # pink
-    color_40 = "#FF503C" # red
-    color_34 = "#FF9632" # dark orange
-    color_30 = "#FFCD14" # light orange
-    color_24 = "#F0F014" # yellow
-    color_18 = "#8CE614" # green
-    color_12 = "#05CDAA" # turquoise
-    color_08 = "#0A9BE1" # blue
+    rain_colors = dict()
+    rain_colors["50"] = "#FA78FF" # pink
+    rain_colors["40"] = "#FF503C" # red
+    rain_colors["34"] = "#FF9632" # dark orange
+    rain_colors["30"] = "#FFCD14" # light orange
+    rain_colors["24"] = "#F0F014" # yellow
+    rain_colors["18"] = "#8CE614" # green
+    rain_colors["12"] = "#05CDAA" # turquoise
+    rain_colors["08"] = "#0A9BE1" # blue
 
-    pixels_50 = count_pixels_with_color(raw_image_path, color_50)
-    pixels_40 = count_pixels_with_color(raw_image_path, color_40)
-    pixels_34 = count_pixels_with_color(raw_image_path, color_34)
-    pixels_30 = count_pixels_with_color(raw_image_path, color_30)
-    pixels_24 = count_pixels_with_color(raw_image_path, color_24)
-    pixels_18 = count_pixels_with_color(raw_image_path, color_18)
-    pixels_12 = count_pixels_with_color(raw_image_path, color_12)
-    pixels_08 = count_pixels_with_color(raw_image_path, color_08)
+    rain_value = count_pixels_with_color(raw_image_path, rain_colors)
+    
+#    rain_value = (pixels_50 * 50) + (pixels_40 * 40) + (pixels_34 * 34) + (pixels_30 * 30) + (pixels_24 * 24) + (pixels_18 * 18) + (pixels_12 * 12) + (pixels_08 * 8)
 
-    rain_value = (pixels_50 * 50) + (pixels_40 * 40) + (pixels_34 * 34) + (pixels_30 * 30) + (pixels_24 * 24) + (pixels_18 * 18) + (pixels_12 * 12) + (pixels_08 * 8)
-
+    '''
     print(pixels_50)
     print(pixels_40)
     print(pixels_34)
@@ -136,10 +144,11 @@ def main():
     print(pixels_18)
     print(pixels_12)
     print(pixels_08)
+    '''
 
-    colors_to_keep = [color_50, color_40, color_34, color_30, color_24, color_18, color_12, color_08]
+#    colors_to_keep = ["#0A9BE1"]
     
-    simple_img = simiplify_image(raw_image_path, colors_to_keep)
+    simple_img = simiplify_image(raw_image_path, rain_colors)
 
     simple_img.save("." + simple_image_path)
 
