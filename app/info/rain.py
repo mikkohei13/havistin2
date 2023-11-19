@@ -57,7 +57,9 @@ def count_pixels_with_color(image_path, hex_color):
         bottom = (height + output_size) / 2
 
         cropped_img = img.crop((left, top, right, bottom))
-        cropped_img.save('./info/cropped_image.png')
+
+        # Todo: move to settings
+        cropped_img.save('./static/dynamic/latest_rain_cropped_for_calculation.png')
 
         # Iterate over pixels and count the matches
         count = 0
@@ -99,7 +101,8 @@ def simiplify_image(image_path, colors_to_keep):
 def main():
     html = dict()
 
-    raw_image_path = "./info/cache/latest_rain.png"
+    raw_image_path = "./static/dynamic/latest_rain.png"
+    simple_image_path = "/static/dynamic/latest_rain_simple.png"
 
     # Url where to get the radar image
     url = "https://testbed.fmi.fi/?imgtype=radar&t=5&n=1"
@@ -138,10 +141,9 @@ def main():
     
     simple_img = simiplify_image(raw_image_path, colors_to_keep)
 
-    simple_image_path = "./static/dynamic/latest_rain_simple.png"
-    simple_img.save(simple_image_path)
+    simple_img.save("." + simple_image_path)
 
     html["rain_value"] = "{:,}".format(rain_value).replace(',', ' ') # Thousand separator
-    html["simple_img_path"] = "/static/dynamic/latest_rain_simple.png"
+    html["simple_img_path"] = simple_image_path
 
     return html
