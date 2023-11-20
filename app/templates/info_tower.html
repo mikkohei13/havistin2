@@ -1,4 +1,14 @@
+<style>
+    .station span {
+        width: 5em;
+        display: block;
+        float: left;
+    }
+    .station {
+        clear: both;
+    }
+</style>
 
 <h3>{{ html["test"] }}</h3>
 
-{{ html["test2"] }}
+{{ html["test2"]|safe }}
