@@ -35,6 +35,7 @@ import winterbird.census
 
 import info.rain
 import info.tower
+import info.birds
 
 import weather.change
 
@@ -302,6 +303,11 @@ def info_rain():
 def info_tower():
     html = info.tower.main()
     return render_template("info_tower.html", html=html)
+
+@app.route("/info/birds/<string:secret>")
+def info_birds(secret = ""):
+    html = info.birds.main(secret)
+    return render_template("info_birds.html", html=html)
 
 @app.route("/dev/<string:taxon_id_untrusted>")
 @robust_cached(timeout=1)
