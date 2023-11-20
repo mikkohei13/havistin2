@@ -15,3 +15,7 @@ telegram_bot_token = "NNN:NNN"
 telegram_bot_chat_id = "-NNN"
 
 dev_secret = 1
+
+bird_secret = "secret-param"
+bird_url = "url"
+bird_class = "class-name"
