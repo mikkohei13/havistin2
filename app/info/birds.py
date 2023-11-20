@@ -47,6 +47,9 @@ def parse_html(html_content):
     observations = []
     rows = html_content.split("<br/>")
 
+    # Todo: this breaks if other than person names are in parenthesis 
+    # Replace second to last "(" with "<b>"?
+
     # Pattern to match <b>D(D).M(M).</b>
     pattern = r'^<b>(\d{1,2})\.(\d{1,2})\.</b>$'
 
@@ -58,7 +61,7 @@ def parse_html(html_content):
         # Date
         if bool(re.match(pattern, row)):
             date_mem = row.replace("<b>", "").replace("</b>", "")
-            print(date_mem)
+#            print(date_mem)
         else:
             # Observation
             if row:
@@ -68,6 +71,53 @@ def parse_html(html_content):
                 observations.append(obs_list)
 
     return observations
+
+
+def append_or_add(dictionary, key):
+    dictionary[key] = dictionary.get(key, 0) + 1
+
+
+def get_stats_html(observations):
+    species_counts = dict()
+
+    for obs in observations:
+        append_or_add(species_counts, obs[0])
+
+    species_counts = sorted(species_counts.items(), key=lambda item: item[1], reverse=True)
+
+    html = "<ul id='stats'>"
+
+    i = 0
+    limit = 10
+    for species in species_counts:
+        html += f"<li>{ species[0] }: { species[1] }</li>"
+        i += 1
+        if i >= limit:
+            break
+
+    html += "</ul>"
+
+    return html
+
+
+def get_location_report_html(observations, location):
+    html = "<table id='location_report'>"
+
+    i = 0
+    limit = 10
+    for obs in observations:
+        if location in obs[1]:
+            obs[1] = obs[1].replace(location, "").strip()
+            html += f"<tr><td>{ obs[0] }</td><td>{ obs[5] }</td><td>{ obs[1][:20] }</td><td>{ obs[2] }</td><td>{ obs[3][:20] }</td><td>{ obs[4][:20] }</td></tr>\n"
+
+            i += 1
+            if i >= limit:
+                break
+
+    html += "</table>"
+
+    return html
+
 
 
 def main(secret):
@@ -81,7 +131,9 @@ def main(secret):
     html_content = fetch_html(app_secrets.bird_url, app_secrets.bird_class)
     observations = parse_html(html_content)
 
-    print(observations)
+#    print(observations)
 
-    html["test"] = html_content
+    html["stats"] = get_stats_html(observations)
+    html["location_report"] = get_location_report_html(observations, "Espoo")
+
     return html
