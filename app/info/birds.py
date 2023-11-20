@@ -43,19 +43,8 @@ def split_observation(text):
     return d
 
 
-def main(secret):
-
-    # Init and check secret
-    html = dict()
-    if secret != app_secrets.bird_secret:
-        return html
-
-    # Get data
-    html_content = fetch_html(app_secrets.bird_url, app_secrets.bird_class)
-
-    print(html_content)
-
-#    html_content = html_content.replace("<br/><br/>", "")
+def parse_html(html_content):
+    observations = []
     rows = html_content.split("<br/>")
 
     # Pattern to match <b>D(D).M(M).</b>
@@ -76,17 +65,23 @@ def main(secret):
 #                print(i, row)
                 obs_list = split_observation(row)
                 obs_list.append(date_mem)
-                print(obs_list)
+                observations.append(obs_list)
+
+    return observations
 
 
-    '''
-    # Split the HTML content into entries
-    entries = re.split(r'<br/>\s*<b>\d+\.\d+\.</b><br/>', html_parts[0])
+def main(secret):
 
-    # Filter out empty strings and parse each entry
-    parsed_data = [parse_entry(entry) for entry in entries if entry.strip()]
-    print(parsed_data)
-    '''
+    # Init and check secret
+    html = dict()
+    if secret != app_secrets.bird_secret:
+        return html
+
+    # Get and parse data
+    html_content = fetch_html(app_secrets.bird_url, app_secrets.bird_class)
+    observations = parse_html(html_content)
+
+    print(observations)
 
     html["test"] = html_content
     return html
