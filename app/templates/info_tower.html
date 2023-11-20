@@ -1,4 +1,7 @@
 <style>
+    #tower {
+        position: relative;
+    }
     .station span {
         width: 5em;
         display: block;
@@ -6,9 +9,15 @@
     }
     .station {
         clear: both;
+        position: absolute;
+    }
+    .arrow {
+        
     }
 </style>
 
 <h3>{{ html["test"] }}</h3>
 
-{{ html["test2"]|safe }}
+<div id="tower">
+    {{ html["test2"]|safe }}
+</div>

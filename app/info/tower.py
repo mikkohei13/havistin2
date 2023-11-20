@@ -95,6 +95,10 @@ def measurement_html(data, height, measurement, suffix):
     if measurement == "RH" or measurement == "WD":
         if meas:
             meas = int(meas)
+    if measurement == "WD":
+        if meas:
+            rotation = meas;
+            meas = f"<img src='/static/arrow.png' alt='' class='arrow' style='transform: rotate({ rotation }deg);'>{ meas }"
 
     # Return html with content
     if meas:
@@ -138,12 +142,14 @@ def main():
 
         ta = measurement_html(data2, height, "TA", "&deg;C")
         ws = measurement_html(data2, height, "WS", "m/s")
-        wd = measurement_html(data2, height, "WD", "deg")
+        wd = measurement_html(data2, height, "WD", "")
         rh = measurement_html(data2, height, "RH", "rh %")
         td = measurement_html(data2, height, "TD", "dew") # Dew point
         wg = measurement_html(data2, height, "WG", "rain") # precipitation 10 min
+
+        top = 327 - int(float(height))
  
-        station_html += f"\n<div class='station' id='station_{ height }'>\n"
+        station_html += f"\n<div class='station' id='station_{ height }' style='top: { top }px'>\n"
         station_html += f"<span class='meas_height'>{ height_str }</span> { ta } { ws } { wd } { rh } { td } { wg }"
         station_html += "\n</div>\n"
 
