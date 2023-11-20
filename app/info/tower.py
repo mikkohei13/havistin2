@@ -98,14 +98,14 @@ def measurement_html(data, height, measurement, suffix):
     if measurement == "WD":
         if meas:
             rotation = meas;
-            meas = f"<img src='/static/arrow.png' alt='' class='arrow' style='transform: rotate({ rotation }deg);'>{ meas }"
+            meas = f"<img src='/static/arrow_white.png' alt='{ meas } deg' class='arrow' style='transform: rotate({ rotation }deg);'>"
 
     # Return html with content
     if meas:
-        return f"<span class='_meas_{ measurement }'><strong>{ meas }</strong> { suffix }</span>"
+        return f"<span class='meas_{ measurement }'><strong>{ meas }</strong> { suffix }</span>"
     # Return html without content
     else:
-        return "<span class='_meas_{ measurement }'>&nbsp;</span>"
+        return f"<span class='meas_{ measurement }'>&nbsp;</span>"
 
 
 def main():
@@ -143,14 +143,14 @@ def main():
         ta = measurement_html(data2, height, "TA", "&deg;C")
         ws = measurement_html(data2, height, "WS", "m/s")
         wd = measurement_html(data2, height, "WD", "")
-        rh = measurement_html(data2, height, "RH", "rh %")
-        td = measurement_html(data2, height, "TD", "dew") # Dew point
-        wg = measurement_html(data2, height, "WG", "rain") # precipitation 10 min
+        wg = measurement_html(data2, height, "WG", "puuska") # Gust 10 min
+        rh = measurement_html(data2, height, "RH", "%")
+        td = measurement_html(data2, height, "TD", "kaste") # Dew point
 
         top = 327 - int(float(height))
  
         station_html += f"\n<div class='station' id='station_{ height }' style='top: { top }px'>\n"
-        station_html += f"<span class='meas_height'>{ height_str }</span> { ta } { ws } { wd } { rh } { td } { wg }"
+        station_html += f"<span class='meas_height'><strong>{ height_str }</strong></span> { ta } { ws } { wd } { wg } { rh } { td }"
         station_html += "\n</div>\n"
 
         stations += station_html

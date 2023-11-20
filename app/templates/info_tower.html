@@ -1,23 +1,41 @@
+
 <style>
-    #tower {
-        position: relative;
-    }
-    .station span {
-        width: 5em;
-        display: block;
-        float: left;
-    }
-    .station {
-        clear: both;
-        position: absolute;
-    }
-    .arrow {
-        
-    }
+#wrapper {
+        background-color: #000;
+        color: #fff;
+        height: 500px;
+}
+#tower {
+    position: relative;
+}
+span {
+    color: #999;
+}
+strong {
+    color: #fff;
+}
+.station {
+    clear: both;
+    position: absolute;
+}
+.station span {
+    width: 5em;
+    display: block;
+    float: left;
+    text-align: right;
+}
+.station span.meas_WD {
+    width: 3em;
+}
+.arrow {
+    margin-top: -5px;
+    position: relative;
+    left: -15px;
+}
 </style>
 
-<h3>{{ html["test"] }}</h3>
-
-<div id="tower">
-    {{ html["test2"]|safe }}
+<div id="wrapper">
+    <div id="tower">
+        {{ html["test2"]|safe }}
+    </div>
 </div>
