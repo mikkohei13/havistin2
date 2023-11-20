@@ -305,6 +305,7 @@ def info_tower():
     return render_template("info_tower.html", html=html)
 
 @app.route("/info/birds/<string:secret>")
+@robust_cached(timeout=3600)
 def info_birds(secret = ""):
     html = info.birds.main(secret)
     return render_template("info_birds.html", html=html)
