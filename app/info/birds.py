@@ -5,31 +5,42 @@ import app_secrets
 
 import requests
 from bs4 import BeautifulSoup
+import re
 
-
-def fetch_and_parse_table(url, class_name):
+def fetch_html(url, class_name):
     # Fetch HTML content from the URL
     response = requests.get(url)
-    html_content = response.text
+    html_doc = response.text
 
-    # Parse HTML using BeautifulSoup
-    soup = BeautifulSoup(html_content, 'html.parser')
+    soup = BeautifulSoup(html_doc, 'html.parser')
+    data = soup.find('div', class_=class_name)
+    data = str(data) # BS4 object into string
 
-    # Find the div with class 'foo' and then find the table within this div
-    div = soup.find('div', {'class': class_name})
+    # Cleanup
+    data = data.replace("<div class=\"www-raportti\">", "")
+    data_parts = data.split("<br/>Katso havainnot <a")
 
-    tables = div.find_all('table') if div else []
-    nested_table = tables[1] if len(tables) > 1 else None  # Assuming the nested table is the second one
+    return data_parts[0]
 
 
-    # Extract each row into a list
-    rows_list = []
-    for tr in nested_table.find_all('tr'):
-        cells = tr.find_all('td')
-        row_data = [cell.text for cell in cells]
-        rows_list.append(row_data)
 
-    return rows_list
+def split_observation(text):
+    text = text.replace('\xa0', ' ')
+
+    # Pattern to identify text inside and outside of <b> tags
+    pattern = r'(<b>.*?</b>|\(.*?\)|[^<\(\)]+)'
+
+    # Find all matches of the pattern in the text
+    d = re.findall(pattern, text)
+
+    # Clean
+    d[0] = d[0].replace("<b>", "").replace("</b>", "")
+    d[1] = d[1].strip()
+    d[2] = d[2].replace("<b>", "").replace("</b>", "")
+    d[3] = d[3].strip()
+    d[4] = d[4][1:-1]
+
+    return d
 
 
 def main(secret):
@@ -40,9 +51,42 @@ def main(secret):
         return html
 
     # Get data
-    obs_dict = fetch_and_parse_table(app_secrets.bird_url, app_secrets.bird_class)
-    print(obs_dict)
+    html_content = fetch_html(app_secrets.bird_url, app_secrets.bird_class)
+
+    print(html_content)
+
+#    html_content = html_content.replace("<br/><br/>", "")
+    rows = html_content.split("<br/>")
+
+    # Pattern to match <b>D(D).M(M).</b>
+    pattern = r'^<b>(\d{1,2})\.(\d{1,2})\.</b>$'
+
+    i = 0
+    date_mem = ""
+    for row in rows:
+        row = row.strip()
+        i += 1
+        # Date
+        if bool(re.match(pattern, row)):
+            date_mem = row.replace("<b>", "").replace("</b>", "")
+            print(date_mem)
+        else:
+            # Observation
+            if row:
+#                print(i, row)
+                obs_list = split_observation(row)
+                obs_list.append(date_mem)
+                print(obs_list)
 
 
-    html["test"] = "Ok!"
+    '''
+    # Split the HTML content into entries
+    entries = re.split(r'<br/>\s*<b>\d+\.\d+\.</b><br/>', html_parts[0])
+
+    # Filter out empty strings and parse each entry
+    parsed_data = [parse_entry(entry) for entry in entries if entry.strip()]
+    print(parsed_data)
+    '''
+
+    html["test"] = html_content
     return html
