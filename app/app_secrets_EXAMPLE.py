@@ -19,3 +19,5 @@ dev_secret = 1
 bird_secret = "secret-param"
 bird_url = "url"
 bird_class = "class-name"
+
+newsapi_key = "key-here"
