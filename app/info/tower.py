@@ -118,7 +118,11 @@ def windchill(data, height):
         return "<span class='meas_wct'>&nbsp;</span>"
 
     # FMI formula: https://fi.wikipedia.org/wiki/Pakkasen_purevuus
-    wct = 13.12 + 0.6215 * temp - 11.37 * wind ** 0.16 + 0.4867 * temp * wind ** 0.16
+    wct = 13.12 + 0.6215 * temp - 13.956 * wind ** 0.16 + 0.4867 * temp * wind ** 0.16
+
+    # Canadian formula: https://en.wikipedia.org/wiki/Wind_chill
+#    wct = 13.12 + 0.6215 * temp - 11.37 * wind ** 0.16 + 0.3965 * temp * wind ** 0.16
+
     wct = round(wct, 1)
 
     return f"<span class='meas_wct'>wct <strong>{ wct }</strong> &deg;C</span>"

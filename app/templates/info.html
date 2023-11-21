@@ -17,26 +17,35 @@
 </head>
 <body>
     <div id="birds"></div>
+    <div id="rain"></div>
     <!-- more HTML here -->
     <script>
-        function fetchAPIData() {
-            fetch('/info/birds/{{ html["bird_secret"] }}')
+        function fetchAPIData(apiUrl, elementId) {
+            fetch(apiUrl)
                 .then(response => response.text())
-                .then(html => updateContent(html))
+                .then(html => updateContent(html, elementId))
                 .catch(error => console.error('Error:', error));
-            console.log("updated")
+            console.log("Updated " + elementId);
         }
-        function updateContent(html) {
-            const contentDiv = document.getElementById('birds');
+    
+        function updateContent(html, elementId) {
+            const contentDiv = document.getElementById(elementId);
             contentDiv.style.opacity = 0;
-
+    
             setTimeout(() => {
                 contentDiv.innerHTML = html;
                 contentDiv.style.opacity = 1;
             }, 200);
         }
-        setInterval(fetchAPIData, 10000);
-        fetchAPIData(); // Initial call
+    
+        // Set intervals for each element
+        setInterval(() => fetchAPIData('/info/birds/{{ html["bird_secret"] }}', 'birds'), 10000);
+        setInterval(() => fetchAPIData('/info/rain', 'rain'), 10100);
+    
+        // Initial calls
+        fetchAPIData('/info/birds/{{ html["bird_secret"] }}', 'birds');
+        fetchAPIData('/info/rain', 'rain');
     </script>
+    
 </body>
 </html>
