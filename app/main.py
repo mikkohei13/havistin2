@@ -33,10 +33,11 @@ import taxa.compare_years
 import winterbird.winterbird
 import winterbird.census
 
+import info.info
 import info.rain
 import info.tower
 import info.birds
-import info.info
+import info.news
 
 import weather.change
 
@@ -317,6 +318,11 @@ def info_tower():
 def info_birds(secret = ""):
     html = info.birds.main(secret)
     return render_template("info_birds.html", html=html)
+
+@app.route("/info/news")
+def info_news():
+    html = info.news.main()
+    return render_template("info_news.html", html=html)
 
 @app.route("/dev/<string:taxon_id_untrusted>")
 @robust_cached(timeout=1)
