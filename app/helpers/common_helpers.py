@@ -85,7 +85,7 @@ def fetch_api(api_url, log = False):
     try:
         r = requests.get(api_url)
     except ConnectionError:
-        print("ERROR: api.laji.fi complete error.", file = sys.stdout)
+        print(f"ERROR: complete error: {api_url}", file = sys.stdout)
 
 #    r.encoding = encoding
     dataJson = r.text
@@ -93,7 +93,7 @@ def fetch_api(api_url, log = False):
 
     if "status" in dataDict:
         if 403 == dataDict["status"]:
-            print("ERROR: api.laji.fi 403 error.", file = sys.stdout)
+            print(f"ERROR: 403 error: {api_url}", file = sys.stdout)
             raise ConnectionError
 
 #    print(dataDict, file = sys.stdout)
