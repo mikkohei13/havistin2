@@ -108,6 +108,22 @@ def measurement_html(data, height, measurement, suffix):
         return f"<span class='meas_{ measurement }'>&nbsp;</span>"
 
 
+def windchill(data, height):
+    temp = data["TA"].get(str(height), "")
+    wind = data["WS"].get(str(height), "")
+
+    if not temp:
+        return "<span class='meas_wct'>&nbsp;</span>"
+    if not wind:
+        return "<span class='meas_wct'>&nbsp;</span>"
+
+    # FMI formula: https://fi.wikipedia.org/wiki/Pakkasen_purevuus
+    wct = 13.12 + 0.6215 * temp - 11.37 * wind ** 0.16 + 0.4867 * temp * wind ** 0.16
+    wct = round(wct, 1)
+
+    return f"<span class='meas_wct'>wct <strong>{ wct }</strong> &deg;C</span>"
+
+
 def main():
 
     '''
@@ -146,11 +162,12 @@ def main():
         wg = measurement_html(data2, height, "WG", "puuska") # Gust 10 min
         rh = measurement_html(data2, height, "RH", "%")
         td = measurement_html(data2, height, "TD", "kaste") # Dew point
+        wct = windchill(data2, height)
 
         top = 327 - int(float(height))
  
         station_html += f"\n<div class='station' id='station_{ height }' style='top: { top }px'>\n"
-        station_html += f"<span class='meas_height'><strong>{ height_str }</strong></span> { ta } { ws } { wd } { wg } { rh } { td }"
+        station_html += f"<span class='meas_height'><strong>{ height_str }</strong></span> { ta } { wct } { ws } { wd } { wg } { rh } { td }"
         station_html += "\n</div>\n"
 
         stations += station_html
