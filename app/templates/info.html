@@ -3,17 +3,38 @@
 <head>
     <title>Info screen</title>
     <style>
+        /*
+        Samsung Syncmaster 2343NW, 1152 x 2048
+        */
         body {
             color: #fff;
             background-color: #000;
             font-family: Roboto, 'Open Sans', Arial, Helvetica, sans-serif;
         }
+        #mainwrapper {
+            border: 1px solid orange;
+        }
+        #tower {
+            border: 1px solid cyan;
+        }
+        #birds {
+            border: 1px solid greenyellow;
+        }
+        #rain {
+            border: 1px solid plum;
+        }
+        #news {
+            border: 1px solid orangered;
+        }
     </style>
 </head>
 <body>
-    <div id="tower"></div>
-    <div id="birds"></div>
-    <div id="rain"></div>
+    <div id="mainwrapper">
+        <div id="tower"></div>
+        <div id="birds"></div>
+        <div id="rain"></div>
+        <div id="news"></div>
+    </div>
     <!-- more HTML here -->
     <script>
         function fetchAPIData(apiUrl, elementId) {
@@ -39,11 +60,13 @@
         setInterval(() => fetchAPIData('/info/birds/{{ html["bird_secret"] }}', 'birds'), 60000);
         setInterval(() => fetchAPIData('/info/rain', 'rain'), 60000);
         setInterval(() => fetchAPIData('/info/tower', 'tower'), 60000);
+        setInterval(() => fetchAPIData('/info/news', 'news'), 60000);
     
         // Initial calls
         fetchAPIData('/info/birds/{{ html["bird_secret"] }}', 'birds');
         fetchAPIData('/info/rain', 'rain');
         fetchAPIData('/info/tower', 'tower');
+        fetchAPIData('/info/news', 'news');
     </script>
     
 </body>
