@@ -5,17 +5,13 @@
     <style>
         body {
             color: #fff;
-            background-color: #121;
+            background-color: #000;
             font-family: Roboto, 'Open Sans', Arial, Helvetica, sans-serif;
-        }
-        #birds {
-            border: 1px solid lime;
-            transition: opacity 200ms ease-in-out;
-            opacity: 0;
         }
     </style>
 </head>
 <body>
+    <div id="tower"></div>
     <div id="birds"></div>
     <div id="rain"></div>
     <!-- more HTML here -->
@@ -32,19 +28,22 @@
             const contentDiv = document.getElementById(elementId);
             contentDiv.style.opacity = 0;
     
+            // Timeout so that user notices when update is done
             setTimeout(() => {
                 contentDiv.innerHTML = html;
                 contentDiv.style.opacity = 1;
-            }, 200);
+            }, 100);
         }
     
         // Set intervals for each element
-        setInterval(() => fetchAPIData('/info/birds/{{ html["bird_secret"] }}', 'birds'), 10000);
-        setInterval(() => fetchAPIData('/info/rain', 'rain'), 10100);
+        setInterval(() => fetchAPIData('/info/birds/{{ html["bird_secret"] }}', 'birds'), 60000);
+        setInterval(() => fetchAPIData('/info/rain', 'rain'), 60000);
+        setInterval(() => fetchAPIData('/info/tower', 'tower'), 60000);
     
         // Initial calls
         fetchAPIData('/info/birds/{{ html["bird_secret"] }}', 'birds');
         fetchAPIData('/info/rain', 'rain');
+        fetchAPIData('/info/tower', 'tower');
     </script>
     
 </body>

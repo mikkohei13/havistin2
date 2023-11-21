@@ -176,8 +176,7 @@ def main():
 
         stations += station_html
 
-    html["test"] = "Latokaski"
-    html["test2"] = stations
+    html["tower"] = stations
     return html
 
 '''

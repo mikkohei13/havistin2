@@ -1,24 +1,8 @@
 
-<style>
-#location_report {
-    position: absolute;
-}
-#location_report li {
-    clear: both;
-}
-#location_report li span {
-    width: 10em;
-    display: block;
-    float: left;
-}
-</style>
-
-<div id="data">
+<div class="module" id="birds">
     <h3>Tringa 2 vko, top 10:</h3>
     {{ html["stats"]|safe }}
 
     <h3>Espoo, uusimmat 10:</h3>
     {{ html["location_report"]|safe }}
-
 </div>
-

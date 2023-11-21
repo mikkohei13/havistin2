@@ -1,12 +1,8 @@
 
 <style>
-#wrapper {
-        background-color: #000;
-        color: #fff;
-        height: 500px;
-}
 #tower {
     position: relative;
+    height: 340px;
 }
 span {
     color: #999;
@@ -34,8 +30,6 @@ strong {
 }
 </style>
 
-<div id="wrapper">
-    <div id="tower">
-        {{ html["test2"]|safe }}
-    </div>
+<div class="module" id="tower">
+    {{ html["tower"]|safe }}
 </div>

@@ -301,11 +301,13 @@ def info_root():
     return render_template("info.html", html=html)
 
 @app.route("/info/rain")
+@robust_cached(timeout=600)
 def info_rain():
     html = info.rain.main()
     return render_template("info_rain.html", html=html)
 
 @app.route("/info/tower")
+@robust_cached(timeout=600)
 def info_tower():
     html = info.tower.main()
     return render_template("info_tower.html", html=html)
