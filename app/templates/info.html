@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Info screen</title>
+    <style>
+        body {
+            color: #fff;
+            background-color: #121;
+            font-family: Roboto, 'Open Sans', Arial, Helvetica, sans-serif;
+        }
+        #birds {
+            border: 1px solid lime;
+            transition: opacity 200ms ease-in-out;
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="birds"></div>
+    <!-- more HTML here -->
+    <script>
+        function fetchAPIData() {
+            fetch('/info/birds/{{ html["bird_secret"] }}')
+                .then(response => response.text())
+                .then(html => updateContent(html))
+                .catch(error => console.error('Error:', error));
+            console.log("updated")
+        }
+        function updateContent(html) {
+            const contentDiv = document.getElementById('birds');
+            contentDiv.style.opacity = 0;
+
+            setTimeout(() => {
+                contentDiv.innerHTML = html;
+                contentDiv.style.opacity = 1;
+            }, 200);
+        }
+        setInterval(fetchAPIData, 10000);
+        fetchAPIData(); // Initial call
+    </script>
+</body>
+</html>

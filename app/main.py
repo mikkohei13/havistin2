@@ -36,6 +36,7 @@ import winterbird.census
 import info.rain
 import info.tower
 import info.birds
+import info.info
 
 import weather.change
 
@@ -293,6 +294,11 @@ def winterbird_root(dev_secret = 1):
 def winterbird_census(society_id = "", season = ""):
     html = winterbird.census.main(society_id, season)
     return render_template("winterbird_census.html", html=html)
+
+@app.route("/info")
+def info_root():
+    html = info.info.main()
+    return render_template("info.html", html=html)
 
 @app.route("/info/rain")
 def info_rain():
