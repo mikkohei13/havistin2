@@ -1,0 +1,148 @@
+
+/*
+Samsung Syncmaster 2343NW, 1152 x 2048
+
+MAIN STYLES
+*/
+
+body {
+    color: #fff;
+    background-color: #000;
+    font-family: Roboto, 'Open Sans', Arial, Helvetica, sans-serif;
+}
+
+/*
+TEST STYLES
+*/
+
+/*
+#mainwrapper {
+    border: 1px solid orange;
+    position: relative;
+}
+#tower {
+    border: 1px solid cyan;
+}
+#tower span {
+    border: 1px solid orangered;
+}
+#birds {
+    border: 1px solid greenyellow;
+}
+#rain {
+    border: 1px solid plum;
+    background-color: plum;
+}
+#news {
+    border: 1px solid orangered;
+}
+*/
+
+/*
+TOWER
+*/
+
+#tower {
+    position: relative;
+    height: 340px;
+    width: 36em;
+    height: 360px;
+    margin-left: -10px;
+}
+#tower span {
+    color: #999;
+}
+#tower strong {
+    color: #fff;
+}
+#tower .station {
+    clear: both;
+    position: absolute;
+}
+#tower .station span {
+    width: 6em;
+    display: block;
+    float: left;
+    text-align: right;
+}
+#tower .station span.meas_WD,
+#tower .station span.meas_WG,
+#tower .station span.meas_height {
+    width: 3em;
+}
+#tower .station span.meas_RH {
+    width: 4em;
+}
+#tower .station span.meas_TD {
+    width: 5em;
+}
+#tower .arrow {
+    margin-top: -5px;
+    position: relative;
+    left: -15px;
+}
+
+/*
+RAIN
+*/
+
+#rain {
+    width: 620px;
+    position: absolute;
+    top: 0;
+    left: 33em;
+}
+
+#rain img {
+    border: 1px solid #555;
+}
+
+/*
+BIRDS
+*/
+
+#birds {
+    margin-left: 0.5em;
+}
+
+#birds_top {
+    width: 31em;
+}
+
+/*
+NEWS
+*/
+
+#news {
+    margin-left: 0.5em;
+    width: 50%;
+}
+
+#news a {
+    text-decoration: none;
+}
+
+#news a:link {
+    color: #cef;
+}
+
+#news a:visited {
+    color: #aaa;
+}
+
+#news h2 {
+    float: right;
+    color: yellow;
+    margin-top: 0.4em;
+    font-size: 120%;
+}
+
+#news h3 {
+    margin: 1em 0 0.4em 0;
+}
+
+#news p {
+    margin: 0.4em 0 1.3em 1em;
+    color: #aaa;
+    font-size: 65%;
+}

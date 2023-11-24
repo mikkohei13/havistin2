@@ -302,24 +302,25 @@ def info_root():
     return render_template("info.html", html=html)
 
 @app.route("/info/rain")
-@robust_cached(timeout=600)
+@robust_cached(timeout=150) # 150 = 2½ min
 def info_rain():
     html = info.rain.main()
     return render_template("info_rain.html", html=html)
 
 @app.route("/info/tower")
-@robust_cached(timeout=600)
+@robust_cached(timeout=150) # 150 = 2½ min
 def info_tower():
     html = info.tower.main()
     return render_template("info_tower.html", html=html)
 
 @app.route("/info/birds/<string:secret>")
-@robust_cached(timeout=600)
+@robust_cached(timeout=3600) # 3600 = 1 h
 def info_birds(secret = ""):
     html = info.birds.main(secret)
     return render_template("info_birds.html", html=html)
 
 @app.route("/info/news")
+@robust_cached(timeout=10800) # 10800 = 3h
 def info_news():
     html = info.news.main()
     return render_template("info_news.html", html=html)

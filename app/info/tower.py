@@ -125,7 +125,7 @@ def windchill(data, height):
 
     wct = round(wct, 1)
 
-    return f"<span class='meas_wct'>wct <strong>{ wct }</strong> &deg;C</span>"
+    return f"<span class='meas_wct'>wc <strong>{ wct }</strong> &deg;C</span>"
 
 
 def main():
@@ -163,15 +163,15 @@ def main():
         ta = measurement_html(data2, height, "TA", "&deg;C")
         ws = measurement_html(data2, height, "WS", "m/s")
         wd = measurement_html(data2, height, "WD", "")
-        wg = measurement_html(data2, height, "WG", "puuska") # Gust 10 min
+        wg = measurement_html(data2, height, "WG", "") # Gust 10 min
         rh = measurement_html(data2, height, "RH", "%")
-        td = measurement_html(data2, height, "TD", "kaste") # Dew point
+#        td = measurement_html(data2, height, "TD", "kaste") # Dew point
         wct = windchill(data2, height)
 
         top = 327 - int(float(height))
  
         station_html += f"\n<div class='station' id='station_{ height }' style='top: { top }px'>\n"
-        station_html += f"<span class='meas_height'><strong>{ height_str }</strong></span> { ta } { wct } { ws } { wd } { wg } { rh } { td }"
+        station_html += f"<span class='meas_height'><strong>{ height_str }</strong></span> { ta } { wct } { ws } { wd } { wg } { rh }"
         station_html += "\n</div>\n"
 
         stations += station_html

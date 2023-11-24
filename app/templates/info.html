@@ -2,38 +2,14 @@
 <html>
 <head>
     <title>Info screen</title>
-    <style>
-        /*
-        Samsung Syncmaster 2343NW, 1152 x 2048
-        */
-        body {
-            color: #fff;
-            background-color: #000;
-            font-family: Roboto, 'Open Sans', Arial, Helvetica, sans-serif;
-        }
-        #mainwrapper {
-            border: 1px solid orange;
-        }
-        #tower {
-            border: 1px solid cyan;
-        }
-        #birds {
-            border: 1px solid greenyellow;
-        }
-        #rain {
-            border: 1px solid plum;
-        }
-        #news {
-            border: 1px solid orangered;
-        }
-    </style>
+    <link rel="stylesheet" href="/static/info_styles.css">
 </head>
 <body>
     <div id="mainwrapper">
-        <div id="tower"></div>
-        <div id="birds"></div>
-        <div id="rain"></div>
-        <div id="news"></div>
+        <div id="tower" class="module"></div>
+        <div id="rain" class="module"></div>
+        <div id="birds" class="module"></div>
+        <div id="news" class="module"></div>
     </div>
     <!-- more HTML here -->
     <script>
@@ -53,14 +29,14 @@
             setTimeout(() => {
                 contentDiv.innerHTML = html;
                 contentDiv.style.opacity = 1;
-            }, 100);
+            }, 1000);
         }
     
         // Set intervals for each element
-        setInterval(() => fetchAPIData('/info/birds/{{ html["bird_secret"] }}', 'birds'), 60000);
-        setInterval(() => fetchAPIData('/info/rain', 'rain'), 60000);
-        setInterval(() => fetchAPIData('/info/tower', 'tower'), 60000);
-        setInterval(() => fetchAPIData('/info/news', 'news'), 60000);
+        setInterval(() => fetchAPIData('/info/birds/{{ html["bird_secret"] }}', 'birds'), 3600000); // 1h
+        setInterval(() => fetchAPIData('/info/rain', 'rain'), 121000); // 2 min
+        setInterval(() => fetchAPIData('/info/tower', 'tower'), 122000); // 2 min
+        setInterval(() => fetchAPIData('/info/news', 'news'), 3603000); // 1h
     
         // Initial calls
         fetchAPIData('/info/birds/{{ html["bird_secret"] }}', 'birds');

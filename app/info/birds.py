@@ -86,16 +86,21 @@ def get_stats_html(observations):
     species_counts = sorted(species_counts.items(), key=lambda item: item[1], reverse=True)
 
     html = "<ul id='stats'>"
+    html_semi = ""
 
     i = 0
-    limit = 10
+    semi_limit = 3
+    limit = 13
     for species in species_counts:
-        html += f"<li>{ species[0] }: { species[1] }</li>"
-        i += 1
-        if i >= limit:
+        if i < semi_limit:
+            html += f"<li>{ species[0] }: { species[1] }</li>\n"
+        elif i < limit:
+            html_semi += f"{ species[0] }: { species[1] }, "
+        else:
             break
+        i += 1
 
-    html += "</ul>"
+    html += f"<li>{ html_semi }</li>\n</ul>\n\n"
 
     return html
 
@@ -108,7 +113,7 @@ def get_location_report_html(observations, location):
     for obs in observations:
         if location in obs[1]:
             obs[1] = obs[1].replace(location, "").strip()
-            html += f"<tr><td>{ obs[0] }</td><td>{ obs[5] }</td><td>{ obs[1][:20] }</td><td>{ obs[2] }</td><td>{ obs[3][:20] }</td><td>{ obs[4][:20] }</td></tr>\n"
+            html += f"<tr><td>{ obs[0] }</td><td>{ obs[5] }</td><td>{ obs[1][:30] }</td><td>{ obs[2] }</td><td>{ obs[3][:30] }</td><td>{ obs[4][:30] }</td></tr>\n"
 
             i += 1
             if i >= limit:

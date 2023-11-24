@@ -47,12 +47,12 @@ def count_pixels_with_color(image_path, color_dict):
         width, height = img.size
 
         # Crop to square
-        output_size = 508
-        output_size = 300
-        left = (width - output_size) / 2
-        top = (height - output_size) / 2
-        right = (width + output_size) / 2
-        bottom = (height + output_size) / 2
+        calculation_size = 508
+        calculation_size = 300
+        left = (width - calculation_size) / 2
+        top = (height - calculation_size) / 2
+        right = (width + calculation_size) / 2
+        bottom = (height + calculation_size) / 2
 
         cropped_img = img.crop((left, top, right, bottom))
 
@@ -75,10 +75,10 @@ def count_pixels_with_color(image_path, color_dict):
         cropped_img.save('./static/dynamic/latest_rain_cropped_for_calculation.png')
 
     # Calculate rain value relative to area
-    area = output_size * output_size
-    total_rain_value = round(total_rain_value / area, 3)
+    area = calculation_size * calculation_size
+    total_rain_value = round(total_rain_value / area, 2)
 
-    return total_rain_value
+    return total_rain_value, calculation_size
 
 
 def simiplify_image(image_path, colors_to_keep_dict):
@@ -133,28 +133,15 @@ def main():
     rain_colors["12"] = "#05CDAA" # turquoise
     rain_colors["08"] = "#0A9BE1" # blue
 
-    rain_value = count_pixels_with_color(raw_image_path, rain_colors)
-    
-#    rain_value = (pixels_50 * 50) + (pixels_40 * 40) + (pixels_34 * 34) + (pixels_30 * 30) + (pixels_24 * 24) + (pixels_18 * 18) + (pixels_12 * 12) + (pixels_08 * 8)
-
-    '''
-    print(pixels_50)
-    print(pixels_40)
-    print(pixels_34)
-    print(pixels_30)
-    print(pixels_24)
-    print(pixels_18)
-    print(pixels_12)
-    print(pixels_08)
-    '''
-
-#    colors_to_keep = ["#0A9BE1"]
+    rain_value, calculation_size = count_pixels_with_color(raw_image_path, rain_colors)
     
     simple_img = simiplify_image(raw_image_path, rain_colors)
 
     simple_img.save("." + simple_image_path)
 
-    html["rain_value"] = "{:,}".format(rain_value).replace(',', ' ') # Thousand separator
+#    html["rain_value"] = "{:,}".format(rain_value).replace(',', ' ') # Thousand separator, in case the value is absolute (not relative to pixel count)
+    html["rain_value"] = rain_value
+    html["calculation_size"] = calculation_size
     html["simple_img_path"] = simple_image_path
 
     return html
