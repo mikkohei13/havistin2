@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request, make_response
+from flask import Flask, render_template, redirect, request, make_response, session
 #from werkzeug.exceptions import HTTPException
 from flask_caching import Cache
 
@@ -6,6 +6,8 @@ import sys
 import traceback
 
 import index.index
+
+import login.login
 
 import atlas.atlas
 import atlas.squareform
@@ -50,6 +52,8 @@ import requests
 from redis.exceptions import ConnectionError
 from functools import wraps
 
+from helpers import common_helpers
+
 def robust_cached(timeout=None, key_prefix='view/%s', unless=None):
     def decorator(f):
         @wraps(f)
@@ -76,6 +80,7 @@ config = {
 }
 
 app = Flask(__name__)
+app.secret_key = app_secrets.flask_secret_key
 
 app.config.from_mapping(config)
 cache = Cache(app)
@@ -86,12 +91,28 @@ cache = Cache(app)
 
 print("-------------- BEGIN --------------", file = sys.stdout)
 
+@app.context_processor
+def inject_token():
+    token = session.get('token', None)
+    user_data = session.get('user_data', None)
+    return dict(session_token=token, user_data=user_data)
+
 # Pages
 
 @app.route("/")
 def root():
     html = index.index.main()
     return render_template("index.html", html=html)
+
+# Dev login: paste the person_token to the page url, after getting it from a separate service
+@app.route("/login/<string:person_token_untrusted>")
+def login_root(person_token_untrusted):
+    session['token'] = person_token_untrusted
+    # Get user data
+    session['user_data'] = common_helpers.fetch_finbif_api(f"https://api.laji.fi/v0/person/{ person_token_untrusted }?access_token=")
+    print(session) # debug
+    html = login.login.main(person_token_untrusted)
+    return render_template("login.html", html=html)
 
 @app.route("/atlas")
 @app.route("/atlas/")

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+    {% block head %}
+    <title>Havistin: kirjaudu</title>
+    {% endblock %}
+
+    {% block breadcrumb %}
+        Kirjautuminen
+    {% endblock %}
+
+    {% block body %}
+
+    <h3>Kirjautuminen</h3>
+
+    <p>Olet nyt kirjautunut.</p>
+
+    {{ html["test"]|safe }}
+    
+    {{ session }}
+
+    {% endblock %}

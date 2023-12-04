@@ -152,3 +152,15 @@ Build image from Dockerfile:
     - Redfine my location when I have moved
 - GPS Page A, that gets location from GPS, and redirects to square page B
 - Square page B, that shows square information. Has two features: a) link to page A ("Hae sijaintini uudelleen") and b) selection for square ("valitse ruutu")
+
+## Notes
+
+### Session data
+
+@app.context_processor decorator makes the session data available on each template. However, if you want the data to be available on an external page function (e.g. atlas.atlas.main()), you need to pass it to it manually.
+
+Page caching and session data can work together in few ways:
+
+1) Don't use caching on pages that require user information
+2) Cache the base page (SSR), then update user information with Javascript
+

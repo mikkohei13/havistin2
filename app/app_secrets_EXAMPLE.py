@@ -1,4 +1,5 @@
 
+flask_secret_key = ""
 
 finbif_api_token = ""
 
