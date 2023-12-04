@@ -6,6 +6,7 @@ cache/*
 export/
 import/
 test*
+dev*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

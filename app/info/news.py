@@ -61,11 +61,13 @@ def main():
     tc_news_data = common_helpers.fetch_api(tc_url)
     html["tc_articles"] = get_article_html(tc_news_data)
 
+    '''
     nbf_url = f"https://newsapi.org/v2/everything?sources=next-big-future&from={ two_days_ago }&pageSize=10&apiKey={ app_secrets.newsapi_key }"
     print(nbf_url)
     nbf_news_data = common_helpers.fetch_api(nbf_url)
     html["nbf_articles"] = get_article_html(nbf_news_data)
-
+    '''
+    
     tv_url = f"https://newsapi.org/v2/everything?sources=the-verge&from={ two_days_ago }&pageSize=10&apiKey={ app_secrets.newsapi_key }"
     print(tv_url)
     tv_news_data = common_helpers.fetch_api(tv_url)
