@@ -157,10 +157,11 @@ Build image from Dockerfile:
 
 ### Session data
 
-@app.context_processor decorator makes the session data available on each template. However, if you want the data to be available on an external page function (e.g. atlas.atlas.main()), you need to pass it to it manually.
+´´main.py/@app.context_processor´´ decorator makes session data available on each template. However, if you want session data to be available on an external page function (e.g. ´´atlas.atlas.main()´´), you need to pass it to it manually.
 
-Page caching and session data can work together in few ways:
+Caching and session data can work together in few ways:
 
 1) Don't use caching on pages that require user information
 2) Cache the base page (SSR), then update user information with Javascript
+3) Cache functions instead of routes
 
