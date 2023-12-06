@@ -8,6 +8,7 @@ import traceback
 import index.index
 
 import login.login
+import login.info
 
 import atlas.atlas
 import atlas.squareform
@@ -91,6 +92,7 @@ cache = Cache(app)
 
 print("-------------- BEGIN --------------", file = sys.stdout)
 
+# This makes session_token and user_data available on every template.
 @app.context_processor
 def inject_token():
     token = session.get('token', None)
@@ -113,6 +115,17 @@ def login_root(person_token_untrusted):
     print(session) # debug
     html = login.login.main(person_token_untrusted)
     return render_template("login.html", html=html)
+
+@app.route("/login/info")
+def login_info():
+    user_data = session.get('user_data', None)
+    html = login.info.main(user_data)
+    return render_template("login_info.html", html=html)
+
+@app.route("/logout")
+def logout_root():
+    session.clear()
+    return redirect('/')
 
 @app.route("/atlas")
 @app.route("/atlas/")
@@ -298,7 +311,6 @@ def weather_change(messaging_on = 0):
     html = weather.change.main(messaging_on)
     return render_template("weather_change.html", html=html)
 
-# ABBA
 @app.route("/talvilinnut/<int:dev_secret>")
 @app.route("/talvilinnut/")
 @app.route("/talvilinnut")

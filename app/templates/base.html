@@ -31,12 +31,35 @@
                     return false;
                 };
             };
+
+            // Update login info
+            function updateLoginInfo() {
+                url = "/login/info"
+                fetch(url)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.text();
+                    })
+                    .then(html => {
+                        document.getElementById('login_navi').innerHTML = html;
+                    })
+                    .catch(error => {
+                        console.error('There has been a problem with your fetch operation:', error);
+                    });
+            }
+
+            // Example usage
+            updateLoginInfo();
+
         </script>
 
         {% block head %}{% endblock %}
 
     </head>
     <body>
+    <div id="login_navi">Login navi</div>
     <div id="allwrapper">
         
         <div id="navi">

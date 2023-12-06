@@ -1,0 +1,10 @@
+{% if user_data is none %}
+    <p id="login_info" class="logged_out">
+        <strong><a href="#">Kirjaudu</a></strong>
+    </p>
+{% else %}
+    <p id="login_info" class="logged_in">
+        <span title="Olet kirjautunut tunnuksella {{ user_data['id'] }}, {{ user_data['emailAddress'] }}">{{ user_data['fullName'] }}</span>
+        <strong><a href="/logout" title="Kirjaudu ulos">🛑</a></strong>
+    </p>
+{% endif %}
