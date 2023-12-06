@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request, make_response, session
+from flask import Flask, render_template, redirect, request, make_response, session, g
 #from werkzeug.exceptions import HTTPException
 from flask_caching import Cache
 
@@ -43,6 +43,8 @@ import info.birds
 import info.news
 
 import weather.change
+
+import my.year
 
 import dev.dev
 import app_secrets
@@ -90,15 +92,16 @@ cache = Cache(app)
  # 3600 = 1 h
  # 86400 = 24 h
 
-print("-------------- BEGIN --------------", file = sys.stdout)
+print("-------------- PREPARE --------------", file = sys.stdout)
 
-# This makes session_token and user_data available on every template.
+# This makes session token and user_data available on every template.
 @app.context_processor
 def inject_token():
     token = session.get('token', None)
     user_data = session.get('user_data', None)
     return dict(session_token=token, user_data=user_data)
 
+print("-------------- BEGIN --------------", file = sys.stdout)
 # Pages
 
 @app.route("/")
@@ -112,7 +115,6 @@ def login_root(person_token_untrusted):
     session['token'] = person_token_untrusted
     # Get user data
     session['user_data'] = common_helpers.fetch_finbif_api(f"https://api.laji.fi/v0/person/{ person_token_untrusted }?access_token=")
-    print(session) # debug
     html = login.login.main(person_token_untrusted)
     return render_template("login.html", html=html)
 
@@ -363,6 +365,12 @@ def info_news():
 def dev_root(taxon_id_untrusted):
     html = info.dev.main(taxon_id_untrusted)
     return render_template("dev.html", html=html)
+
+@app.route("/my/year/<int:year_untrusted>")
+def my_year(year_untrusted):
+    token = session.get('token', None)
+    html = my.year.main(token, year_untrusted)
+    return render_template("my_year.html", html=html)
 
 '''
 Debugging help:
