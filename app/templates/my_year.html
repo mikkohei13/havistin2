@@ -11,10 +11,12 @@
 
 {% block body %}
 
-    <h1>Omat havainnot vuonna {{ html["year"] }}</h1>
+    <h1>Omat havainnot Suomesta vuonna {{ html["year"] }}</h1>
 
+    <h3>Lajimäärän kasvu</h3>
     <canvas id="year_chart" class="chart"></canvas>
 
+    <h3>Havaintojen määrä päivittäin</h3>
     <canvas id="day_chart" class="chart"></canvas>
 
 <script>
