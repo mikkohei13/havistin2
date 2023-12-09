@@ -26,7 +26,7 @@ var chart = new Chart(ctx, {
     data: {
         labels: {{ html["species_chart_data"]["days"]|safe }},
         datasets: [{
-            label: 'Cumulative Count of Species',
+            label: 'Kumulatiivinen lajimäärä',
             backgroundColor: 'rgb(255, 99, 132)',
             borderColor: 'rgb(255, 99, 132)',
             data: {{ html["species_chart_data"]["cumulative_counts"]|safe }},
@@ -53,7 +53,7 @@ var chart = new Chart(ctx, {
             yAxes: [{
                 scaleLabel: {
                     display: true,
-                    labelString: 'Cumulative Count of Species'
+                    labelString: 'Kumulatiivinen lajimäärä'
                 }
             }]
         }
@@ -70,7 +70,7 @@ var chart = new Chart(ctx, {
     data: {
         labels: {{ html["day_chart_data"]["days"]|safe }},
         datasets: [{
-            label: 'Number of observations',
+            label: 'Havaintojen lukumäärä',
             backgroundColor: 'rgb(43, 170, 177)',
             borderColor: 'rgb(43, 170, 177)',
             data: {{ html["day_chart_data"]["counts"]|safe }},
@@ -97,7 +97,7 @@ var chart = new Chart(ctx, {
             yAxes: [{
                 scaleLabel: {
                     display: true,
-                    labelString: 'Number of observations'
+                    labelString: 'Havaintojen lukumäärä'
                 }
             }]
         }
