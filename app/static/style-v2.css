@@ -288,11 +288,11 @@ h2, h3, h3 {
 }
 
 .chart {
-    max-width: 1000px;
+    max-width: 1400px;
 }
 
 #cumulative_chart, #daily_chart, #year_chart {
-    max-width: 1000px;
+    max-width: 1400px;
     min-height: 300px;
     max-height: 600px;
 }

@@ -367,9 +367,10 @@ def dev_root(taxon_id_untrusted):
     return render_template("dev.html", html=html)
 
 @app.route("/my/year/<int:year_untrusted>")
-def my_year(year_untrusted):
+@app.route("/my/year/<int:year_untrusted>/<string:taxon_id_untrusted>")
+def my_year(year_untrusted, taxon_id_untrusted = "MX.37600"): # default = Biota
     token = session.get('token', None)
-    html = my.year.main(token, year_untrusted)
+    html = my.year.main(token, year_untrusted, taxon_id_untrusted)
     return render_template("my_year.html", html=html)
 
 '''

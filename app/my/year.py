@@ -3,8 +3,18 @@ from helpers import common_helpers
 import datetime
 import json
 
+import re
 
-def get_day_aggregate(token, year, taxon_id = "MX.37600"):
+def validate_taxon_id(taxon_id):
+    pattern = r'^MX\.\d{1,10}$'
+
+    if re.match(pattern, taxon_id):
+        return taxon_id
+    else:
+        return "MX.37600" # default = Biota
+
+
+def get_day_aggregate(token, year, taxon_id):
     # Todo: Pagination or check if API can give >2000 results
     # Note: timeAccuracy
     url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=gathering.conversions.dayOfYearBegin&orderBy=gathering.conversions.dayOfYearBegin&onlyCount=true&taxonCounts=false&gatheringCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=367&page=1&cache=true&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&target={ taxon_id }&time={ year }&timeAccuracy=1&individualCountMin=1&wild=WILD,WILD_UNKNOWN&recordQuality=EXPERT_VERIFIED,COMMUNITY_VERIFIED,NEUTRAL&qualityIssues=NO_ISSUES&observerPersonToken={ token }&access_token="
@@ -13,7 +23,7 @@ def get_day_aggregate(token, year, taxon_id = "MX.37600"):
     return data_dict
 
 
-def get_species_aggregate(token, year, taxon_id = "MX.37600"):
+def get_species_aggregate(token, year, taxon_id):
     # Todo: Pagination or check if API can give >2000 results
     url = f"https://laji.fi/api/warehouse/query/unit/aggregate?countryId=ML.206&target={ taxon_id }&time={ year }&recordQuality=EXPERT_VERIFIED,COMMUNITY_VERIFIED,NEUTRAL&wild=WILD,WILD_UNKNOWN&individualCountMin=1&aggregateBy=unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesNameFinnish,unit.linkings.taxon.speciesScientificName&selected=unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesNameFinnish,unit.linkings.taxon.speciesScientificName&cache=true&page=1&pageSize=2000&qualityIssues=NO_ISSUES&geoJSON=false&onlyCount=false&observerPersonToken={ token }&access_token="
 
@@ -86,9 +96,11 @@ def create_day_chart_data(data, year):
 
     return chart_data
 
-def main(token, year_untrusted):
+def main(token, year_untrusted, taxon_id_untrusted):
 
     html = dict()
+
+    taxon_id = validate_taxon_id(taxon_id_untrusted)
 
     # Validate year
     current_year = datetime.datetime.now().year
@@ -100,10 +112,10 @@ def main(token, year_untrusted):
         year = year_untrusted
     html["year"] = year
 
-    html["species_aggregate"] = get_species_aggregate(token, year) # MX.37580 birds
+    html["species_aggregate"] = get_species_aggregate(token, year, taxon_id)
     html["species_chart_data"] = create_year_chart_data(html["species_aggregate"], year)
 
-    html["day_aggregate"] = get_day_aggregate(token, year)
+    html["day_aggregate"] = get_day_aggregate(token, year, taxon_id)
     html["day_chart_data"] = create_day_chart_data(html["day_aggregate"], year)
 
     return html
