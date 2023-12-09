@@ -2,6 +2,7 @@
 
 {% block head %}
     <title>Omat havainnot - Havistin (biomi.org)</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 {% endblock %}
 
 {% block breadcrumb %}
@@ -12,4 +13,51 @@
 
     <h1>Omat havainnot vuonna {{ html["year"] }}</h1>
 
+    <canvas id="year_chart" class="chart"></canvas>
+
+
+<script>
+
+    var ctx = document.getElementById('year_chart').getContext('2d');
+    var chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: {{ html["chart_data"]["days"]|safe }},
+            datasets: [{
+                label: 'Cumulative Count of Species',
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: {{ html["chart_data"]["cumulative_counts"]|safe }},
+                fill: false,
+            }]
+        },
+        options: {
+            scales: {
+                xAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Date'
+                    },
+                    type: 'time',
+                    time: {
+                        parser: 'D.M.',
+                        tooltipFormat: 'll'
+                    },
+                    ticks: {
+                        autoSkip: true,
+                        maxTicksLimit: 20
+                    }
+                }],
+                yAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Cumulative Count of Species'
+                    }
+                }]
+            }
+        }
+    });
+
+    </script>
+    
 {% endblock %}

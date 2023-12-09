@@ -287,7 +287,11 @@ h2, h3, h3 {
     float: right;
 }
 
-#cumulative_chart, #daily_chart {
+.chart {
+    max-width: 1000px;
+}
+
+#cumulative_chart, #daily_chart, #year_chart {
     max-width: 1000px;
     min-height: 300px;
     max-height: 600px;
