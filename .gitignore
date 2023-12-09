@@ -7,7 +7,7 @@ test*
 cache/
 app/static/dynamic/*
 app/info/*.png
-
+app/wrangler/temp/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

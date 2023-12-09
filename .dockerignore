@@ -4,10 +4,11 @@ readme.md
 .gitignore
 docker-compose.tml
 
+app/wrangler/temp/*
+test*
+
 *.pyc
 *.pyo
 *.pyd
 __pycache__
 .pytest_cache
-#app/wrangler/*
-test*
