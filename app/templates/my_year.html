@@ -15,49 +15,95 @@
 
     <canvas id="year_chart" class="chart"></canvas>
 
+    <canvas id="day_chart" class="chart"></canvas>
 
 <script>
 
-    var ctx = document.getElementById('year_chart').getContext('2d');
-    var chart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: {{ html["chart_data"]["days"]|safe }},
-            datasets: [{
-                label: 'Cumulative Count of Species',
-                backgroundColor: 'rgb(255, 99, 132)',
-                borderColor: 'rgb(255, 99, 132)',
-                data: {{ html["chart_data"]["cumulative_counts"]|safe }},
-                fill: false,
+// Year chart
+var ctx = document.getElementById('year_chart').getContext('2d');
+var chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: {{ html["species_chart_data"]["days"]|safe }},
+        datasets: [{
+            label: 'Cumulative Count of Species',
+            backgroundColor: 'rgb(255, 99, 132)',
+            borderColor: 'rgb(255, 99, 132)',
+            data: {{ html["species_chart_data"]["cumulative_counts"]|safe }},
+            fill: false,
+        }]
+    },
+    options: {
+        scales: {
+            xAxes: [{
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Date'
+                },
+                type: 'time',
+                time: {
+                    parser: 'D.M.',
+                    tooltipFormat: 'll'
+                },
+                ticks: {
+                    autoSkip: true,
+                    maxTicksLimit: 20
+                }
+            }],
+            yAxes: [{
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Cumulative Count of Species'
+                }
             }]
-        },
-        options: {
-            scales: {
-                xAxes: [{
-                    scaleLabel: {
-                        display: true,
-                        labelString: 'Date'
-                    },
-                    type: 'time',
-                    time: {
-                        parser: 'D.M.',
-                        tooltipFormat: 'll'
-                    },
-                    ticks: {
-                        autoSkip: true,
-                        maxTicksLimit: 20
-                    }
-                }],
-                yAxes: [{
-                    scaleLabel: {
-                        display: true,
-                        labelString: 'Cumulative Count of Species'
-                    }
-                }]
-            }
         }
-    });
+    }
+});
 
-    </script>
+// Day chart
+// rgb(255, 99, 132) red
+// rgb(96, 144, 7) green
+// rgb(43, 170, 177) turquoise
+var ctx = document.getElementById('day_chart').getContext('2d');
+var chart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: {{ html["day_chart_data"]["days"]|safe }},
+        datasets: [{
+            label: 'Number of observations',
+            backgroundColor: 'rgb(43, 170, 177)',
+            borderColor: 'rgb(43, 170, 177)',
+            data: {{ html["day_chart_data"]["counts"]|safe }},
+            fill: false,
+        }]
+    },
+    options: {
+        scales: {
+            xAxes: [{
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Date'
+                },
+                type: 'time',
+                time: {
+                    parser: 'D.M.',
+                    tooltipFormat: 'll'
+                },
+                ticks: {
+                    autoSkip: true,
+                    maxTicksLimit: 20
+                }
+            }],
+            yAxes: [{
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Number of observations'
+                }
+            }]
+        }
+    }
+});
+
+</script>
     
 {% endblock %}

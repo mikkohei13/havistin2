@@ -4,9 +4,18 @@ import datetime
 import json
 
 
+def get_day_aggregate(token, year, taxon_id = "MX.37600"):
+    # Todo: Pagination or check if API can give >2000 results
+    # Note: timeAccuracy
+    url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=gathering.conversions.dayOfYearBegin&orderBy=gathering.conversions.dayOfYearBegin&onlyCount=true&taxonCounts=false&gatheringCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=367&page=1&cache=true&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&target={ taxon_id }&time={ year }&timeAccuracy=1&individualCountMin=1&wild=WILD,WILD_UNKNOWN&recordQuality=EXPERT_VERIFIED,COMMUNITY_VERIFIED,NEUTRAL&qualityIssues=NO_ISSUES&observerPersonToken={ token }&access_token="
+
+    data_dict = common_helpers.fetch_finbif_api(url)
+    return data_dict
+
+
 def get_species_aggregate(token, year, taxon_id = "MX.37600"):
     # Todo: Pagination or check if API can give >2000 results
-    url = f"https://laji.fi/api/warehouse/query/unit/aggregate?countryId=ML.206&target={ taxon_id }&time={ year }-01-01/{ year }-12-31&recordQuality=EXPERT_VERIFIED,COMMUNITY_VERIFIED,NEUTRAL&wild=WILD,WILD_UNKNOWN&aggregateBy=unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesNameFinnish,unit.linkings.taxon.speciesScientificName&selected=unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesNameFinnish,unit.linkings.taxon.speciesScientificName&cache=false&page=1&pageSize=2000&qualityIssues=NO_ISSUES&geoJSON=false&onlyCount=false&observerPersonToken={ token }&access_token="
+    url = f"https://laji.fi/api/warehouse/query/unit/aggregate?countryId=ML.206&target={ taxon_id }&time={ year }&recordQuality=EXPERT_VERIFIED,COMMUNITY_VERIFIED,NEUTRAL&wild=WILD,WILD_UNKNOWN&individualCountMin=1&aggregateBy=unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesNameFinnish,unit.linkings.taxon.speciesScientificName&selected=unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesNameFinnish,unit.linkings.taxon.speciesScientificName&cache=true&page=1&pageSize=2000&qualityIssues=NO_ISSUES&geoJSON=false&onlyCount=false&observerPersonToken={ token }&access_token="
 
     data_dict = common_helpers.fetch_finbif_api(url)
     return data_dict
@@ -17,7 +26,7 @@ def convert_day_of_year_to_date(day_of_year, year):
     return date.strftime("%-d.%-m.")
 
 
-def create_chart_data(data, year):
+def create_year_chart_data(data, year):
 
     # Extracting the 'oldestRecord' from each species and converting them into datetime objects
     oldest_records = [datetime.datetime.strptime(species['oldestRecord'], '%Y-%m-%d') for species in data['results'] if 'oldestRecord' in species]
@@ -27,6 +36,9 @@ def create_chart_data(data, year):
 
     # Convert dates to day of year
     day_of_year_records = [date.timetuple().tm_yday for date in oldest_records]
+
+    # Find the maximum day of the year in the records
+    max_day = max(day_of_year_records)
 
     # Counting occurrences of each day of year
     day_counts = {}
@@ -39,7 +51,7 @@ def create_chart_data(data, year):
     # Creating cumulative count
     cumulative_counts = []
     current_count = 0
-    for day in range(1, 367):
+    for day in range(1, max_day + 1):
         current_count += day_counts.get(day, 0)
         date_string = convert_day_of_year_to_date(day, year)
         cumulative_counts.append((date_string, current_count))
@@ -50,7 +62,29 @@ def create_chart_data(data, year):
     return chart_data
 
 
+def create_day_chart_data(data, year):
+    days = []
+    counts = []
 
+    # Generate a lookup dictionary of daily observation count
+    lookup_data = dict()
+    for day in data['results']:
+        lookup_data[day['aggregateBy']['gathering.conversions.dayOfYearBegin']] = day['count']
+
+    for day_of_year in range(1, 367):
+
+        date = datetime.datetime(year, 1, 1) + datetime.timedelta(days=day_of_year - 1)
+        formatted_date = date.strftime("%d.%m").lstrip("0").replace(".0", ".")
+        days.append(formatted_date)
+
+        day_of_year_str = str(day_of_year)
+        counts.append(lookup_data.get(day_of_year_str, 0))
+
+    chart_data = dict()
+    chart_data["days"] = days
+    chart_data["counts"] = counts
+
+    return chart_data
 
 def main(token, year_untrusted):
 
@@ -66,7 +100,10 @@ def main(token, year_untrusted):
         year = year_untrusted
     html["year"] = year
 
-    html["data"] = get_species_aggregate(token, year, "MX.53078") # MX.37580 birds
-    html["chart_data"] = create_chart_data(html["data"], year)
+    html["species_aggregate"] = get_species_aggregate(token, year) # MX.37580 birds
+    html["species_chart_data"] = create_year_chart_data(html["species_aggregate"], year)
+
+    html["day_aggregate"] = get_day_aggregate(token, year)
+    html["day_chart_data"] = create_day_chart_data(html["day_aggregate"], year)
 
     return html
