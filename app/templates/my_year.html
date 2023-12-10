@@ -3,6 +3,48 @@
 {% block head %}
     <title>Omat havainnot {{ html["year"] }} - Havistin (biomi.org)</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var yearSelect = document.getElementById('yearSelect');
+            var taxonSelect = document.getElementById('taxonSelect');
+            var submitButton = document.getElementById('submitButton');
+
+            function updateButtonStatus() {
+                submitButton.disabled = !(yearSelect.value && taxonSelect.value);
+            }
+
+            function preselectValuesFromUrl() {
+                var pathArray = window.location.pathname.split('/');
+                // Assuming the URL pattern is "/my/year/{year}/{taxonKey}"
+                if (pathArray.length === 5) {
+                    var year = pathArray[3];
+                    var taxonKey = pathArray[4];
+
+                    if (year) {
+                        yearSelect.value = year;
+                    }
+                    if (taxonKey) {
+                        taxonSelect.value = taxonKey;
+                    }
+                }
+                updateButtonStatus();
+            }
+
+            yearSelect.addEventListener('change', updateButtonStatus);
+            taxonSelect.addEventListener('change', updateButtonStatus);
+
+            submitButton.addEventListener('click', function () {
+                var year = yearSelect.value;
+                var taxonKey = taxonSelect.value;
+                if (year && taxonKey) {
+                    window.location.href = '/my/year/' + year + '/' + taxonKey;
+                }
+            });
+
+            preselectValuesFromUrl();
+        });
+
+    </script>
 {% endblock %}
 
 {% block breadcrumb %}
@@ -12,6 +54,40 @@
 {% block body %}
 
     <h1>Omat havainnot Suomesta vuonna {{ html["year"] }}</h1>
+
+    <form id="navigationForm">
+        <label for="yearSelect">Vuosi:</label>
+        <select id="yearSelect">
+            <option value="">valitse</option>
+            {{ html["year_options"]|safe }}
+        </select>
+
+        <label for="taxonSelect">lajiryhmä:</label>
+        <select id="taxonSelect">
+            <option value="">valitse</option>
+            <option value="MX.37600">Kaikki lajit</option>
+            <option value="MX.37602">- Eläimet</option>
+            <option value="MX.37608">-- Sekärankaiset</option>
+            <option value="MX.37580">--- Linnut</option>
+            <option value="MX.37612">--- Nisäkkäät</option>
+            <option value="MX.37613">-- Hyönteiset</option>
+            <option value="MX.53695">--- Perhoset</option>
+            <option value="MX.53683">--- Nivelkärsäiset</option>
+            <option value="MX.43121">--- Kovakuoriaiset</option>
+            <option value="MX.43122">--- Pistiäiset</option>
+            <option value="MX.43123">--- Kaksisiipiset</option>
+            <option value="MX.1">--- Sudenkorennot</option>
+            <option value="MX.37601">Kasvit</option>
+            <option value="MX.53078">- Putkilokasvit</option>
+            <option value="MX.44109">- Lehtisammalet</option>
+            <option value="MX.44394">- Maksasammalet</option>
+            <option value="MX.53062">Sienet</option>
+            <option value="MX.70582">- Jäkälät</option>
+            <option value="MX.70149">Limasienet</option>
+        </select>
+
+        <button id="submitButton" type="button" disabled>Valitse</button>
+    </form>
 
     <h3>Lajimäärän kasvu</h3>
     <canvas id="year_chart" class="chart"></canvas>
@@ -42,6 +118,11 @@ var chart = new Chart(ctx, {
         }]
     },
     options: {
+        elements: {
+            point: {
+                radius: 0
+            }
+        },
         scales: {
             xAxes: [{
                 scaleLabel: {

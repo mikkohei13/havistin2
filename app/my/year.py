@@ -146,8 +146,20 @@ def generate_rarest_list(species_list, year):
     return html
 
 
+def generate_year_dropdown(start_year):
+    current_year = datetime.datetime.now().year
+    html_options = []
+
+    for year in range(current_year, (start_year - 1), -1):
+        html_options.append('<option value="{0}">{0}</option>'.format(year))
+
+    return '\n'.join(html_options)
+
+
+
 def main(token, year_untrusted, taxon_id_untrusted):
 
+    # Todo: handle cases where no observations found
     html = dict()
 
     taxon_id = validate_taxon_id(taxon_id_untrusted)
@@ -171,5 +183,7 @@ def main(token, year_untrusted, taxon_id_untrusted):
     rare_species_list = get_rarest_species(html["species_aggregate"])
     html["rarest_species"] = generate_rarest_list(rare_species_list, year)
 #    print(rare_species_list)
+
+    html["year_options"] = generate_year_dropdown(1990)
 
     return html
