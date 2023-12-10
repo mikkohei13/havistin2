@@ -2,7 +2,7 @@ body {
     font-family: Roboto, sans-serif;
     font-size: 86%;
     background: #fff url("/static/web_top_w_icons.jpg") top left no-repeat;
-    padding: 70px 0 0 0;
+    padding: 0;
     margin: 0;
 }
 
@@ -46,12 +46,16 @@ a:visited {
     color: #439FA5; /* v2 turquoise darkened */
 }
 
+#login_navi_wrapper {
+    max-width: 2047px;
+    display: flow-root; /* Avoids collapsing vertical margin */
+}
+
 #login_navi {
     color: #fff;
     float: right;
     max-width: 20em;
-    margin-top: -60px;
-    margin-right: 10px;
+    margin: 10px 10px 0 0;
 }
 
 #login_navi p {
@@ -62,6 +66,13 @@ a:visited {
 #login_navi a {
     color: #fff;
     text-decoration: none;
+}
+
+#allwrapper {
+    margin: 40px 0 0 0;
+    padding: 5px 10px 10px 1.2em;
+    background: transparent url("/static/web_bottom.jpg") bottom left no-repeat;
+    max-width: 2015px; 
 }
 
 #navi {
@@ -127,13 +138,6 @@ h2, h3, h3 {
 .horizontal_bar {
     background-color: #4DB6BC; /* v2 turquoise */
     display: block;
-}
-
-#allwrapper {
-    margin: 0;
-    padding: 10px 10px 10px 1.2em;
-    background: transparent url("/static/web_bottom.jpg") bottom left no-repeat;
-    max-width: 2000px; 
 }
 
 #cc {
