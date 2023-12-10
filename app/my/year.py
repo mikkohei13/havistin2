@@ -96,6 +96,56 @@ def create_day_chart_data(data, year):
 
     return chart_data
 
+
+def get_rarest_species(species_aggregate):
+    species_list = []
+
+    with open("data/taxon-data.json") as f:
+        taxon_data = json.load(f)
+
+#    print(species_aggregate)
+    # Todo: non-finnish species as well, if there are observations from Finland. E.g. MX.52908
+    # Todo: higher taxa
+
+    for species in species_aggregate["results"]:
+        single_species_dict = dict()
+        species_qname = species["aggregateBy"]["unit.linkings.taxon.speciesId"].replace("http://tun.fi/", "")
+        if species_qname in taxon_data:
+
+            single_species_dict["id"] = species_qname
+            single_species_dict["fi"] = species["aggregateBy"]["unit.linkings.taxon.speciesNameFinnish"]
+            single_species_dict["sci"] = species["aggregateBy"]["unit.linkings.taxon.speciesScientificName"]
+            single_species_dict["obs"] = taxon_data[species_qname]["obs"]
+            single_species_dict["phy"] = taxon_data[species_qname]["phy"]
+            single_species_dict["cla"] = taxon_data[species_qname]["cla"]
+            single_species_dict["ord"] = taxon_data[species_qname]["ord"]
+            single_species_dict["fam"] = taxon_data[species_qname]["fam"]
+            single_species_dict["inv"] = taxon_data[species_qname]["inv"]
+            single_species_dict["f"] = taxon_data[species_qname]["f"]
+
+            single_species_dict["own_count"] = species["count"]
+            single_species_dict["own_oldest"] = species["oldestRecord"]
+
+            species_list.append(single_species_dict)
+
+    sorted_species_list = sorted(species_list, key=lambda x: x['obs'])
+
+    return sorted_species_list[:20] # Top rarest species
+
+
+def generate_rarest_list(species_list, year):
+    html = "<div id='rarest_species'>\n"
+
+    for species in species_list:
+        own_obs_link = f"https://laji.fi/observation/list?target={ species['id'] }&countryId=ML.206&time={ year }-01-01%2F{ year }-12-31&recordQuality=COMMUNITY_VERIFIED,NEUTRAL,EXPERT_VERIFIED&wild=WILD_UNKNOWN,WILD&observerPersonToken=true"
+        species_link = f"https://laji.fi/taxon/{ species['id'] }"
+
+        html += f"  <div class='rare_species'>\n    <h4>{ species['fi'].capitalize() }<br> <span class='higher_taxa'>{ species['phy'] }: { species['cla'] }: { species['ord'] }: { species['fam'] }:</span> <em>{ species['sci'] }</em></h4>\n    <p><a href='{ species_link }'>{ species['obs'] } havaintoa Suomesta</a>, <a href='{ own_obs_link }'>{ species['own_count'] } omaa havaintoa</a></p>\n  </div>\n"
+
+    html += "</div>\n"
+    return html
+
+
 def main(token, year_untrusted, taxon_id_untrusted):
 
     html = dict()
@@ -117,5 +167,9 @@ def main(token, year_untrusted, taxon_id_untrusted):
 
     html["day_aggregate"] = get_day_aggregate(token, year, taxon_id)
     html["day_chart_data"] = create_day_chart_data(html["day_aggregate"], year)
+
+    rare_species_list = get_rarest_species(html["species_aggregate"])
+    html["rarest_species"] = generate_rarest_list(rare_species_list, year)
+#    print(rare_species_list)
 
     return html

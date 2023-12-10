@@ -297,6 +297,22 @@ h2, h3, h3 {
     max-height: 600px;
 }
 
+.rare_species {
+    display: inline;
+    float: left;
+    width: 300px;
+    height: 120px;
+    background-color: #dcfffe;
+    border-radius: 5px;
+    padding: 0.5em;
+    margin: 1em;
+    vertical-align: top;
+}
+.higher_taxa {
+    color: #00657e;
+}
+
+
 .proportion_bar {
     display: block;
     background-color: #00657e;
