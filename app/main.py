@@ -46,9 +46,10 @@ import weather.change
 
 import my.year
 
-import dev.dev
-import app_secrets
+#import dev.dev
 #import dev.cache as devcache
+
+import app_secrets
 
 import requests
 
@@ -110,7 +111,6 @@ def root():
     html = index.index.main()
     return render_template("index.html", html=html)
 
-# Dev login: paste the person_token to the page url, after getting it from a separate service
 @app.route("/login/<string:person_token_untrusted>")
 def login_root(person_token_untrusted):
     session['token'] = person_token_untrusted
@@ -361,11 +361,11 @@ def info_news():
     html = info.news.main()
     return render_template("info_news.html", html=html)
 
-@app.route("/dev/<string:taxon_id_untrusted>")
-@robust_cached(timeout=1)
-def dev_root(taxon_id_untrusted):
-    html = info.dev.main(taxon_id_untrusted)
-    return render_template("dev.html", html=html)
+#@app.route("/dev/<string:taxon_id_untrusted>")
+#@robust_cached(timeout=1)
+#def dev_root(taxon_id_untrusted):
+#    html = info.dev.main(taxon_id_untrusted)
+#    return render_template("dev.html", html=html)
 
 @app.route("/my/year/<int:year_untrusted>")
 @app.route("/my/year/<int:year_untrusted>/")
