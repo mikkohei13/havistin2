@@ -114,6 +114,12 @@ Build image from Dockerfile:
     - call common helpers/squares_with_data
     - define color function: grayscale capped 100
 
+## My observations; ideas
+
+- species per month
+- species per phylum
+- observations total count & average per day
+
 ## Should / Might
 
 - robots.txt, forbid all but front page (now all forbidden)

@@ -156,6 +156,40 @@ def generate_year_dropdown(start_year):
     return '\n'.join(html_options)
 
 
+def get_taxon_name(qname):
+    url = f"https://api.laji.fi/v0/taxa/{ qname }?lang=fi&langFallback=true&maxLevel=0&includeHidden=false&includeMedia=false&includeDescriptions=false&includeRedListEvaluations=false&onlyFinnish=true&sortOrder=taxonomic&access_token="
+
+    data_dict = common_helpers.fetch_finbif_api(url)
+
+    if "Biota" == data_dict['scientificName']:
+        return "kaikki lajit", data_dict['scientificName']
+    if "vernacularName" in data_dict:
+        return data_dict['vernacularName'], data_dict['scientificName']
+    else:
+        return "", data_dict['scientificName'] # Finnish name missing
+
+
+def get_monthly_species_counts(token, year, taxon_id):
+    url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?target={ taxon_id }&countryId=ML.206&time={ year }&recordQuality=EXPERT_VERIFIED,COMMUNITY_VERIFIED,NEUTRAL&wild=WILD,WILD_UNKNOWN&taxonCounts=true&onlyCount=false&cache=true&qualityIssues=NO_ISSUES&aggregateBy=gathering.conversions.month&&selected=gathering.conversions.month&observerPersonToken={ token }&access_token="
+
+    data_dict = common_helpers.fetch_finbif_api(url)
+    return data_dict
+
+
+def generate_monthly_chart(data):
+
+    # Get data from raw data
+    monthly_dict = dict()
+    for month in data["results"]:
+        monthly_dict[int(month["aggregateBy"]["gathering.conversions.month"])] = month["speciesCount"]
+
+    # Generate list of species counts for Chart.js
+    species_counts = []
+    for month in range(1, 13):
+        species_counts.append(monthly_dict.get(month, 0))
+
+    return species_counts
+
 
 def main(token, year_untrusted, taxon_id_untrusted):
 
@@ -163,6 +197,7 @@ def main(token, year_untrusted, taxon_id_untrusted):
     html = dict()
 
     taxon_id = validate_taxon_id(taxon_id_untrusted)
+    html["fi_name"], html["sci_name"] = get_taxon_name(taxon_id)
 
     # Validate year
     current_year = datetime.datetime.now().year
@@ -185,5 +220,7 @@ def main(token, year_untrusted, taxon_id_untrusted):
 #    print(rare_species_list)
 
     html["year_options"] = generate_year_dropdown(1990)
+
+    html["month_chart_species_data"] = generate_monthly_chart(get_monthly_species_counts(token, year, taxon_id))
 
     return html

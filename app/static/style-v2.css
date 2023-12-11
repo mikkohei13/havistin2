@@ -301,6 +301,10 @@ h2, h3, h3 {
     max-height: 600px;
 }
 
+#month_chart {
+    max-height: 400px;
+}
+
 .rare_species {
     display: inline;
     float: left;

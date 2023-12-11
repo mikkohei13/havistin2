@@ -53,7 +53,7 @@
 
 {% block body %}
 
-    <h1>Omat havainnot Suomesta vuonna {{ html["year"] }}</h1>
+    <h1>Omat havainnot Suomesta, {{ html["fi_name"] }} ({{ html["sci_name"] }}), {{ html["year"] }}</h1>
 
     <form id="navigationForm">
         <label for="yearSelect">Vuosi:</label>
@@ -91,6 +91,9 @@
 
     <h3>Lajimäärän kasvu</h3>
     <canvas id="year_chart" class="chart"></canvas>
+
+    <h3>Lajeja kuukaudessa</h3>
+    <canvas id="month_chart" class="chart"></canvas>
 
     <h3>Havaintojen määrä päivittäin</h3>
     <p>Mukana ovat havainnot, joiden havaintoaika on kirjattu viikon tarkkuudella tai tarkemmin.</p>
@@ -143,6 +146,48 @@ var chart = new Chart(ctx, {
                 scaleLabel: {
                     display: true,
                     labelString: 'Kumulatiivinen lajimäärä'
+                }
+            }]
+        }
+    }
+});
+
+
+// Month chart
+// rgb(253, 104, 38) orange
+// rgb(251, 216, 1) yellow
+var ctx = document.getElementById('month_chart').getContext('2d');
+var chart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+        datasets: [{
+            label: 'Lajeja kuukaudessa',
+            backgroundColor: 'rgb(251, 216, 1)',
+            borderColor: 'rgb(251, 216, 1)',
+            data: {{ html["month_chart_species_data"]|safe }},
+            fill: false,
+        }]
+    },
+
+    options: {
+        scales: {
+            xAxes: [{
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Month'
+                },
+                type: 'category',
+
+                ticks: {
+                    autoSkip: true,
+                    maxTicksLimit: 12
+                }
+            }],
+            yAxes: [{
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Lajeja kuukaudessa'
                 }
             }]
         }
