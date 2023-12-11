@@ -1,4 +1,8 @@
-{% if user_data is none %}
+{% if session['user_data']['error'] %}
+    <p id="login_info" class="logged_out">
+        <strong><a href="https://www.biomi.org/havistin/login/">Kirjaudu</a></strong>
+    </p>
+{% elif user_data is none %}
     <p id="login_info" class="logged_out">
         <strong><a href="https://www.biomi.org/havistin/login/">Kirjaudu</a></strong>
     </p>

@@ -95,6 +95,7 @@ cache = Cache(app)
 print("-------------- PREPARE --------------", file = sys.stdout)
 
 # This makes session token and user_data available on every template.
+# TODO: Remove and user session variable instead?
 @app.context_processor
 def inject_token():
     token = session.get('token', None)
