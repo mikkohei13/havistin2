@@ -34,6 +34,10 @@
             taxonSelect.addEventListener('change', updateButtonStatus);
 
             submitButton.addEventListener('click', function () {
+                submitButton.disabled = true;
+                submitButton.textContent = 'Hakee havaintoja...';
+                document.body.style.cursor = 'wait';
+
                 var year = yearSelect.value;
                 var taxonKey = taxonSelect.value;
                 if (year && taxonKey) {
