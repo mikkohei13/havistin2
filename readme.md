@@ -116,7 +116,6 @@ Build image from Dockerfile:
 
 ## My observations; ideas
 
-- species per month
 - species per phylum
 - observations total count & average per day
 

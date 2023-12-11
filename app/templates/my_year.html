@@ -95,17 +95,19 @@
 
     {% if html["got_results"] %}
 
-    <h3>Lajimäärän kasvu</h3>
+    <h2>Lajimäärän kasvu</h2>
     <canvas id="year_chart" class="chart"></canvas>
 
-    <h3>Lajeja kuukaudessa</h3>
+    <h2>Lajeja kuukaudessa</h2>
+    <p>Mukana ovat havainnot, joiden havaintoaika on kirjattu kahden päivän tarkkuudella tai tarkemmin.</p>
     <canvas id="month_chart" class="chart"></canvas>
 
-    <h3>Havaintojen määrä päivittäin</h3>
-    <p>Mukana ovat havainnot, joiden havaintoaika on kirjattu viikon tarkkuudella tai tarkemmin.</p>
+    <h2>Havaintojen määrä päivittäin</h2>
+    <p>Mukana ovat havainnot, joiden havaintoaika on kirjattu kahden päivän tarkkuudella tai tarkemmin.</p>
+    <p><strong>Havaintoja {{ html["days_with_observations"] }} päivältä eli {{ html["days_with_observations_percent"] }} % päivistä.</strong></p>
     <canvas id="day_chart" class="chart"></canvas>
 
-    <h3>Harvinaisimmat lajit</h3>
+    <h2>Harvinaisimmat lajit</h2>
     <p>Harvinaisuus määritellään Laji.fi:ssa olevien suomalaisten havaintojen määrän perusteella. Havaintomäärä vaihtelee voimakkaasti lajiryhmittäin.</p>
     {{ html["rarest_species"]|safe }}
 

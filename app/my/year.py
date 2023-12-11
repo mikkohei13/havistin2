@@ -17,7 +17,7 @@ def validate_taxon_id(taxon_id):
 def get_day_aggregate(token, year, taxon_id):
     # Todo: Pagination or check if API can give >2000 results
     # Note: timeAccuracy
-    url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=gathering.conversions.dayOfYearBegin&orderBy=gathering.conversions.dayOfYearBegin&onlyCount=true&taxonCounts=false&gatheringCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=367&page=1&cache=true&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&target={ taxon_id }&time={ year }&timeAccuracy=1&individualCountMin=1&wild=WILD,WILD_UNKNOWN&recordQuality=EXPERT_VERIFIED,COMMUNITY_VERIFIED,NEUTRAL&qualityIssues=NO_ISSUES&observerPersonToken={ token }&access_token="
+    url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=gathering.conversions.dayOfYearBegin&orderBy=gathering.conversions.dayOfYearBegin&onlyCount=true&taxonCounts=false&gatheringCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=367&page=1&cache=true&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&target={ taxon_id }&time={ year }&timeAccuracy=2&individualCountMin=1&wild=WILD,WILD_UNKNOWN&recordQuality=EXPERT_VERIFIED,COMMUNITY_VERIFIED,NEUTRAL&qualityIssues=NO_ISSUES&observerPersonToken={ token }&access_token="
 
     data_dict = common_helpers.fetch_finbif_api(url)
     return data_dict
@@ -75,6 +75,7 @@ def create_year_chart_data(data, year):
 def create_day_chart_data(data, year):
     days = []
     counts = []
+    days_with_observations = 0
 
     # Generate a lookup dictionary of daily observation count
     lookup_data = dict()
@@ -88,13 +89,16 @@ def create_day_chart_data(data, year):
         days.append(formatted_date)
 
         day_of_year_str = str(day_of_year)
+
         counts.append(lookup_data.get(day_of_year_str, 0))
+        if day_of_year_str in lookup_data:
+            days_with_observations = days_with_observations + 1
 
     chart_data = dict()
     chart_data["days"] = days
     chart_data["counts"] = counts
 
-    return chart_data
+    return chart_data, days_with_observations
 
 
 def get_rarest_species(species_aggregate):
@@ -170,7 +174,8 @@ def get_taxon_name(qname):
 
 
 def get_monthly_species_counts(token, year, taxon_id):
-    url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?target={ taxon_id }&countryId=ML.206&time={ year }&recordQuality=EXPERT_VERIFIED,COMMUNITY_VERIFIED,NEUTRAL&wild=WILD,WILD_UNKNOWN&taxonCounts=true&onlyCount=false&cache=true&qualityIssues=NO_ISSUES&aggregateBy=gathering.conversions.month&&selected=gathering.conversions.month&observerPersonToken={ token }&access_token="
+    # Note: timeAccuracy
+    url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?target={ taxon_id }&countryId=ML.206&time={ year }&recordQuality=EXPERT_VERIFIED,COMMUNITY_VERIFIED,NEUTRAL&wild=WILD,WILD_UNKNOWN&timeAccuracy=2&taxonCounts=true&onlyCount=false&cache=true&qualityIssues=NO_ISSUES&aggregateBy=gathering.conversions.month&&selected=gathering.conversions.month&observerPersonToken={ token }&access_token="
 
     data_dict = common_helpers.fetch_finbif_api(url)
     return data_dict
@@ -227,7 +232,10 @@ def main(token, year_untrusted, taxon_id_untrusted):
     html["species_chart_data"] = create_year_chart_data(html["species_aggregate"], year)
 
     html["day_aggregate"] = get_day_aggregate(token, year, taxon_id)
-    html["day_chart_data"] = create_day_chart_data(html["day_aggregate"], year)
+    html["day_chart_data"], html["days_with_observations"] = create_day_chart_data(html["day_aggregate"], year)
+
+    # Todo: leap years
+    html["days_with_observations_percent"] = round(html["days_with_observations"] / 365 * 100, 1)
 
     rare_species_list = get_rarest_species(html["species_aggregate"])
     html["rarest_species"] = generate_rarest_list(rare_species_list, year)
