@@ -219,7 +219,7 @@ def main(token, year_untrusted, taxon_id_untrusted):
     html["rarest_species"] = generate_rarest_list(rare_species_list, year)
 #    print(rare_species_list)
 
-    html["year_options"] = generate_year_dropdown(1990)
+    html["year_options"] = generate_year_dropdown(1970)
 
     html["month_chart_species_data"] = generate_monthly_chart(get_monthly_species_counts(token, year, taxon_id))
 
