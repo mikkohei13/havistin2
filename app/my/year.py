@@ -193,7 +193,8 @@ def generate_monthly_chart(data):
 
 def main(token, year_untrusted, taxon_id_untrusted):
 
-    # Todo: handle cases where no observations found
+    # --------------------
+    # Prepare
     html = dict()
 
     taxon_id = validate_taxon_id(taxon_id_untrusted)
@@ -209,7 +210,20 @@ def main(token, year_untrusted, taxon_id_untrusted):
         year = year_untrusted
     html["year"] = year
 
+    html["year_options"] = generate_year_dropdown(1970)
+
+    # --------------------
+    # Get data
     html["species_aggregate"] = get_species_aggregate(token, year, taxon_id)
+
+    # Check if no observations
+    if 0 == html["species_aggregate"]["total"]:
+        html["got_results"] = False
+        return html
+
+    # If observations found, continue
+    html["got_results"] = True
+
     html["species_chart_data"] = create_year_chart_data(html["species_aggregate"], year)
 
     html["day_aggregate"] = get_day_aggregate(token, year, taxon_id)
@@ -218,8 +232,6 @@ def main(token, year_untrusted, taxon_id_untrusted):
     rare_species_list = get_rarest_species(html["species_aggregate"])
     html["rarest_species"] = generate_rarest_list(rare_species_list, year)
 #    print(rare_species_list)
-
-    html["year_options"] = generate_year_dropdown(1970)
 
     html["month_chart_species_data"] = generate_monthly_chart(get_monthly_species_counts(token, year, taxon_id))
 
