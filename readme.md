@@ -55,9 +55,13 @@ Deploy to Google Cloud Run:
 
 Redeploy from Google Console (https://console.cloud.google.com/run) if you want to set more options there.
 
+Some pages under havistin.biomi.org are fetched regularly using Google Cloud Scheduler, to update caches.
+
+### Issues
+
 If build fails due to "Could not build wheels for pandas...", try updating pandas version on requirements.txt.  
 
-Some pages under havistin.biomi.org are fetched regularly using Google Cloud Scheduler, to update caches.
+If site fails with message "Service Unavailable", check logs and try assigning more memory. Also check that .gcloudignore doesn't exclude necessary files.
 
 ## Google Cloud Run notes:
 
