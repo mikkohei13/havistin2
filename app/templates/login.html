@@ -10,12 +10,18 @@
 
     {% block body %}
 
-    <h3>Kirjautuminen</h3>
+    {% if session['user_data'] %}
+        <h1>Olet nyt kirjautunut</h1>
+        <p>Olet kirjautunut näillä tiedoilla:
+            {{ session["user_data"]['fullName'] }},
+            {{ session["user_data"]['id'] }},
+            {{ session["user_data"]['emailAddress'] }}
+        </p>
+        <p>Voit <a href='/logout'>kirjautua ulos tästä</a> tai oikeasta ylänurkasta.</p>
 
-    <p>Olet nyt kirjautunut.</p>
-
-    {{ html["test"]|safe }}
-    
-    {{ session }}
+        <h3><a href='/my/year/2023'>Omat havainnot</a></h3>
+    {% else %}
+        <!-- User not logged in -->
+    {% endif %}
 
     {% endblock %}

@@ -58,6 +58,7 @@ def get_today_saved_total():
 
     time = datetime.now()
     today = time.strftime("%Y-%m-%d")
+    current_year = time.strftime("%Y")
 
     data = common_helpers.fetch_finbif_api(f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?countryId=ML.206&aggregateBy=document.collectionId&selected=document.collectionId&cache=false&page=1&pageSize=100&firstLoadedSameOrAfter={today}&geoJSON=false&onlyCount=false&access_token=")
 
@@ -65,7 +66,7 @@ def get_today_saved_total():
     for collection in data["results"]:
         total += collection["count"]
     
-    return total, today
+    return total, today, current_year
 
 
 def main():
@@ -83,6 +84,6 @@ def main():
     # API works, proceed normally
     html["today_obs_count"] = api_up["total"]
 
-    html["today_saved_count"], html["today"] = get_today_saved_total()
+    html["today_saved_count"], html["today"], html['current_year'] = get_today_saved_total()
 
     return html
