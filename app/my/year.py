@@ -25,7 +25,7 @@ def get_day_aggregate(token, year, taxon_id):
 
 def get_species_aggregate(token, year, taxon_id):
     # Todo: Pagination or check if API can give >2000 results
-    url = f"https://laji.fi/api/warehouse/query/unit/aggregate?countryId=ML.206&target={ taxon_id }&time={ year }&recordQuality=EXPERT_VERIFIED,COMMUNITY_VERIFIED,NEUTRAL&wild=WILD,WILD_UNKNOWN&individualCountMin=1&aggregateBy=unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesNameFinnish,unit.linkings.taxon.speciesScientificName&selected=unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesNameFinnish,unit.linkings.taxon.speciesScientificName&cache=true&page=1&pageSize=2000&qualityIssues=NO_ISSUES&geoJSON=false&onlyCount=false&observerPersonToken={ token }&access_token="
+    url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?countryId=ML.206&target={ taxon_id }&time={ year }&recordQuality=EXPERT_VERIFIED,COMMUNITY_VERIFIED,NEUTRAL&wild=WILD,WILD_UNKNOWN&individualCountMin=1&aggregateBy=unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesNameFinnish,unit.linkings.taxon.speciesScientificName&selected=unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesNameFinnish,unit.linkings.taxon.speciesScientificName&cache=true&page=1&pageSize=2000&qualityIssues=NO_ISSUES&geoJSON=false&onlyCount=false&observerPersonToken={ token }&access_token="
 
     data_dict = common_helpers.fetch_finbif_api(url)
     return data_dict
@@ -141,7 +141,7 @@ def generate_rarest_list(species_list, year):
     html = "<div id='rarest_species'>\n"
 
     for species in species_list:
-        own_obs_link = f"https://laji.fi/observation/list?target={ species['id'] }&countryId=ML.206&time={ year }-01-01%2F{ year }-12-31&recordQuality=COMMUNITY_VERIFIED,NEUTRAL,EXPERT_VERIFIED&wild=WILD_UNKNOWN,WILD&observerPersonToken=true"
+        own_obs_link = f"https://laji.fi/observation/map?target={ species['id'] }&countryId=ML.206&time={ year }-01-01%2F{ year }-12-31&recordQuality=COMMUNITY_VERIFIED,NEUTRAL,EXPERT_VERIFIED&wild=WILD_UNKNOWN,WILD&observerPersonToken=true"
         species_link = f"https://laji.fi/taxon/{ species['id'] }"
 
         html += f"  <div class='rare_species'>\n    <h4>{ species['fi'].capitalize() }<br> <span class='higher_taxa'>{ species['phy'] }: { species['cla'] }: { species['ord'] }: { species['fam'] }:</span> <em>{ species['sci'] }</em></h4>\n    <p><a href='{ species_link }'>{ species['obs'] } havaintoa Suomesta</a>, <a href='{ own_obs_link }'>{ species['own_count'] } omaa havaintoa</a></p>\n  </div>\n"
