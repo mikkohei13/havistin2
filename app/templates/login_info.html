@@ -1,10 +1,10 @@
 {% if user_data is none %}
     <p id="login_info" class="logged_out">
-        <strong><a href="https://www.biomi.org/havistin/login/">Kirjaudu</a></strong>
+        <strong><a href="https://login.laji.fi/login?target=KE.781&redirectMethod=GET&locale=fi&next=prod">Kirjaudu</a></strong>
     </p>
 {% elif error in session['user_data'] %}
     <p id="login_info" class="logged_out">
-        <strong><a href="https://www.biomi.org/havistin/login/">Kirjaudu</a></strong>
+        <strong><a href="https://login.laji.fi/login?target=KE.781&redirectMethod=GET&locale=fi&next=prod">Kirjaudu</a></strong>
     </p>
 {% else %}
     <p id="login_info" class="logged_in">
