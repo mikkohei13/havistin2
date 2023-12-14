@@ -59,39 +59,44 @@
 
     <h1>Omat havainnot Suomesta, {{ html["fi_name"] }} ({{ html["sci_name"] }}), {{ html["year"] }}</h1>
 
-    <form id="navigationForm">
-        <label for="yearSelect">Vuosi:</label>
-        <select id="yearSelect">
-            <option value="">valitse</option>
-            {{ html["year_options"]|safe }}
-        </select>
+    <div id="subnavi">
+        <h3>Valitse tarkasteltava vuosi ja lajiryhmä</h3>
+        <form id="navigationForm">
+            <label for="yearSelect">Vuosi:</label>
+            <select id="yearSelect">
+                <option value="">valitse</option>
+                {{ html["year_options"]|safe }}
+            </select>
 
-        <label for="taxonSelect">lajiryhmä:</label>
-        <select id="taxonSelect">
-            <option value="">valitse</option>
-            <option value="MX.37600">Kaikki lajit</option>
-            <option value="MX.37602">- Eläimet</option>
-            <option value="MX.37608">-- Sekärankaiset</option>
-            <option value="MX.37580">--- Linnut</option>
-            <option value="MX.37612">--- Nisäkkäät</option>
-            <option value="MX.37613">-- Hyönteiset</option>
-            <option value="MX.53695">--- Perhoset</option>
-            <option value="MX.53683">--- Nivelkärsäiset</option>
-            <option value="MX.43121">--- Kovakuoriaiset</option>
-            <option value="MX.43122">--- Pistiäiset</option>
-            <option value="MX.43123">--- Kaksisiipiset</option>
-            <option value="MX.1">--- Sudenkorennot</option>
-            <option value="MX.37601">Kasvit</option>
-            <option value="MX.53078">- Putkilokasvit</option>
-            <option value="MX.44109">- Lehtisammalet</option>
-            <option value="MX.44394">- Maksasammalet</option>
-            <option value="MX.53062">Sienet</option>
-            <option value="MX.70582">- Jäkälät</option>
-            <option value="MX.70149">Limasienet</option>
-        </select>
+            <label for="taxonSelect">lajiryhmä:</label>
+            <select id="taxonSelect">
+                <option value="">valitse</option>
+                <option value="MX.37600">Kaikki lajit</option>
+                <option value="MX.37602">- Eläimet</option>
+                <option value="MX.37608">-- Sekärankaiset</option>
+                <option value="MX.37580">--- Linnut</option>
+                <option value="MX.37612">--- Nisäkkäät</option>
+                <option value="MX.37613">-- Hyönteiset</option>
+                <option value="MX.53695">--- Perhoset</option>
+                <option value="MX.53683">--- Nivelkärsäiset</option>
+                <option value="MX.229577">---- Luteet</option>
+                <option value="MX.289596">---- Kaskaat</option>
+                <option value="MX.43121">--- Kovakuoriaiset</option>
+                <option value="MX.43122">--- Pistiäiset</option>
+                <option value="MX.43123">--- Kaksisiipiset</option>
+                <option value="MX.1">--- Sudenkorennot</option>
+                <option value="MX.37601">Kasvit</option>
+                <option value="MX.53078">- Putkilokasvit</option>
+                <option value="MX.44109">- Lehtisammalet</option>
+                <option value="MX.44394">- Maksasammalet</option>
+                <option value="MX.53062">Sienet</option>
+                <option value="MX.70582">- Jäkälät</option>
+                <option value="MX.70149">Limasienet</option>
+            </select>
 
-        <button id="submitButton" type="button" disabled>Valitse</button>
-    </form>
+            <button id="submitButton" type="button" disabled>Valitse</button>
+        </form>
+    </div>
 
     {% if html["got_results"] %}
 
@@ -130,7 +135,8 @@ var chart = new Chart(ctx, {
     options: {
         elements: {
             point: {
-                radius: 0
+                hitRadius: 15,
+                radius: 1,
             }
         },
         scales: {
@@ -214,6 +220,7 @@ var chart = new Chart(ctx, {
             label: 'Havaintojen lukumäärä',
             backgroundColor: 'rgb(43, 170, 177)',
             borderColor: 'rgb(43, 170, 177)',
+            hoverBackgroundColor: 'rgb(255, 99, 132)',
             data: {{ html["day_chart_data"]["counts"]|safe }},
             fill: false,
         }]

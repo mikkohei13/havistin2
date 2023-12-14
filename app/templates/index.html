@@ -25,10 +25,11 @@
         <p>Tänään tallennettu <a href="https://laji.fi/observation/statistics?countryId=ML.206&firstLoadedSameOrAfter={{ html["today"] }}">{{ html["today_saved_count"] }} havaintoa</a>.</p>
 
         {% if session['user_data'] %}
-            <h3><a href='/my/year/{{ html["current_year"] }}/MX.37600'>Omat havainnot</a></h3>
+            <h3><a href='/my/year/{{ html["current_year"] }}/MX.37600'>Omat havainnot</a>  <em>uusi</em></h3>
             <p>Tilastoja omista havainnoistasi eri vuosilta.</p>
         {% else %}
-            <!-- User not logged in -->
+            <h3><a href='https://login.laji.fi/login?target=KE.781&redirectMethod=GET&locale=fi&next=prod'>Kirjaudu sisään</a>  <em>uusi</em></h3>
+            <p>Kirjaudu sisään, niin näet tilastoja omista havainnoistasi.</p>
         {% endif %}
 
         <h3><a href="/atlas">Lintuatlas</a></h3>

@@ -23,11 +23,11 @@ It's better to call this at 5, 15, 25, 35 45 and 55 past, so that data has been 
 
 ## Running in development
 
-First build the image, and tag it with a version number and/or as latest:
+First build the image, and tag it as latest:
 
     docker build -t havistin2-gunicorn:latest .
 
-Or set a version number:
+...or set a version number:
 
     docker build -t havistin2-gunicorn:VERSIONNUMBER -t havistin2-gunicorn:0.1 .
 
@@ -110,7 +110,6 @@ Build image from Dockerfile:
 - Complete lists per square:
     - router, page and template
     - fetch data from api
-        - 
     - add map functions into the common helper file
     - call common helpers/squares_with_data
     - define color function: grayscale capped 100

@@ -50,6 +50,9 @@ def create_year_chart_data(data, year):
     # Find the maximum day of the year in the records
     max_day = max(day_of_year_records)
 
+    # Or generate full year
+    max_day = 365
+
     # Counting occurrences of each day of year
     day_counts = {}
     for day in day_of_year_records:
