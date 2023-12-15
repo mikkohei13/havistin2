@@ -40,7 +40,7 @@ def fetch_completelists_per_square():
 
     per_page = 10000
     # This sorts the document based on gathering count DESC, i.e. how many units have coordinates.
-    url = f"https://api.laji.fi/v0/warehouse/query/gathering/aggregate?aggregateBy=document.documentId%2Cgathering.conversions.ykj10km.lat%2Cgathering.conversions.ykj10km.lon&onlyCount=true&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize={ per_page }&page=1&cache=false&qualityIssues=NO_ISSUES&completeListTaxonId=MX.37580&completeListType=MY.completeListTypeCompleteWithBreedingStatus%2CMY.completeListTypeComplete&access_token=";
+    url = f"https://api.laji.fi/v0/warehouse/query/gathering/aggregate?aggregateBy=document.documentId%2Cgathering.conversions.ykj10kmCenter.lat%2Cgathering.conversions.ykj10kmCenter.lon&onlyCount=true&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize={ per_page }&page=1&cache=false&qualityIssues=NO_ISSUES&completeListTaxonId=MX.37580&countryId=ML.206&completeListType=MY.completeListTypeCompleteWithBreedingStatus%2CMY.completeListTypeComplete&access_token=";
 
     data_dict = common_helpers.fetch_finbif_api(url)
 
@@ -50,8 +50,8 @@ def fetch_completelists_per_square():
     total_list_count = 0
 
     for list in data_dict["results"]:
-        n = list["aggregateBy"]["gathering.conversions.ykj10km.lat"].split(".")[0]
-        e = list["aggregateBy"]["gathering.conversions.ykj10km.lon"].split(".")[0]
+        n = list["aggregateBy"]["gathering.conversions.ykj10kmCenter.lat"].split(".")[0]
+        e = list["aggregateBy"]["gathering.conversions.ykj10kmCenter.lon"].split(".")[0]
         square_id = n + ":" + e
 
 #        print(square_id)
@@ -95,7 +95,7 @@ def main():
     square_count = len(square_data)
     square_proportion = round((square_count / total_square_count * 100), 1)
 
-    html["stats"] = f"{ total_list_count } täydellistä listaa { square_count } ruudusta, eli { square_proportion } % kaikista ruuduista."
+    html["stats"] = f"{ total_list_count } täydellistä listaa { square_count } ruudusta, eli { square_proportion } % kaikista ruuduista. Mukana ovat myös listat, jotka ylittävät atlasruudun rajan. Ne tilastoidaan havaintoalueen keskipisteen mukaan."
 
     html["coordinates"] = common_helpers.squares_with_data(square_data, color_viridis_capped, text_completelists)
 
