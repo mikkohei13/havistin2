@@ -2,6 +2,7 @@
 from helpers import common_helpers
 import datetime
 import json
+import calendar
 
 import re
 
@@ -12,6 +13,20 @@ def validate_taxon_id(taxon_id):
         return taxon_id
     else:
         return "MX.37600" # default = Biota
+
+
+def get_day_count(year):
+    if calendar.isleap(year):
+        return 366
+    else:
+        return 365
+
+
+def get_obs_count(token, year, taxon_id):
+    # Note: includes also erroneous & uncertain observations
+    url = f"https://api.laji.fi/v0/warehouse/query/unit/count?cache=true&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&individualCountMin=1&qualityIssues=NO_ISSUES&wild=WILD,WILD_UNKNOWN&countryId=ML.206&target={ taxon_id }&time={ year }&observerPersonToken={ token }&access_token="
+    data_dict = common_helpers.fetch_finbif_api(url)
+    return data_dict["total"]
 
 
 def get_day_aggregate(token, year, taxon_id):
@@ -218,6 +233,14 @@ def main(token, year_untrusted, taxon_id_untrusted):
         year = year_untrusted
     html["year"] = year
 
+    # Days in the year so far
+    if current_year == year:
+        current_date = datetime.datetime.now()
+        day_count = current_date.timetuple().tm_yday
+    else:
+        day_count = get_day_count(year)
+
+
     html["year_options"] = generate_year_dropdown(1970)
 
     # --------------------
@@ -236,6 +259,9 @@ def main(token, year_untrusted, taxon_id_untrusted):
 
     html["day_aggregate"] = get_day_aggregate(token, year, taxon_id)
     html["day_chart_data"], html["days_with_observations"] = create_day_chart_data(html["day_aggregate"], year)
+
+    html["obs_count"] = get_obs_count(token, year, taxon_id)
+    html["obs_count_day"] = round((html["obs_count"] / day_count), 1)
 
     # Todo: leap years
     html["days_with_observations_percent"] = round(html["days_with_observations"] / 365 * 100, 1)
