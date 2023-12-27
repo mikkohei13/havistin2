@@ -8,3 +8,4 @@ pymongo[srv] == 4.2.*
 redis == 4.3.*
 matplotlib == 3.7.*
 beautifulsoup4 == 4.12.*
+firebase-admin == 6.3.*

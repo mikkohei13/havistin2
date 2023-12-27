@@ -46,6 +46,8 @@ import weather.change
 
 import my.year
 
+import pinna.pinna
+
 #import dev.dev
 #import dev.cache as devcache
 
@@ -374,6 +376,12 @@ def my_year(year_untrusted, taxon_id_untrusted = "MX.37600"): # default = Biota
     token = session.get('token', None)
     html = my.year.main(token, year_untrusted, taxon_id_untrusted)
     return render_template("my_year.html", html=html)
+
+@app.route("/pinna")
+def pinna_root():
+    token = session.get('token', None)
+    html = pinna.pinna.main(token)
+    return render_template("pinna.html", html=html)
 
 '''
 Debugging help:
