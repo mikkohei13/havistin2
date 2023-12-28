@@ -39,22 +39,40 @@ def format_name(unit):
         return f"{ prefix }{ unit['scientificName']}{ suffix } { unit['scientificNameAuthorship'] }"
 
 
+def get_field(data, key, label):
+    if key in data:
+        return f"<li>{ label }: { data[key] }</li>\n"
+    else:
+        return ""
+
+
 def get_html(doc, my_doc):
     html = ""
     for gathering in doc["document"]["gatherings"]:
         html += f"<div class='v_gathering' id='{ gathering['gatheringId'] }'>\n"
         html += gathering['gatheringId']
 
-        for unit in gathering['units']:
-            html += f"<div class='v_unit' id='{ unit['unitId'] }'>\n"
-            html += unit['unitId']
-            html += f"<h4>{ format_name(unit['linkings']['taxon']) }</h4>"
-            html += "</div><!-- u ends -->\n"
-
+        # If observations in this gathering
+        if "units" in gathering:
+            for unit in gathering['units']:
+                html += f"<div class='v_unit' id='{ unit['unitId'] }'>\n"
+                html += f"<h4>{ format_name(unit['linkings']['taxon']) }</h4>"
+                html += f"<p>Havainnon alkuperäinen määritys: { format_name(unit['linkings']['originalTaxon']) }</p>"
+                html += "<p><ul>"
+                html += f"<li>Havainnon id: { unit['unitId'] }</li>"
+                html += get_field(unit, "abundanceString", "Määrä")
+                html += "</ul></p>"
+                html += "</div><!-- u ends -->\n"
+        # If ZERO observations in this gathering
+        else:
+            html += f"<div class='v_no_unit'>\n"
+            html += "<p>Pelkkä havaintoalue.</p>"
+            html += "</div><!-- no_unit ends -->\n"
 
         html += "</div><!-- g ends -->\n"
 
     return html
+
 
 
 def main(token, document_id_untrusted):
