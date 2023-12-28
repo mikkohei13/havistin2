@@ -40,8 +40,29 @@ def format_name(unit):
 
 
 def get_field(data, key, label):
+        
+    # Gets labels from schema. Is there a better way to do this?
     if key in data:
-        return f"<li>{ label }: { data[key] }</li>\n"
+        # If value is URI, fetch label for it
+        if "http://tun.fi" in data[key]:
+            data_dict = common_helpers.fetch_finbif_api(data[key] + "?format=json&foo")
+            value = data[key] # Use value as is as the default, in case translation is not found
+            for labels in data_dict['label']:
+                if "fi" == labels['@language']:
+                    value = labels['@value']
+                    break
+        else:
+            value = data[key]
+
+        return f"<li>{ label }: { value }</li>\n"
+    else:
+        return ""
+
+
+def get_multi_field(data, key, label):        
+    if key in data:
+        values = ", ".join(data[key])
+        return f"<li>{ label }: { values }</li>\n"
     else:
         return ""
 
@@ -61,6 +82,10 @@ def get_html(doc, my_doc):
                 html += "<p><ul>"
                 html += f"<li>Havainnon id: { unit['unitId'] }</li>"
                 html += get_field(unit, "abundanceString", "Määrä")
+                html += get_field(unit, "notes", "Lisätiedot")
+                html += get_field(unit, "atlasClass", "Pesimävarmuusluokka")
+                html += get_field(unit, "atlasCode", "Pesimävarmuusindeksi")
+                html += get_multi_field(unit, "keywords", "Avainsanat")
                 html += "</ul></p>"
                 html += "</div><!-- u ends -->\n"
         # If ZERO observations in this gathering
