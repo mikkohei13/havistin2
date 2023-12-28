@@ -46,8 +46,10 @@ import weather.change
 
 import my.year
 
-import pinna.pinna
-import pinna.contest_edit
+import viewer.viewer
+
+#import pinna.pinna
+#import pinna.contest_edit
 
 #import dev.dev
 #import dev.cache as devcache
@@ -378,6 +380,14 @@ def my_year(year_untrusted, taxon_id_untrusted = "MX.37600"): # default = Biota
     html = my.year.main(token, year_untrusted, taxon_id_untrusted)
     return render_template("my_year.html", html=html)
 
+@app.route("/viewer/<path:document_id_untrusted>") # Note: path -> allows slashes in parameter
+def viewer_root(document_id_untrusted):
+    token = session.get('token', None)
+    html = viewer.viewer.main(token, document_id_untrusted)
+    return render_template("viewer.html", html=html)
+
+
+'''
 @app.route("/pinna")
 def pinna_root():
     token = session.get('token', None)
@@ -389,6 +399,7 @@ def pinna_contest_edit(id_untrusted):
     token = session.get('token', None)
     html = pinna.contest_edit.main(token, id_untrusted)
     return render_template("pinna.html", html=html)
+'''
 
 '''
 Debugging help:

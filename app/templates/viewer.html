@@ -1,0 +1,35 @@
+<style>
+#v_all {
+    border: 1px solid aquamarine;
+}
+.v_gathering {
+    border: 1px solid goldenrod;
+}
+.v_unit {
+    border: 1px solid violet;
+}
+
+
+</style>
+
+
+<div id="v_all">
+
+    {{ html["doc"]|safe }}
+
+</div>
+
+<hr>
+
+<h2>Debug</h2>
+<p class="debug">
+    {% if user_data is none %}
+    Not logged in
+    {% elif error in session['user_data'] %}
+    Error
+    {% else %}
+    Logged in
+    {% endif %}
+    </p>
+    
+{{ html["data"] }}
