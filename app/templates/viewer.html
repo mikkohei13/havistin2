@@ -8,7 +8,10 @@
 .v_unit {
     border: 1px solid violet;
 }
-
+#v_collection_quality_symbol, #v_unit_quality_symbol {
+    width: 1em;
+    height: 1em;
+}
 
 </style>
 
@@ -33,3 +36,22 @@
     </p>
     
 {{ html["data"] }}
+
+<script>
+    function copyToClipboard(text) {
+        // Create a temporary textarea element
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+
+        // Select the text and copy it
+        textarea.select();
+        document.execCommand('copy');
+
+        // Remove the temporary textarea
+        document.body.removeChild(textarea);
+
+        // Optionally, alert the user that text was copied
+        alert('Copied: ' + text);
+    }
+</script>

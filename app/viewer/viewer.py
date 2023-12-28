@@ -86,6 +86,34 @@ def get_collection(collection_id):
     return data_dict
 
 
+def get_collection_quality_symbol(collection_quality_qname):
+    if collection_quality_qname:
+        if "MY.collectionQualityEnum1" == collection_quality_qname:
+            return "<img id='v_collection_quality_symbol' src='https://laji.fi/static/images/quality-icons/collection/amateur_collection.svg'>"
+        if "MY.collectionQualityEnum2" == collection_quality_qname:
+            return "<img id='v_collection_quality_symbol' src='https://laji.fi/static/images/quality-icons/collection/hobbyist_collection.svg'>"
+        if "MY.collectionQualityEnum3" == collection_quality_qname:
+            return "<img id='v_collection_quality_symbol' src='https://laji.fi/static/images/quality-icons/collection/professional_collection.svg'>"
+    else:
+        return ""
+
+
+def get_unit_quality_symbol(unit_quality_qname):
+    if unit_quality_qname:
+        if "EXPERT_VERIFIED" == unit_quality_qname:
+            return "<img id='v_unit_quality_symbol' src='https://laji.fi/static/images/quality-icons/record/expert_verified.svg'>"
+        if "COMMUNITY_VERIFIED" == unit_quality_qname:
+            return "<img id='v_unit_quality_symbol' src='https://laji.fi/static/images/quality-icons/record/community_verified.svg'>"
+        if "NEUTRAL" == unit_quality_qname:
+            return "<img id='v_unit_quality_symbol' src='https://laji.fi/static/images/quality-icons/record/neutral.svg'>"
+        if "UNCERTAIN" == unit_quality_qname:
+            return "<img id='v_unit_quality_symbol' src='https://laji.fi/static/images/quality-icons/record/uncertain.svg'>"
+        if "ERRONEOUS" == unit_quality_qname:
+            return "<img id='v_unit_quality_symbol' src='https://laji.fi/static/images/quality-icons/record/erroneous.svg'>"
+    else:
+        return "PUUTTUU"
+
+
 def get_html(doc, my_doc):
 
     collection_data = get_collection(doc['document']['collectionId'])
@@ -93,20 +121,21 @@ def get_html(doc, my_doc):
     html = ""
 
     html += "<div class='v_document'>\n"
-    html += f"<h1>{ doc['document']['documentId'] }</h1>\n"
+    html += f"<h1>{ doc['document']['documentId'] } <span class='v_button' onclick=\"copyToClipboard('{ doc['document']['documentId'] }')\">Kopioi</span></h1>\n"
 
     html += "<div class='v_document_head'>\n"
     if my_doc:
-        html += "<span class='v_button' id='v_my_document'>🙋 Oma havaintosi</span>"
+        html += "<span id='v_my_document'>🙋 Oma havaintosi</span>"
+        html += f"<a class='v_button' id='v_edit' href='#'>✏ Muokkaa</a>"
+
     html += "</div><!-- d_head ends -->\n"
 
-
-
     html += "<ul>\n"
-    html += f"<li>Lähdeaineisto: <a href='{ doc['document']['collectionId'] }'>{ collection_data['collectionName'] }</a> &ndash; { doc['document']['collectionId'] } <span class='v_info' title='{ collection_data.get('description', '') }'>🔍</span></li>\n"
+    html += f"<li>Lähdeaineisto: <a href='{ doc['document']['collectionId'] }'>{ collection_data['collectionName'] }</a> &ndash; { doc['document']['collectionId'] } <span class='v_info' title='{ collection_data.get('description', 'Aineistolla ei ole kuvausta.') }'>🔍</span></li>\n"
     if "referenceURL" in doc['document']:
         html += f"<ul><li><a href='{ doc['document']['referenceURL'] }' target='_blank'>Lisää tietoa alkuperäislähteessä</a></li></ul>\n"
-    html += f"<li>Aineiston luokitus: { collection_data.get('collectionQuality', '') } <span class='v_info' title='{ collection_data.get('dataQualityDescription', '') }'>🔍</span></li>\n"
+
+    html += f"<li>Aineiston luokitus: { get_collection_quality_symbol(collection_data.get('collectionQuality', '')) } { collection_data.get('collectionQuality', '') } <span class='v_info' title='{ collection_data.get('dataQualityDescription', 'Aineiston laadusta ei ole lisätietoja.') }'>🔍</span></li>\n"
     html += "</ul>\n"
 
     for gathering in doc["document"]["gatherings"]:
@@ -116,6 +145,7 @@ def get_html(doc, my_doc):
         # If observations in this gathering
         if "units" in gathering:
             for unit in gathering['units']:
+
                 html += f"<div class='v_unit' id='{ unit['unitId'] }'>\n"
                 html += f"<h4>{ format_name(unit['linkings']['taxon']) }</h4>"
                 html += "<ul class='v_unit_basic'>"
@@ -125,7 +155,7 @@ def get_html(doc, my_doc):
                 html += get_field(unit, "atlasClass", "Pesimävarmuusluokka")
                 html += get_field(unit, "atlasCode", "Pesimävarmuusindeksi")
                 html += get_field(unit, "externalMediaCount", "Mediatiedostoja alkuperäislähteessä")
-                html += f"<li>Havainnon laatuluokitus: { unit['interpretations']['reliability'] }</li>\n"
+                html += f"<li>Havainnon laatuluokitus: { get_unit_quality_symbol(unit['interpretations']['recordQuality']) } { unit['interpretations']['recordQuality'] }</li>\n"
 
                 html += "</ul>"
                 html += "<ul class='v_unit_advanced'>"
@@ -133,7 +163,7 @@ def get_html(doc, my_doc):
                 html += get_field(unit, "superRecordBasis", "Havainnon ylätyyppi")
                 html += get_field(unit, "recordBasis", "Havainnon tyyppi")
                 html += get_field(unit, "taxonVerbatim", "Kirjattu taksoni sanatarkasti")
-                html += get_field(unit, "identificationBasis", "Määritysperuste")
+#                html += get_field(unit, "identificationBasis", "Määritysperuste") # Can contain multiple values
                 html += get_field(unit, "reportedTaxonConfidence", "Havainnoijan arvioima luotettavuus")
                 html += f"<li>Havainnon alkuperäinen määritys: { format_name(unit['linkings']['originalTaxon']) }</li>\n"
                 html += "</ul>\n"
@@ -157,6 +187,7 @@ def main(token, document_id_untrusted):
     '''
     Kotka Turku Oribatida: http://mus.utu.fi/ZMUT.24776-ORI
     Oma Vihko trip: http://tun.fi/JX.1660642
+    Oma närhi: http://tun.fi/JX.1661784
     Oma iNat korjattu: http://tun.fi/HR.3211/125754936
     Varmistettu, Hannan: http://tun.fi/JX.1607740
 
