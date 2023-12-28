@@ -45,7 +45,7 @@ def get_field(data, key, label):
     # Gets labels from schema. Is there a better way to do this?
     if key in data:
         # If value is URI, fetch label for it
-        if "http://tun.fi" in data[key]:
+        if "http://tun.fi" in str(data[key]):
             data_dict = common_helpers.fetch_finbif_api(data[key] + "?format=json&foo")
             value = data[key] # Use value as is as the default, in case translation is not found
             for labels in data_dict['label']:
@@ -70,7 +70,7 @@ def get_multi_field(data, key, label):
 
 def get_facts(unit):
     if "facts" in unit:
-        html = "<ul class='facts'>\n"
+        html = "<ul class='v_unit_facts'>\n"
         for fact in unit['facts']:
             html += f"<li>{ fact['fact'] }: { fact['value'] }</li>\n"
         html += "</ul>\n"
@@ -78,8 +78,37 @@ def get_facts(unit):
     else:
         return "<!-- No facts -->\n"
 
+
+def get_collection(collection_id):
+    collection_id = collection_id.replace("http://tun.fi/", "")
+    url = f"https://api.laji.fi/v0/collections/{ collection_id }?langFallback=true&access_token="
+    data_dict = common_helpers.fetch_finbif_api(url)
+    return data_dict
+
+
 def get_html(doc, my_doc):
+
+    collection_data = get_collection(doc['document']['collectionId'])
+
     html = ""
+
+    html += "<div class='v_document'>\n"
+    html += f"<h1>{ doc['document']['documentId'] }</h1>\n"
+
+    html += "<div class='v_document_head'>\n"
+    if my_doc:
+        html += "<span class='v_button' id='v_my_document'>🙋 Oma havaintosi</span>"
+    html += "</div><!-- d_head ends -->\n"
+
+
+
+    html += "<ul>\n"
+    html += f"<li>Lähdeaineisto: <a href='{ doc['document']['collectionId'] }'>{ collection_data['collectionName'] }</a> &ndash; { doc['document']['collectionId'] } <span class='v_info' title='{ collection_data.get('description', '') }'>🔍</span></li>\n"
+    if "referenceURL" in doc['document']:
+        html += f"<ul><li><a href='{ doc['document']['referenceURL'] }' target='_blank'>Lisää tietoa alkuperäislähteessä</a></li></ul>\n"
+    html += f"<li>Aineiston luokitus: { collection_data.get('collectionQuality', '') } <span class='v_info' title='{ collection_data.get('dataQualityDescription', '') }'>🔍</span></li>\n"
+    html += "</ul>\n"
+
     for gathering in doc["document"]["gatherings"]:
         html += f"<div class='v_gathering' id='{ gathering['gatheringId'] }'>\n"
         html += gathering['gatheringId']
@@ -89,12 +118,17 @@ def get_html(doc, my_doc):
             for unit in gathering['units']:
                 html += f"<div class='v_unit' id='{ unit['unitId'] }'>\n"
                 html += f"<h4>{ format_name(unit['linkings']['taxon']) }</h4>"
-                html += "<ul>"
-                html += f"<li>Havainnon id: { unit['unitId'] }</li>"
+                html += "<ul class='v_unit_basic'>"
+                html += f"<li>Havainnon tunniste: { unit['unitId'] }</li>"
                 html += get_field(unit, "abundanceString", "Määrä")
                 html += get_field(unit, "notes", "Lisätiedot")
                 html += get_field(unit, "atlasClass", "Pesimävarmuusluokka")
                 html += get_field(unit, "atlasCode", "Pesimävarmuusindeksi")
+                html += get_field(unit, "externalMediaCount", "Mediatiedostoja alkuperäislähteessä")
+                html += f"<li>Havainnon laatuluokitus: { unit['interpretations']['reliability'] }</li>\n"
+
+                html += "</ul>"
+                html += "<ul class='v_unit_advanced'>"
                 html += get_multi_field(unit, "keywords", "Avainsanat")
                 html += get_field(unit, "superRecordBasis", "Havainnon ylätyyppi")
                 html += get_field(unit, "recordBasis", "Havainnon tyyppi")
@@ -102,7 +136,6 @@ def get_html(doc, my_doc):
                 html += get_field(unit, "identificationBasis", "Määritysperuste")
                 html += get_field(unit, "reportedTaxonConfidence", "Havainnoijan arvioima luotettavuus")
                 html += f"<li>Havainnon alkuperäinen määritys: { format_name(unit['linkings']['originalTaxon']) }</li>\n"
-                html += f"<li>Havainnon laatuluokitus: { unit['interpretations']['reliability'] }</li>\n"
                 html += "</ul>\n"
                 html += get_facts(unit)
                 html += "</div><!-- u ends -->\n"
@@ -113,6 +146,7 @@ def get_html(doc, my_doc):
             html += "</div><!-- no_unit ends -->\n"
 
         html += "</div><!-- g ends -->\n"
+        html += "</div><!-- d ends -->\n"
 
     return html
 
