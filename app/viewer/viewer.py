@@ -266,6 +266,9 @@ def main(token, document_id_untrusted):
     - unit and gathering images, habitat vs. species images
     - map
     - coordinates, includion geometries and errors
+    - lomake, täydellinen lista
+    - securing/private data
+    - printing
 
     '''
 
