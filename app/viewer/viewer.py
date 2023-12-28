@@ -269,6 +269,10 @@ def main(token, document_id_untrusted):
     - lomake, täydellinen lista
     - securing/private data
     - printing
+    - responsivity
+    - hiding advanced fields
+    - edit button for iNat & Vihko, proper addesses
+    - biotopes
 
     '''
 
