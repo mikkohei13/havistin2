@@ -34,9 +34,9 @@ def format_name(unit):
         suffix = "</em>"
 
     if "nameFinnish" in unit:
-        return f"{ unit['nameFinnish']} ({ prefix }{ unit['scientificName']}{ suffix } { unit['scientificNameAuthorship'] })"
+        return f"{ unit['nameFinnish']} ({ prefix }{ unit['scientificName']}{ suffix } { unit.get('scientificNameAuthorship', '') })"
     else:
-        return f"{ prefix }{ unit['scientificName']}{ suffix } { unit['scientificNameAuthorship'] }"
+        return f"{ prefix }{ unit['scientificName']}{ suffix } { unit.get('scientificNameAuthorship', '') }"
 
 
 def format_shortname(unit):
@@ -127,15 +127,37 @@ def get_unit_quality_symbol(unit_quality_qname):
         return "PUUTTUU"
 
 
+def hashify(s):
+    s = s.replace("/", "_")
+    s = s.replace(":", "_")
+    s = s.replace(".", "_")
+    s = s.replace("#", "_")
+    return s
+
+
+def get_sidebar(doc):
+    html = "<div id='v_sidebar'>\n"
+    html += f"<ul>\n"    
+    for gathering in doc["document"]["gatherings"]:
+        html += f"<li data-target='{ hashify(gathering['gatheringId']) }'>\n"
+        if "units" in gathering:
+            for unit in gathering['units']:
+                html += f"{ format_shortname(unit['linkings']['taxon']) }<br>\n"
+        else:
+            html += "Ei havaintoja\n"
+        html += "</li>\n"
+    html += "</ul>\n"
+    html += "</div>\n<!-- v_sidebar ends -->\n"
+    return html
+
+
 def get_html(doc, my_doc):
-
     collection_data = get_collection(doc['document']['collectionId'])
-
     html = ""
 
+    html += "<div id='v_document_head'>\n"
     html += f"<h1>{ doc['document']['documentId'] } <span class='v_button' onclick=\"copyToClipboard('{ doc['document']['documentId'] }')\">Kopioi</span></h1>\n"
 
-    html += "<div id='v_document_head'>\n"
     if my_doc:
         html += "<span id='v_my_document'>🙋 Oma havaintosi</span>"
         html += f"<a class='v_button' id='v_edit' href='#'>✏ Muokkaa</a>"
@@ -146,37 +168,48 @@ def get_html(doc, my_doc):
         html += f"<ul><li><a href='{ doc['document']['referenceURL'] }' target='_blank'>Lisää tietoa alkuperäislähteessä</a></li></ul>\n"
 
     html += f"<li>Aineiston luokitus: { get_collection_quality_symbol(collection_data.get('collectionQuality', '')) } { collection_data.get('collectionQuality', '') } <span class='v_info' title='{ collection_data.get('dataQualityDescription', 'Aineiston laadusta ei ole lisätietoja.') }'>🔍</span></li>\n"
+
+    html += get_multi_field(doc['document'], 'keywords', 'Avainsanat')
+    html += "</ul>\n"
+    html += "<ul>\n"
+    html += get_field(doc['document'], "created", "Luotu")
+    html += get_field(doc['document'], "firstLoadDate", "Ladattu Lajitietokeskukseen")
+    html += get_field(doc['document'], "loadDate", "Muokattu") # Check that terms are correct
+    html += get_field(doc['document']['linkings']['editors'][0], "fullName", "Muokkaaja")
     html += "</ul>\n"
 
     html += "</div><!-- v_document_head ends -->\n"
 
     html += "<div id='v_maincontent'>\n"
 
-    # Clickable elements
-    html += "<div id='v_sidebar'>\n"
-    html += f"<ul>\n"    
-    for gathering in doc["document"]["gatherings"]:
-        html += f"<li data-target='h{ hash(gathering['gatheringId']) }'>\n"
-        if "units" in gathering:
-            for unit in gathering['units']:
-                html += f"{ format_shortname(unit['linkings']['taxon']) }<br>\n"
-        else:
-            html += "Ei havaintoja\n"
-        html += "</li>\n"
-    html += "</ul>\n"
-    html += "</div>\n<!-- v_sidebar ends -->\n"
-
+    # Sidebar
+    html += get_sidebar(doc)
 
     # Content elements
     html += "<div id='v_content'>"
     first_class = " active-tab"
+
+    # ---------------------------------------
+    # Gatherings
     for gathering in doc["document"]["gatherings"]:
-        html += f"<div class='v_gathering{ first_class }' id='h{ hash(gathering['gatheringId']) }'>\n"
+        html += f"<div class='v_gathering{ first_class }' id='{ hashify(gathering['gatheringId']) }'>\n"
         first_class = ""
-        html += gathering['gatheringId']
+
+        html += "<ul>\n"
+        html += f"<li>Keruutapahtuman tunniste: { gathering['gatheringId'] }</li>\n"
+        html += f"<li>Aika: { gathering['displayDateTime'] }</li>\n"
+        html += f"<li>Maa: { gathering['interpretations']['countryDisplayname'] }</li>\n"
+        html += f"<li>Eliömaakunta: { gathering['interpretations']['biogeographicalProvinceDisplayname'] }</li>\n"
+        html += f"<li>Kunta: { gathering['interpretations']['municipalityDisplayname'] }</li>\n"
+        html += f"<li>Paikka: { gathering.get('locality', '') }</li>\n"
+        html += f"<li>Lisätietoja: { gathering.get('notes', '') }</li>\n"
+        html += f"<li>Havainnoijat: { ', '.join(gathering['team']) }</li>\n"
+        html += "</ul>\n"
 
         # If observations in this gathering
         if "units" in gathering:
+            # ---------------------------------------
+            # Units
             for unit in gathering['units']:
 
                 html += f"<div class='v_unit' id='{ unit['unitId'] }'>\n"
@@ -224,6 +257,15 @@ def main(token, document_id_untrusted):
     Oma närhi: http://tun.fi/JX.1661784
     Oma iNat korjattu: http://tun.fi/HR.3211/125754936
     Varmistettu, Hannan: http://tun.fi/JX.1607740
+    Oma talvilintu: http://tun.fi/JX.1516575
+
+    Note:
+    - fragment linking works on trip form gathering id's but not unit id's.
+
+    Major todo's:
+    - unit and gathering images, habitat vs. species images
+    - map
+    - coordinates, includion geometries and errors
 
     '''
 
@@ -235,6 +277,7 @@ def main(token, document_id_untrusted):
         raise Exception
 
     html = dict()
+    html['document_id'] = document_id
 
     # --------------------
     # Get data

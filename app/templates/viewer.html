@@ -78,8 +78,6 @@ div {
 </div>
 
 <!--
-<hr>
-
 <h2>Debug</h2>
 <p class="debug">
     {% if user_data is none %}
@@ -89,32 +87,14 @@ div {
     {% else %}
     Logged in
     {% endif %}
-    </p>
-    
-{{ html["data"] }}
+    </p>  
 -->
 
 <script>
-/*
-document.addEventListener('DOMContentLoaded', function() {
-    var tabs = document.querySelectorAll('#v_sidebar li');
-    var contents = document.querySelectorAll('.v_gathering');
 
-    tabs.forEach(function(tab) {
-        tab.addEventListener('click', function() {
-            var target = this.getAttribute('data-target');
-
-            // Hide all content
-            contents.forEach(function(content) {
-                content.classList.remove('active-tab');
-            });
-
-            // Show the clicked content
-            document.getElementById(target).classList.add('active-tab');
-        });
-    });
-});
-*/
+function replaceWithUnderscore(str) {
+    return str.replace(/[:./#]/g, '_');
+}
 
 document.addEventListener('DOMContentLoaded', function() {
     var tabs = document.querySelectorAll('#v_sidebar li');
@@ -133,8 +113,18 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById(target).classList.add('active-tab');
         });
     });
-});
 
+    // Check for URL fragment and activate the corresponding tab
+    var urlFragment = window.location.hash.substring(1);
+    if (urlFragment) {
+        id = '{{ html["document_id"] }}' + '#' + urlFragment;
+        id_css = replaceWithUnderscore(id)
+        var targetTab = document.querySelector('#v_sidebar li[data-target="' + id_css + '"]');
+        if (targetTab) {
+            targetTab.click(); // Simulate a click on the tab
+        }
+    }
+});
 
 function copyToClipboard(text) {
     // Create a temporary textarea element
