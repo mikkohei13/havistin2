@@ -169,8 +169,10 @@ def get_html(doc, my_doc):
 
     # Content elements
     html += "<div id='v_content'>"
+    first_class = " active-tab"
     for gathering in doc["document"]["gatherings"]:
-        html += f"<div class='v_gathering' id='h{ hash(gathering['gatheringId']) }'>\n"
+        html += f"<div class='v_gathering{ first_class }' id='h{ hash(gathering['gatheringId']) }'>\n"
+        first_class = ""
         html += gathering['gatheringId']
 
         # If observations in this gathering

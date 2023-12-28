@@ -95,6 +95,7 @@ div {
 -->
 
 <script>
+/*
 document.addEventListener('DOMContentLoaded', function() {
     var tabs = document.querySelectorAll('#v_sidebar li');
     var contents = document.querySelectorAll('.v_gathering');
@@ -113,6 +114,27 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+*/
+
+document.addEventListener('DOMContentLoaded', function() {
+    var tabs = document.querySelectorAll('#v_sidebar li');
+    var contents = document.querySelectorAll('.v_gathering');
+
+    tabs.forEach(function(tab) {
+        tab.addEventListener('click', function() {
+            var target = this.getAttribute('data-target');
+
+            // Hide all content
+            contents.forEach(function(content) {
+                content.classList.remove('active-tab');
+            });
+
+            // Show the clicked content
+            document.getElementById(target).classList.add('active-tab');
+        });
+    });
+});
+
 
 function copyToClipboard(text) {
     // Create a temporary textarea element
