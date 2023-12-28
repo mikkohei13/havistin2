@@ -39,6 +39,7 @@ def format_name(unit):
         return f"{ prefix }{ unit['scientificName']}{ suffix } { unit['scientificNameAuthorship'] }"
 
 
+# Todo: should handle lists of values, e.g. identificationBasis
 def get_field(data, key, label):
         
     # Gets labels from schema. Is there a better way to do this?
@@ -67,6 +68,16 @@ def get_multi_field(data, key, label):
         return ""
 
 
+def get_facts(unit):
+    if "facts" in unit:
+        html = "<ul class='facts'>\n"
+        for fact in unit['facts']:
+            html += f"<li>{ fact['fact'] }: { fact['value'] }</li>\n"
+        html += "</ul>\n"
+        return html
+    else:
+        return "<!-- No facts -->\n"
+
 def get_html(doc, my_doc):
     html = ""
     for gathering in doc["document"]["gatherings"]:
@@ -78,15 +89,22 @@ def get_html(doc, my_doc):
             for unit in gathering['units']:
                 html += f"<div class='v_unit' id='{ unit['unitId'] }'>\n"
                 html += f"<h4>{ format_name(unit['linkings']['taxon']) }</h4>"
-                html += f"<p>Havainnon alkuperäinen määritys: { format_name(unit['linkings']['originalTaxon']) }</p>"
-                html += "<p><ul>"
+                html += "<ul>"
                 html += f"<li>Havainnon id: { unit['unitId'] }</li>"
                 html += get_field(unit, "abundanceString", "Määrä")
                 html += get_field(unit, "notes", "Lisätiedot")
                 html += get_field(unit, "atlasClass", "Pesimävarmuusluokka")
                 html += get_field(unit, "atlasCode", "Pesimävarmuusindeksi")
                 html += get_multi_field(unit, "keywords", "Avainsanat")
-                html += "</ul></p>"
+                html += get_field(unit, "superRecordBasis", "Havainnon ylätyyppi")
+                html += get_field(unit, "recordBasis", "Havainnon tyyppi")
+                html += get_field(unit, "taxonVerbatim", "Kirjattu taksoni sanatarkasti")
+                html += get_field(unit, "identificationBasis", "Määritysperuste")
+                html += get_field(unit, "reportedTaxonConfidence", "Havainnoijan arvioima luotettavuus")
+                html += f"<li>Havainnon alkuperäinen määritys: { format_name(unit['linkings']['originalTaxon']) }</li>\n"
+                html += f"<li>Havainnon laatuluokitus: { unit['interpretations']['reliability'] }</li>\n"
+                html += "</ul>\n"
+                html += get_facts(unit)
                 html += "</div><!-- u ends -->\n"
         # If ZERO observations in this gathering
         else:
