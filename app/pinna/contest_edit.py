@@ -8,11 +8,20 @@ def get_pinna(token):
     return "Hoi maailma!"
 
 
-def main(token):
+def is_lower_alphanumeric(s):
+    return s.isalnum() and s.islower()
+
+
+def main(token, id_untrusted):
 
     # --------------------
     # Prepare
     html = dict()
+
+    if is_lower_alphanumeric(id_untrusted):
+        contest_id = id_untrusted
+    else:
+        raise Exception("Invalid contest id") 
 
     
     # Example Usage

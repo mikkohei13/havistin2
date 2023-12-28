@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <title>Pinna - Havistin (biomi.org)</title>
+{% endblock %}
+
+{% block breadcrumb %}
+    <a href="/">Havistin</a> &raquo; Pinna
+{% endblock %}
+
+{% block body %}
+
+{% if session['user_data']['error'] %}
+    <h1>Kirjaudu ensin sisään</h1>
+    <!-- User not logged in -->
+    <!-- {{ session }} -->
+{% else %}
+    <h1>Olet nyt kirjautunut</h1>
+    <p>Olet kirjautunut näillä tiedoilla:
+        {{ session["user_data"]['fullName'] }},
+        {{ session["user_data"]['id'] }},
+        {{ session["user_data"]['emailAddress'] }}
+    </p>
+{% endif %}
+
+{{ html["data"]|safe }}
+
+{% endblock %}
