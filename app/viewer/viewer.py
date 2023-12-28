@@ -39,6 +39,19 @@ def format_name(unit):
         return f"{ prefix }{ unit['scientificName']}{ suffix } { unit['scientificNameAuthorship'] }"
 
 
+def format_shortname(unit):
+
+    if "nameFinnish" in unit:
+        return f"{ unit['nameFinnish']}"
+    else:
+        prefix = ""
+        suffix = ""
+        if unit["cursiveName"]:
+            prefix = "<em>"
+            suffix = "</em>"
+        return f"{ prefix }{ unit['scientificName']}{ suffix }"
+
+
 # Todo: should handle lists of values, e.g. identificationBasis
 def get_field(data, key, label):
         
@@ -120,15 +133,12 @@ def get_html(doc, my_doc):
 
     html = ""
 
-    html += "<div class='v_document'>\n"
     html += f"<h1>{ doc['document']['documentId'] } <span class='v_button' onclick=\"copyToClipboard('{ doc['document']['documentId'] }')\">Kopioi</span></h1>\n"
 
-    html += "<div class='v_document_head'>\n"
+    html += "<div id='v_document_head'>\n"
     if my_doc:
         html += "<span id='v_my_document'>🙋 Oma havaintosi</span>"
         html += f"<a class='v_button' id='v_edit' href='#'>✏ Muokkaa</a>"
-
-    html += "</div><!-- d_head ends -->\n"
 
     html += "<ul>\n"
     html += f"<li>Lähdeaineisto: <a href='{ doc['document']['collectionId'] }'>{ collection_data['collectionName'] }</a> &ndash; { doc['document']['collectionId'] } <span class='v_info' title='{ collection_data.get('description', 'Aineistolla ei ole kuvausta.') }'>🔍</span></li>\n"
@@ -138,8 +148,29 @@ def get_html(doc, my_doc):
     html += f"<li>Aineiston luokitus: { get_collection_quality_symbol(collection_data.get('collectionQuality', '')) } { collection_data.get('collectionQuality', '') } <span class='v_info' title='{ collection_data.get('dataQualityDescription', 'Aineiston laadusta ei ole lisätietoja.') }'>🔍</span></li>\n"
     html += "</ul>\n"
 
+    html += "</div><!-- v_document_head ends -->\n"
+
+    html += "<div id='v_maincontent'>\n"
+
+    # Clickable elements
+    html += "<div id='v_sidebar'>\n"
+    html += f"<ul>\n"    
     for gathering in doc["document"]["gatherings"]:
-        html += f"<div class='v_gathering' id='{ gathering['gatheringId'] }'>\n"
+        html += f"<li data-target='h{ hash(gathering['gatheringId']) }'>\n"
+        if "units" in gathering:
+            for unit in gathering['units']:
+                html += f"{ format_shortname(unit['linkings']['taxon']) }<br>\n"
+        else:
+            html += "Ei havaintoja\n"
+        html += "</li>\n"
+    html += "</ul>\n"
+    html += "</div>\n<!-- v_sidebar ends -->\n"
+
+
+    # Content elements
+    html += "<div id='v_content'>"
+    for gathering in doc["document"]["gatherings"]:
+        html += f"<div class='v_gathering' id='h{ hash(gathering['gatheringId']) }'>\n"
         html += gathering['gatheringId']
 
         # If observations in this gathering
@@ -168,15 +199,16 @@ def get_html(doc, my_doc):
                 html += f"<li>Havainnon alkuperäinen määritys: { format_name(unit['linkings']['originalTaxon']) }</li>\n"
                 html += "</ul>\n"
                 html += get_facts(unit)
-                html += "</div><!-- u ends -->\n"
+                html += "</div><!-- unit ends -->\n"
         # If ZERO observations in this gathering
         else:
             html += f"<div class='v_no_unit'>\n"
             html += "<p>Pelkkä havaintoalue.</p>"
             html += "</div><!-- no_unit ends -->\n"
 
-        html += "</div><!-- g ends -->\n"
-        html += "</div><!-- d ends -->\n"
+        html += "</div><!-- v_gatherging ends -->\n"
+    html += "</div><!-- v_content ends -->\n"
+    html += "</div><!-- v_maincontent ends -->\n"
 
     return html
 

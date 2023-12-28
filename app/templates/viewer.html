@@ -1,6 +1,16 @@
 <style>
-#v_all {
+div {
+    margin: 5px;
+    border: 1px dashed darkorchid    
+}
+#v_wrapper {
     border: 1px solid aquamarine;
+}
+#v_sidebar {
+    border: 1px solid seagreen;
+}
+#v_content {
+    border: 1px solid cornflowerblue;
 }
 .v_gathering {
     border: 1px solid goldenrod;
@@ -8,20 +18,66 @@
 .v_unit {
     border: 1px solid violet;
 }
+#v_document_head {
+    border: 1px solid hotpink;
+}
+#v_maincontent {
+    border: 1px solid mediumblue;
+}
+
 #v_collection_quality_symbol, #v_unit_quality_symbol {
     width: 1em;
     height: 1em;
 }
 
+
+#v_maincontent {
+    display: flex;
+}
+
+#v_sidebar {
+    flex: 0 0 300px; /* Adjust width as needed */
+}
+
+#v_sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+#v_sidebar li {
+    cursor: pointer;
+    padding: 10px;
+    border: 1px solid #ddd;
+    background-color: #f5f5f5;
+}
+
+#v_sidebar li:hover {
+    background-color: #e9e9e9;
+}
+
+#v_content {
+    flex: 1;
+    padding: 20px;
+}
+
+.v_gathering {
+    display: none;
+}
+
+.active-tab {
+    display: block;
+}
+
 </style>
 
 
-<div id="v_all">
+<div id="v_wrapper">
 
     {{ html["doc"]|safe }}
 
 </div>
 
+<!--
 <hr>
 
 <h2>Debug</h2>
@@ -36,22 +92,42 @@
     </p>
     
 {{ html["data"] }}
+-->
 
 <script>
-    function copyToClipboard(text) {
-        // Create a temporary textarea element
-        const textarea = document.createElement('textarea');
-        textarea.value = text;
-        document.body.appendChild(textarea);
+document.addEventListener('DOMContentLoaded', function() {
+    var tabs = document.querySelectorAll('#v_sidebar li');
+    var contents = document.querySelectorAll('.v_gathering');
 
-        // Select the text and copy it
-        textarea.select();
-        document.execCommand('copy');
+    tabs.forEach(function(tab) {
+        tab.addEventListener('click', function() {
+            var target = this.getAttribute('data-target');
 
-        // Remove the temporary textarea
-        document.body.removeChild(textarea);
+            // Hide all content
+            contents.forEach(function(content) {
+                content.classList.remove('active-tab');
+            });
 
-        // Optionally, alert the user that text was copied
-        alert('Copied: ' + text);
-    }
+            // Show the clicked content
+            document.getElementById(target).classList.add('active-tab');
+        });
+    });
+});
+
+function copyToClipboard(text) {
+    // Create a temporary textarea element
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    document.body.appendChild(textarea);
+
+    // Select the text and copy it
+    textarea.select();
+    document.execCommand('copy');
+
+    // Remove the temporary textarea
+    document.body.removeChild(textarea);
+
+    // Optionally, alert the user that text was copied
+    alert('Copied: ' + text);
+}
 </script>
