@@ -22,9 +22,15 @@ def get_day_count(year):
         return 365
 
 
+def get_current_day_of_year():
+    current_date = datetime.datetime.now()
+    day_of_year = current_date.timetuple().tm_yday
+    return day_of_year
+
+
 def get_obs_count(token, year, taxon_id):
     # Note: includes also erroneous & uncertain observations
-    url = f"https://api.laji.fi/v0/warehouse/query/unit/count?cache=true&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&individualCountMin=1&qualityIssues=NO_ISSUES&wild=WILD,WILD_UNKNOWN&countryId=ML.206&target={ taxon_id }&time={ year }&observerPersonToken={ token }&access_token="
+    url = f"https://api.laji.fi/v0/warehouse/query/unit/count?cache=false&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&individualCountMin=1&qualityIssues=NO_ISSUES&wild=WILD,WILD_UNKNOWN&countryId=ML.206&target={ taxon_id }&time={ year }&observerPersonToken={ token }&access_token="
     data_dict = common_helpers.fetch_finbif_api(url)
     return data_dict["total"]
 
@@ -32,7 +38,7 @@ def get_obs_count(token, year, taxon_id):
 def get_day_aggregate(token, year, taxon_id):
     # Todo: Pagination or check if API can give >2000 results
     # Note: timeAccuracy
-    url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=gathering.conversions.dayOfYearBegin&orderBy=gathering.conversions.dayOfYearBegin&onlyCount=true&taxonCounts=false&gatheringCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=367&page=1&cache=true&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&target={ taxon_id }&time={ year }&timeAccuracy=2&individualCountMin=1&wild=WILD,WILD_UNKNOWN&recordQuality=EXPERT_VERIFIED,COMMUNITY_VERIFIED,NEUTRAL&qualityIssues=NO_ISSUES&observerPersonToken={ token }&access_token="
+    url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=gathering.conversions.dayOfYearBegin&orderBy=gathering.conversions.dayOfYearBegin&onlyCount=true&taxonCounts=false&gatheringCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=367&page=1&cache=false&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&target={ taxon_id }&time={ year }&timeAccuracy=2&individualCountMin=1&wild=WILD,WILD_UNKNOWN&recordQuality=EXPERT_VERIFIED,COMMUNITY_VERIFIED,NEUTRAL&qualityIssues=NO_ISSUES&observerPersonToken={ token }&access_token="
 
     data_dict = common_helpers.fetch_finbif_api(url)
     return data_dict
@@ -40,7 +46,7 @@ def get_day_aggregate(token, year, taxon_id):
 
 def get_species_aggregate(token, year, taxon_id):
     # Todo: Pagination or check if API can give >2000 results
-    url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?countryId=ML.206&target={ taxon_id }&time={ year }&recordQuality=EXPERT_VERIFIED,COMMUNITY_VERIFIED,NEUTRAL&wild=WILD,WILD_UNKNOWN&individualCountMin=1&aggregateBy=unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesNameFinnish,unit.linkings.taxon.speciesScientificName&selected=unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesNameFinnish,unit.linkings.taxon.speciesScientificName&cache=true&page=1&pageSize=2000&qualityIssues=NO_ISSUES&geoJSON=false&onlyCount=false&observerPersonToken={ token }&access_token="
+    url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?countryId=ML.206&target={ taxon_id }&time={ year }&recordQuality=EXPERT_VERIFIED,COMMUNITY_VERIFIED,NEUTRAL&wild=WILD,WILD_UNKNOWN&individualCountMin=1&aggregateBy=unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesNameFinnish,unit.linkings.taxon.speciesScientificName&selected=unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesNameFinnish,unit.linkings.taxon.speciesScientificName&cache=false&page=1&pageSize=2000&qualityIssues=NO_ISSUES&geoJSON=false&onlyCount=false&observerPersonToken={ token }&access_token="
 
     data_dict = common_helpers.fetch_finbif_api(url)
     return data_dict
@@ -193,7 +199,7 @@ def get_taxon_name(qname):
 
 def get_monthly_species_counts(token, year, taxon_id):
     # Note: timeAccuracy
-    url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?target={ taxon_id }&countryId=ML.206&time={ year }&recordQuality=EXPERT_VERIFIED,COMMUNITY_VERIFIED,NEUTRAL&wild=WILD,WILD_UNKNOWN&timeAccuracy=2&taxonCounts=true&onlyCount=false&cache=true&qualityIssues=NO_ISSUES&aggregateBy=gathering.conversions.month&&selected=gathering.conversions.month&observerPersonToken={ token }&access_token="
+    url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?target={ taxon_id }&countryId=ML.206&time={ year }&recordQuality=EXPERT_VERIFIED,COMMUNITY_VERIFIED,NEUTRAL&wild=WILD,WILD_UNKNOWN&timeAccuracy=2&taxonCounts=true&onlyCount=false&cache=false&qualityIssues=NO_ISSUES&aggregateBy=gathering.conversions.month&&selected=gathering.conversions.month&observerPersonToken={ token }&access_token="
 
     data_dict = common_helpers.fetch_finbif_api(url)
     return data_dict
@@ -264,7 +270,7 @@ def main(token, year_untrusted, taxon_id_untrusted):
     html["obs_count_day"] = round((html["obs_count"] / day_count), 1)
 
     # Todo: leap years
-    html["days_with_observations_percent"] = round(html["days_with_observations"] / 365 * 100, 1)
+    html["days_with_observations_percent"] = round(html["days_with_observations"] / day_count * 100, 1)
 
     rare_species_list = get_rarest_species(html["species_aggregate"])
     html["rarest_species"] = generate_rarest_list(rare_species_list, year)

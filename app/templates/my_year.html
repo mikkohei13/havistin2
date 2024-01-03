@@ -111,7 +111,7 @@
 
     <h2>Havaintojen määrä päivittäin</h2>
     <p>Mukana ovat havainnot, joiden havaintoaika on kirjattu kahden päivän tarkkuudella tai tarkemmin.</p>
-    <p><strong>Havaintoja {{ html["days_with_observations"] }} päivältä eli {{ html["days_with_observations_percent"] }} % päivistä.</strong></p>
+    <p><strong>Havaintoja {{ html["days_with_observations"] }} päivältä eli {{ html["days_with_observations_percent"] }} % päivistä tähän mennessä.</strong></p>
     <canvas id="day_chart" class="chart"></canvas>
 
     <h2>Harvinaisimmat lajit</h2>
@@ -142,31 +142,13 @@ var chart = new Chart(ctx, {
             }
         },
         scales: {
-            xAxes: [{
-                scaleLabel: {
-                    display: true,
-                    labelString: 'Date'
-                },
-                type: 'time',
-                time: {
-                    parser: 'D.M.',
-                    tooltipFormat: 'll'
-                },
-                ticks: {
-                    autoSkip: true,
-                    maxTicksLimit: 20
-                }
-            }],
-            yAxes: [{
-                scaleLabel: {
-                    display: true,
-                    labelString: 'Kumulatiivinen lajimäärä'
-                }
-            }]
+            y: {
+                min: 0,
+                beginAtZero: true
+            }
         }
     }
 });
-
 
 // Month chart
 // rgb(253, 104, 38) orange
@@ -187,24 +169,23 @@ var chart = new Chart(ctx, {
 
     options: {
         scales: {
-            xAxes: [{
+            x: {
                 scaleLabel: {
                     display: true,
                     labelString: 'Month'
                 },
                 type: 'category',
-
                 ticks: {
                     autoSkip: true,
                     maxTicksLimit: 12
                 }
-            }],
-            yAxes: [{
+            },
+            y: {
                 scaleLabel: {
                     display: true,
                     labelString: 'Lajeja kuukaudessa'
                 }
-            }]
+            }
         }
     }
 });
@@ -229,27 +210,22 @@ var chart = new Chart(ctx, {
     },
     options: {
         scales: {
-            xAxes: [{
+            x: {
                 scaleLabel: {
                     display: true,
                     labelString: 'Date'
-                },
-                type: 'time',
-                time: {
-                    parser: 'D.M.',
-                    tooltipFormat: 'll'
                 },
                 ticks: {
                     autoSkip: true,
                     maxTicksLimit: 20
                 }
-            }],
-            yAxes: [{
+            },
+            y: {
                 scaleLabel: {
                     display: true,
                     labelString: 'Havaintojen lukumäärä'
                 }
-            }]
+            }
         }
     }
 });
