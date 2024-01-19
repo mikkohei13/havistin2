@@ -29,7 +29,19 @@ def convert_collection_name(id):
     if  "http://tun.fi/HR.4611" == id:
         return "FCG Finnish Consulting Group Oy:n lajihavainnot"
     if  "http://tun.fi/HR.4051" == id:
-        return "LajiGIS: Lajin seurantakohteet: Petolinnut "
+        return "LajiGIS: Lajin seurantakohteet: Petolinnut"
+    if  "http://tun.fi/HR.64" == id:
+        return "Lintujen pesäkorttiseuranta"
+    if  "http://tun.fi/HR.95" == id:
+        return "Sääksen pesäseuranta"
+    if  "http://tun.fi/HR.49" == id:
+        return "Petolintujen pesäseuranta"
+    if  "http://tun.fi/HR.50" == id:
+        return "Merikotkan pesäseuranta"
+    if  "http://tun.fi/HR.5076" == id:
+        return "Suomen Arvoluonto Oy luontoselvitysten havainnot"
+    if  "http://tun.fi/HR.5795 " == id:
+        return "Luken aineistokooste 4. lintuatlakseen"
     return "Muu (" + id + ")"
 
 
