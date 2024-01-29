@@ -40,7 +40,7 @@ def convert_collection_name(id):
         return "Merikotkan pesäseuranta"
     if  "http://tun.fi/HR.5076" == id:
         return "Suomen Arvoluonto Oy luontoselvitysten havainnot"
-    if  "http://tun.fi/HR.5795 " == id:
+    if  "http://tun.fi/HR.5795" == id:
         return "Luken aineistokooste 4. lintuatlakseen"
     return "Muu (" + id + ")"
 
@@ -65,7 +65,7 @@ def collections_data():
 
         collections_table += f"<tr><td><a href='{ collection_id }'>{ collection_name }</a></td>"
         collections_table += "<td>" + str(i["count"]) + "</td>"
-        collections_table += "<td>" + str(round((i["count"] / total_obs_count) * 100, 1)) + " %</td></tr>"
+        collections_table += "<td>" + str(round((i["count"] / total_obs_count) * 100, 2)) + " %</td></tr>"
 
     collections_table += f"<tr><td>Yhteensä</td><td>{total_obs_count}</td></tr>"
     collections_table += "</tbody></table>"
@@ -151,28 +151,28 @@ def coordinate_accuracy_html(accuracy_dict, total_count):
 
 def datechart_data(collection_id):
 
-    year = 2023
+    # Note that this is the observation year, not the load date year. Aggregation is done by load date year.
+    year = 2024
 
     # Get daily data from api. This lacks dates with zero count.
-    api_url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=document.firstLoadDate&orderBy=document.firstLoadDate&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=365&page=1&cache=false&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&collectionId=http%3A%2F%2Ftun.fi%2F{collection_id}&countryId=ML.206&yearMonth={ year }&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&access_token="
+    api_url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=document.firstLoadDate&orderBy=document.firstLoadDate&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=365&page=1&cache=false&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&collectionId=http%3A%2F%2Ftun.fi%2F{ collection_id }&countryId=ML.206&yearMonth={ year }&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&access_token="
 
-    data_dict = common_helpers.fetch_finbif_api(api_url)
+    data_dict = common_helpers.fetch_finbif_api(api_url, True)
 
     # Use day as key in dict
     data_by_days = dict()
     for item in data_dict["results"]:
         data_by_days[item["aggregateBy"]["document.firstLoadDate"]] = item["count"]
 
-    # Loop all dates so far, to generate chart.js data list.
-    # If this date is changed, all observations before that are discarded.
-    start_date = date(year, 1, 1)
-
     cumulative_count = 0
     daily_count = 0
     cumulative_chartsj_data = []
     daily_chartsj_data = []
 
-    for single_date in daterange(start_date):
+    # Loop all dates of the specified year, starting from 1.1. and ending to 31.12.
+    for single_date in daterange(date(year, 1, 1)):
+        if single_date.year != year:
+            break
 
         if single_date.strftime("%Y-%m-%d") in data_by_days:
             count = data_by_days[single_date.strftime("%Y-%m-%d")]
