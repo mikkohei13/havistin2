@@ -42,6 +42,14 @@ def convert_collection_name(id):
         return "Suomen Arvoluonto Oy luontoselvitysten havainnot"
     if  "http://tun.fi/HR.5795" == id:
         return "Luken aineistokooste 4. lintuatlakseen"
+    if  "http://tun.fi/HR.5895 " == id:
+        return "Oma riista -havainnot 4. lintuatlakseen"
+    if  "http://tun.fi/HR.3992" == id:
+        return "Vesilintulaskennat, Luken aineisto 2020-"
+    if  "http://tun.fi/HR.3991" == id:
+        return "Vesilintulaskennat, Luomuksen aineisto"
+    if  "http://tun.fi/HR.62" == id:
+        return "Vesilintulaskennat"
     return "Muu (" + id + ")"
 
 
