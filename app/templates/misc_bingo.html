@@ -1,0 +1,29 @@
+<!-- Template for printable bingo grid page -->
+{% extends "base.html" %}
+
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="/static/bingo.css">
+    <title>Lintubingo (biomi.org)</title>     
+{% endblock %}
+
+{% block breadcrumb %}
+    <a href="/">Havistin</a> &raquo; Lintubingo
+{% endblock %}
+
+{% block body %}
+
+    <h1>Lintubingo {{ html["title"] }}</h1>
+
+    <div id="bingo_grid">
+        <div class="square">{{ html["species_grid"][0] }}</div>
+        <div class="square">{{ html["species_grid"][1] }}</div>
+        <div class="square">{{ html["species_grid"][2] }}</div>
+        <div class="square">{{ html["species_grid"][3] }}</div>
+        <div class="square">{{ html["species_grid"][4] }}</div>
+        <div class="square">{{ html["species_grid"][5] }}</div>
+        <div class="square">{{ html["species_grid"][6] }}</div>
+        <div class="square">{{ html["species_grid"][7] }}</div>
+        <div class="square">{{ html["species_grid"][8] }}</div>
+      </div>
+
+{% endblock %}

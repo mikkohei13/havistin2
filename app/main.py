@@ -46,7 +46,9 @@ import weather.change
 
 import my.year
 
-import viewer.viewer
+import misc.bingo
+
+#import viewer.viewer
 
 #import pinna.pinna
 #import pinna.contest_edit
@@ -380,12 +382,18 @@ def my_year(year_untrusted, taxon_id_untrusted = "MX.37600"): # default = Biota
     html = my.year.main(token, year_untrusted, taxon_id_untrusted)
     return render_template("my_year.html", html=html)
 
+@app.route("/bingo")
+def bingo_root():
+    html = misc.bingo.main()
+    return render_template("misc_bingo.html", html=html)
+
+'''
 @app.route("/viewer/<path:document_id_untrusted>") # Note: path -> allows slashes in parameter
 def viewer_root(document_id_untrusted):
     token = session.get('token', None)
     html = viewer.viewer.main(token, document_id_untrusted)
     return render_template("viewer.html", html=html)
-
+'''
 
 '''
 @app.route("/pinna")

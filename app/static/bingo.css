@@ -1,0 +1,36 @@
+
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+#bingo_grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    width: 50%;
+    box-sizing: border-box;
+}
+
+#bingo_grid .square {
+    width: 100%;
+    border: 1px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 200%;
+}
+
+#bingo_grid .square::before {
+    content: '';
+    display: block;
+    padding-top: 100%; /* This creates a 1:1 aspect ratio */
+}
+
+@media print {
+    #bingo_grid .square::before {
+        padding-top: 100%; /* Maintain the 1:1 aspect ratio */
+    }
+}
