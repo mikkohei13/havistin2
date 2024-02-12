@@ -25,6 +25,7 @@ import atlas.observers
 import atlas.species_proportions
 import atlas.completelists
 import atlas.summap
+import atlas.comparesquares
 
 import taxa.taxa
 import taxa.specieslist
@@ -273,6 +274,12 @@ def atlas_completelists():
 def atlas_summap(class_untrusted):
     html = atlas.summap.main(class_untrusted)
     return render_template("atlas_summap.html", html=html)
+
+@app.route("/atlas/ruutuvertailu/<string:society_untrusted>")
+#@robust_cached(timeout=10800)
+def atlas_comparesquares(society_untrusted):
+    html = atlas.comparesquares.main(society_untrusted)
+    return render_template("atlas_comparesquares.html", html=html)
 
 @app.route("/taxa/<string:taxon_id_untrusted>")
 @robust_cached(timeout=86400)

@@ -381,6 +381,7 @@ h2, h3, h3 {
 }
 .styled-table tbody tr:nth-of-type(even) {
     background-color: #DBF4F8; /* v2 verylight turquoise */
+    background-color: #ecfdff; /* v2 veryverylight turquoise */
 }
 .styled-table tbody tr:last-of-type {
     border-bottom: 2px solid #1290A2; /* v2 butterfly turquoise */

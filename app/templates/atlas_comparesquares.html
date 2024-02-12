@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <title>{{ html["society_name"] }} - ruutuvertailu / Lintuatlaksen tilastoja (biomi.org)</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+    /*
+    .p_0 { background-color: #ff0000; }
+    .p_1 { background-color: #ed0012; }
+    .p_2 { background-color: #db0024; }
+    .p_3 { background-color: #c80037; }
+    .p_4 { background-color: #b60049; }
+    .p_5 { background-color: #a4005b; }
+    .p_6 { background-color: #92006d; }
+    .p_7 { background-color: #800080; }
+    .p_8 { background-color: #6d0092; }
+    .p_9 { background-color: #5b00a4; }
+    .p_10 { background-color: #4900b6; }
+    .p_11 { background-color: #3700c8; }
+    .p_12 { background-color: #2400db; }
+    .p_13 { background-color: #1200ed; }
+    .p_14 span, .p_15 span, .p_16 span, .p_17 span, .p_18 span, .p_19 span, .p_10 span,  { background-color: #0000ff; }
+    */
+
+
+    .p_0 span, .p_1 span, .p_2 span, .p_3 span, .p_4 span, .p_5 span, .p_6 span, .p_7 span { background-color: #ffffff; }
+    .p_8 span, .p_9 span { background-color: #b8ecff; }
+    .p_10 span, .p_11 span { background-color: #3af644; }
+    .p_12 span, .p_13 span, .p_14 span, .p_15 span, .p_16 span, .p_17 span, .p_18 span, .p_19 span, .p_20 { background-color: #1aaf00; }
+
+    table span {
+        display: inline-block; width: 20px; height: 20px; border-radius: 10px; margin-left: 1em; border: 1px solid #ccc;
+    }
+    .Tyydyttava, .Hyva, .Erinomainen {
+        font-weight: bold;
+    }
+    tr {
+        background-color: #fff;
+    }
+    </style>
+{% endblock %}
+
+{% block breadcrumb %}
+    <a href="/">Havistin</a> &raquo; <a href="/atlas">Lintuatlas</a> &raquo; Ruutuvertailu
+{% endblock %}
+
+{% block body %}
+
+    <h1>{{ html["society_name"] }} - ruutuvertailu</h1>
+
+    Vähintään tyydyttävästi kartoitetut ruudut on lihavoitu.
+
+    {{ html["table"]|safe }}
+
+
+    <h3>Valitse yhdistys</h3>
+    <p>
+        <a href="/atlas/ruutuvertailu/ML.1088">Ålands Fågelskyddsförening r.f.</a><br>
+        <a href="/atlas/ruutuvertailu/ML.1089">Turun Lintutieteellinen Yhdistys ry</a><br>
+        <a href="/atlas/ruutuvertailu/ML.1090">Porin Lintutieteellinen Yhdistys ry</a><br>
+        <a href="/atlas/ruutuvertailu/ML.1091">Helsingin Seudun Lintutieteellinen Yhdistys - Tringa ry</a><br>
+        <a href="/atlas/ruutuvertailu/ML.1092">Keski- ja Pohjois-Uudenmaan Lintuharrastajat - Apus ry</a><br>
+        <a href="/atlas/ruutuvertailu/ML.1093">Porvoon Seudun Lintuyhdistys ry</a><br>
+        <a href="/atlas/ruutuvertailu/ML.1094">Kymenlaakson Lintutieteellinen Yhdistys ry</a><br>
+        <a href="/atlas/ruutuvertailu/ML.1095">Etelä-Karjalan Lintutieteellinen Yhdistys ry</a><br>
+        <a href="/atlas/ruutuvertailu/ML.1096">Lounais-Hämeen Lintuharrastajat ry</a><br>
+        <a href="/atlas/ruutuvertailu/ML.1097">BirdLife Kanta-Häme</a><br>
+        <a href="/atlas/ruutuvertailu/ML.1098">Päijät-Hämeen Lintutieteellinen Yhdistys ry</a><br>
+        <a href="/atlas/ruutuvertailu/ML.1099">Pirkanmaan Lintutieteellinen Yhdistys ry</a><br>
+        <a href="/atlas/ruutuvertailu/ML.1101">Etelä-Savon Lintuharrastajat - Oriolus ry</a><br>
+        <a href="/atlas/ruutuvertailu/ML.1102">Lintuyhdistys Kuikka ry (Pohjois-Savo)</a><br>
+        <a href="/atlas/ruutuvertailu/ML.1103">Pohjois-Karjalan Lintutieteellinen Yhdistys ry</a><br>
+        <a href="/atlas/ruutuvertailu/ML.1104">BirdLife Keski-Suomi ry</a><br>
+        <a href="/atlas/ruutuvertailu/ML.1105">Suomenselän Lintutieteellinen Yhdistys ry</a><br>
+        <a href="/atlas/ruutuvertailu/ML.1106">Suupohjan Lintutieteellinen Yhdistys ry</a><br>
+        <a href="/atlas/ruutuvertailu/ML.1107">Merenkurkun Lintutieteellinen Yhdistys ry</a><br>
+        <a href="/atlas/ruutuvertailu/ML.1108">BirdLife Keski-Pohjanmaa ry</a><br>
+        <a href="/atlas/ruutuvertailu/ML.1109">Pohjois-Pohjanmaan Lintutieteellinen Yhdistys ry.</a><br>
+        <a href="/atlas/ruutuvertailu/ML.1110">Kainuun Lintutieteellinen Yhdistys ry</a><br>
+        <a href="/atlas/ruutuvertailu/ML.1111">Meri-Lapin Lintutieteellinen Yhdistys Xenus ry</a><br>
+        <a href="/atlas/ruutuvertailu/ML.1112">Lapin Lintutieteellinen Yhdistys ry</a><br>
+        <a href="/atlas/ruutuvertailu/ML.1113">Kuusamon Lintukerho ry</a><br>
+        <a href="/atlas/ruutuvertailu/ML.1114">Lohjan Lintutieteellinen Yhdistys - Hakki ry</a><br>
+        <a href="/atlas/ruutuvertailu/ML.1116">Rauman Seudun Lintuharrastajat ry</a><br>
+        <a href="/atlas/ruutuvertailu/ML.1267">Ostrobothnia Australis r.f.</a><br>        
+    </p>
+
+
+{% endblock %}
