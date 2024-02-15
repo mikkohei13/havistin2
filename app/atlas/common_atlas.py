@@ -477,9 +477,9 @@ def get_atlas4_square_data(square_id):
 
 
 
-def get_species_predictions(square_id):
+def get_species_predictions(square_id, year):
     square_filename = square_id.replace(":", "_")
-    filename = f"./data/atlas_predictions/{ square_filename }.json"
+    filename = f"./data/atlas_predictions_{ year }/{ square_filename }.json"
     f = open(filename)       
 
     species_dict = json.load(f)
@@ -507,6 +507,10 @@ def get_species_missvalues(species_predictions, atlas4_species):
 
     for species, data in species_predictions.items():
 
+        # Ignore too improbable species
+        if data["predictions"][0]["value"] < 0.5:
+            continue
+
         # Get capped predicted class
         predicted_class = data["predictions"][0]["value"]
         if predicted_class < 0:
@@ -529,7 +533,7 @@ def get_species_missvalues(species_predictions, atlas4_species):
         else:
             missvalue = round(predicted_class, 1)
 
-        # Ignore too improbable species
+        # Add to the list, if missvalue is significant
         if missvalue > 0.1:
             missvalues[species] = missvalue
 

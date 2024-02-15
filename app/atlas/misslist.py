@@ -56,7 +56,7 @@ def main(square_id_untrusted):
     atlas4_species, atlas4_square_info = common_atlas.get_atlas4_square_data(square_id)
 
     # Get prediction data
-    species_predictions = common_atlas.get_species_predictions(square_id)
+    species_predictions = common_atlas.get_species_predictions(square_id, 2024)
 
     # Calculate missvalues
     missvalues = common_atlas.get_species_missvalues(species_predictions, atlas4_species)

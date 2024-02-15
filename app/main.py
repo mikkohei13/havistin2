@@ -206,7 +206,7 @@ def here(square_id_untrusted):
     return render_template("atlas_here.html", html=html)
 
 @app.route("/atlas/puutelista/<string:square_id_untrusted>")
-@robust_cached(timeout=3600)
+@robust_cached(timeout=1)
 def misslist(square_id_untrusted):
     html = atlas.misslist.main(square_id_untrusted)
     return render_template("atlas_misslist.html", html=html)
