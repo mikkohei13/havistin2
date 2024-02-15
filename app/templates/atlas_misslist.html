@@ -53,19 +53,9 @@
         <div id="info">
             {{ html["info_top"]|safe }}
         </div>
-        <!--
-        <div id="fillable">
-            <span id="paikka">Paikka:</span>
-            <span id="pvm">Pvm:</span>
-            <span id="klo">Klo alku & loppu:</span>
-            <span id="havainnoijat">Havainnoijat:</span>
-            <span id="taydellinen"><strong>☐</strong> Täydellinen lista</span>
-            <span id="tallennettu">Tallennettu: <strong>☐</strong> Vihko <strong>☐</strong> Tiira <strong>☐</strong> iNaturalist</span>
-        </div>
-        -->
     </div>
 
-    <p class="noprint">Puutelistalla on ne lajit, jotka <a href='https://www.biomi.org/2023/05/23/lintulajien-levinneisyysmallinnus-koneoppimisella/'>tekoälypohjaisen ennustemallin</a> mukaan esiintyvät tällä ruudulla, mutta joiden pesintää ei ole varmistettu. <strong>Pistearvo lasketaan ennustetun pesimävarmuusluokan (0-3) ja nykyisen pesimävarmuusluokan erotuksena.</strong> Mitä suurempi arvo, sitä enemmän pesimävarmuutta voisi ennusteen mukaan korottaa. Yhden pisteen korotus tarkoittaa esim. muutosta mahdollisesta todennäköiseksi. Naapuriruutujen tai kolmannen atlaksen havainnot eivät vaikuta ennusteeseen.</p>
+    <p class="noprint">Puutelistalla on ne lajit, jotka <a href='https://www.biomi.org/2023/05/23/lintulajien-levinneisyysmallinnus-koneoppimisella/'>tekoälypohjaisen ennustemallin</a> (päivitetty 2024) mukaan esiintyvät tällä ruudulla, mutta joiden pesintää ei ole varmistettu. <strong>Pistearvo lasketaan ennustetun pesimävarmuusarvon (0-3, desimaaliluku) ja nykyisen pesimävarmuusluokan (0-3, kokonaisluku) erotuksena.</strong> Mitä suurempi arvo, sitä enemmän pesimävarmuutta voisi ennusteen mukaan korottaa. Yhden pisteen korotus tarkoittaa esim. muutosta mahdollisesta todennäköiseksi. Naapuriruutujen tai kolmannen atlaksen havainnot eivät vaikuta ennusteeseen. Epätodennäköisiä lajeja (ennuste alle 0,5) ei näytetä.</p>
 
     <div id="species_table">
         {{ html["species_table"]|safe }}
