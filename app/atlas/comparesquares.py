@@ -21,6 +21,22 @@ def validate_society_id(s):
         return "ML.1091" # Tringa
 
 
+def breeding_category_number_to_string(n):
+    if n == 0:
+        return "Ei havaintoja"
+    if n == 1:
+        return "Satunnaishavaintoja"
+    if n == 2:
+        return "Välttävä"
+    if n == 3:
+        return "Tyydyttävä"
+    if n == 4:
+        return "Hyvä"
+    if n == 5:
+        return "Erinomainen"
+    return "Ei tiedossa"
+
+
 def main(society_untrusted):
     html = dict()
     html["heading"] = "Ruutuvertailu"
@@ -45,7 +61,7 @@ def main(society_untrusted):
         square_3rd = df[(df["grid"] == coordinates)]
 
         sum_3rd = square_3rd["activitySum"].values[0]
-        category_3rd = square_3rd["activityCategory"].values[0]
+        category_3rd = breeding_category_number_to_string(square_3rd["activityCategory"].values[0])
 
         if sum_3rd == 0 or sum == 0:
             proportion = 0
@@ -56,10 +72,11 @@ def main(society_untrusted):
             percentage = int(round(proportion, 0))
             percentage_class = "p_" + str(int(math.floor(proportion / 10)))
 
-        table += f"<tr class='{ percentage_class } { category_class }'><td>{ coordinates }</td><td>{ name }</td><td>{ sum_3rd }</td><td>{ category_3rd }</td><td>{ sum }</td><td>{ category }</td><td>{ percentage }</td><td><span>&nbsp;</span></td></tr>"
+        table += f"<tr class='{ percentage_class } { category_class }'><td><a href='/atlas/puutelista/{ coordinates }' title='Puutelista'>{ coordinates }</a></td><td><a href='/atlas/ruutulomake/{ coordinates }/vakio' title='Tulostettava ruutulomake'>{ name }</a></td><td>{ sum_3rd }</td><td>{ category_3rd }</td><td>{ sum }</td><td>{ category }</td><td>{ percentage }&nbsp;%</td><td><span>&nbsp;</span></td></tr>"
 
     table += "\n</tbody></table>"
     html["table"] = table
 
     return html
+
 

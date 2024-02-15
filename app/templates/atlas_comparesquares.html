@@ -37,6 +37,11 @@
     tr {
         background-color: #fff;
     }
+
+    table thead tr {
+        position: sticky;
+        top: 0;
+    }
     </style>
 {% endblock %}
 
@@ -48,7 +53,7 @@
 
     <h1>{{ html["society_name"] }} - ruutuvertailu</h1>
 
-    Vähintään tyydyttävästi kartoitetut ruudut on lihavoitu.
+    Vähintään tyydyttävästi kartoitetut ruudut on lihavoitu. (Valitse yhdistys sivun lopusta.)
 
     {{ html["table"]|safe }}
 
@@ -64,7 +69,7 @@
         <a href="/atlas/ruutuvertailu/ML.1094">Kymenlaakson Lintutieteellinen Yhdistys ry</a><br>
         <a href="/atlas/ruutuvertailu/ML.1095">Etelä-Karjalan Lintutieteellinen Yhdistys ry</a><br>
         <a href="/atlas/ruutuvertailu/ML.1096">Lounais-Hämeen Lintuharrastajat ry</a><br>
-        <a href="/atlas/ruutuvertailu/ML.1097">BirdLife Kanta-Häme</a><br>
+        <a href="/atlas/ruutuvertailu/ML.1097">BirdLife Kanta-Häme ry</a><br>
         <a href="/atlas/ruutuvertailu/ML.1098">Päijät-Hämeen Lintutieteellinen Yhdistys ry</a><br>
         <a href="/atlas/ruutuvertailu/ML.1099">Pirkanmaan Lintutieteellinen Yhdistys ry</a><br>
         <a href="/atlas/ruutuvertailu/ML.1101">Etelä-Savon Lintuharrastajat - Oriolus ry</a><br>
@@ -84,6 +89,5 @@
         <a href="/atlas/ruutuvertailu/ML.1116">Rauman Seudun Lintuharrastajat ry</a><br>
         <a href="/atlas/ruutuvertailu/ML.1267">Ostrobothnia Australis r.f.</a><br>        
     </p>
-
 
 {% endblock %}
