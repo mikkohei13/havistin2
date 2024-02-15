@@ -291,6 +291,15 @@ h2, h3, h3 {
     float: right;
 }
 
+#predictionmap {
+    width: 250px;
+    height: 430px;
+    margin-right: 1em
+    margin-bottom: 1em;
+    max-width: 90%;
+    float: right;
+}
+
 .chart {
     max-width: 1400px;
 }

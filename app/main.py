@@ -206,7 +206,7 @@ def here(square_id_untrusted):
     return render_template("atlas_here.html", html=html)
 
 @app.route("/atlas/puutelista/<string:square_id_untrusted>")
-@robust_cached(timeout=1)
+@robust_cached(timeout=3600)
 def misslist(square_id_untrusted):
     html = atlas.misslist.main(square_id_untrusted)
     return render_template("atlas_misslist.html", html=html)
@@ -236,7 +236,7 @@ def atlas_specieslist():
     return render_template("atlas_specieslist.html", html=html)
 
 @app.route("/atlas/laji/<string:species_name_untrusted>")
-@robust_cached(timeout=86400) # 86400
+@robust_cached(timeout=1) # 86400
 def atlas_singlespecies(species_name_untrusted):
     html = atlas.singlespecies.main(species_name_untrusted)
     return render_template("atlas_singlespecies.html", html=html)

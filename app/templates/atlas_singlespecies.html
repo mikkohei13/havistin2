@@ -24,6 +24,8 @@
 
     <img id="speciesmap" src='https://atlas-api.rahtiapp.fi/api/v1/map/{{ html["qname"] }}/atlas'>
 
+    {{ html["prediction_map"] | safe }}
+
     <p>Pesimäkanta keskimäärin <strong>{{ html["species_pairs"] }} paria (2010)</strong></p>
     <p>Habitaatit: <strong>{{ html["habitats"] }}</strong></p>
     <p>Uhanalaisuusluokka: <strong>{{ html["redlist"] }}</strong></p>

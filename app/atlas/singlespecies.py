@@ -183,6 +183,17 @@ def get_phenology(taxon_id, params):
     return full_day_data
 
 
+def get_prediction_map_html(species_name):
+    # Check if file exists
+    filepath = f"./static/atlasmaps_predictions/{species_name}.png"
+    try:
+        f = open(filepath)
+        f.close()
+        root_path = f"/static/atlasmaps_predictions/{species_name}.png"
+        return f"<img src='{ root_path }' id='predictionmap' alt='' title='Lajin ennustettu esiintyminen. Keltainen: korkea todennäköisyys, tummansininen: matala todennäköisyys.'>"
+    except FileNotFoundError:
+        return "<!-- No prediction map for this species -->"
+
 
 def main(species_name_untrusted):
     species_name = valid_species_name(species_name_untrusted)
@@ -222,6 +233,7 @@ def main(species_name_untrusted):
     phenology_atlas_confirmed = str(get_phenology(species_data["id"], "&atlasClass=MY.atlasClassEnumD"))
 
     html = dict()
+    html["prediction_map"] = get_prediction_map_html(species_name)
     html["species_name"] = species_name
     html["prev_name"] = prev_name
     html["next_name"] = next_name
