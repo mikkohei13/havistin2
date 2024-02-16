@@ -276,7 +276,7 @@ def atlas_summap(class_untrusted):
     return render_template("atlas_summap.html", html=html)
 
 @app.route("/atlas/ruutuvertailu/<string:society_untrusted>")
-@robust_cached(timeout=1) # 43200 = 12 h
+@robust_cached(timeout=43200) # 43200 = 12 h
 def atlas_comparesquares(society_untrusted):
     html = atlas.comparesquares.main(society_untrusted)
     return render_template("atlas_comparesquares.html", html=html)

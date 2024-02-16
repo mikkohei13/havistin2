@@ -50,6 +50,8 @@ def convert_collection_name(id):
         return "Vesilintulaskennat, Luomuksen aineisto"
     if  "http://tun.fi/HR.62" == id:
         return "Vesilintulaskennat"
+    if  "http://tun.fi/HR.5895" == id:
+        return "Oma riista -havainnot 4. lintuatlakseen"
     return "Muu (" + id + ")"
 
 
