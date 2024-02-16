@@ -140,7 +140,7 @@ def logout_root():
 
 @app.route("/atlas")
 @app.route("/atlas/")
-@robust_cached(timeout=1)
+@robust_cached(timeout=120)
 def atlas_root():
     html = atlas.atlas.main()
     return render_template("atlas.html", html=html)

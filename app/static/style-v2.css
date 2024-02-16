@@ -284,20 +284,28 @@ h2, h3, h3 {
 }
 
 #speciesmap {
-    width: 300px;
-    height: 430px;
     margin-bottom: 1em;
-    max-width: 90%;
     float: right;
 }
 
-#predictionmap {
-    width: 250px;
+#speciesmap img {
+    width: 300px;
     height: 430px;
-    margin-right: 1em
-    margin-bottom: 1em;
     max-width: 90%;
+}
+
+#predictionmap {
+    margin: 1em;
+    padding: 0.5em;
     float: right;
+    background-color: black;
+    border-radius: 5px;
+}
+
+#predictionmap img {
+    width: 250px;
+    height: 390px;
+    max-width: 90%;
 }
 
 .chart {

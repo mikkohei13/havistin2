@@ -22,7 +22,7 @@
 
     <h1>{{ html["species_name"].capitalize() }}</h1>
 
-    <img id="speciesmap" src='https://atlas-api.rahtiapp.fi/api/v1/map/{{ html["qname"] }}/atlas'>
+    <span id="speciesmap"><img src='https://atlas-api.rahtiapp.fi/api/v1/map/{{ html["qname"] }}/atlas'></span>
 
     {{ html["prediction_map"] | safe }}
 
@@ -39,7 +39,7 @@
 
 
     <h3>Atlashavaintojen ajoittuminen</h3>
-    <p>Päivittäinen havaintomäärä (mahdolliset + todennäköiset + varmat) vuoden 2022 havainnoista, joiden alku- ja loppupäivä ovat samat.</p>
+    <p>Päivittäinen havaintomäärä (mahdolliset + todennäköiset + varmat) vuoden 2022-2023 havainnoista, joiden alku- ja loppupäivä ovat samat.</p>
 
     <div>
         <canvas id="daily_chart"></canvas>

@@ -145,7 +145,7 @@ def day_of_year(day, month):
 
 def get_phenology(taxon_id, params):
 
-    year = "2022" # Change to 2022/2023 at the end of 2023.
+    year = "2022/2023" # Todo: change to 2022/2024 at the end of 2024.
 
     url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=gathering.conversions.day%2Cgathering.conversions.month&onlyCount=true&taxonCounts=false&gatheringCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=366&page=1&cache=false&taxonId={ taxon_id }&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&individualCountMin=1&qualityIssues=NO_ISSUES&reliability=RELIABLE,UNDEFINED{ params }&yearMonth={ year }&access_token="
 
@@ -190,7 +190,7 @@ def get_prediction_map_html(species_name):
         f = open(filepath)
         f.close()
         root_path = f"/static/atlasmaps_predictions/{species_name}.png"
-        return f"<img src='{ root_path }' id='predictionmap' alt='' title='Lajin ennustettu esiintyminen. Keltainen: korkea todennäköisyys, tummansininen: matala todennäköisyys.'>"
+        return f"<span id='predictionmap'><img src='{ root_path }' alt='' title='Lajin ennustettu esiintyminen. Keltainen: korkea todennäköisyys, tummansininen: matala todennäköisyys.'></span>"
     except FileNotFoundError:
         return "<!-- No prediction map for this species -->"
 
