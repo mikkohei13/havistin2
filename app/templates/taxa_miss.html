@@ -9,11 +9,14 @@
     {% endblock %}
 
     {% block body %} 
+
+    <h1>Puutelista</h1>
+    <p>Puutelista näyttää lajit, joita ei ole havaittu antamasi paikan lähialueella, mutta jotka on havaittu laajemmalla alueella (havaintomäärän kanssa).</p>
+
+    <p><strong>Käytetyt parametrit:</strong> taksoni <a href='http://tun.fi/{{ html["qname"] }}'>{{ html["qname"] }}</a>, koordinaatit <a href='https://laji.fi/map?coordinates=%2B{{ html["lat"] }}%2B0{{ html["lon"] }}%2F'>{{ html["lat"] }}, {{ html["lon"] }}</a>, alkaen vuodesta {{ html["since_year"] }}, lähialueen säde {{ html["near_km"] }} km, laajemman alueen säde {{ html["far_km"] }} km.</p>
+
+    <p>Voit muokata puutelistaa antamalla parametreja osoitteeseen. Esimerkki: https://havistin.biomi.org/taxa/miss?lat=60.6267&lon=25.2862&taxon=MX.1&since_year=2001&near=25&far=100</p>
     
-    {{ html["bbox"] }}
-    {{ html["lat"] }}
-    {{ html["lon"] }}
-    {{ html["qname"] }}
-    {{ html["year"] }}
+    {{ html["missing_species"]|safe }}
 
     {% endblock %}

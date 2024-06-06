@@ -9,13 +9,15 @@ def validate_lat(lat_untrusted):
     lat = float(lat_untrusted)
     if lat < 0:
         raise ValueError("Latitude should be positive")
-    return lat
+    return round(lat, 4)
+
 
 def validate_lon(lon_untrusted):
     lon = float(lon_untrusted)
     if lon < 0:
         raise ValueError("Longitude should be positive")
-    return lon
+    return round(lon, 4)
+
 
 def validate_year(year_untrusted):
     current_year = datetime.datetime.now().year
@@ -50,14 +52,56 @@ def bounding_box(lat, lon, box_size):
 
 
 # Function to get observation data from the given area
-def get_observation_counts(qname, lat, lon, year_begin):
-    lat_min, lat_max, lon_min, lon_max = bounding_box(lat, lon, 100)
-    return lat_min, lat_max, lon_min, lon_max
+def get_observation_counts(qname, lat, lon, year_begin, radius):
+    lat_min, lat_max, lon_min, lon_max = bounding_box(lat, lon, radius)
 
-#    species_data = common_helpers.fetch_finbif_api(f"")
+    # bbox should be format 59.1007%3A60.8993%3A22.2014%3A25.7986%3AWGS84%3A1
+    bbox = f"{lat_min}%3A{lat_max}%3A{lon_min}%3A{lon_max}%3AWGS84%3A1"
+
+    # time is "year_begin/year_current"
+    time = f"{year_begin}/{datetime.datetime.now().year}"
+
+    url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=unit.linkings.taxon.id%2Cunit.linkings.taxon.nameFinnish%2Cunit.linkings.taxon.scientificName&onlyCount=true&taxonCounts=false&gatheringCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=1000&page=1&cache=true&taxonId={ qname }&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&taxonRankId=MX.species&countryId=ML.206&time={ time }&individualCountMin=1&coordinates={ bbox }&qualityIssues=NO_ISSUES&access_token="
+
+    species_data = common_helpers.fetch_finbif_api(url)
+
+    # Loop species and make a dict with species names and counts
+    species_dict = dict()
+    for species in species_data["results"]:
+
+        single_species_dict = dict()
+        single_species_dict["count"] = species["count"]
+        single_species_dict["fi"] = species["aggregateBy"]["unit.linkings.taxon.nameFinnish"]
+        single_species_dict["sci"] = species["aggregateBy"]["unit.linkings.taxon.scientificName"]
+
+        species_dict[species["aggregateBy"]["unit.linkings.taxon.id"]] = single_species_dict
+
+    return species_dict
+# Compare two species_dicts and return species that are in the first dict but not in the second
+def compare_species_dicts(species_dict_far, species_dict_near):
+    missing_species = dict()
+    for key, value in species_dict_far.items():
+        if key not in species_dict_near:
+            missing_species[key] = value
+
+    return missing_species
 
 
-def main(lat_untrusted, lon_untrusted, taxon_untrusted, year_untrusted):
+def generate_table_html(species_dict):
+    html = "<table class='styled-table'>"
+    html += "<thead><tr><th>Nimi</th><th>Tieteellinen</th><th>Havaintoja</th></tr></thead>\n<tbody>\n"
+    for key, value in species_dict.items():
+        html += "<tr>"
+        html += f"<td><a href='{ key }'>{ value['fi'] }</a></td>"
+        html += f"<td><em>{ value['sci'] }</em></td>"
+        html += f"<td>{ value['count'] }</td>"
+        html += "</tr>\n"
+    html += "</tbody>\n</table>"
+    return html
+
+
+def main(lat_untrusted, lon_untrusted, taxon_untrusted, since_year_untrusted, near_km_untrusted, far_km_untrusted):
+    html = dict()
 
     # Validate inputs
     # Lat and lon should be positive decimal numbers
@@ -68,16 +112,27 @@ def main(lat_untrusted, lon_untrusted, taxon_untrusted, year_untrusted):
     qname = common_helpers.valid_qname(taxon_untrusted)
 
     # Year should be between 1900 and current year
-    year = validate_year(year_untrusted)
+    since_year = validate_year(since_year_untrusted)
 
-    lat_min, lat_max, lon_min, lon_max = get_observation_counts(qname, lat, lon, year)
+    # Near and far km should be positive integers
+    near_km = int(near_km_untrusted)
+    far_km = int(far_km_untrusted)
 
-    html = dict()
-    html["bbox"] = f"{lat_min}:{lat_max}:{lon_min}:{lon_max}"
+    # Get the data
+    species_dict_near = get_observation_counts(qname, lat, lon, since_year, near_km)
+    species_dict_far = get_observation_counts(qname, lat, lon, since_year, far_km)
+
+    missing_species = compare_species_dicts(species_dict_far, species_dict_near)
+
+    html["missing_species"] = generate_table_html(missing_species)
+
+    print(html["missing_species"])
 
     html["lat"] = lat
     html["lon"] = lon
     html["qname"] = qname
-    html["year"] = year
+    html["since_year"] = since_year
+    html["near_km"] = near_km
+    html["far_km"] = far_km
 
     return html
