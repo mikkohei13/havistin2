@@ -324,7 +324,7 @@ def taxa_compare_years(taxon_id_untrusted):
     return render_template("taxa_compare_years.html", html=html)
 
 @app.route("/taxa/miss")
-@robust_cached(timeout=10800)
+@robust_cached(timeout=1)
 def taxa_miss():
     lat_untrusted = request.args.get('lat')
     lon_untrusted = request.args.get('lon')
