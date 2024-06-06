@@ -33,6 +33,7 @@ import taxa.species
 import taxa.new
 import taxa.common_photos
 import taxa.compare_years
+import taxa.miss
 
 import winterbird.winterbird
 import winterbird.census
@@ -321,6 +322,16 @@ def taxa_photos_data(taxon_id_untrusted):
 def taxa_compare_years(taxon_id_untrusted):
     html = taxa.compare_years.main(taxon_id_untrusted)
     return render_template("taxa_compare_years.html", html=html)
+
+@app.route("/taxa/miss")
+@robust_cached(timeout=1)
+def taxa_miss():
+    lat_untrusted = request.args.get('lat')
+    lon_untrusted = request.args.get('lon')
+    taxon_untrusted = request.args.get('taxon')
+    year_untrusted = request.args.get('year', 2000)
+    html = taxa.miss.main(lat_untrusted, lon_untrusted, taxon_untrusted, year_untrusted)
+    return render_template("taxa_miss.html", html=html)
 
 @app.route("/weather/change/<int:messaging_on>")
 @app.route("/weather/change")

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+    {% block head %}
+    <title>Puutelista (biomi.org)</title>
+    {% endblock %}
+
+    {% block breadcrumb %}
+        <a href='/'>Havistin</a> &raquo; <a href='/taxa'>Lajitietoa</a> &raquo; Puutelista
+    {% endblock %}
+
+    {% block body %} 
+    
+    {{ html["lat"] }}
+    {{ html["lon"] }}
+    {{ html["qname"] }}
+    {{ html["year"] }}
+
+    {% endblock %}
