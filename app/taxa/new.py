@@ -41,6 +41,7 @@ def get_species_qnames(page_name_untrusted):
         species.append("MX.229815")
         species.append("MX.229816")
         species.append("MX.229819")
+        species.append("MX.5093779") # Deraeocoris flavilinea
         species.append("MX.4994280")
         species.append("MX.229829")
         species.append("MX.5008074")
@@ -59,6 +60,7 @@ def get_species_qnames(page_name_untrusted):
         species.append("MX.230095")
         species.append("MX.5103021") # Agnocoris reclairei
         species.append("MX.5102558") # Pilophorus pusillus
+        species.append("MX.5103021") # Agnocoris reclairei
 
     elif "heteroptera_new_2" == page_name_untrusted:
 
@@ -73,6 +75,7 @@ def get_species_qnames(page_name_untrusted):
         species.append("MX.5082045")
         species.append("MX.5093828") # Mezira tremulae 
         species.append("MX.230230")
+        species.append("MX.5094838") # Zelus renardii        
         species.append("MX.4994293")
         species.append("MX.5075004")
         species.append("MX.5077007")
@@ -80,6 +83,7 @@ def get_species_qnames(page_name_untrusted):
         species.append("MX.230303")
         species.append("MX.230415")
         species.append("MX.5008073")
+        species.append("MX.5093786") # Syromastus rhombeus
 
         # Pentatomidae
         species.append("MX.5093768") # Arma custos
@@ -102,9 +106,7 @@ def get_species_qnames(page_name_untrusted):
         species.append("MX.5093774")
         species.append("MX.5093776")
         species.append("MX.5093777")
-        species.append("MX.5093786")
         species.append("MX.5093843")
-        species.append("MX.5093779")
         # TODO: Deraeocoris trifasciatus, ei vielä MX-koodia
         species.append("MX.5093781")
         species.append("MX.5093784")
