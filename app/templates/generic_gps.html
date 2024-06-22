@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+    {% block head %}
+    <title>Etsii sijaintiasi</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.7.5/proj4.js"></script>
+    {% endblock %}
+
+    {% block breadcrumb %}
+    <a href="../../../">{{ html["page_title"] }}</a> &raquo; Sijaintisi
+    {% endblock %}
+
+    {% block body %}
+
+    <h3>Paikannus käynnissä, odota hetki...</h3>
+
+<!--    <button id="locate">Paikanna minut</button>-->
+    <p id="position">Voit kokeilla nopeuttaa paikantamista avaamalla sovelluksen, joka käyttää GPS:aa, esim. Google Mapsin. Palaa takaisin tähän sovellukseen, kun se on löytänyt tarkan paikkasi.</p>
+    
+<script>
+
+// On page load
+window.onload = function() {
+    if (!navigator.geolocation) {
+        document.getElementById('position').innerHTML = "Selaimesi ei tuo paikannusta.";
+    } else {
+//        document.getElementById('position').innerHTML = "Paikantaa...";
+        const options = {
+            maximumAge: 10000,
+            enableHighAccuracy: true
+        }
+        navigator.geolocation.watchPosition(success, error, options);
+    }
+};
+
+function success(position) {
+    if(position.coords.accuracy < 200) {
+        var latitude  = position.coords.latitude;
+        var longitude = position.coords.longitude;
+        var accuracyRounded = Math.round(position.coords.accuracy);
+
+        // Define WGS84 and EPSG:2393 projection
+        var wgs84 = 'EPSG:4326';
+        var epsg2393 = '+proj=tmerc +lat_0=0 +lon_0=27 +k=1 +x_0=3500000 +y_0=0 +ellps=intl +towgs84=-96.062,-82.428,-121.753,4.801,0.345,-1.376,1.496 +units=m +no_defs';
+
+        // Convert coordinates
+        var epsg2393Coords = proj4(wgs84, epsg2393, [longitude, latitude]);
+        var n = epsg2393Coords[1].toString().substring(0, 3);
+        var e = epsg2393Coords[0].toString().substring(0, 3);
+
+//        document.getElementById('position').innerHTML = 
+//            'WGS84<br>Leveys: ' + latitude + '°<br>Pituus: ' + longitude + '°<br>Tarkkuus: ' + accuracyRounded + ' m<br>' +
+//            'YKJ<br>N: ' + n + '<br>E: ' + e;
+        document.getElementById('position').innerHTML = 
+            'Ohjataan ruudun sivulle...';
+        navigator.geolocation.clearWatch(success);
+        window.location.href = "{{ html['redirect_location'] }}/" + n + ":" + e;
+    }
+    else {
+        var accuracyRounded = Math.round(position.coords.accuracy)
+        document.getElementById('position').innerHTML = "Paikantaa... tarkkuus " + accuracyRounded + ' m';
+    }
+}
+
+function error() {
+    document.getElementById('position').innerHTML = "Sijaintiasi ei voitu hakea.";
+}
+
+
+</script>
+    {% endblock %}

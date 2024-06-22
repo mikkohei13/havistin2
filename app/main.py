@@ -47,6 +47,8 @@ import info.news
 import weather.change
 
 import my.year
+import my.gps
+import my.miss
 
 import misc.bingo
 
@@ -401,6 +403,19 @@ def my_year(year_untrusted, taxon_id_untrusted = "MX.37600"): # default = Biota
     token = session.get('token', None)
     html = my.year.main(token, year_untrusted, taxon_id_untrusted)
     return render_template("my_year.html", html=html)
+
+@app.route("/my/gps")
+@app.route("/my/gps/")
+@robust_cached(timeout=1)
+def my_gps():
+    html = my.gps.main()
+    return render_template("generic_gps.html", html=html)
+
+@app.route("/my/<string:coord_untrusted>")
+@robust_cached(timeout=1)
+def my_here(coord_untrusted):
+    html = my.here.main(coord_untrusted)
+    return render_template("my_here.html", html=html)
 
 @app.route("/bingo")
 def bingo_root():
