@@ -11,8 +11,8 @@ def get_obs_aggregate_data(qname):
     # facts
     # https://api.laji.fi/v0/warehouse/query/unit/list?selected=gathering.facts.decimalValue%2Cgathering.facts.fact%2Cgathering.facts.integerValue%2Cgathering.facts.value%2Cunit.facts.decimalValue%2Cunit.facts.fact%2Cunit.facts.integerValue%2Cunit.facts.value&pageSize=100&page=1&cache=false&taxonId=MX.230528&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&individualCountMin=1&qualityIssues=NO_ISSUES&access_token=
 
-    # Note: iNat excluded for development
-    obs_data = common_helpers.fetch_finbif_api(f"https://api.laji.fi/v0/warehouse/query/unit/list?selected=gathering.facts.decimalValue%2Cgathering.facts.fact%2Cgathering.facts.integerValue%2Cgathering.facts.value%2Cunit.facts.decimalValue%2Cunit.facts.fact%2Cunit.facts.integerValue%2Cunit.facts.value&pageSize={limit}&page=1&cache=false&taxonId={qname}&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&collectionIdNot=HR.3211&individualCountMin=1&qualityIssues=NO_ISSUES&access_token=", True)
+    # To exclude iNat for development: &collectionIdNot=HR.3211
+    obs_data = common_helpers.fetch_finbif_api(f"https://api.laji.fi/v0/warehouse/query/unit/list?selected=gathering.facts.decimalValue%2Cgathering.facts.fact%2Cgathering.facts.integerValue%2Cgathering.facts.value%2Cunit.facts.decimalValue%2Cunit.facts.fact%2Cunit.facts.integerValue%2Cunit.facts.value&pageSize={ limit }&page=1&cache=false&taxonId={ qname }&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&individualCountMin=1&qualityIssues=NO_ISSUES&access_token=", True)
 
     #TODO: override gathering facts by unit facts
 
@@ -35,7 +35,11 @@ def get_obs_aggregate_data(qname):
                 for unit_fact in unit["facts"]:
 #                    common.print_log("unit_fact:")
 #                    common_helpers.print_log(unit_fact)
-                    this_obs_facts[unit_fact["fact"]] = unit_fact["value"]
+                    # For unknown reason, trying to capitalize some values result in error, even that all values should be strings
+                    if "http://tun.fi/MY.hostInformalNameString" == unit_fact["fact"]:
+                        this_obs_facts[unit_fact["fact"]] = unit_fact["value"].capitalize()
+                    else:
+                        this_obs_facts[unit_fact["fact"]] = unit_fact["value"]
 
 #        common_helpers.print_log(this_obs_facts)
 
@@ -99,14 +103,14 @@ def main(taxon_id_untrusted):
     
     html = dict()
 
-    # Get basic taxon data
-    # &selectedFields=id,vernacularName,scientificName,typeOfOccurrenceInFinland,parent.family.scientificName,observationCountFinland
-    species_data = common_helpers.fetch_finbif_api(f"https://api.laji.fi/v0/taxa/{qname}/species?onlyFinnish=true&lang=fi&page=1&pageSize=10&sortOrder=taxonomic&access_token=")
+    # 1) Get basic species data
+    url = f"https://api.laji.fi/v0/taxa/{qname}/species?onlyFinnish=true&lang=fi&page=1&pageSize=10&sortOrder=taxonomic&access_token="
+    species_data = common_helpers.fetch_finbif_api(url, True)
 
-    # TODO: Better var names
-    # Expecting only one species
+    # Handling only one species, so pick the first result
     html["raw_data"] = species_data["results"][0]
 
+    # Get species information that is available on the basic taxon data
     if "occurrence_status" in html["raw_data"]:
         html["occurrence_status"] = common_taxa.fetch_variable_label(html["raw_data"]["typeOfOccurrenceInFinland"][0])
     else:
@@ -121,6 +125,7 @@ def main(taxon_id_untrusted):
         html["redlist_status"] = common_taxa.fetch_variable_label(html["raw_data"]["latestRedListStatusFinland"]["status"])
         html["redlist_year"] = html["raw_data"]["latestRedListStatusFinland"]["year"]
 
+    # 2) Get additional data by fethcing top n (10.000) observations
     raw_facts = get_obs_aggregate_data(qname)
 #    common_helpers.print_log(raw_facts)
 

@@ -2,6 +2,7 @@
 import taxa.common_taxa as common_taxa
 from helpers import common_helpers
 
+
 def generate_list(data):
 
     family_mem = ""
@@ -24,9 +25,9 @@ def generate_list(data):
             vernacular_name = "ei suomenkielistä nimeä"
 
         if "typeOfOccurrenceInFinland" in item:
-            type_of_occurrence_finland = item['typeOfOccurrenceInFinland'][0]
+            type_of_occurrence_finland = common_taxa.map_status(item['typeOfOccurrenceInFinland'][0])
         else:
-            type_of_occurrence_finland = "ei esiintymistietoa"
+            type_of_occurrence_finland = "<strong>ei esiintymistietoa</strong>"
 
         html += "<li>"
         html += f"<a href='/taxa/species/{item['id']}'>"

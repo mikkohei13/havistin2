@@ -7,14 +7,23 @@ from helpers import common_helpers
 
 
 def map_status(status):
-    if "MX.typeOfOccurrenceStablePopulation" == status:
+    if status == "MX.typeOfOccurrenceStablePopulation":
         return "vakiintunut"
-    if "MX.typeOfOccurrenceNotEstablished" == status:
-        return "ei vakiintunut"
-    if "MX.typeOfOccurrenceAnthropogenic" == status:
-        return "ihmisen vaikutuksesta"
-    if "MX.typeOfOccurrenceVeryRare" == status:
-        return "hyvin harvinainen"
+    if status == "MX.typeOfOccurrenceNotEstablished":
+        return "<strong>ei vakiintunut</strong>"
+    if status == "MX.typeOfOccurrenceRareVagrant":
+        return "<strong>satunnainen harhailija</strong>"
+    if status == "MX.typeOfOccurrenceExtirpated":
+        return "<strong>hävinnyt</strong>"
+    if status == "MX.typeOfOccurrenceVeryRare":
+        return "<strong>hyvin harvinainen</strong>"
+    if status == "MX.typeOfOccurrenceImport":
+        return "<strong>ihmisen tuoma (importti)</strong>"
+    if status == "MX.typeOfOccurrenceMigrant":
+        return "<strong>vaeltaja</strong>"
+    if status == "MX.typeOfOccurrenceAnthropogenic":
+        return "<strong>ihmisen vaikutuksesta</strong>"
+
     return status
 
 
@@ -76,8 +85,7 @@ def fetch_variable_label(variable):
 
     api_url = f"http://tun.fi/{variable}?format=json"
 
-    common_helpers.print_log("HERE")
-    common_helpers.print_log(api_url)
+#    common_helpers.print_log(api_url)
 
     try:
         r = requests.get(api_url)
@@ -98,6 +106,6 @@ def fetch_variable_label(variable):
             label_fi = label["@value"]
             break
 
-    print(dataDict, file = sys.stdout)
+#    print(dataDict, file = sys.stdout)
     return label_fi
 

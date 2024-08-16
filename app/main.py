@@ -285,7 +285,7 @@ def atlas_comparesquares(society_untrusted):
     return render_template("atlas_comparesquares.html", html=html)
 
 @app.route("/taxa/<string:taxon_id_untrusted>")
-@robust_cached(timeout=86400)
+@robust_cached(timeout=86400) # 86400 = 24 h
 def taxa_specieslist(taxon_id_untrusted):
     html = taxa.specieslist.main(taxon_id_untrusted)
     return render_template("taxa_specieslist.html", html=html)
@@ -298,7 +298,7 @@ def taxa_root():
     return render_template("taxa.html", html=html)
 
 @app.route("/taxa/species/<string:taxon_id_untrusted>")
-@robust_cached(timeout=1) # 86400 = 24 h
+@robust_cached(timeout=86400) # 86400 = 24 h
 def taxa_species(taxon_id_untrusted):
     html = taxa.species.main(taxon_id_untrusted)
     return render_template("taxa_species.html", html=html)
