@@ -49,9 +49,13 @@ def convert_collection_name(id):
     if  "http://tun.fi/HR.3991" == id:
         return "Vesilintulaskennat, Luomuksen aineisto"
     if  "http://tun.fi/HR.62" == id:
-        return "Vesilintulaskennat"
+        return "Vesilintulaskennat, luokittelematon aineisto"
     if  "http://tun.fi/HR.5895" == id:
         return "Oma riista -havainnot 4. lintuatlakseen"
+    if  "http://tun.fi/HR.4731" == id:
+        return "Metsähallituksen maalintujen linjalaskennat ei-vakiolinjoilla"
+    if  "http://tun.fi/HR.5938" == id:
+        return "Ylä-Lapin tunturialueiden riekkolaskenta"
     return "Muu (" + id + ")"
 
 
