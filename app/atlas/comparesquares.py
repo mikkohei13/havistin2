@@ -8,7 +8,7 @@ import atlas.common_atlas as common_atlas
 from helpers import common_helpers
 
 def get_society_squares(society_id):
-    url = f"https://atlas-api.rahtiapp.fi/api/v1/grid/birdAssociation/{ society_id }"
+    url = f"https://atlas-api.2.rahtiapp.fi/api/v1/grid/birdAssociation/{ society_id }"
     data = common_helpers.fetch_api(url)
     return data
 

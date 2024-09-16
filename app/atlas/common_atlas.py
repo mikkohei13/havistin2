@@ -447,7 +447,7 @@ def get_info_top_html(atlas4_square_info_dict):
 
 def get_atlas4_square_data(square_id):
     square_id = square_id.replace(":", "%3A")
-    url = f"https://atlas-api.rahtiapp.fi/api/v1/grid/{square_id}/atlas"
+    url = f"https://atlas-api.2.rahtiapp.fi/api/v1/grid/{square_id}/atlas"
 
     req = requests.get(url)
 

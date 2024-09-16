@@ -85,7 +85,7 @@ def convert_atlas_class(value):
 
 def get_square_atlas_dict(square):
     square = square.replace(":", "%3A")
-    api_url = f"https://atlas-api.rahtiapp.fi/api/v1/grid/{square}/atlas"
+    api_url = f"https://atlas-api.2.rahtiapp.fi/api/v1/grid/{square}/atlas"
 
     try:
         r = requests.get(api_url)

@@ -47,8 +47,8 @@ def fetch_breeding_sums(target_class_name, target_class_value):
     target_class_key = f"level{target_class_value}"
     print(target_class_name, target_class_key)
 
-    url = f"https://atlas-api.rahtiapp.fi/api/v1/grid";
-#    url = f"https://atlas-api.rahtiapp.fi/api/v1/grid/birdAssociation/ML.1091";
+    url = f"https://atlas-api.2.rahtiapp.fi/api/v1/grid";
+#    url = f"https://atlas-api.2.rahtiapp.fi/api/v1/grid/birdAssociation/ML.1091";
 
     data_dict = common_helpers.fetch_api(url)
 #    print(data_dict)
