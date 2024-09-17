@@ -28,6 +28,7 @@ def get_species_qnames(page_name_untrusted):
         '''
         # Real data
         species.append("MX.5075811")
+        species.append("MX.5108645") # Cymatia rogenhoferi, 2024
         species.append("MX.229664")
         species.append("MX.4999057")
         species.append("MX.5080747")
@@ -72,6 +73,7 @@ def get_species_qnames(page_name_untrusted):
         species.append("MX.4994289")
         species.append("MX.4994292")
         species.append("MX.230173")
+        # Todo: Orius minutus, once added to Laji.fi
         species.append("MX.5082045")
         species.append("MX.5093828") # Mezira tremulae 
         species.append("MX.230230")
