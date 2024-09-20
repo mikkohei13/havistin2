@@ -73,12 +73,13 @@ def get_species_qnames(page_name_untrusted):
         species.append("MX.4994289")
         species.append("MX.4994292")
         species.append("MX.230173")
-        # Todo: Orius minutus, once added to Laji.fi
+        species.append("MX.5109033")
         species.append("MX.5082045")
         species.append("MX.5093828") # Mezira tremulae 
         species.append("MX.230230")
         species.append("MX.5094838") # Zelus renardii        
         species.append("MX.4994293")
+        species.append("MX.5109074") # Nysius graminicola
         species.append("MX.5075004")
         species.append("MX.5077007")
         species.append("MX.5016606")
