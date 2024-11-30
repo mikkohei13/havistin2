@@ -6,7 +6,7 @@ export/
 import/
 test*
 cache/
-app/static/dynamic/*
+app/static/dynamic/*.png
 app/info/*.png
 app/wrangler/temp/*
 
