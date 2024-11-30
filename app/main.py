@@ -114,6 +114,7 @@ def inject_token():
     user_data = session.get('user_data', None)
     return dict(session_token=token, user_data=user_data)
 
+'''
 @app.after_request
 def set_security_headers(response):
     response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
@@ -131,6 +132,7 @@ def set_security_headers(response):
     response.headers['X-Permitted-Cross-Domain-Policies'] = 'none'
     response.headers['Permissions-Policy'] = "geolocation=(), microphone=()"
     return response
+'''
 
 print("-------------- BEGIN --------------", file = sys.stdout)
 # Pages
@@ -285,7 +287,7 @@ def atlas_observers():
 
 @app.route("/atlas/listat")
 @app.route("/atlas/listat/")
-@robust_cached(timeout=1) # 10800
+@robust_cached(timeout=10800)
 def atlas_completelists():
     html = atlas.completelists.main()
     return render_template("atlas_completelists.html", html=html)

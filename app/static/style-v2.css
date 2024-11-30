@@ -124,12 +124,6 @@ a:visited {
     font-weight: bold;
 }
 
-h3 em {
-    vertical-align: super;
-    color: #d00;
-    font-style: normal;
-}
-
 h2, h3, h3 {
     margin: 1.7em 0 0.5em 0;
 }
