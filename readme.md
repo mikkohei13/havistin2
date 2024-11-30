@@ -125,9 +125,9 @@ Build image from Dockerfile:
 
 ## Should / Might
 
+- Add nonce to scripts
 - robots.txt, forbid all but front page (now all forbidden)
 - Paginate fetching mappable observations of a square. Or increase page size? Must do this before top square has less than 1000 mappable observations.
-- Birds of prey on adjusted form
 - Command to deploy version other than latest. First submit to Articat Registry, then deploy from there using --image option.
 - Country filtering? (bots)
 - Moving from existing to nonexisting grid should show message, not error
