@@ -37,11 +37,15 @@ Check which version numbers have been used:
 
 Run in development mode with Docker-compose. This serves the app on localhost and auto-reloads changes to script files, and to other files (like templates) defined on docker-compose.yml.
 
-    docker-compose up; docker-compose down;
+    docker compose up; docker compose down;
 
 To run without Docker-compose:
 
     docker run -ti -p 80:80 havistin2-gunicorn:latest
+
+### Login to localhost
+
+Login normally. When redirected to production app, change havistin.biomi.org to localhost.
 
 ## Running in production with Google Cloud Run & Redis
 
