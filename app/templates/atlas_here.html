@@ -63,8 +63,8 @@ var map = L.map('map', { scrollWheelZoom: false }).setView([{{ html["centerpoint
 // But: this affects heat map calculations!
 //map.options.maxZoom = 14;
 
-var tiles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+var tiles = L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors',
 }).addTo(map);
 
 var polyLatLon = [ {{ html["cornerpoints"]|safe }} ];

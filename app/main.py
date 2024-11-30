@@ -114,6 +114,24 @@ def inject_token():
     user_data = session.get('user_data', None)
     return dict(session_token=token, user_data=user_data)
 
+@app.after_request
+def set_security_headers(response):
+    response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
+    response.headers['Content-Security-Policy'] = (
+        "default-src 'self'; "
+        "script-src 'self' https://unpkg.com 'unsafe-inline'; "
+        "style-src 'self' https://unpkg.com 'unsafe-inline'; "
+        "font-src 'self'; "
+        "img-src 'self' https://*.tile.osm.org/ data:; "
+        "connect-src 'self' https://*.tile.osm.org; "
+    )
+    response.headers['X-Content-Type-Options'] = 'nosniff'
+    response.headers['X-Frame-Options'] = 'SAMEORIGIN'
+    response.headers['Referrer-Policy'] = 'strict-origin-when-cross-origin'
+    response.headers['X-Permitted-Cross-Domain-Policies'] = 'none'
+    response.headers['Permissions-Policy'] = "geolocation=(), microphone=()"
+    return response
+
 print("-------------- BEGIN --------------", file = sys.stdout)
 # Pages
 
@@ -267,7 +285,7 @@ def atlas_observers():
 
 @app.route("/atlas/listat")
 @app.route("/atlas/listat/")
-@robust_cached(timeout=10800)
+@robust_cached(timeout=1) # 10800
 def atlas_completelists():
     html = atlas.completelists.main()
     return render_template("atlas_completelists.html", html=html)
