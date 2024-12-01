@@ -93,8 +93,16 @@ RAIN
     left: 33em;
 }
 
-#rain img {
+#rain #map {
     border: 1px solid #555;
+}
+
+#rain .rain_value {
+    margin-top: 0;
+}
+
+#rain .arrow {
+    margin: 0 0 -5px 15px;
 }
 
 /*

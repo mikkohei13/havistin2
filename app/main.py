@@ -387,7 +387,7 @@ def info_root():
     return render_template("info.html", html=html)
 
 @app.route("/info/rain")
-@robust_cached(timeout=150) # 150 = 2½ min
+@robust_cached(timeout=1) # 150 = 2½ min
 def info_rain():
     html = info.rain.main()
     return render_template("info_rain.html", html=html)

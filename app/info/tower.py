@@ -151,8 +151,8 @@ def main():
     data = extract_data_from_members(url)
 
     data2, all_heights = format_data(data)
-    print(data2)
-    print(all_heights)
+#    print(data2)
+#    print(all_heights)
 
     stations = "<!-- Weather stations, i.e. height levels on the tower -->"
     for height in all_heights:

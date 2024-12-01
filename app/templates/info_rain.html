@@ -1,2 +1,8 @@
-<img src="{{ html["simple_img_path"] }}">
-<p class="rain_value">Rain: <strong>{{ html["rain_value"] }}</strong> / area {{ html["calculation_size"] }} px</p>    
+<img src="/static/dynamic/latest_rain_simple.png" id="map">
+<p class="rain_value">
+    Rain: <strong>{{ html["rain_value"] }}</strong> / 
+    area {{ html["calculation_size"] }} px / 
+    direction: {{ html["direction"] }} /
+    magnitude {{ html["magnitude"] }}
+    <img src="/static/arrow_white.png" alt="{{ html["direction"] }} deg" class="arrow" style="transform: rotate({{ html["direction"] }}deg);">
+</p>    

@@ -8,3 +8,4 @@ pymongo[srv] == 4.10.*
 redis == 5.2.*
 matplotlib == 3.9.*
 beautifulsoup4 == 4.12.*
+opencv-python == 4.10.*
