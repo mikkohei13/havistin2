@@ -10,23 +10,6 @@ import index.index
 import login.login
 import login.info
 
-import atlas.atlas
-import atlas.squareform
-import atlas.misslist
-import atlas.misslist_old
-import atlas.here
-import atlas.gps
-import atlas.squaremap
-import atlas.species
-import atlas.specieslist
-import atlas.singlespecies
-import atlas.squares
-import atlas.observers
-import atlas.species_proportions
-import atlas.completelists
-import atlas.summap
-import atlas.comparesquares
-
 import taxa.taxa
 import taxa.specieslist
 import taxa.species
@@ -38,11 +21,6 @@ import taxa.miss
 import winterbird.winterbird
 import winterbird.census
 
-import info.info
-import info.rain
-import info.tower
-import info.birds
-import info.news
 
 import weather.change
 
@@ -51,14 +29,6 @@ import my.gps
 import my.miss
 
 import misc.bingo
-
-#import viewer.viewer
-
-#import pinna.pinna
-#import pinna.contest_edit
-
-#import dev.dev
-#import dev.cache as devcache
 
 import app_secrets
 
@@ -72,21 +42,10 @@ from decorators import robust_cached
 
 # Routes
 from app.routes.info import info_bp
+from app.routes.atlas import atlas_bp
 
-'''
-def robust_cached(timeout=None, key_prefix='view/%s', unless=None):
-    def decorator(f):
-        @wraps(f)
-        def decorated_function(*args, **kwargs):
-            try:
-                # Use the cached decorator as usual
-                return cache.cached(timeout, key_prefix, unless)(f)(*args, **kwargs)
-            except ConnectionError:
-                # If a Redis connection error occurs, call the original function
-                return f(*args, **kwargs)
-        return decorated_function
-    return decorator
-'''
+
+print("-------------- PREPARE --------------", file = sys.stdout)
 
 # Redis cache
 config = {
@@ -106,12 +65,6 @@ app.secret_key = app_secrets.flask_secret_key
 app.config.from_mapping(config)
 cache = Cache(app)
 
-# Cache times:
- # 3600 = 1 h
- # 86400 = 24 h
-
-print("-------------- PREPARE --------------", file = sys.stdout)
-
 # This makes session token and user_data available on every template.
 # TODO: Remove and user session variable instead?
 @app.context_processor
@@ -120,35 +73,17 @@ def inject_token():
     user_data = session.get('user_data', None)
     return dict(session_token=token, user_data=user_data)
 
-'''
-@app.after_request
-def set_security_headers(response):
-    response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
-    response.headers['Content-Security-Policy'] = (
-        "default-src 'self'; "
-        "script-src 'self' https://unpkg.com 'unsafe-inline'; "
-        "style-src 'self' https://unpkg.com 'unsafe-inline'; "
-        "font-src 'self'; "
-        "img-src 'self' https://*.tile.osm.org/ data:; "
-        "connect-src 'self' https://*.tile.osm.org; "
-    )
-    response.headers['X-Content-Type-Options'] = 'nosniff'
-    response.headers['X-Frame-Options'] = 'SAMEORIGIN'
-    response.headers['Referrer-Policy'] = 'strict-origin-when-cross-origin'
-    response.headers['X-Permitted-Cross-Domain-Policies'] = 'none'
-    response.headers['Permissions-Policy'] = "geolocation=(), microphone=()"
-    return response
-'''
 
-print("-------------- BEGIN --------------", file = sys.stdout)
-# Pages
+print("-------------- PAGES --------------", file = sys.stdout)
 
 @app.route("/")
 def root():
     html = index.index.main()
     return render_template("index.html", html=html)
 
+# Blueprints
 app.register_blueprint(info_bp)
+app.register_blueprint(atlas_bp)
 
 @app.route("/login/<string:person_token_untrusted>")
 def login_root(person_token_untrusted):
@@ -168,149 +103,6 @@ def login_info():
 def logout_root():
     session.clear()
     return redirect('/')
-
-@app.route("/atlas")
-@app.route("/atlas/")
-@robust_cached(timeout=120)
-def atlas_root():
-    html = atlas.atlas.main()
-    return render_template("atlas.html", html=html)
-
-@app.route("/atlas/havaintosuhteet")
-@app.route("/atlas/havaintosuhteet/")
-@robust_cached(timeout=10800)
-def species_proportions():
-    html = atlas.species_proportions.main()
-    return render_template("species_proportions.html", html=html)
-
-@app.route("/ruutulomake/<string:square_id_untrusted>/<string:show_untrusted>")
-# Redirect
-def squareform_redirect(square_id_untrusted, show_untrusted):
-    return redirect('/atlas/ruutulomake/' + square_id_untrusted + "/" + show_untrusted)
-
-@app.route("/atlas/ruutulomake/<string:square_id_untrusted>/<string:show_untrusted>")
-@robust_cached(timeout=3600)
-def squareform(square_id_untrusted, show_untrusted):
-    html = atlas.squareform.main(square_id_untrusted, show_untrusted)
-    return render_template("squareform.html", html=html)
-
-
-# TODO: Temporary test for making PDF's, remove of move to separate file
-@app.route("/atlas/ruutupdf/<string:square_id_untrusted>/<string:show_untrusted>")
-@robust_cached(timeout=1)
-def squarepdf(square_id_untrusted, show_untrusted):
-    html = atlas.squareform.main(square_id_untrusted, show_untrusted)
-    html_page = render_template("squarepdf.html", html=html)
-#    return html_page
-
-    print(html_page)
-
-    url = "https://api.laji.fi/v0/html-to-pdf?access_token=" + app_secrets.finbif_api_token
-    data = html_page
-    headers = {
-        "Content-Type": "text/plain",
-        "Accept": "application/pdf"
-    }
-
-    response = requests.post(url, data=data, headers=headers)
-    print("Status Code:", response.status_code)
-    print("Headers:", response.headers)
-    print("Text:", response.text)
-
-    res = make_response(response.content)
-    res.headers.set('Content-Type', 'application/pdf')
-    res.headers.set('Content-Disposition', 'inline; filename=ruutulomake.pdf')
-    return res
-
-
-@app.route("/atlas/gps")
-@app.route("/atlas/gps/")
-@robust_cached(timeout=1)
-def gps():
-    html = atlas.gps.main()
-    return render_template("atlas_gps.html", html=html)
-
-@app.route("/atlas/here/<string:square_id_untrusted>")
-@robust_cached(timeout=3600)
-def here(square_id_untrusted):
-    html = atlas.here.main(square_id_untrusted)
-    return render_template("atlas_here.html", html=html)
-
-@app.route("/atlas/puutelista/<string:square_id_untrusted>")
-@robust_cached(timeout=3600)
-def misslist(square_id_untrusted):
-    html = atlas.misslist.main(square_id_untrusted)
-    return render_template("atlas_misslist.html", html=html)
-
-@app.route("/atlas/puutelista_vanha/<string:square_id_untrusted>")
-@robust_cached(timeout=3600)
-def misslist_old(square_id_untrusted):
-    html = atlas.misslist_old.main(square_id_untrusted)
-    return render_template("atlas_misslist_old.html", html=html)
-
-@app.route("/ruutu/<string:square_id_untrusted>")
-# Redirect
-def squaremap_redirect(square_id_untrusted):
-    return redirect('/atlas/ruutu/' + square_id_untrusted)
-
-@app.route("/atlas/ruutu/<string:square_id_untrusted>")
-@robust_cached(timeout=10800)
-def squaremap(square_id_untrusted):
-    html = atlas.squaremap.main(square_id_untrusted)
-    return render_template("squaremap.html", html=html)
-
-@app.route("/atlas/lajiluettelo")
-@app.route("/atlas/lajiluettelo/")
-@robust_cached(timeout=10800)
-def atlas_specieslist():
-    html = atlas.specieslist.main()
-    return render_template("atlas_specieslist.html", html=html)
-
-@app.route("/atlas/laji/<string:species_name_untrusted>")
-@robust_cached(timeout=86400) # 86400
-def atlas_singlespecies(species_name_untrusted):
-    html = atlas.singlespecies.main(species_name_untrusted)
-    return render_template("atlas_singlespecies.html", html=html)
-
-@app.route("/atlas/lajit")
-@app.route("/atlas/lajit/")
-@robust_cached(timeout=10800)
-def atlas_species():
-    html = atlas.species.main()
-    return render_template("atlas_species.html", html=html)
-
-@app.route("/atlas/ruudut")
-@app.route("/atlas/ruudut/")
-@robust_cached(timeout=10800)
-def atlas_squares():
-    html = atlas.squares.main()
-    return render_template("atlas_squares.html", html=html)
-
-@app.route("/atlas/havainnoijat")
-@app.route("/atlas/havainnoijat/")
-@robust_cached(timeout=10800)
-def atlas_observers():
-    html = atlas.observers.main()
-    return render_template("atlas_observers.html", html=html)
-
-@app.route("/atlas/listat")
-@app.route("/atlas/listat/")
-@robust_cached(timeout=10800)
-def atlas_completelists():
-    html = atlas.completelists.main()
-    return render_template("atlas_completelists.html", html=html)
-
-@app.route("/atlas/luokka/<string:class_untrusted>")
-@robust_cached(timeout=10800)
-def atlas_summap(class_untrusted):
-    html = atlas.summap.main(class_untrusted)
-    return render_template("atlas_summap.html", html=html)
-
-@app.route("/atlas/ruutuvertailu/<string:society_untrusted>")
-@robust_cached(timeout=43200) # 43200 = 12 h
-def atlas_comparesquares(society_untrusted):
-    html = atlas.comparesquares.main(society_untrusted)
-    return render_template("atlas_comparesquares.html", html=html)
 
 @app.route("/taxa/<string:taxon_id_untrusted>")
 @robust_cached(timeout=86400) # 86400 = 24 h
