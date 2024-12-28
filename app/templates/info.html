@@ -10,6 +10,7 @@
         <div id="rain" class="module"></div>
         <div id="birds" class="module"></div>
         <div id="news" class="module"></div>
+        <div id="river" class="module"></div>
     </div>
     <!-- more HTML here -->
     <script>
@@ -37,12 +38,14 @@
         setInterval(() => fetchAPIData('/info/rain', 'rain'), 121000); // 2 min
         setInterval(() => fetchAPIData('/info/tower', 'tower'), 122000); // 2 min
         setInterval(() => fetchAPIData('/info/news', 'news'), 3603000); // 1h
-    
+        setInterval(() => fetchAPIData('/info/river', 'river'), 3603000); // 1h
+        
         // Initial calls
         fetchAPIData('/info/birds/{{ html["bird_secret"] }}', 'birds');
         fetchAPIData('/info/rain', 'rain');
         fetchAPIData('/info/tower', 'tower');
         fetchAPIData('/info/news', 'news');
+        fetchAPIData('/info/river', 'river');
     </script>
     
 </body>
