@@ -1,7 +1,4 @@
 
-version: '3'
-
-# This file defines development setting, e.g. debugging & realoading
 
 services:
   web:

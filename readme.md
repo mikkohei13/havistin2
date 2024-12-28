@@ -28,6 +28,10 @@ First build the image, and tag it as latest:
 
     docker build -t havistin2-gunicorn:latest .
 
+Or, build with Docker Compose:
+
+    docker compose up --build; docker compose down;
+
 Run in development mode with Docker Compose. This serves the app on localhost and auto-reloads changes to script files, and to other files (like templates) defined on docker-compose.yml.
 
     docker compose up; docker compose down;
