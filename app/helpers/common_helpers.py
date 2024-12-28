@@ -51,7 +51,7 @@ def cc_abbreviation(lic):
 
 
 def fetch_finbif_api(api_url, log = False):
-    if "&access_token=" not in api_url:
+    if "access_token=" not in api_url:
         print("DEV WARNING: access_token param is missing from your url!", file = sys.stdout)
 
     api_url = api_url + app_secrets.finbif_api_token
