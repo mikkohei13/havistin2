@@ -1,5 +1,5 @@
 from functools import wraps
-from flask_caching import Cache
+from extensions import cache
 
 def robust_cached(timeout=300):
     """
@@ -13,10 +13,13 @@ def robust_cached(timeout=300):
         @wraps(f)
         def decorated_function(*args, **kwargs):
             try:
-                # Your caching logic here
-                return cache.cached(timeout=timeout)(f)(*args, **kwargs)
+                print(f"[Cache] Attempting to fetch/store cache for: {f.__name__} with timeout: {timeout}")
+                cached_view = cache.cached(timeout=timeout)(f)
+                result = cached_view(*args, **kwargs)
+                print(f"[Cache] Cache operation successful for: {f.__name__}")
+                return result
             except Exception as e:
-                # Handle cache errors gracefully
+                print(f"[Cache] Error in cache operation for {f.__name__}: {str(e)}")
                 return f(*args, **kwargs)
         return decorated_function
     return decorator 

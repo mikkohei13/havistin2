@@ -1,6 +1,7 @@
 from flask import Flask, render_template, redirect, request, make_response, session, g
 #from werkzeug.exceptions import HTTPException
-from flask_caching import Cache
+from extensions import cache
+from decorators import robust_cached
 
 import sys
 import traceback
@@ -60,10 +61,10 @@ config = {
 }
 
 app = Flask(__name__)
-app.secret_key = app_secrets.flask_secret_key
+app.config.from_mapping(config)  # Apply Redis config first
+cache.init_app(app)  # Initialize cache with the Redis config
 
-app.config.from_mapping(config)
-cache = Cache(app)
+app.secret_key = app_secrets.flask_secret_key
 
 # This makes session token and user_data available on every template.
 # TODO: Remove and user session variable instead?
