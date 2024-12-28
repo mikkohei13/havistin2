@@ -75,6 +75,12 @@ def inject_token():
     return dict(session_token=token, user_data=user_data)
 
 
+'''
+Debugging help:
+- If getting error "AttributeError: 'function' object has no attribute", you have used same name for function and the file it calls. Use foo_root() or such name instead.
+- 
+'''
+
 print("-------------- PAGES --------------", file = sys.stdout)
 
 @app.route("/")
@@ -167,26 +173,6 @@ def viewer_root(document_id_untrusted):
     token = session.get('token', None)
     html = viewer.viewer.main(token, document_id_untrusted)
     return render_template("viewer.html", html=html)
-'''
-
-'''
-@app.route("/pinna")
-def pinna_root():
-    token = session.get('token', None)
-    html = pinna.pinna.main(token)
-    return render_template("pinna.html", html=html)
-
-@app.route("/pinna/contest/edit/<string:id_untrusted>")
-def pinna_contest_edit(id_untrusted):
-    token = session.get('token', None)
-    html = pinna.contest_edit.main(token, id_untrusted)
-    return render_template("pinna.html", html=html)
-'''
-
-'''
-Debugging help:
-- If getting error "AttributeError: 'function' object has no attribute", you have used same name for function and the file it calls. Use foo_root() or such name instead.
-- 
 '''
 
 # Tools
