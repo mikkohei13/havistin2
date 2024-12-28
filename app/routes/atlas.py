@@ -23,7 +23,7 @@ atlas_bp = Blueprint('atlas', __name__, url_prefix='/atlas')
 
 @atlas_bp.route("")
 @atlas_bp.route("/")
-@robust_cached(timeout=120)
+@robust_cached(timeout=1) # 120
 def atlas_root():
     html = atlas.atlas.main()
     return render_template("atlas.html", html=html)
@@ -34,11 +34,6 @@ def atlas_root():
 def species_proportions():
     html = atlas.species_proportions.main()
     return render_template("species_proportions.html", html=html)
-
-@atlas_bp.route("/ruutulomake/<string:square_id_untrusted>/<string:show_untrusted>")
-# Redirect
-def squareform_redirect(square_id_untrusted, show_untrusted):
-    return redirect('/atlas/ruutulomake/' + square_id_untrusted + "/" + show_untrusted)
 
 @atlas_bp.route("/ruutulomake/<string:square_id_untrusted>/<string:show_untrusted>")
 @robust_cached(timeout=3600)

@@ -75,6 +75,8 @@ def inject_token():
     return dict(session_token=token, user_data=user_data)
 
 
+
+
 print("-------------- PAGES --------------", file = sys.stdout)
 
 @app.route("/")
@@ -85,6 +87,11 @@ def root():
 # Blueprints
 app.register_blueprint(info_bp)
 app.register_blueprint(atlas_bp)
+
+# Old squareform route, redirect to new route
+@app.route("/ruutulomake/<string:square_id_untrusted>/<string:show_untrusted>")
+def squareform_redirect(square_id_untrusted, show_untrusted):
+    return redirect('/atlas/ruutulomake/' + square_id_untrusted + "/" + show_untrusted)
 
 @app.route("/login/<string:person_token_untrusted>")
 def login_root(person_token_untrusted):
