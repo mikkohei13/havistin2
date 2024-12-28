@@ -23,7 +23,7 @@ atlas_bp = Blueprint('atlas', __name__, url_prefix='/atlas')
 
 @atlas_bp.route("")
 @atlas_bp.route("/")
-@robust_cached(timeout=1) # 120
+@robust_cached(timeout=120) # 120
 def atlas_root():
     html = atlas.atlas.main()
     return render_template("atlas.html", html=html)
