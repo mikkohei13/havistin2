@@ -22,7 +22,6 @@ import taxa.miss
 import winterbird.winterbird
 import winterbird.census
 
-
 import weather.change
 
 import my.year
@@ -44,6 +43,7 @@ from decorators import robust_cached
 # Routes
 from app.routes.info import info_bp
 from app.routes.atlas import atlas_bp
+from app.routes.taxa import taxa_bp
 
 
 print("-------------- PREPARE --------------", file = sys.stdout)
@@ -75,8 +75,6 @@ def inject_token():
     return dict(session_token=token, user_data=user_data)
 
 
-
-
 print("-------------- PAGES --------------", file = sys.stdout)
 
 @app.route("/")
@@ -87,6 +85,7 @@ def root():
 # Blueprints
 app.register_blueprint(info_bp)
 app.register_blueprint(atlas_bp)
+app.register_blueprint(taxa_bp)
 
 # Old squareform route, redirect to new route
 @app.route("/ruutulomake/<string:square_id_untrusted>/<string:show_untrusted>")
@@ -111,59 +110,6 @@ def login_info():
 def logout_root():
     session.clear()
     return redirect('/')
-
-@app.route("/taxa/<string:taxon_id_untrusted>")
-@robust_cached(timeout=86400) # 86400 = 24 h
-def taxa_specieslist(taxon_id_untrusted):
-    html = taxa.specieslist.main(taxon_id_untrusted)
-    return render_template("taxa_specieslist.html", html=html)
-
-@app.route("/taxa")
-@app.route("/taxa/")
-@robust_cached(timeout=10800) # 10800 = 3 h
-def taxa_root():
-    html = taxa.taxa.main()
-    return render_template("taxa.html", html=html)
-
-@app.route("/taxa/species/<string:taxon_id_untrusted>")
-@robust_cached(timeout=86400) # 86400 = 24 h
-def taxa_species(taxon_id_untrusted):
-    html = taxa.species.main(taxon_id_untrusted)
-    return render_template("taxa_species.html", html=html)
-
-@app.route("/taxa/id/<string:page_name_untrusted>")
-@robust_cached(timeout=86400)
-def taxa_new(page_name_untrusted):
-#    html = devcache.get_cached("/taxa/id/" + page_name_untrusted, 86400)
-#    if not html:
-#        html = taxa.new.main(page_name_untrusted)
-#        devcache.set_cached("/taxa/id/" + page_name_untrusted, html)
-    html = taxa.new.main(page_name_untrusted)
-    return render_template("taxa_new.html", html=html)
-
-@app.route("/taxa/photos_data/<string:taxon_id_untrusted>")
-@robust_cached(timeout=10800)
-def taxa_photos_data(taxon_id_untrusted):
-    html = taxa.common_photos.main(taxon_id_untrusted)
-    return render_template("taxa_photos_data.html", html=html)
-
-@app.route("/taxa/compare_years/<string:taxon_id_untrusted>")
-@robust_cached(timeout=10800)
-def taxa_compare_years(taxon_id_untrusted):
-    html = taxa.compare_years.main(taxon_id_untrusted)
-    return render_template("taxa_compare_years.html", html=html)
-
-@app.route("/taxa/miss")
-@robust_cached(timeout=1)
-def taxa_miss():
-    lat_untrusted = request.args.get('lat')
-    lon_untrusted = request.args.get('lon')
-    taxon_untrusted = request.args.get('taxon')
-    since_year_untrusted = request.args.get('since_year', 2000)
-    near_km_untrusted = request.args.get('near', 50)
-    far_km_untrusted = request.args.get('far', 100)
-    html = taxa.miss.main(lat_untrusted, lon_untrusted, taxon_untrusted, since_year_untrusted, near_km_untrusted, far_km_untrusted)
-    return render_template("taxa_miss.html", html=html)
 
 @app.route("/weather/change/<int:messaging_on>")
 @app.route("/weather/change")
