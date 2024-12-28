@@ -68,7 +68,12 @@ from redis.exceptions import ConnectionError
 from functools import wraps
 
 from helpers import common_helpers
+from decorators import robust_cached
 
+# Routes
+from app.routes.info import info_bp
+
+'''
 def robust_cached(timeout=None, key_prefix='view/%s', unless=None):
     def decorator(f):
         @wraps(f)
@@ -81,6 +86,7 @@ def robust_cached(timeout=None, key_prefix='view/%s', unless=None):
                 return f(*args, **kwargs)
         return decorated_function
     return decorator
+'''
 
 # Redis cache
 config = {
@@ -141,6 +147,8 @@ print("-------------- BEGIN --------------", file = sys.stdout)
 def root():
     html = index.index.main()
     return render_template("index.html", html=html)
+
+app.register_blueprint(info_bp)
 
 @app.route("/login/<string:person_token_untrusted>")
 def login_root(person_token_untrusted):
@@ -380,41 +388,6 @@ def winterbird_root(dev_secret = 1):
 def winterbird_census(society_id = "", season = ""):
     html = winterbird.census.main(society_id, season)
     return render_template("winterbird_census.html", html=html)
-
-@app.route("/info")
-def info_root():
-    html = info.info.main()
-    return render_template("info.html", html=html)
-
-@app.route("/info/rain")
-@robust_cached(timeout=150) # 150 = 2½ min
-def info_rain():
-    html = info.rain.main()
-    return render_template("info_rain.html", html=html)
-
-@app.route("/info/tower")
-@robust_cached(timeout=150) # 150 = 2½ min
-def info_tower():
-    html = info.tower.main()
-    return render_template("info_tower.html", html=html)
-
-@app.route("/info/birds/<string:secret>")
-@robust_cached(timeout=3600) # 3600 = 1 h
-def info_birds(secret = ""):
-    html = info.birds.main(secret)
-    return render_template("info_birds.html", html=html)
-
-@app.route("/info/news")
-@robust_cached(timeout=10800) # 10800 = 3h
-def info_news():
-    html = info.news.main()
-    return render_template("info_news.html", html=html)
-
-#@app.route("/dev/<string:taxon_id_untrusted>")
-#@robust_cached(timeout=1)
-#def dev_root(taxon_id_untrusted):
-#    html = info.dev.main(taxon_id_untrusted)
-#    return render_template("dev.html", html=html)
 
 @app.route("/my/year/<int:year_untrusted>")
 @app.route("/my/year/<int:year_untrusted>/")
