@@ -405,7 +405,7 @@ def info_birds(secret = ""):
     return render_template("info_birds.html", html=html)
 
 @app.route("/info/news")
-@robust_cached(timeout=10800) # 10800 = 3h
+@robust_cached(timeout=1) # 10800 = 3h
 def info_news():
     html = info.news.main()
     return render_template("info_news.html", html=html)

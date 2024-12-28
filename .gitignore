@@ -1,6 +1,7 @@
 
 app_secrets.py
 service-account-key.json
+.env
 
 export/
 import/

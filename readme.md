@@ -8,8 +8,9 @@ Uses Python, Flask, Redis (for caching), MongoDB (for weather data), Chart.js, D
 # Setup
 
 * Clone this repo
-* Set secrets to app/app_secrets.py (see example file in the directory)
-* `docker-compose up; docker-compose down;`
+* Set secrets to `app/app_secrets.py` (see example file in the directory)
+* Set up your OpenAI API key as `OPENAI_API_KEY` in `example.env`, and rename it to `.env`. (This affects the news page on localhost development environment.)
+* `docker compose up; docker compose down;`
 
 Based on https://medium.com/thedevproject/setup-flask-project-using-docker-and-gunicorn-4dcaaa829620
 
@@ -27,15 +28,7 @@ First build the image, and tag it as latest:
 
     docker build -t havistin2-gunicorn:latest .
 
-...or set a version number:
-
-    docker build -t havistin2-gunicorn:VERSIONNUMBER -t havistin2-gunicorn:0.1 .
-
-Check which version numbers have been used:
-
-    docker image ls
-
-Run in development mode with Docker-compose. This serves the app on localhost and auto-reloads changes to script files, and to other files (like templates) defined on docker-compose.yml.
+Run in development mode with Docker Compose. This serves the app on localhost and auto-reloads changes to script files, and to other files (like templates) defined on docker-compose.yml.
 
     docker compose up; docker compose down;
 
@@ -49,9 +42,9 @@ Login normally. When redirected to production app, change havistin.biomi.org to 
 
 ## Running in production with Google Cloud Run & Redis
 
-Set up Redis to be used for caching. Store Redis server name & credentials to app_secrets.py.
+Set up Redis to be used for caching. Store Redis server name & credentials to `app_secrets.py`. The app can be run also without Redis cache; just comment out Redis cache on `main.py` and use Filesystem cache instead.
 
-The app can be run also without Redis cache; just comment out Redis cache on main.py and use Filesystem cache instead.
+Set up your OpenAI API key to Google Cloud Run environment variables (Project > Edit & Deploy New Revision > Variables & Secrets > Add Variable).
 
 Deploy to Google Cloud Run:
 
