@@ -1,0 +1,65 @@
+<canvas id="lineChart" width="800" height="400"></canvas>
+<script src="/static/chart.js"></script>
+<script src="/static/chartjs-plugin-annotation.min.js"></script>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", () => {
+    // Your data array
+    const data = {{ html["river_data"]|safe }};
+
+    // Generate the x-axis values, starting from 0, ending to whatever the length of the data is
+    const labels = Array.from({ length: data.length }, (_, i) => i);
+
+    // Chart.js configuration
+    const ctx = document.getElementById('lineChart').getContext('2d');
+    const lineChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels, // X-axis values
+            datasets: [{
+                data: data,
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 2,
+                fill: false,
+                tension: 0.1,
+                pointRadius: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Days'
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Water level (m)'
+                    },
+                    beginAtZero: false
+                }
+            },
+            plugins: {
+                legend: false,
+                annotation: {
+                    annotations: {
+                        line1: {
+                            type: 'line',
+                            xMin: data.length - 365,  // This will be the -365 position, i.e. one year ago
+                            xMax: data.length - 365,  // Same as xMin for vertical line
+                            borderColor: 'red',
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                        }
+                    }
+                }
+            }
+        }
+    });
+});
+
+</script>

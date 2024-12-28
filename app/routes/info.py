@@ -7,6 +7,7 @@ import info.rain
 import info.tower
 import info.birds
 import info.news
+import info.river
 
 # Create blueprint with url_prefix='/info'
 info_bp = Blueprint('info', __name__, url_prefix='/info')
@@ -39,3 +40,9 @@ def birds(secret=''):
 def news():
     html = info.news.main()
     return render_template("info_news.html", html=html) 
+
+@info_bp.route('/river')
+@robust_cached(timeout=1)  # 10800 = 3h
+def river():
+    html = info.river.main()
+    return render_template("info_river.html", html=html)
