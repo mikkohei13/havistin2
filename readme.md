@@ -1,7 +1,7 @@
 
 # Havistin 2
 
-Tools to view and manage biodiversity data and Finnish bird atlas.
+Tools to view biodiversity data and Finnish bird atlas.
 
 Uses Python, Flask, Redis (for caching), MongoDB (for weather data), Chart.js, Docker & Docker-Compose, and is deployed with Google Cloud Run.
 
