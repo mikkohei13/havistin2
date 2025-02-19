@@ -42,7 +42,7 @@ To run without Docker-compose:
 
 ### Login to localhost
 
-Login normally. When redirected to production app, change havistin.biomi.org to localhost.
+Login normally. When redirected to production app, change havistin.biomi.org to localhost. This works because dev uses production API.
 
 ## Running in production with Google Cloud Run & Redis
 

@@ -166,7 +166,7 @@ def coordinate_accuracy_html(accuracy_dict, total_count):
 def datechart_data(collection_id):
 
     # Note that this is the observation year, not the load date year. Aggregation is done by load date year.
-    year = 2024
+    year = 2025
 
     # Get daily data from api. This lacks dates with zero count.
     api_url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=document.firstLoadDate&orderBy=document.firstLoadDate&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=365&page=1&cache=false&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&collectionId=http%3A%2F%2Ftun.fi%2F{ collection_id }&countryId=ML.206&yearMonth={ year }&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&access_token="
