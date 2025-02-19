@@ -52,7 +52,7 @@ Set up your OpenAI API key to Google Cloud Run environment variables (Project > 
 
 Deploy to Google Cloud Run:
 
-    gcloud run deploy havistin2 --port=80 --max-instances=4 --concurrency=10 --memory=1024Mi --timeout=40 --source .
+    gcloud run deploy havistin2 --project=havistin --port=80 --max-instances=4 --concurrency=10 --memory=1024Mi --timeout=40 --source .
 
 Redeploy from Google Console (https://console.cloud.google.com/run) if you want to set more options there.
 

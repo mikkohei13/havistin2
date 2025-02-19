@@ -56,6 +56,14 @@ def convert_collection_name(id):
         return "Metsähallituksen maalintujen linjalaskennat ei-vakiolinjoilla"
     if  "http://tun.fi/HR.5938" == id:
         return "Ylä-Lapin tunturialueiden riekkolaskenta"
+    if  "http://tun.fi/HR.5775" == id:
+        return "Ramboll Finland Oy:n lajihavainnot"
+    if  "http://tun.fi/HR.2692" == id:
+        return "Maalintujen laskennat - Aluekartoitukset"
+    if  "http://tun.fi/HR.3691" == id:
+        return "eBird"
+    if  "http://tun.fi/HR.6098" == id:
+        return "Lajitallennukset VARELY luonnonsuojeluyksikkö"
     return "Muu (" + id + ")"
 
 
