@@ -43,7 +43,7 @@ def convert_tsv_to_json(file_path, output_json_path):
     with open(output_json_path, 'w') as json_file:
         json.dump(json_dict, json_file, indent=0)
 
-input_file_path = './temp/taxon-export.tsv'
-output_file_path = './temp/taxon-data.json'
+input_file_path = 'taxon-export.tsv'
+output_file_path = 'taxon-data.json'
 
 convert_tsv_to_json(input_file_path, output_file_path)

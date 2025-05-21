@@ -115,6 +115,12 @@ Build image from Dockerfile:
     - call common helpers/squares_with_data
     - define color function: grayscale capped 100
 
+## Yearly
+
+- Update data/taxon-data.json, which contains species observation counts used by page /my/year/.
+    - Do this by getting list of Finnish taxa from https://laji.fi/taxon/list?onlyFinnish=true&taxonRanks=MX.species with needed columns. Convert the tsv file to json using wrangler/taxon-export.py
+- update atlas front page charts
+
 ## My observations; ideas
 
 - species per phylum
