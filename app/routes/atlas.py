@@ -1,6 +1,7 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, make_response
 from flask_caching import Cache
 from app.decorators import robust_cached
+import requests
 
 import atlas.atlas
 import atlas.squareform
@@ -94,11 +95,6 @@ def misslist(square_id_untrusted):
 def misslist_old(square_id_untrusted):
     html = atlas.misslist_old.main(square_id_untrusted)
     return render_template("atlas_misslist_old.html", html=html)
-
-@atlas_bp.route("/ruutu/<string:square_id_untrusted>")
-# Redirect
-def squaremap_redirect(square_id_untrusted):
-    return redirect('/atlas/ruutu/' + square_id_untrusted)
 
 @atlas_bp.route("/ruutu/<string:square_id_untrusted>")
 @robust_cached(timeout=10800)
