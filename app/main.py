@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request, make_response, session, g
+from flask import Flask, render_template, redirect, request, session, g
 #from werkzeug.exceptions import HTTPException
 from extensions import cache
 from decorators import robust_cached
@@ -31,8 +31,6 @@ import my.miss
 import misc.bingo
 
 import app_secrets
-
-import requests
 
 from redis.exceptions import ConnectionError
 from functools import wraps
