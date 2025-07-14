@@ -62,6 +62,7 @@ def get_species_qnames(page_name_untrusted):
         species.append("MX.5103021") # Agnocoris reclairei
         species.append("MX.5102558") # Pilophorus pusillus
         species.append("MX.5103021") # Agnocoris reclairei
+        species.append("MX.5093776") # Harpocera thoracica
 
     elif "heteroptera_new_2" == page_name_untrusted:
 
@@ -87,6 +88,7 @@ def get_species_qnames(page_name_untrusted):
         species.append("MX.230415")
         species.append("MX.5008073")
         species.append("MX.5093786") # Syromastus rhombeus
+        species.append("MX.5093773") # Gonocerus acuteangulatus
 
         # Pentatomidae
         species.append("MX.5093768") # Arma custos
@@ -105,9 +107,7 @@ def get_species_qnames(page_name_untrusted):
 
         species.append("MX.5093770")
         species.append("MX.5093771")
-        species.append("MX.5093773")
         species.append("MX.5093774")
-        species.append("MX.5093776")
         species.append("MX.5093777")
         species.append("MX.5093843")
         # TODO: Deraeocoris trifasciatus, ei vielä MX-koodia
