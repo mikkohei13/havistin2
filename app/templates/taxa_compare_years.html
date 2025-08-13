@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
     {% block head %}
-    <title>Linnut: tämä viikko verrattuna viime vuoteen (biomi.org)</title>
+    <title>Havaintomäärät: tämä viikko verrattuna viime vuoteen (biomi.org)</title>
     {% endblock %}
 
     {% block breadcrumb %}
@@ -10,8 +10,8 @@
 
     {% block body %} 
 
-    <h1>Tämän viikon linnut vertailtuna viime vuoden samaan viikkoon</h1>
-    <p>Koko Suomen lintuhavaintojen määrä pois lukien rengastustietokanta. Suhdeluku on normalisoitu kokonaishavaintomäärään.</p>
+    <h1>Viimeisen kuukauden lajit vertailtuna viime vuoden samaan kuukauteen</h1>
+    <p>Koko Suomen havaintojen määrä (pois lukien rengastustietokantaja LajiGIS). Luettelo näyttää vain lajit, jota on havaittu tänä vuonna. Huomaa että koska suhdeluku on normalisoitu ko. ajanjakson kokonaishavaintomäärään, joten normalisoitu suhde ei ole sama kuin havaintojen suhde.</p>
     
     {{ html["data"]|safe }}
 

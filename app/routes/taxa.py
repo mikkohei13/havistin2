@@ -44,7 +44,7 @@ def taxa_photos_data(taxon_id_untrusted):
     return render_template("taxa_photos_data.html", html=html)
 
 @taxa_bp.route("/taxa/compare_years/<string:taxon_id_untrusted>")
-@robust_cached(timeout=10800)
+@robust_cached(timeout=1) # 10800
 def taxa_compare_years(taxon_id_untrusted):
     html = taxa.compare_years.main(taxon_id_untrusted)
     return render_template("taxa_compare_years.html", html=html)

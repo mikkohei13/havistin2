@@ -2,10 +2,10 @@
 
 from helpers import common_helpers
 
-def species_list(date_filter):
+def species_list(date_filter, taxon_id):
     date_filter = date_filter.replace("/", "%2F")
 
-    url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=unit.linkings.originalTaxon.speciesNameFinnish&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=1000&page=1&cache=false&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&reliability=RELIABLE,UNDEFINED&time={ date_filter }&collectionIdNot=HR.48%2CHR.3671%2CHR.2029&access_token="
+    url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=unit.linkings.originalTaxon.speciesScientificName&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=1000&page=1&cache=false&taxonId={ taxon_id }&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&individualCountMin=1&qualityIssues=NO_ISSUES&reliability=RELIABLE,UNDEFINED&time={ date_filter }&collectionIdNot=HR.48%2CHR.3671%2CHR.2029&access_token="
     data = common_helpers.fetch_finbif_api(url)
 #    print(data)
 
@@ -13,7 +13,7 @@ def species_list(date_filter):
     count_sum = 0
 
     for item in data["results"]:
-        species = item["aggregateBy"]["unit.linkings.originalTaxon.speciesNameFinnish"]
+        species = item["aggregateBy"]["unit.linkings.originalTaxon.speciesScientificName"]
         count = item["count"]
         species_counts[species] = count
         count_sum = count_sum + count
@@ -22,18 +22,22 @@ def species_list(date_filter):
 
 
 def make_change_html(all_species):
+    min_count = 1
     
     html = "<table class='styled-table'>\n"
     html += "<thead>\n<tr>"
     html += "<th>Laji</th>"
     html += "<th>Vuotta aiemmin</th>"
-    html += "<th>Viimeiset 10 pv</th>"
+    html += "<th>Viimeiset 30 pv</th>"
     html += "<th>Normalisoitu suhde</th>"
     html += "<th>&nbsp;</th>"
     html += "</tr>\n</thead>\n"
     html += "<tbody>\n"
 
     for species, data in all_species.items():
+        if data['count'] < min_count:
+            continue
+
         bar_width = int(data['proportion'] * 20)
         css_class = ""
 
@@ -86,17 +90,22 @@ def make_change_dict(species_this_year, sum_this_year, species_last_year, sum_la
 
         all_species[species] = single_species
 
+        # Debug
+#        print(f"{ species }: { count_normalized } / { count_last_year_normalized } = { proportion }")
+
     # Sort descending
     sorted_all_species = dict(sorted(all_species.items(), key=lambda x: x[1]['proportion'], reverse=True))
 
     return sorted_all_species
 
 
-def main(param):
+def main(taxon_id_untrusted):
     html = dict()
 
-    species_this_year, sum_this_year = species_list("-11/-1")
-    species_last_year, sum_last_year = species_list("-376/-366")
+    taxon_id = common_helpers.valid_qname(taxon_id_untrusted)
+
+    species_this_year, sum_this_year = species_list("-31/-1", taxon_id)
+    species_last_year, sum_last_year = species_list("-396/-366", taxon_id)
 
     all_species = make_change_dict(species_this_year, sum_this_year, species_last_year, sum_last_year)
 
