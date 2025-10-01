@@ -6,13 +6,13 @@ def get_obs_aggregate_data(qname):
     limit = 10000
 
     # counts etc.
-    # https://api.laji.fi/v0/warehouse/query/unit/list?selected=gathering.notes%2Cunit.abundanceString%2Cunit.abundanceUnit%2Cunit.identifications.notes%2Cunit.notes&pageSize=100&page=1&cache=false&taxonId=MX.230528&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&individualCountMin=1&qualityIssues=NO_ISSUES&access_token=
+    # https://api.laji.fi/v0/warehouse/query/unit/list?selected=gathering.notes%2Cunit.abundanceString%2Cunit.abundanceUnit%2Cunit.identifications.notes%2Cunit.notes&pageSize=100&page=1&cache=true&taxonId=MX.230528&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&individualCountMin=1&qualityIssues=NO_ISSUES&access_token=
 
     # facts
-    # https://api.laji.fi/v0/warehouse/query/unit/list?selected=gathering.facts.decimalValue%2Cgathering.facts.fact%2Cgathering.facts.integerValue%2Cgathering.facts.value%2Cunit.facts.decimalValue%2Cunit.facts.fact%2Cunit.facts.integerValue%2Cunit.facts.value&pageSize=100&page=1&cache=false&taxonId=MX.230528&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&individualCountMin=1&qualityIssues=NO_ISSUES&access_token=
+    # https://api.laji.fi/v0/warehouse/query/unit/list?selected=gathering.facts.decimalValue%2Cgathering.facts.fact%2Cgathering.facts.integerValue%2Cgathering.facts.value%2Cunit.facts.decimalValue%2Cunit.facts.fact%2Cunit.facts.integerValue%2Cunit.facts.value&pageSize=100&page=1&cache=true&taxonId=MX.230528&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&individualCountMin=1&qualityIssues=NO_ISSUES&access_token=
 
     # To exclude iNat for development: &collectionIdNot=HR.3211
-    obs_data = common_helpers.fetch_finbif_api(f"https://api.laji.fi/v0/warehouse/query/unit/list?selected=gathering.facts.decimalValue%2Cgathering.facts.fact%2Cgathering.facts.integerValue%2Cgathering.facts.value%2Cunit.facts.decimalValue%2Cunit.facts.fact%2Cunit.facts.integerValue%2Cunit.facts.value&pageSize={ limit }&page=1&cache=false&taxonId={ qname }&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&individualCountMin=1&qualityIssues=NO_ISSUES&access_token=", True)
+    obs_data = common_helpers.fetch_finbif_api(f"https://api.laji.fi/v0/warehouse/query/unit/list?selected=gathering.facts.decimalValue%2Cgathering.facts.fact%2Cgathering.facts.integerValue%2Cgathering.facts.value%2Cunit.facts.decimalValue%2Cunit.facts.fact%2Cunit.facts.integerValue%2Cunit.facts.value&pageSize={ limit }&page=1&cache=true&taxonId={ qname }&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&individualCountMin=1&qualityIssues=NO_ISSUES&access_token=", True)
 
     #TODO: override gathering facts by unit facts
 

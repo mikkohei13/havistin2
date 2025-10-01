@@ -87,7 +87,7 @@ def datatable(society_id, year_month):
         named_places_lookup[place["id"]] = place["name"]
 
     # Get all bird observations, aggregated by named place and document
-    url = f"https://api.laji.fi/v0/warehouse/query/unit/statistics?aggregateBy=document.documentId%2Cdocument.namedPlace.id%2Cunit.linkings.taxon.nameFinnish%2Cunit.linkings.taxon.taxonomicOrder&orderBy=document.namedPlace.id&onlyCount=true&taxonCounts=false&gatheringCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize={ per_page }&page=1&cache=false&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&birdAssociationAreaId={ society_id }&yearMonth={ year_month }&collectionId=HR.39&individualCountMin=1&qualityIssues=NO_ISSUES&access_token="
+    url = f"https://api.laji.fi/v0/warehouse/query/unit/statistics?aggregateBy=document.documentId%2Cdocument.namedPlace.id%2Cunit.linkings.taxon.nameFinnish%2Cunit.linkings.taxon.taxonomicOrder&orderBy=document.namedPlace.id&onlyCount=true&taxonCounts=false&gatheringCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize={ per_page }&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&birdAssociationAreaId={ society_id }&yearMonth={ year_month }&collectionId=HR.39&individualCountMin=1&qualityIssues=NO_ISSUES&access_token="
     data_dict = common_helpers.fetch_finbif_api(url)
 
     # order_dict contains all taxa in the data, with taxonomic sort order number

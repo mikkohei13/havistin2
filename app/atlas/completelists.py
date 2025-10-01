@@ -40,7 +40,7 @@ def fetch_completelists_per_square():
 
     per_page = 10000
     # This sorts the document based on gathering count DESC, i.e. how many units have coordinates.
-    url = f"https://api.laji.fi/v0/warehouse/query/gathering/aggregate?aggregateBy=document.documentId%2Cgathering.conversions.ykj10kmCenter.lat%2Cgathering.conversions.ykj10kmCenter.lon&onlyCount=true&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize={ per_page }&page=1&cache=false&qualityIssues=NO_ISSUES&completeListTaxonId=MX.37580&countryId=ML.206&completeListType=MY.completeListTypeCompleteWithBreedingStatus%2CMY.completeListTypeComplete&access_token=";
+    url = f"https://api.laji.fi/v0/warehouse/query/gathering/aggregate?aggregateBy=document.documentId%2Cgathering.conversions.ykj10kmCenter.lat%2Cgathering.conversions.ykj10kmCenter.lon&onlyCount=true&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize={ per_page }&page=1&cache=true&qualityIssues=NO_ISSUES&completeListTaxonId=MX.37580&countryId=ML.206&completeListType=MY.completeListTypeCompleteWithBreedingStatus%2CMY.completeListTypeComplete&access_token=";
 
     data_dict = common_helpers.fetch_finbif_api(url)
 

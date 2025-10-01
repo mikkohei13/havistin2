@@ -13,7 +13,7 @@ def breeding_html(probablility):
         filters = "atlasClass=MY.atlasClassEnumC"
     # TODO: exception for other cases
 
-    data = common_helpers.fetch_finbif_api("https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=unit.linkings.originalTaxon.speciesNameFinnish&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=30&page=1&cache=false&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&reliability=RELIABLE,UNDEFINED&time=-14%2F0&" + filters + "&access_token=")
+    data = common_helpers.fetch_finbif_api("https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=unit.linkings.originalTaxon.speciesNameFinnish&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=30&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&reliability=RELIABLE,UNDEFINED&time=-14%2F0&" + filters + "&access_token=")
 
     html = ""
     html += "<table class='styled-table'>"

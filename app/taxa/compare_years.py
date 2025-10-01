@@ -5,7 +5,7 @@ from helpers import common_helpers
 def species_list(date_filter, taxon_id):
     date_filter = date_filter.replace("/", "%2F")
 
-    url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=unit.linkings.originalTaxon.speciesScientificName&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=1000&page=1&cache=false&taxonId={ taxon_id }&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&individualCountMin=1&qualityIssues=NO_ISSUES&reliability=RELIABLE,UNDEFINED&time={ date_filter }&collectionIdNot=HR.48%2CHR.3671%2CHR.2029&access_token="
+    url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=unit.linkings.originalTaxon.speciesScientificName&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=1000&page=1&cache=true&taxonId={ taxon_id }&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&individualCountMin=1&qualityIssues=NO_ISSUES&reliability=RELIABLE,UNDEFINED&time={ date_filter }&collectionIdNot=HR.48%2CHR.3671%2CHR.2029&access_token="
     data = common_helpers.fetch_finbif_api(url)
 #    print(data)
 

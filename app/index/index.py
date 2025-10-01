@@ -10,7 +10,7 @@ from helpers import common_helpers
 def check_api():
 
     # Check by fetching 10 latest observations from today
-    api_url = "https://api.laji.fi/v0/warehouse/query/list?countryId=ML.206&time=0/0&aggregateBy=unit.abundanceString,gathering.displayDateTime,gathering.interpretations.countryDisplayname,gathering.locality,document.collectionId,document.documentId,gathering.team&selected=unit.abundanceString,gathering.displayDateTime,gathering.interpretations.countryDisplayname,gathering.locality,document.collectionId,document.documentId,gathering.team&cache=false&page=1&pageSize=10&access_token="
+    api_url = "https://api.laji.fi/v0/warehouse/query/list?countryId=ML.206&time=0/0&aggregateBy=unit.abundanceString,gathering.displayDateTime,gathering.interpretations.countryDisplayname,gathering.locality,document.collectionId,document.documentId,gathering.team&selected=unit.abundanceString,gathering.displayDateTime,gathering.interpretations.countryDisplayname,gathering.locality,document.collectionId,document.documentId,gathering.team&cache=true&page=1&pageSize=10&access_token="
     api_url += app_secrets.finbif_api_token
     print(api_url)
 
@@ -60,7 +60,7 @@ def get_today_saved_total():
     today = time.strftime("%Y-%m-%d")
     current_year = time.strftime("%Y")
 
-    data = common_helpers.fetch_finbif_api(f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?countryId=ML.206&aggregateBy=document.collectionId&selected=document.collectionId&cache=false&page=1&pageSize=100&firstLoadedSameOrAfter={today}&geoJSON=false&onlyCount=false&access_token=")
+    data = common_helpers.fetch_finbif_api(f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?countryId=ML.206&aggregateBy=document.collectionId&selected=document.collectionId&cache=true&page=1&pageSize=100&firstLoadedSameOrAfter={today}&geoJSON=false&onlyCount=false&access_token=")
 
     total = 0
     for collection in data["results"]:

@@ -78,7 +78,7 @@ season_param = make_season_param()
 #date = datetime.strptime("2022-01-01", '%Y-%m-%d')
 
 # Both probable and confirmed breeders
-url = f"https://laji.fi/api/warehouse/query/unit/aggregate?target=MX.37580&countryId=ML.206&collectionId=HR.1747,HR.3691,HR.4412,HR.4471,HR.3211&typeOfOccurrenceId=MX.typeOfOccurrenceBirdLifeCategoryA,MX.typeOfOccurrenceBirdLifeCategoryC&coordinates={coordinates_param}&aggregateBy=unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesNameFinnish&selected=unit.linkings.taxon.speciesNameFinnish&cache=false&page=1&pageSize={limit}&season={season_param}&geoJSON=false&onlyCount=true" + TOKEN
+url = f"https://laji.fi/api/warehouse/query/unit/aggregate?target=MX.37580&countryId=ML.206&collectionId=HR.1747,HR.3691,HR.4412,HR.4471,HR.3211&typeOfOccurrenceId=MX.typeOfOccurrenceBirdLifeCategoryA,MX.typeOfOccurrenceBirdLifeCategoryC&coordinates={coordinates_param}&aggregateBy=unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesNameFinnish&selected=unit.linkings.taxon.speciesNameFinnish&cache=true&page=1&pageSize={limit}&season={season_param}&geoJSON=false&onlyCount=true" + TOKEN
 
 req = requests.get(url)
 data_dict = req.json()

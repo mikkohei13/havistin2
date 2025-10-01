@@ -30,6 +30,8 @@ import my.miss
 
 import misc.bingo
 
+import tools.inat
+
 import app_secrets
 
 from redis.exceptions import ConnectionError
@@ -124,7 +126,7 @@ def weather_change(messaging_on = 0):
 @app.route("/talvilinnut/<int:dev_secret>")
 @app.route("/talvilinnut/")
 @app.route("/talvilinnut")
-@robust_cached(timeout=1) # 2592000 = 30 pv
+@robust_cached(timeout=2592000) # 2592000 = 30 pv
 def winterbird_root(dev_secret = 1):
     return redirect('/')
 # Page removed due to too heavy API calls
@@ -164,6 +166,11 @@ def my_here(coord_untrusted):
 def bingo_root():
     html = misc.bingo.main()
     return render_template("misc_bingo.html", html=html)
+
+@app.route("/tools/inat", methods=['GET', 'POST'])
+def inat_root():
+    html = tools.inat.main()
+    return render_template("tools_inat.html", html=html)
 
 '''
 @app.route("/viewer/<path:document_id_untrusted>") # Note: path -> allows slashes in parameter

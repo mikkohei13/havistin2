@@ -89,7 +89,7 @@ def generate_photos_data(qname, photo_count_toget):
         return photos_data
 
     # 2) Get expert verified observation photos
-    species_data = common_helpers.fetch_finbif_api(f"https://api.laji.fi/v0/warehouse/query/unitMedia/list?taxonId={qname}&recordQuality=EXPERT_VERIFIED&aggregateBy=unit.linkings.taxon.id,media,document.documentId,unit.unitId&selected=unit.linkings.taxon.id,media,document.documentId,unit.unitId&includeNonValidTaxa=false&hasUnitMedia=true&cache=false&page=1&pageSize=4&access_token=", False)
+    species_data = common_helpers.fetch_finbif_api(f"https://api.laji.fi/v0/warehouse/query/unitMedia/list?taxonId={qname}&recordQuality=EXPERT_VERIFIED&aggregateBy=unit.linkings.taxon.id,media,document.documentId,unit.unitId&selected=unit.linkings.taxon.id,media,document.documentId,unit.unitId&includeNonValidTaxa=false&hasUnitMedia=true&cache=true&page=1&pageSize=4&access_token=", False)
 
     if species_data['total'] > 0:
 
