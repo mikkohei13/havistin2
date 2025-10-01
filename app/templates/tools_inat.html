@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block breadcrumb %}
+<a href="/">Havistin</a> &raquo; <a href="/tools">Työkalut</a> &raquo; iNaturalist
+{% endblock %}
+
+{% block body %}
+<div class="content">
+    <h1>iNaturalist Photo Citation</h1>
+    
+    <form method="POST" action="/tools/inat">
+        <div class="form-group">
+            <label for="inat_url">Enter iNaturalist photo page URL:</label>
+            <input type="url" id="inat_url" name="inat_url" required>
+            <button type="submit">
+                Submit
+            </button>
+        </div>
+    </form>
+
+    {% if html.title and html.url %}
+    <div class="results">
+        <h3>Citation:</h3>
+        <p>{{ html.title }}, <a href="{{ html.url }}" target="_blank">{{ html.url }}</a></p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
