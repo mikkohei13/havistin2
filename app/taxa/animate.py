@@ -71,7 +71,7 @@ def main(taxon_id=None):
     # Load species data for dropdown
     species_dict = read_atlas_species()
     
-    # Prepare species list for dropdown (sorted by Finnish name)
+    # Prepare species list for dropdown
     species_list = []
     for key, species in species_dict.items():
         species_list.append({
@@ -81,7 +81,7 @@ def main(taxon_id=None):
         })
     
     # Sort by Finnish name
-    species_list.sort(key=lambda x: x['fi'])
+#    species_list.sort(key=lambda x: x['fi'])
     
     html['species_list'] = species_list
     html['default_taxon_id'] = taxon_id if taxon_id else ''

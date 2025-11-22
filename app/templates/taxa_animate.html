@@ -66,9 +66,8 @@
 {% endblock %}
 
 {% block body %}
-    <h1>Havaintojen animaatio</h1>
     
-    <p>Valitse laji pudotusvalikosta nähdäksesi sen havainnot kartalla vuoden aikana.</p>
+    <p>Tämä kartta näyttää valitun linnun pesimähavaintojen sijainnit vuoden aikana. Mukana ovat lintuatlaksen mahdolliset, todennäköiset ja varmat pesimähavainnot vuosilta 2022-2025.</p>
     
     <div class="controls">
         <label for="species-select">Laji:</label>
@@ -136,6 +135,19 @@
         // Load observations for selected species
         document.getElementById('species-select').addEventListener('change', function() {
             var taxonId = this.value;
+            
+            // Stop animation if it's running
+            if (isPlaying) {
+                isPlaying = false;
+                if (animationId) {
+                    clearTimeout(animationId);
+                    animationId = null;
+                }
+                var playBtn = document.getElementById('play-pause-btn');
+                playBtn.textContent = '▶ Aloita';
+                playBtn.classList.remove('pause');
+            }
+            
             if (!taxonId) {
                 clearMap();
                 observationsByDay = {};
