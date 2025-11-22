@@ -1,0 +1,340 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <title>Havaintojen animaatio (biomi.org)</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+    <style>
+        #map {
+            height: 600px;
+            width: 100%;
+            margin: 20px 0;
+        }
+        .controls {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f5f5f5;
+            border-radius: 5px;
+        }
+        .controls select, .controls button {
+            margin: 5px;
+            padding: 8px 15px;
+            font-size: 14px;
+        }
+        .controls button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .controls button:hover:not(:disabled) {
+            background-color: #45a049;
+        }
+        .controls button:disabled {
+            background-color: #cccccc;
+            color: #666666;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+        .controls button.pause {
+            background-color: #f44336;
+        }
+        .controls button.pause:hover:not(:disabled) {
+            background-color: #da190b;
+        }
+        .day-indicator {
+            font-size: 16px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .stats {
+            font-size: 14px;
+            margin: 10px 0;
+            color: #666;
+        }
+        .loading {
+            display: none;
+            margin: 10px 0;
+            color: #666;
+        }
+    </style>
+{% endblock %}
+
+{% block breadcrumb %}
+    <a href='/'>Havistin</a> &raquo; <a href='/taxa'>Lajitietoa</a> &raquo; Havaintojen animaatio
+{% endblock %}
+
+{% block body %}
+    <h1>Havaintojen animaatio</h1>
+    
+    <p>Valitse laji pudotusvalikosta nähdäksesi sen havainnot kartalla vuoden aikana.</p>
+    
+    <div class="controls">
+        <label for="species-select">Laji:</label>
+        <select id="species-select">
+            <option value="">-- Valitse laji --</option>
+            {% for species in html.species_list %}
+            <option value="{{ species.id }}">
+                {{ species.fi }}
+            </option>
+            {% endfor %}
+        </select>
+        
+        <button id="play-pause-btn" disabled>▶ Aloita</button>
+        
+        <label for="speed-select" style="margin-left: 15px;">Nopeus:</label>
+        <select id="speed-select">
+            <option value="16">Nopea (~7 sekuntia/vuosi)</option>
+            <option value="50" selected>Normaali (~20 sekuntia/vuosi)</option>
+            <option value="150">Hidas (~1 minuutti/vuosi)</option>
+        </select>
+        
+        <div class="day-indicator" id="day-indicator">Valitse laji aloittaaksesi</div>
+        <div class="stats" id="stats"></div>
+        <div class="loading" id="loading">Ladataan havaintoja...</div>
+    </div>
+    
+    <div id="map"></div>
+
+    <script>
+        // Initialize map centered on Finland
+        var map = L.map('map', { scrollWheelZoom: true }).setView([65, 25], 6);
+        
+        var tiles = L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors',
+        }).addTo(map);
+
+        // Animation state
+        var observationsByDay = {};
+        var activeMarkers = new Map(); // Track markers by day they appeared
+        var currentDay = 1;
+        var isPlaying = false;
+        var animationId = null;
+        var fadeDays = 20; // Observations fade after 7 days
+        var animationSpeed = 50; // milliseconds per day (default)
+        
+        // Day names for display
+        var monthNames = ["tammikuuta", "helmikuuta", "maaliskuuta", "huhtikuuta", "toukokuuta", 
+                         "kesäkuuta", "heinäkuuta", "elokuuta", "syyskuuta", "lokakuuta", 
+                         "marraskuuta", "joulukuuta"];
+        var daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+        
+        function dayOfYearToDate(dayOfYear) {
+            var month = 0;
+            var day = dayOfYear;
+            for (var i = 0; i < 12; i++) {
+                if (day <= daysInMonth[i]) {
+                    month = i;
+                    break;
+                }
+                day -= daysInMonth[i];
+            }
+            return day + ". " + monthNames[month];
+        }
+        
+        // Load observations for selected species
+        document.getElementById('species-select').addEventListener('change', function() {
+            var taxonId = this.value;
+            if (!taxonId) {
+                clearMap();
+                observationsByDay = {};
+                document.getElementById('stats').textContent = '';
+                document.getElementById('day-indicator').textContent = 'Valitse laji aloittaaksesi';
+                document.getElementById('play-pause-btn').disabled = true;
+                return;
+            }
+            
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('play-pause-btn').disabled = true;
+            document.getElementById('stats').textContent = '';
+            
+            fetch('/taxa/animate/api/' + taxonId)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('loading').style.display = 'none';
+                    
+                    // Group observations by day
+                    observationsByDay = {};
+                    data.forEach(function(obs) {
+                        var day = obs.dayOfYear;
+                        if (!observationsByDay[day]) {
+                            observationsByDay[day] = [];
+                        }
+                        observationsByDay[day].push(obs);
+                    });
+                    
+                    // Calculate statistics
+                    var totalObservations = data.length;
+                    var days = Object.keys(observationsByDay).map(Number).sort(function(a, b) { return a - b; });
+                    var earliestDay = days.length > 0 ? days[0] : null;
+                    var latestDay = days.length > 0 ? days[days.length - 1] : null;
+                    
+                    // Display statistics
+                    if (totalObservations > 0 && earliestDay && latestDay) {
+                        var earliestDate = dayOfYearToDate(earliestDay);
+                        var latestDate = dayOfYearToDate(latestDay);
+                        document.getElementById('stats').textContent = 
+                            totalObservations + ' havaintoa väliltä ' + earliestDate + ' - ' + latestDate;
+                    } else {
+                        document.getElementById('stats').textContent = 'Ei havaintoja.';
+                    }
+                    
+                    // Enable play button if we have observations
+                    if (totalObservations > 0) {
+                        document.getElementById('play-pause-btn').disabled = false;
+                    }
+                    
+                    // Reset animation
+                    currentDay = 1;
+                    clearMap();
+                    updateDayIndicator();
+                })
+                .catch(error => {
+                    console.error('Error loading observations:', error);
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('play-pause-btn').disabled = true;
+                    document.getElementById('stats').textContent = '';
+                    alert('Virhe havaintojen lataamisessa. Yritä myöhemmin uudelleen.');
+                });
+        });
+        
+        function clearMap() {
+            // Remove all markers
+            activeMarkers.forEach(function(markerGroup) {
+                markerGroup.forEach(function(marker) {
+                    map.removeLayer(marker);
+                });
+            });
+            activeMarkers.clear();
+        }
+        
+        function showObservationsForDay(day) {
+            if (!observationsByDay[day]) {
+                return;
+            }
+            
+            var markers = [];
+            observationsByDay[day].forEach(function(obs) {
+                var marker = L.circleMarker([obs.lat, obs.lon], {
+                    radius: 4,
+                    fillColor: '#3388ff',
+                    color: '#3388ff',
+                    weight: 1,
+                    opacity: 1,
+                    fillOpacity: 0.8
+                }).addTo(map);
+                markers.push(marker);
+            });
+            
+            if (markers.length > 0) {
+                activeMarkers.set(day, markers);
+            }
+        }
+        
+        function fadeOldObservations(day) {
+            // Remove markers older than fadeDays
+            var removeDay = day - fadeDays;
+            if (activeMarkers.has(removeDay)) {
+                var oldMarkers = activeMarkers.get(removeDay);
+                oldMarkers.forEach(function(marker) {
+                    map.removeLayer(marker);
+                });
+                activeMarkers.delete(removeDay);
+            }
+            
+            // Fade markers that are getting old
+            activeMarkers.forEach(function(markers, markerDay) {
+                var age = day - markerDay;
+                if (age > 0 && age < fadeDays) {
+                    var opacity = 1 - (age / fadeDays) * 0.7; // Fade from 1.0 to 0.3
+                    markers.forEach(function(marker) {
+                        marker.setStyle({
+                            opacity: opacity,
+                            fillOpacity: opacity * 0.8
+                        });
+                    });
+                }
+            });
+        }
+        
+        function updateDayIndicator() {
+            var dateStr = dayOfYearToDate(currentDay);
+            document.getElementById('day-indicator').textContent = 
+                dateStr + ' (päivä ' + currentDay + ')';
+        }
+        
+        function animate() {
+            if (!isPlaying) {
+                return;
+            }
+            
+            // Show observations for current day
+            showObservationsForDay(currentDay);
+            
+            // Fade/remove old observations
+            fadeOldObservations(currentDay);
+            
+            // Update day indicator
+            updateDayIndicator();
+            
+            // Move to next day
+            currentDay++;
+            if (currentDay > 366) {
+                currentDay = 1; // Loop back to beginning
+            }
+            
+            // Schedule next frame
+            animationId = setTimeout(animate, animationSpeed);
+        }
+        
+        // Play/pause button
+        document.getElementById('play-pause-btn').addEventListener('click', function() {
+            if (isPlaying) {
+                // Pause
+                isPlaying = false;
+                if (animationId) {
+                    clearTimeout(animationId);
+                    animationId = null;
+                }
+                this.textContent = '▶ Aloita';
+                this.classList.remove('pause');
+            } else {
+                // Play
+                if (Object.keys(observationsByDay).length === 0) {
+                    alert('Valitse ensin laji.');
+                    return;
+                }
+                isPlaying = true;
+                this.textContent = '⏸ Pysäytä';
+                this.classList.add('pause');
+                animate();
+            }
+        });
+        
+        // Speed control
+        document.getElementById('speed-select').addEventListener('change', function() {
+            animationSpeed = parseInt(this.value);
+            // If animation is playing, restart with new speed
+            if (isPlaying) {
+                if (animationId) {
+                    clearTimeout(animationId);
+                }
+                animate();
+            }
+        });
+        
+        // Reset dropdown to empty state on page load
+        window.addEventListener('load', function() {
+            document.getElementById('species-select').value = '';
+            document.getElementById('speed-select').value = '50'; // Reset to default (Normaali)
+            animationSpeed = 50; // Reset animation speed to default
+            clearMap();
+            observationsByDay = {};
+            currentDay = 1;
+            document.getElementById('play-pause-btn').disabled = true;
+            document.getElementById('stats').textContent = '';
+            updateDayIndicator();
+        });
+    </script>
+{% endblock %}

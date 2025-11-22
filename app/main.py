@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request, session, g
+from flask import Flask, render_template, redirect, request, session, g, jsonify
 #from werkzeug.exceptions import HTTPException
 from extensions import cache
 from decorators import robust_cached
@@ -18,6 +18,7 @@ import taxa.new
 import taxa.common_photos
 import taxa.compare_years
 import taxa.miss
+import taxa.animate
 
 import winterbird.winterbird
 import winterbird.census
@@ -171,6 +172,18 @@ def bingo_root():
 def inat_root():
     html = tools.inat.main()
     return render_template("tools_inat.html", html=html)
+
+@app.route("/taxa/animate/<string:taxon_id_untrusted>")
+@app.route("/taxa/animate")
+def taxa_animate(taxon_id_untrusted=None):
+    html = taxa.animate.main(taxon_id_untrusted)
+    return render_template("taxa_animate.html", html=html)
+
+@app.route("/taxa/animate/api/<string:taxon_id_untrusted>")
+def taxa_animate_api(taxon_id_untrusted):
+    """API endpoint to fetch observations for animation"""
+    observations = taxa.animate.get_observations(taxon_id_untrusted)
+    return jsonify(observations)
 
 '''
 @app.route("/viewer/<path:document_id_untrusted>") # Note: path -> allows slashes in parameter
