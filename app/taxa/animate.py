@@ -20,6 +20,7 @@ def get_observations(taxon_id):
     observations = []
     page = 1
     page_size = 10000  # Maximum per page
+    max_pages = 10  # Maximum number of pages to fetch
     
     while True:
         url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=gathering.conversions.dayOfYearBegin%2Cgathering.conversions.wgs84Grid01.lat%2Cgathering.conversions.wgs84Grid01.lon&onlyCount=true&taxonCounts=false&gatheringCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize={page_size}&page={page}&cache=true&taxonId={taxon_id}&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&time=2022%2F2025&timeAccuracy=7&individualCountMin=1&includeNullLoadDates=false&qualityIssues=NO_ISSUES&recordQuality=NEUTRAL&needsCheck=false&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&access_token="
@@ -55,9 +56,12 @@ def get_observations(taxon_id):
                     # Skip invalid values
                     continue
         
-        # Check if there are more pages
-        total_results = data_dict.get('totalResults', 0)
-        if page * page_size >= total_results:
+        # Get pagination information
+        current_page = data_dict.get('currentPage', page)
+        last_page = data_dict.get('lastPage', current_page)
+        
+        # Stop if we've reached the last page or fetched maximum pages
+        if current_page >= last_page or page >= max_pages:
             break
         
         page += 1

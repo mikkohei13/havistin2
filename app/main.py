@@ -173,15 +173,14 @@ def inat_root():
     html = tools.inat.main()
     return render_template("tools_inat.html", html=html)
 
-@app.route("/taxa/animate/<string:taxon_id_untrusted>")
+@app.route("/taxa/animate/")
 @app.route("/taxa/animate")
-def taxa_animate(taxon_id_untrusted=None):
-    html = taxa.animate.main(taxon_id_untrusted)
+def taxa_animate():
+    html = taxa.animate.main()
     return render_template("taxa_animate.html", html=html)
 
 @app.route("/taxa/animate/api/<string:taxon_id_untrusted>")
 def taxa_animate_api(taxon_id_untrusted):
-    """API endpoint to fetch observations for animation"""
     observations = taxa.animate.get_observations(taxon_id_untrusted)
     return jsonify(observations)
 
