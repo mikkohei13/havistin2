@@ -61,7 +61,7 @@ def get_observation_counts(qname, lat, lon, year_begin, radius):
     # time is "year_begin/year_current"
     time = f"{year_begin}/{datetime.datetime.now().year}"
 
-    url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=unit.linkings.taxon.id%2Cunit.linkings.taxon.nameFinnish%2Cunit.linkings.taxon.scientificName&onlyCount=true&taxonCounts=false&gatheringCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=1000&page=1&cache=true&taxonId={ qname }&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&taxonRankId=MX.species&countryId=ML.206&time={ time }&individualCountMin=1&coordinates={ bbox }&qualityIssues=NO_ISSUES&access_token="
+    url = f"https://api.laji.fi/warehouse/query/unit/aggregate?aggregateBy=unit.linkings.taxon.id%2Cunit.linkings.taxon.nameFinnish%2Cunit.linkings.taxon.scientificName&onlyCount=true&taxonCounts=false&gatheringCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=1000&page=1&cache=true&taxonId={ qname }&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&taxonRankId=MX.species&countryId=ML.206&time={ time }&individualCountMin=1&coordinates={ bbox }&qualityIssues=NO_ISSUES"
 
     species_data = common_helpers.fetch_finbif_api(url)
 

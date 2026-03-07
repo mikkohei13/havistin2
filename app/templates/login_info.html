@@ -2,7 +2,7 @@
     <p id="login_info" class="logged_out">
         <strong><a href="https://login.laji.fi/login?target=KE.781&redirectMethod=GET&locale=fi&next=prod">Kirjaudu</a></strong>
     </p>
-{% elif error in session['user_data'] %}
+{% elif 'errorCode' in session['user_data'] %}
     <p id="login_info" class="logged_out">
         <strong><a href="https://login.laji.fi/login?target=KE.781&redirectMethod=GET&locale=fi&next=prod">Kirjaudu</a></strong>
     </p>

@@ -10,7 +10,7 @@
 
     {% block body %}
 
-    {% if session['user_data']['error'] %}
+    {% if session['user_data']['errorCode'] is defined %}
         <h1>Virheellinen kirjautuminen</h1>
         <!-- User not logged in -->
         <!-- {{ session }} -->

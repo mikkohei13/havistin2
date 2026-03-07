@@ -192,7 +192,12 @@
             return;
         }
 
-        fetch(`https://api.laji.fi/v0/taxa/search?query=${encodeURIComponent(query)}&limit=10&matchType=partial&onlySpecies=false&onlyFinnish=true&onlyInvasive=false&observationMode=false&access_token={{html["finbif_api_token"] }}`)
+        fetch(`https://api.laji.fi/taxa/search?query=${encodeURIComponent(query)}&limit=10&matchType=partial&species=false&finnish=true&invasiveSpecies=false`, {
+                headers: {
+                    'Authorization': 'Bearer {{html["finbif_api_token"] }}',
+                    'API-Version': '1'
+                }
+            })
             .then((response) => response.json())
             .then((data) => {
             if (data && Array.isArray(data)) {

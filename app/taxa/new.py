@@ -137,7 +137,7 @@ def get_species_qnames(page_name_untrusted):
 def get_species_data(species_qnames):
     species_data = []
     for qname in species_qnames:
-        data = common_helpers.fetch_finbif_api(f"https://api.laji.fi/v0/taxa/{qname}?lang=fi&langFallback=true&maxLevel=0&includeHidden=true&includeMedia=true&includeDescriptions=true&includeRedListEvaluations=false&sortOrder=taxonomic&access_token=", False)
+        data = common_helpers.fetch_finbif_api(f"https://api.laji.fi/taxa/{qname}?lang=fi&langFallback=true&maxLevel=0&includeHidden=true&includeMedia=true&includeDescriptions=true&includeRedListEvaluations=false&sortOrder=taxonomic")
 #        common_helpers.print_log(data) # debug
         species_data.append(data)
 

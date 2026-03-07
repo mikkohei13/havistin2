@@ -103,7 +103,7 @@ def squareform_redirect(square_id_untrusted, show_untrusted):
 def login_root(person_token_untrusted):
     session['token'] = person_token_untrusted
     # Get user data
-    session['user_data'] = common_helpers.fetch_finbif_api(f"https://api.laji.fi/v0/person/{ person_token_untrusted }?access_token=")
+    session['user_data'] = common_helpers.fetch_finbif_api("https://api.laji.fi/person", person_token=person_token_untrusted)
     html = login.login.main(person_token_untrusted)
     return render_template("login.html", html=html)
 

@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, make_response
 from flask_caching import Cache
 from app.decorators import robust_cached
 import requests
+import app_secrets
 
 import atlas.atlas
 import atlas.squareform
@@ -53,11 +54,13 @@ def squarepdf(square_id_untrusted, show_untrusted):
 
     print(html_page)
 
-    url = "https://api.laji.fi/v0/html-to-pdf?access_token=" + app_secrets.finbif_api_token
+    url = "https://api.laji.fi/html-to-pdf"
     data = html_page
     headers = {
         "Content-Type": "text/plain",
-        "Accept": "application/pdf"
+        "Accept": "application/pdf",
+        "Authorization": f"Bearer {app_secrets.finbif_api_token}",
+        "API-Version": "1"
     }
 
     response = requests.post(url, data=data, headers=headers)

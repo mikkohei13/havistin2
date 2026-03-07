@@ -53,7 +53,7 @@ def adaptive_species(square_id):
     season_param = make_season_param()
 
     # All bird data except TIPU
-    api_url = f"https://laji.fi/api/warehouse/query/unit/aggregate?target=MX.37580&countryId=ML.206&collectionIdNot=HR.48&typeOfOccurrenceId=MX.typeOfOccurrenceBirdLifeCategoryA,MX.typeOfOccurrenceBirdLifeCategoryC&coordinates={coordinates_param}&aggregateBy=unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesNameFinnish&selected=unit.linkings.taxon.speciesNameFinnish&cache=true&page=1&pageSize={limit}&season={season_param}&geoJSON=false&onlyCount=true&access_token="
+    api_url = f"https://laji.fi/api/warehouse/query/unit/aggregate?target=MX.37580&countryId=ML.206&collectionIdNot=HR.48&typeOfOccurrenceId=MX.typeOfOccurrenceBirdLifeCategoryA,MX.typeOfOccurrenceBirdLifeCategoryC&coordinates={coordinates_param}&aggregateBy=unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesNameFinnish&selected=unit.linkings.taxon.speciesNameFinnish&cache=true&page=1&pageSize={limit}&season={season_param}&geoJSON=false&onlyCount=true"
 
     data_dict = common_helpers.fetch_finbif_api(api_url)
 
@@ -115,7 +115,7 @@ def atlas4_breeding():
 #    url = "https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=unit.linkings.originalTaxon.speciesNameFinnish&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=" + number_of_species + "&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&time=-14%2F0&atlasClass=MY.atlasClassEnumC,atlasClass=MY.atlasClassEnumD&access_token=" + app_secrets.finbif_api_token
 
     # Both probable and confirmed breeders, but not 4 & 5, using atlasCode
-    api_url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=unit.linkings.originalTaxon.speciesNameFinnish&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize={number_of_species}&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&time=-14%2F0&atlasCode=MY.atlasCodeEnum6,MY.atlasCodeEnum61,MY.atlasCodeEnum62,MY.atlasCodeEnum63,MY.atlasCodeEnum64,MY.atlasCodeEnum65,MY.atlasCodeEnum66,MY.atlasCodeEnum7,MY.atlasCodeEnum71,MY.atlasCodeEnum72,MY.atlasCodeEnum73,MY.atlasCodeEnum74,MY.atlasCodeEnum75,MY.atlasCodeEnum8,MY.atlasCodeEnum81,MY.atlasCodeEnum82&access_token="
+    api_url = f"https://api.laji.fi/warehouse/query/unit/aggregate?aggregateBy=unit.linkings.originalTaxon.speciesNameFinnish&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize={number_of_species}&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&yearMonth=2022%2F2025&individualCountMin=1&qualityIssues=NO_ISSUES&time=-14%2F0&atlasCode=MY.atlasCodeEnum6,MY.atlasCodeEnum61,MY.atlasCodeEnum62,MY.atlasCodeEnum63,MY.atlasCodeEnum64,MY.atlasCodeEnum65,MY.atlasCodeEnum66,MY.atlasCodeEnum7,MY.atlasCodeEnum71,MY.atlasCodeEnum72,MY.atlasCodeEnum73,MY.atlasCodeEnum74,MY.atlasCodeEnum75,MY.atlasCodeEnum8,MY.atlasCodeEnum81,MY.atlasCodeEnum82"
 
     data_dict = common_helpers.fetch_finbif_api(api_url)
 

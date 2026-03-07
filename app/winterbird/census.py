@@ -40,7 +40,7 @@ def validate_season(season):
 
 
 def get_society_info(society_id):
-    url = f"https://api.laji.fi/v0/areas/{ society_id }?lang=fi&access_token="
+    url = f"https://api.laji.fi/areas/{ society_id }?lang=fi"
     data_dict = common_helpers.fetch_finbif_api(url)
     return data_dict["name"]
 
@@ -77,7 +77,7 @@ def datatable(society_id, year_month):
     per_page = 10000
 
     # Get named place names
-    url = f"https://api.laji.fi/v0/named-places?pageSize=1000&collectionID=HR.39&birdAssociationArea={ society_id }&includePublic=true&includeUnits=false&access_token="
+    url = f"https://api.laji.fi/named-places?pageSize=1000&collectionID=HR.39&birdAssociationArea={ society_id }&includePublic=true&includeUnits=false"
     namedplaces_dict = common_helpers.fetch_finbif_api(url)
 
     places_html = ""
@@ -87,7 +87,7 @@ def datatable(society_id, year_month):
         named_places_lookup[place["id"]] = place["name"]
 
     # Get all bird observations, aggregated by named place and document
-    url = f"https://api.laji.fi/v0/warehouse/query/unit/statistics?aggregateBy=document.documentId%2Cdocument.namedPlace.id%2Cunit.linkings.taxon.nameFinnish%2Cunit.linkings.taxon.taxonomicOrder&orderBy=document.namedPlace.id&onlyCount=true&taxonCounts=false&gatheringCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize={ per_page }&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&birdAssociationAreaId={ society_id }&yearMonth={ year_month }&collectionId=HR.39&individualCountMin=1&qualityIssues=NO_ISSUES&access_token="
+    url = f"https://api.laji.fi/warehouse/query/unit/statistics?aggregateBy=document.documentId%2Cdocument.namedPlace.id%2Cunit.linkings.taxon.nameFinnish%2Cunit.linkings.taxon.taxonomicOrder&orderBy=document.namedPlace.id&onlyCount=true&taxonCounts=false&gatheringCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize={ per_page }&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&birdAssociationAreaId={ society_id }&yearMonth={ year_month }&collectionId=HR.39&individualCountMin=1&qualityIssues=NO_ISSUES"
     data_dict = common_helpers.fetch_finbif_api(url)
 
     # order_dict contains all taxa in the data, with taxonomic sort order number

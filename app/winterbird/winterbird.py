@@ -36,7 +36,7 @@ def get_habitat_photos(collection_id, dev_secret = 1):
     page_size = 250
 #    page_size = 10 # debug
     page = 1
-    api_url = f"https://api.laji.fi/v0/warehouse/query/gathering/aggregate?aggregateBy=gathering.conversions.wgs84CenterPoint.lat%2Cgathering.conversions.wgs84CenterPoint.lon%2Cdocument.documentId%2Cgathering.displayDateTime&orderBy=gathering.displayDateTime DESC&onlyCount=true&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize={page_size}&page={page}&cache=true&collectionId={collection_id}&hasGatheringMedia=true&access_token="
+    api_url = f"https://api.laji.fi/warehouse/query/gathering/aggregate?aggregateBy=gathering.conversions.wgs84CenterPoint.lat%2Cgathering.conversions.wgs84CenterPoint.lon%2Cdocument.documentId%2Cgathering.displayDateTime&orderBy=gathering.displayDateTime DESC&onlyCount=true&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize={page_size}&page={page}&cache=true&collectionId={collection_id}&hasGatheringMedia=true"
 
     documents_dict = common_helpers.fetch_finbif_api(api_url)
 
@@ -55,7 +55,7 @@ def get_habitat_photos(collection_id, dev_secret = 1):
             print(f"WARNING: Skipping duplicate document {document_id}")
             continue
 
-        api_url = f"https://api.laji.fi/v0/warehouse/query/single?documentId={ document_id }&cache=true&access_token="
+        api_url = f"https://api.laji.fi/warehouse/query/single?documentId={ document_id }&cache=true"
         document_dict = common_helpers.fetch_finbif_api(api_url)
 #        print(document_dict)
 

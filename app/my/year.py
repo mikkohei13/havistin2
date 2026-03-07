@@ -30,25 +30,25 @@ def get_current_day_of_year():
 
 def get_obs_count(token, year, taxon_id):
     # Note: includes also erroneous & uncertain observations
-    url = f"https://api.laji.fi/v0/warehouse/query/unit/count?cache=true&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&individualCountMin=1&qualityIssues=NO_ISSUES&wild=WILD,WILD_UNKNOWN&countryId=ML.206&target={ taxon_id }&time={ year }&observerPersonToken={ token }&access_token="
-    data_dict = common_helpers.fetch_finbif_api(url)
+    url = f"https://api.laji.fi/warehouse/query/unit/count?cache=true&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&individualCountMin=1&qualityIssues=NO_ISSUES&wild=WILD,WILD_UNKNOWN&countryId=ML.206&target={ taxon_id }&time={ year }&selfAsObserver=true"
+    data_dict = common_helpers.fetch_finbif_api(url, person_token=token)
     return data_dict["total"]
 
 
 def get_day_aggregate(token, year, taxon_id):
     # Todo: Pagination or check if API can give >2000 results
     # Note: timeAccuracy
-    url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=gathering.conversions.dayOfYearBegin&orderBy=gathering.conversions.dayOfYearBegin&onlyCount=true&taxonCounts=false&gatheringCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=367&page=1&cache=true&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&target={ taxon_id }&time={ year }&timeAccuracy=2&individualCountMin=1&wild=WILD,WILD_UNKNOWN&recordQuality=EXPERT_VERIFIED,COMMUNITY_VERIFIED,NEUTRAL&qualityIssues=NO_ISSUES&observerPersonToken={ token }&access_token="
+    url = f"https://api.laji.fi/warehouse/query/unit/aggregate?aggregateBy=gathering.conversions.dayOfYearBegin&orderBy=gathering.conversions.dayOfYearBegin&onlyCount=true&taxonCounts=false&gatheringCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=367&page=1&cache=true&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&target={ taxon_id }&time={ year }&timeAccuracy=2&individualCountMin=1&wild=WILD,WILD_UNKNOWN&recordQuality=EXPERT_VERIFIED,COMMUNITY_VERIFIED,NEUTRAL&qualityIssues=NO_ISSUES&selfAsObserver=true"
 
-    data_dict = common_helpers.fetch_finbif_api(url)
+    data_dict = common_helpers.fetch_finbif_api(url, person_token=token)
     return data_dict
 
 
 def get_species_aggregate(token, year, taxon_id):
     # Todo: Pagination or check if API can give >2000 results
-    url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?countryId=ML.206&target={ taxon_id }&time={ year }&recordQuality=EXPERT_VERIFIED,COMMUNITY_VERIFIED,NEUTRAL&wild=WILD,WILD_UNKNOWN&individualCountMin=1&aggregateBy=unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesNameFinnish,unit.linkings.taxon.speciesScientificName&selected=unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesNameFinnish,unit.linkings.taxon.speciesScientificName&cache=true&page=1&pageSize=2000&qualityIssues=NO_ISSUES&geoJSON=false&onlyCount=false&observerPersonToken={ token }&access_token="
+    url = f"https://api.laji.fi/warehouse/query/unit/aggregate?countryId=ML.206&target={ taxon_id }&time={ year }&recordQuality=EXPERT_VERIFIED,COMMUNITY_VERIFIED,NEUTRAL&wild=WILD,WILD_UNKNOWN&individualCountMin=1&aggregateBy=unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesNameFinnish,unit.linkings.taxon.speciesScientificName&selected=unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesNameFinnish,unit.linkings.taxon.speciesScientificName&cache=true&page=1&pageSize=2000&qualityIssues=NO_ISSUES&geoJSON=false&onlyCount=false&selfAsObserver=true"
 
-    data_dict = common_helpers.fetch_finbif_api(url)
+    data_dict = common_helpers.fetch_finbif_api(url, person_token=token)
     return data_dict
 
 
@@ -185,7 +185,7 @@ def generate_year_dropdown(start_year):
 
 
 def get_taxon_name(qname):
-    url = f"https://api.laji.fi/v0/taxa/{ qname }?lang=fi&langFallback=true&maxLevel=0&includeHidden=false&includeMedia=false&includeDescriptions=false&includeRedListEvaluations=false&onlyFinnish=true&sortOrder=taxonomic&access_token="
+    url = f"https://api.laji.fi/taxa/{ qname }?lang=fi&langFallback=true&maxLevel=0&includeHidden=false&includeMedia=false&includeDescriptions=false&includeRedListEvaluations=false&onlyFinnish=true&sortOrder=taxonomic"
 
     data_dict = common_helpers.fetch_finbif_api(url)
 
@@ -199,9 +199,9 @@ def get_taxon_name(qname):
 
 def get_monthly_species_counts(token, year, taxon_id):
     # Note: timeAccuracy
-    url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?target={ taxon_id }&countryId=ML.206&time={ year }&recordQuality=EXPERT_VERIFIED,COMMUNITY_VERIFIED,NEUTRAL&wild=WILD,WILD_UNKNOWN&timeAccuracy=2&taxonCounts=true&onlyCount=false&cache=true&qualityIssues=NO_ISSUES&aggregateBy=gathering.conversions.month&&selected=gathering.conversions.month&observerPersonToken={ token }&access_token="
+    url = f"https://api.laji.fi/warehouse/query/unit/aggregate?target={ taxon_id }&countryId=ML.206&time={ year }&recordQuality=EXPERT_VERIFIED,COMMUNITY_VERIFIED,NEUTRAL&wild=WILD,WILD_UNKNOWN&timeAccuracy=2&taxonCounts=true&onlyCount=false&cache=true&qualityIssues=NO_ISSUES&aggregateBy=gathering.conversions.month&&selected=gathering.conversions.month&selfAsObserver=true"
 
-    data_dict = common_helpers.fetch_finbif_api(url)
+    data_dict = common_helpers.fetch_finbif_api(url, person_token=token)
     return data_dict
 
 

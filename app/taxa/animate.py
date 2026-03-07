@@ -23,7 +23,7 @@ def get_observations(taxon_id):
     max_pages = 10  # Maximum number of pages to fetch
     
     while True:
-        url = f"https://api.laji.fi/v0/warehouse/query/unit/aggregate?aggregateBy=gathering.conversions.dayOfYearBegin%2Cgathering.conversions.wgs84Grid01.lat%2Cgathering.conversions.wgs84Grid01.lon&onlyCount=true&taxonCounts=false&gatheringCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize={page_size}&page={page}&cache=true&taxonId={taxon_id}&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&time=2022%2F2025&timeAccuracy=7&individualCountMin=1&includeNullLoadDates=false&qualityIssues=NO_ISSUES&recordQuality=NEUTRAL&needsCheck=false&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD&access_token="
+        url = f"https://api.laji.fi/warehouse/query/unit/aggregate?aggregateBy=gathering.conversions.dayOfYearBegin%2Cgathering.conversions.wgs84Grid01.lat%2Cgathering.conversions.wgs84Grid01.lon&onlyCount=true&taxonCounts=false&gatheringCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize={page_size}&page={page}&cache=true&taxonId={taxon_id}&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&countryId=ML.206&time=2022%2F2025&timeAccuracy=7&individualCountMin=1&includeNullLoadDates=false&qualityIssues=NO_ISSUES&recordQuality=NEUTRAL&needsCheck=false&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD"
         
         try:
             data_dict = common_helpers.fetch_finbif_api(url)

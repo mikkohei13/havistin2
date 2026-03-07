@@ -50,31 +50,46 @@ def cc_abbreviation(lic):
     return lic
 
 
-def fetch_finbif_api(api_url, log = False):
-    if "access_token=" not in api_url:
-        print("DEV WARNING: access_token param is missing from your url!", file = sys.stdout)
+def fetch_finbif_api(api_url, person_token=None, log=False):
+    # API v1: send access token and other params as headers instead of query params
+    headers = {
+        'Authorization': f'Bearer {app_secrets.finbif_api_token}',
+        'API-Version': '1'
+    }
 
-    api_url = api_url + app_secrets.finbif_api_token
-    print("Fetching API: " + api_url, file = sys.stdout)
+    if person_token:
+        headers['Person-Token'] = person_token
+
+    # Convert v0 base path to v1
+    api_url = api_url.replace('api.laji.fi/v0/', 'api.laji.fi/')
+
+    # Extract lang param and send as Accept-Language header instead
+    lang_match = re.search(r'[?&]lang=(fi|en|sv)(?=&|$)', api_url)
+    if lang_match:
+        headers['Accept-Language'] = lang_match.group(1)
+        api_url = re.sub(r'(\?)lang=(fi|en|sv)&', r'\1', api_url)
+        api_url = re.sub(r'&lang=(fi|en|sv)(?=&|$)', '', api_url)
+
+    # Remove access_token query param (now sent via Authorization header)
+    api_url = re.sub(r'[?&]access_token=$', '', api_url)
+
+    print("Fetching API: " + api_url, file=sys.stdout)
 
     if log:
         print_log(api_url)
 
     try:
-        r = requests.get(api_url)
+        r = requests.get(api_url, headers=headers)
     except ConnectionError:
-        print("ERROR: api.laji.fi complete error.", file = sys.stdout)
+        print("ERROR: api.laji.fi complete error.", file=sys.stdout)
 
-#    r.encoding = encoding
+    if r.status_code == 403:
+        print("ERROR: api.laji.fi 403 error.", file=sys.stdout)
+        raise ConnectionError
+
     dataJson = r.text
     dataDict = json.loads(dataJson)
 
-    if "status" in dataDict:
-        if 403 == dataDict["status"]:
-            print("ERROR: api.laji.fi 403 error.", file = sys.stdout)
-            raise ConnectionError
-
-#    print(dataDict, file = sys.stdout)
     return dataDict
 
 
@@ -130,7 +145,7 @@ def valid_qname(qname):
 
 def taxon_data(taxon_qname):
 
-    url = f"https://api.laji.fi/v0/taxa/{ taxon_qname }?lang=fi&langFallback=true&maxLevel=0&includeHidden=false&includeMedia=false&includeDescriptions=false&includeRedListEvaluations=false&sortOrder=taxonomic&access_token="
+    url = f"https://api.laji.fi/taxa/{ taxon_qname }?lang=fi&langFallback=true&maxLevel=0&includeHidden=false&includeMedia=false&includeDescriptions=false&includeRedListEvaluations=false&sortOrder=taxonomic"
     data = fetch_finbif_api(url)
 
     taxon_data = dict()

@@ -32,7 +32,7 @@ def generate_photos_data(qname, photo_count_toget):
     # TODO: Add links to original data
 
     # 1) Species photos from Laji.fi
-    url = f"https://api.laji.fi/v0/taxa/{qname}?lang=fi&langFallback=true&maxLevel=0&includeHidden=false&includeMedia=true&includeDescriptions=false&includeRedListEvaluations=false&sortOrder=taxonomic&access_token="
+    url = f"https://api.laji.fi/taxa/{qname}?lang=fi&langFallback=true&maxLevel=0&includeHidden=false&includeMedia=true&includeDescriptions=false&includeRedListEvaluations=false&sortOrder=taxonomic"
     species_data = common_helpers.fetch_finbif_api(url, False)
 
     scientific_name = species_data['scientificName']
@@ -89,7 +89,7 @@ def generate_photos_data(qname, photo_count_toget):
         return photos_data
 
     # 2) Get expert verified observation photos
-    species_data = common_helpers.fetch_finbif_api(f"https://api.laji.fi/v0/warehouse/query/unitMedia/list?taxonId={qname}&recordQuality=EXPERT_VERIFIED&aggregateBy=unit.linkings.taxon.id,media,document.documentId,unit.unitId&selected=unit.linkings.taxon.id,media,document.documentId,unit.unitId&includeNonValidTaxa=false&hasUnitMedia=true&cache=true&page=1&pageSize=4&access_token=", False)
+    species_data = common_helpers.fetch_finbif_api(f"https://api.laji.fi/warehouse/query/unitMedia/list?taxonId={qname}&recordQuality=EXPERT_VERIFIED&aggregateBy=unit.linkings.taxon.id,media,document.documentId,unit.unitId&selected=unit.linkings.taxon.id,media,document.documentId,unit.unitId&includeNonValidTaxa=false&hasUnitMedia=true&cache=true&page=1&pageSize=4")
 
     if species_data['total'] > 0:
 

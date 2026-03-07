@@ -45,7 +45,7 @@ def main(taxon_id_untrusted):
     
     html = dict()
 
-    taxon_data = common_helpers.fetch_finbif_api(f"https://api.laji.fi/v0/taxa/{valid_qname}?lang=fi&langFallback=true&maxLevel=0&includeHidden=false&includeMedia=false&includeDescriptions=false&includeRedListEvaluations=false&sortOrder=taxonomic&access_token=")
+    taxon_data = common_helpers.fetch_finbif_api(f"https://api.laji.fi/taxa/{valid_qname}?lang=fi&langFallback=true&maxLevel=0&includeHidden=false&includeMedia=false&includeDescriptions=false&includeRedListEvaluations=false&sortOrder=taxonomic")
 
     html["vernacular_name"] = taxon_data["vernacularName"]
     html["finnish_species_count"] = taxon_data["countOfFinnishSpecies"]
@@ -53,7 +53,7 @@ def main(taxon_id_untrusted):
     html["obs_count_finland"] = taxon_data["observationCountFinland"]
 
     max_species = 1000
-    species_data = common_helpers.fetch_finbif_api(f"https://api.laji.fi/v0/taxa/{valid_qname}/species?onlyFinnish=true&selectedFields=id,vernacularName,scientificName,typeOfOccurrenceInFinland,parent.family.scientificName,observationCountFinland&lang=fi&page=1&pageSize={max_species}&sortOrder=taxonomic&access_token=")
+    species_data = common_helpers.fetch_finbif_api(f"https://api.laji.fi/taxa/{valid_qname}/species?onlyFinnish=true&selectedFields=id,vernacularName,scientificName,typeOfOccurrenceInFinland,parent.family.scientificName,observationCountFinland&lang=fi&page=1&pageSize={max_species}&sortOrder=taxonomic")
 
     html["list"] = generate_list(species_data)
 

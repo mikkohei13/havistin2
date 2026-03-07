@@ -13,13 +13,13 @@ def validate_document_qname(document_id_untrusted):
 
 
 def get_single_doc(document_id, token):
-    url = f"https://api.laji.fi/v0/warehouse/query/document?documentId={ document_id }&editorOrObserverPersonToken={ token }&access_token="
-    data_dict = common_helpers.fetch_finbif_api(url)
+    url = f"https://api.laji.fi/warehouse/query/document?documentId={ document_id }&selfAsEditorOrObserver=true"
+    data_dict = common_helpers.fetch_finbif_api(url, person_token=token)
     my_document = True
 
-    if 404 == data_dict.get("status", 0):
+    if "errorCode" in data_dict:
         print("here")
-        url = f"https://api.laji.fi/v0/warehouse/query/document?documentId={ document_id }&access_token="
+        url = f"https://api.laji.fi/warehouse/query/document?documentId={ document_id }"
         data_dict = common_helpers.fetch_finbif_api(url)
         my_document = False
 
@@ -94,7 +94,7 @@ def get_facts(unit):
 
 def get_collection(collection_id):
     collection_id = collection_id.replace("http://tun.fi/", "")
-    url = f"https://api.laji.fi/v0/collections/{ collection_id }?langFallback=true&access_token="
+    url = f"https://api.laji.fi/collections/{ collection_id }?langFallback=true"
     data_dict = common_helpers.fetch_finbif_api(url)
     return data_dict
 
