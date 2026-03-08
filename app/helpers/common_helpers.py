@@ -96,6 +96,29 @@ def fetch_finbif_api(api_url, person_token=None, log=False):
     return dataDict
 
 
+def revoke_finbif_person_token(person_token):
+    if not person_token:
+        return False
+
+    headers = {
+        "Authorization": f"Bearer {app_secrets.finbif_api_token}",
+        "API-Version": "1",
+        "Person-Token": person_token
+    }
+
+    try:
+        response = requests.delete("https://api.laji.fi/authentication-event", headers=headers, timeout=10)
+    except Exception as e:
+        print(f"FinBIF logout revoke failed: {type(e).__name__}", file=sys.stdout)
+        return False
+
+    if response.status_code not in (200, 204, 404):
+        print(f"FinBIF logout revoke unexpected status: {response.status_code}", file=sys.stdout)
+        return False
+
+    return True
+
+
 def fetch_api(api_url, log = False):
     if log:
         print_log(api_url)

@@ -6,10 +6,10 @@ from decorators import robust_cached
 import os
 import sys
 import traceback
+from urllib.parse import urlencode
 
 import index.index
 
-import login.login
 import login.info
 
 import taxa.taxa
@@ -100,6 +100,46 @@ Debugging help:
 
 print("-------------- PAGES --------------", file = sys.stdout)
 
+LAJI_AUTH_LOGIN_URL = "https://login.laji.fi/login"
+LAJI_AUTH_TARGET = "KE.781"
+LOCAL_LOGIN_POST_URL = "http://localhost/login"
+
+
+def _safe_next_target(value):
+    if value in ("local", "prod"):
+        return value
+    return "prod"
+
+
+def _request_is_localhost():
+    host = request.host.split(":", 1)[0].lower()
+    return host in ("localhost", "127.0.0.1")
+
+
+def _login_user_with_person_token(person_token):
+    session["token"] = person_token
+    session["user_data"] = common_helpers.fetch_finbif_api(
+        "https://api.laji.fi/person",
+        person_token=person_token
+    )
+    return render_template("login.html")
+
+
+def _extract_person_token_from_request():
+    token_keys = ("personToken", "token", "person_token")
+
+    for key in token_keys:
+        value = request.form.get(key, "").strip()
+        if value != "":
+            return value
+
+    for key in token_keys:
+        value = request.args.get(key, "").strip()
+        if value != "":
+            return value
+
+    return ""
+
 @app.route("/")
 def root():
     html = index.index.main()
@@ -115,13 +155,55 @@ app.register_blueprint(taxa_bp)
 def squareform_redirect(square_id_untrusted, show_untrusted):
     return redirect('/atlas/ruutulomake/' + square_id_untrusted + "/" + show_untrusted)
 
-@app.route("/login/<string:person_token_untrusted>")
-def login_root(person_token_untrusted):
-    session['token'] = person_token_untrusted
-    # Get user data
-    session['user_data'] = common_helpers.fetch_finbif_api("https://api.laji.fi/person", person_token=person_token_untrusted)
-    html = login.login.main(person_token_untrusted)
-    return render_template("login.html", html=html)
+@app.route("/login/start")
+def login_start():
+    locale = request.args.get("locale", "fi")
+    if locale not in ("fi", "en", "sv"):
+        locale = "fi"
+
+    next_target = request.args.get("next")
+    if next_target is None:
+        next_target = "local" if _request_is_localhost() else "prod"
+    next_target = _safe_next_target(next_target)
+
+    params = {
+        "target": LAJI_AUTH_TARGET,
+        "redirectMethod": "POST",
+        "locale": locale,
+        "next": next_target,
+    }
+    return redirect(f"{LAJI_AUTH_LOGIN_URL}?{urlencode(params)}")
+
+
+@app.route("/auth", methods=["GET", "POST"])
+def auth_callback():
+    person_token = _extract_person_token_from_request()
+    if person_token == "":
+        if request.method == "GET":
+            return redirect("/")
+        return "Kirjautuminen epaonnistui: personToken puuttuu.", 400
+
+    next_target = request.form.get("next", "").strip()
+    if next_target == "":
+        next_target = request.args.get("next", "prod").strip()
+    next_target = _safe_next_target(next_target)
+
+    if next_target == "local":
+        return render_template(
+            "login_relay.html",
+            local_login_post_url=LOCAL_LOGIN_POST_URL,
+            person_token=person_token,
+        )
+
+    return _login_user_with_person_token(person_token)
+
+
+@app.route("/login", methods=["POST"])
+def login_root():
+    person_token = request.form.get("personToken", "").strip()
+    if person_token == "":
+        return "Kirjautuminen epaonnistui: personToken puuttuu.", 400
+    return _login_user_with_person_token(person_token)
 
 @app.route("/login/info")
 def login_info():
@@ -131,6 +213,8 @@ def login_info():
 
 @app.route("/logout")
 def logout_root():
+    person_token = session.get("token")
+    common_helpers.revoke_finbif_person_token(person_token)
     session.clear()
     return redirect('/')
 

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="fi">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="referrer" content="no-referrer">
+        <title>Havistin: kirjautuminen</title>
+    </head>
+    <body>
+        <p>Kirjautuminen siirretaan paikalliseen kehitysversioon...</p>
+        <form id="relay_login_form" action="{{ local_login_post_url }}" method="post">
+            <input type="hidden" name="personToken" value="{{ person_token }}">
+            <noscript>
+                <button type="submit">Jatka kirjautumiseen</button>
+            </noscript>
+        </form>
+        <script>
+            document.getElementById("relay_login_form").submit();
+        </script>
+    </body>
+</html>
