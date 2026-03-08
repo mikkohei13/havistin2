@@ -2,6 +2,8 @@
 app_secrets.py
 service-account-key.json
 .env
+.DS_Store
+.cursor/
 
 export/
 import/

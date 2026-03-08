@@ -11,11 +11,13 @@ def check_api():
 
     # Check by fetching 10 latest observations from today
     api_url = "https://api.laji.fi/warehouse/query/list?countryId=ML.206&time=0/0&aggregateBy=unit.abundanceString,gathering.displayDateTime,gathering.interpretations.countryDisplayname,gathering.locality,document.collectionId,document.documentId,gathering.team&selected=unit.abundanceString,gathering.displayDateTime,gathering.interpretations.countryDisplayname,gathering.locality,document.collectionId,document.documentId,gathering.team&cache=true&page=1&pageSize=10"
-    api_url += app_secrets.finbif_api_token
-    print(api_url)
+    headers = {
+        'Authorization': f'Bearer {app_secrets.finbif_api_token}',
+        'API-Version': '1'
+    }
 
     try:
-        r = requests.get(api_url)
+        r = requests.get(api_url, headers=headers)
         r.raise_for_status()
     except requests.exceptions.HTTPError as e:
         print("Havistin error: HTTPError.", file = sys.stdout)
@@ -39,18 +41,14 @@ def check_api():
         dataDict = json.loads(dataJson)
     except ValueError as e:
         print("Havistin error: api.laji.fi did not return JSON.", file = sys.stdout)
-#        raise Exception("No JSON")
         return False
 
-    if "status" in dataDict:
-        if 403 == dataDict["status"]:
-            print("Havistin error: api.laji.fi 403 error: " + str(dataDict["message"]), file = sys.stdout)
-            return False
-        if 400 == dataDict["status"]:
-            print("Havistin error: api.laji.fi 404 error: " + str(dataDict["message"]), file = sys.stdout)
-            return False
-
-    # Todo: how these (above) are logged? On Google Cloud docs?
+    if r.status_code == 403:
+        print("Havistin error: api.laji.fi 403 error.", file = sys.stdout)
+        return False
+    if r.status_code == 400:
+        print("Havistin error: api.laji.fi 400 error.", file = sys.stdout)
+        return False
 
     return dataDict
 

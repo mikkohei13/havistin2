@@ -73,7 +73,7 @@ def squarepdf(square_id_untrusted, show_untrusted):
     res.headers.set('Content-Disposition', 'inline; filename=ruutulomake.pdf')
     return res
 
-
+# ABANDONED
 @atlas_bp.route("/gps")
 @atlas_bp.route("/gps/")
 @robust_cached(timeout=1)

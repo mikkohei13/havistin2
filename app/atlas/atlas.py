@@ -179,7 +179,7 @@ def datechart_data(collection_id):
     # Get daily data from api. This lacks dates with zero count.
     api_url = f"https://api.laji.fi/warehouse/query/unit/aggregate?aggregateBy=document.firstLoadDate&orderBy=document.firstLoadDate&onlyCount=true&taxonCounts=false&pairCounts=false&atlasCounts=false&excludeNulls=true&pessimisticDateRangeHandling=false&pageSize=365&page=1&cache=true&taxonId=MX.37580&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true&collectionId=http%3A%2F%2Ftun.fi%2F{ collection_id }&countryId=ML.206&yearMonth={ year }&individualCountMin=1&qualityIssues=NO_ISSUES&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD"
 
-    data_dict = common_helpers.fetch_finbif_api(api_url, True)
+    data_dict = common_helpers.fetch_finbif_api(api_url, log=True)
 
     # Use day as key in dict
     data_by_days = dict()

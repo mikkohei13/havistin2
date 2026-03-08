@@ -5,9 +5,6 @@ import re
 
 import app_secrets
 
-def print_foo():
-    print("FOOOOOOO!")
-
 
 def print_log(dict):
     print(dict, sep="\n", file = sys.stdout)
