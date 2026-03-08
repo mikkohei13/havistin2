@@ -54,6 +54,8 @@ query StopDepartures($stopId: String!, $numberOfDepartures: Int!) {
 
 
 
+
+
 def _status_from_realtime(realtime, departure_delay):
     if not realtime:
         return "scheduled_only"

@@ -24,14 +24,16 @@ on_time
             <!-- realtime -->
             <span class="time realtime">{{ departure["realtime_time"] }}</span>
             {% if departure["status"] == "delayed" %}
-              <span class="delay_time delayed">{{ departure["delay_display"] }}</span>
+              <span class="delay_time delayed">myöhässä {{ departure["delay_display"] }}</span>
             {% elif departure["status"] == "early" %}
-              <span class="delay_time early">{{ departure["delay_display"] }}</span>
+              <span class="delay_time early">etuajassa {{ departure["delay_display"] }}</span>
+            {% elif departure["status"] == "on_time" %}
+              <span class="delay_time ontime">ajallaan {{ departure["delay_display"] }}</span>
             {% endif %}
           {% else %}
             <!-- scheduled -->
             <span class="time scheduled_time">{{ departure["scheduled_time"] }}</span>
-            <span class="scheduled">aikataulu</span>
+            <span class="scheduled">aikataulun mukaan</span>
           {% endif %}
         </li>
       {% endfor %}

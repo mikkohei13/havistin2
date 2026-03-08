@@ -272,7 +272,11 @@ NEWS
 }
 
 #bus .early {
-    color: rgb(123, 202, 255);
+    color: rgb(143, 210, 255);
+}
+
+#bus .ontime {
+    color: rgb(0, 201, 0);
 }
 
 #bus .scheduled {
@@ -280,6 +284,6 @@ NEWS
 }
 
 #bus #stop_id_HSL_2431258 {
-    border: 1px solid #f5ae4f;
+    border: 2px solid #45caff;
     border-radius: 10px;
 }

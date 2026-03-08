@@ -113,7 +113,7 @@ def get_location_report_html(observations, location):
     for obs in observations:
         if location in obs[1]:
             obs[1] = obs[1].replace(location, "").strip()
-            html += f"<tr><td>{ obs[0] }</td><td>{ obs[5] }</td><td>{ obs[1][:30] }</td><td>{ obs[2] }</td><td>{ obs[3][:30] }</td><td>{ obs[4][:30] }</td></tr>\n"
+            html += f"<tr><td>{ obs[0] }</td><td>{ obs[5] }</td><td>{ obs[1][:20] }</td><td>{ obs[2] }</td><td>{ obs[3][:30] }</td><!--<td>{ obs[4][:10] }</td>--></tr>\n"
 
             i += 1
             if i >= limit:
