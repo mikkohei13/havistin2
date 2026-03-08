@@ -3,6 +3,7 @@ from helpers import common_helpers
 import app_secrets
 from datetime import datetime, timedelta
 import pytz
+from urllib.parse import urlsplit, urlunsplit, quote
 
 from pydantic import BaseModel, ValidationError
 from typing import List
@@ -136,30 +137,50 @@ def clean_title(title):
     return title
 
 
-def get_article_html(news_articles):
-    """Converts news API data into HTML markup for displaying articles.
+def sanitize_url(raw_url):
+    """Sanitizes untrusted URLs to safe http(s) links.
+
+    Args:
+        raw_url (str): Untrusted URL from external sources.
+
+    Returns:
+        str: Sanitized URL if valid, otherwise '#'.
+    """
+    if not raw_url:
+        return "#"
+
+    raw_url = raw_url.strip()
+    parts = urlsplit(raw_url)
+    if parts.scheme not in ("http", "https") or not parts.netloc:
+        return "#"
+
+    safe_path = quote(parts.path, safe="/%._-~")
+    safe_query = quote(parts.query, safe="=&%._-~")
+    return urlunsplit((parts.scheme, parts.netloc, safe_path, safe_query, ""))
+
+
+def get_article_data(news_articles):
+    """Converts article objects into sanitized data for Jinja rendering.
 
     Args:
         news_articles: Either a NewsArticlesResponse object or a list of NewsArticle objects.
 
     Returns:
-        str: HTML markup containing formatted article listings wrapped in a div.
-            Returns "Rate limited" message if no articles are present.
+        list: List of dictionaries with sanitized article fields.
     """
     if not news_articles:
-        return "<div class='articles'>\nRate limited\n</div>\n"
+        return []
 
-    # Get the articles list from the response
     articles_to_process = news_articles.articles if hasattr(news_articles, 'articles') else news_articles
 
-    html = "<div class='articles'>\n"
+    articles = []
     for article in articles_to_process:
-        html += "<article>\n"
-        html += f"    <h3><a href='{ article.link }'>{ article.title }</a></h3>\n"
-        html += f"    <p>{ article.introduction }</p>\n"
-        html += "</article>\n"
-    html += "</div>\n"
-    return html
+        articles.append({
+            "title": getattr(article, "title", "") or "",
+            "link": sanitize_url(getattr(article, "link", "")),
+            "introduction": getattr(article, "introduction", "") or "",
+        })
+    return articles
 
 
 def format_mit_datetime_to_finnish(datetime_string):
@@ -184,35 +205,35 @@ def format_mit_datetime_to_finnish(datetime_string):
     return formatted_datetime
 
 
-def get_rss_html(rss_data):
-    """Converts RSS feed data into HTML markup for displaying articles.
+def get_rss_data(rss_data):
+    """Converts RSS feed data into sanitized article data.
 
     Args:
-        rss_string (str): The RSS feed data to convert.
+        rss_data (str): The RSS feed data to convert.
 
     Returns:
-        str: HTML markup containing formatted article listings wrapped in a div.
+        list: List of dictionaries with sanitized article fields.
     """
     root = ET.fromstring(rss_data)
 
     limit = 5
     i = 0
-    html = "<div class='articles'>\n"
+    articles = []
     for item in root.findall('./channel/item'):
         title = item.find('title').text
         link = item.find('link').text
         pub_date = format_mit_datetime_to_finnish(item.find('pubDate').text)
         description = item.find('description').text
 
-        html += "<article>\n"
-        html += f"    <h3><a href='{ link }'>{ pub_date }: { title }</a></h3>\n"
-        html += f"    <p>{ description }</p>\n"
-        html += "</article>\n"
+        articles.append({
+            "title": f"{ pub_date }: { title }",
+            "link": sanitize_url(link),
+            "introduction": description or "",
+        })
         i += 1
         if i >= limit:
             break
-    html += "</div>\n"
-    return html  
+    return articles
 
 
 def fetch_rss(rss_url, log = False):
@@ -237,7 +258,7 @@ def fetch_rss(rss_url, log = False):
 
 
 def main():
-    html = dict()
+    html_data = dict()
     two_days_ago = date_two_days_ago()
 
     # TechCrunch
@@ -246,7 +267,7 @@ def main():
     tc_news_data = common_helpers.fetch_api(tc_url)
     tc_news_articles = filter_json(tc_news_data)
     tc_news_selected_articles = select_articles_with_ai(tc_news_articles)
-    html["tc_articles"] = get_article_html(tc_news_selected_articles)
+    html_data["tc_articles"] = get_article_data(tc_news_selected_articles)
 
     # The Verge
     tv_url = f"https://newsapi.org/v2/everything?sources=the-verge&from={ two_days_ago }&pageSize=10&apiKey={ app_secrets.newsapi_key }"
@@ -254,13 +275,13 @@ def main():
     tv_news_data = common_helpers.fetch_api(tv_url)
     tv_news_articles = filter_json(tv_news_data)
     tv_news_selected_articles = select_articles_with_ai(tv_news_articles)
-    html["tv_articles"] = get_article_html(tv_news_selected_articles)
+    html_data["tv_articles"] = get_article_data(tv_news_selected_articles)
 
     # MIT AI News
     # Note: This is not a news API, but a RSS feed, so its handled differently.
     mit_url = "https://news.mit.edu/topic/mitartificial-intelligence2-rss.xml"
     mit_news_data = fetch_rss(mit_url)
-    html["mit_articles"] = get_rss_html(mit_news_data)
+    html_data["mit_articles"] = get_rss_data(mit_news_data)
 
-    return html
+    return html_data
 

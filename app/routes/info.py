@@ -37,7 +37,7 @@ def birds(secret=''):
     return render_template("info_birds.html", html=html)
 
 @info_bp.route('/news')
-@robust_cached(timeout=10800)  # 10800 = 3h
+@robust_cached(timeout=21600)  # 21600 = 6h
 def news():
     html = info.news.main()
     return render_template("info_news.html", html=html) 

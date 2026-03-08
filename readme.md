@@ -75,6 +75,8 @@ List repositories:
 
 # Todo
 
+- River data to /info
+- Sunrise/sunset update fix
 - Login to dev without copying the token
 - User accessing my page without logging in -> login page
 - Why this doesn't work: http://localhost/taxa/species/MX.205966

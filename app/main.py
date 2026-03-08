@@ -31,8 +31,6 @@ import my.miss
 
 import misc.bingo
 
-import tools.inat
-
 import app_secrets
 
 from redis.exceptions import ConnectionError
@@ -167,11 +165,6 @@ def my_here(coord_untrusted):
 def bingo_root():
     html = misc.bingo.main()
     return render_template("misc_bingo.html", html=html)
-
-@app.route("/tools/inat", methods=['GET', 'POST'])
-def inat_root():
-    html = tools.inat.main()
-    return render_template("tools_inat.html", html=html)
 
 @app.route("/taxa/animate/")
 @app.route("/taxa/animate")

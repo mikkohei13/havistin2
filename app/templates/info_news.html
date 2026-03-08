@@ -1,6 +1,31 @@
 <h2>TechCrunch</h2>
-{{ html["tc_articles"]|safe }}
+<div class="articles">
+{% for article in html["tc_articles"] %}
+  <article>
+    <h3><a href="{{ article.link }}" rel="noopener noreferrer" target="_blank">{{ article.title }}</a></h3>
+    <p>{{ article.introduction }}</p>
+  </article>
+{% else %}
+  <p>Rate limited</p>
+{% endfor %}
+</div>
 <h2>The Verge</h2>
-{{ html["tv_articles"]|safe }}
+<div class="articles">
+{% for article in html["tv_articles"] %}
+  <article>
+    <h3><a href="{{ article.link }}" rel="noopener noreferrer" target="_blank">{{ article.title }}</a></h3>
+    <p>{{ article.introduction }}</p>
+  </article>
+{% else %}
+  <p>Rate limited</p>
+{% endfor %}
+</div>
 <h2>MIT AI News</h2>
-{{ html["mit_articles"]|safe }}
+<div class="articles">
+{% for article in html["mit_articles"] %}
+  <article>
+    <h3><a href="{{ article.link }}" rel="noopener noreferrer" target="_blank">{{ article.title }}</a></h3>
+    <p>{{ article.introduction }}</p>
+  </article>
+{% endfor %}
+</div>
