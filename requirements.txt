@@ -1,6 +1,6 @@
-Flask >= 3.1.1
+Flask ~= 3.1.1
 Werkzeug == 3.1.*
-requests >= 2.32.4
+requests ~= 2.32.4
 pandas == 2.3.*
 gunicorn == 23.0.*
 Flask-Caching == 2.3.*

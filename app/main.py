@@ -3,6 +3,7 @@ from flask import Flask, render_template, redirect, request, session, g, jsonify
 from extensions import cache
 from decorators import robust_cached
 
+import os
 import sys
 import traceback
 
@@ -64,6 +65,23 @@ app.config.from_mapping(config)  # Apply Redis config first
 cache.init_app(app)  # Initialize cache with the Redis config
 
 app.secret_key = app_secrets.flask_secret_key
+app.config["SESSION_COOKIE_HTTPONLY"] = True
+app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
+app.config["SESSION_COOKIE_SECURE"] = os.getenv("FLASK_ENV", "").lower() == "production"
+
+@app.after_request
+def add_security_headers(response):
+    response.headers.setdefault("X-Content-Type-Options", "nosniff")
+    response.headers.setdefault("X-Frame-Options", "SAMEORIGIN")
+    response.headers.setdefault("Referrer-Policy", "strict-origin-when-cross-origin")
+    response.headers.setdefault("Permissions-Policy", "geolocation=(), microphone=(), camera=()")
+    response.headers.setdefault("Content-Security-Policy", "frame-ancestors 'self'")
+
+    is_https = request.is_secure or request.headers.get("X-Forwarded-Proto", "").lower() == "https"
+    if is_https:
+        response.headers.setdefault("Strict-Transport-Security", "max-age=31536000; includeSubDomains")
+
+    return response
 
 # This makes session token and user_data available on every template.
 # TODO: Remove and user session variable instead?
