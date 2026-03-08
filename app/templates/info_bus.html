@@ -1,0 +1,37 @@
+<h2>Bus {{ html["monitored_lines"]|join(", ") }} - stop {{ html["stop_code"] }}</h2>
+<p>{{ html["stop_name"] }}</p>
+
+<!--
+status codes:
+scheduled_only
+delayed
+early
+on_time
+-->
+
+{% if html["error"] %}
+  <p>{{ html["error"] }}</p>
+{% elif html["departures"] %}
+  <ul>
+  {% for departure in html["departures"] %}
+    <li>
+      {{ departure["line"] }}:
+      {% if departure["realtime"] %}
+        <!-- realtime -->
+        <span class="time realtime">{{ departure["realtime_time"] }}</span>
+        {% if departure["status"] == "delayed" %}
+          <span class="delay_time delayed">{{ departure["delay_seconds"] }}</span>
+        {% elif departure["status"] == "early" %}
+          <span class="delay_time early">{{ departure["delay_seconds"] }}</span>
+        {% endif %}
+      {% else %}
+        <!-- scheduled -->
+        <span class="time scheduled_time">{{ departure["scheduled_time"] }}</span>
+        <span class="scheduled">aikataulu</span>
+      {% endif %}
+    </li>
+  {% endfor %}
+  </ul>
+{% else %}
+  <p>No upcoming departures.</p>
+{% endif %}

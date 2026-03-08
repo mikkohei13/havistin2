@@ -9,6 +9,7 @@ import info.birds
 import info.news
 import info.river
 import info.radar
+import info.bus
 
 # Create blueprint with url_prefix='/info'
 info_bp = Blueprint('info', __name__, url_prefix='/info')
@@ -53,3 +54,8 @@ def river():
 def radar():
     html = info.radar.main()
     return render_template("info_radar.html", html=html)
+
+@info_bp.route('/bus')
+def bus():
+    html = info.bus.main()
+    return render_template("info_bus.html", html=html)

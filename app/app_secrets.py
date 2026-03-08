@@ -25,3 +25,5 @@ bird_class = os.environ.get("BIRD_CLASS", "")
 newsapi_key = os.environ.get("NEWSAPI_KEY", "")
 
 flush_secret = os.environ.get("FLUSH_SECRET", "")
+
+digitransit_api_key = os.environ.get("DIGITRANSIT_API_KEY", "")
