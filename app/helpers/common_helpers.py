@@ -48,6 +48,12 @@ def cc_abbreviation(lic):
 
 
 def fetch_finbif_api(api_url, person_token=None, log=False):
+    # Backward compatibility: older call sites passed (url, True/False) to control logging.
+    # After api.laji.fi v1 migration, second positional argument is person_token.
+    if isinstance(person_token, bool):
+        log = person_token
+        person_token = None
+
     # API v1: send access token and other params as headers instead of query params
     headers = {
         'Authorization': f'Bearer {app_secrets.finbif_api_token}',

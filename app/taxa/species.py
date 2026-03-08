@@ -105,7 +105,7 @@ def main(taxon_id_untrusted):
 
     # 1) Get basic species data
     url = f"https://api.laji.fi/taxa/{qname}/species?onlyFinnish=true&lang=fi&page=1&pageSize=10&sortOrder=taxonomic"
-    species_data = common_helpers.fetch_finbif_api(url, True)
+    species_data = common_helpers.fetch_finbif_api(url, log=True)
 
     # Handling only one species, so pick the first result
     html["raw_data"] = species_data["results"][0]
