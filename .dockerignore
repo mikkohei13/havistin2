@@ -2,7 +2,15 @@ Dockerfile
 readme.md
 .git
 .gitignore
-docker-compose.tml
+.gcloudignore
+.env
+service-account-key.json
+docker-compose.yml
+example.env
+Makefile
+.cursor/
+.cursorignore
+.cursorindexingignore
 
 *.pyc
 *.pyo

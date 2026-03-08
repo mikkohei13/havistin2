@@ -5,11 +5,13 @@ FROM python:3.11-slim
 ENV PYTHONUNBUFFERED True
 ENV QT_QPA_PLATFORM=offscreen
 
-RUN apt-get update
-RUN apt-get upgrade -y
-RUN apt-get install -y gcc libgl1-mesa-dri libglib2.0-0 libsm6 libxext6 libxrender-dev libgomp1 libglu1-mesa libgl1
-RUN pip3 install --upgrade pip
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install -y gcc libgl1-mesa-dri libglib2.0-0 libsm6 libxext6 \
+      libxrender-dev libgomp1 libglu1-mesa libgl1 && \
+    rm -rf /var/lib/apt/lists/*
 
+RUN pip3 install --upgrade pip
 COPY requirements.txt /tmp/requirements.txt
 RUN pip3 install --prefer-binary -r /tmp/requirements.txt
 

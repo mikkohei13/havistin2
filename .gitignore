@@ -1,5 +1,3 @@
-
-app_secrets.py
 service-account-key.json
 .env
 .DS_Store
@@ -12,6 +10,9 @@ cache/
 app/static/dynamic/*.png
 app/info/*.png
 app/wrangler/temp/*
+
+.git
+.cursor/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

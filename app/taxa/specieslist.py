@@ -57,6 +57,4 @@ def main(taxon_id_untrusted):
 
     html["list"] = generate_list(species_data)
 
-# https://api.laji.fi/v0/taxa/MX.229577/species?onlyFinnish=true&selectedFields=id,vernacularName,scientificName,typeOfOccurrenceInFinland,primaryHabitat,secondaryHabitats,latestRedListStatusFinland&lang=fi&page=1&pageSize=1000&sortOrder=taxonomic&access_token=8N7b0asX4eKbbv8VaLOFLRI9wev5iGYuTekXBmsohSRKy5bvcfqHFYBGo1ohymSm
-
     return html

@@ -51,7 +51,7 @@ print("-------------- PREPARE --------------", file = sys.stdout)
 
 # Redis cache
 config = {
-    "DEBUG": True,
+    "DEBUG": False,
     "CACHE_TYPE": "RedisCache",
     "CACHE_DEFAULT_TIMEOUT": 86400, # Seconds
     "CACHE_REDIS_HOST": app_secrets.redis_host,
@@ -201,6 +201,8 @@ def robots():
 
 @app.route("/flush")
 def flush_cache():
+    if not app_secrets.flush_secret or request.args.get("key") != app_secrets.flush_secret:
+        return "Forbidden", 403
     with app.app_context():
         cache.clear()
     return render_template("simple.html", content="Cache flushed")

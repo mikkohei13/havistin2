@@ -8,13 +8,16 @@ Uses Python, Flask, Redis (for caching), MongoDB (for weather data), Chart.js, D
 # Setup
 
 * Clone this repo
-* Set secrets to `app/app_secrets.py` (see example file in the directory)
-* Set up your OpenAI API key as `OPENAI_API_KEY` in `example.env`, and rename it to `.env`. (This affects the news page on localhost development environment.)
-* `docker compose up; docker compose down;`
+* Copy `example.env` to `.env` and fill in the secret values
+* `make dev`
 
 Based on https://medium.com/thedevproject/setup-flask-project-using-docker-and-gunicorn-4dcaaa829620
 
-Flush cache: localhost/flush
+Flush cache: `localhost/flush?key=YOUR_FLUSH_SECRET`
+
+All secrets and config are managed as environment variables. Locally they live in `.env` which is loaded by Docker Compose. In production they are set with make deploy command; see Makefile for details.
+
+The app can be run also without Redis cache; just comment out Redis cache on `main.py` and use Filesystem cache instead.
 
 ## Setting weather messaging
 
@@ -24,21 +27,9 @@ It's better to call this at 5, 15, 25, 35 45 and 55 past, so that data has been 
 
 ## Running in development
 
-First build the image, and tag it as latest:
+Build the image and run it in development using Docker Compose:
 
-    docker build -t havistin2-gunicorn:latest .
-
-Or, build with Docker Compose:
-
-    docker compose up --build; docker compose down;
-
-Run in development mode with Docker Compose. This serves the app on localhost and auto-reloads changes to script files, and to other files (like templates) defined on docker-compose.yml.
-
-    docker compose up; docker compose down;
-
-To run without Docker-compose:
-
-    docker run -ti -p 80:80 havistin2-gunicorn:latest
+    make dev
 
 ### Login to localhost
 
@@ -46,13 +37,9 @@ Login normally. When redirected to production app, change havistin.biomi.org to 
 
 ## Running in production with Google Cloud Run & Redis
 
-Set up Redis to be used for caching. Store Redis server name & credentials to `app_secrets.py`. The app can be run also without Redis cache; just comment out Redis cache on `main.py` and use Filesystem cache instead.
+Deploy to Google Cloud Run with environment variables from `.env`:
 
-Set up your OpenAI API key to Google Cloud Run environment variables (Project > Edit & Deploy New Revision > Variables & Secrets > Add Variable).
-
-Deploy to Google Cloud Run:
-
-    gcloud run deploy havistin2 --project=havistin --port=80 --max-instances=4 --concurrency=10 --memory=1024Mi --timeout=40 --source .
+    make deploy
 
 Redeploy from Google Console (https://console.cloud.google.com/run) if you want to set more options there.
 
@@ -64,23 +51,9 @@ If build fails due to "Could not build wheels for pandas...", try updating panda
 
 If site fails with message "Service Unavailable", check logs and try assigning more memory. Also check that .gcloudignore doesn't exclude necessary files.
 
-## Google Cloud Run notes:
+Build logs can be viewed at https://console.cloud.google.com/cloud-build
 
-Three ways to handle secrets:
-
-- Recommended: using  secret manager (https://cloud.google.com/run/docs/configuring/secrets)
-- Using environment variables, but they can be seen by all project users
-- Using local secrets file, which is excluded from Git but included in the cloud. You can ot do continuous integration with this option.
-
-Five ways (at least) to deploy:
-
-- From source files (some langs)
-- Fron source Dockerfile (any lang)
-- From Docker Hub
-- From Artifact Registry
-- Continuous integration with Github
-
-Cloud build page: https://console.cloud.google.com/cloud-build
+### Google Cloud Run notes
 
 Set project:
 
@@ -98,14 +71,11 @@ List repositories:
 
     gcloud artifacts repositories list
 
-Build image from Dockerfile:
-
-    gcloud config get-value project
-    gcloud builds submit --tag europe-north1-docker.pkg.dev/PROJECT-ID/havistin/havistin2:0.1example
 
 
 # Todo
 
+- Login to dev without copying the token
 - User accessing my page without logging in -> login page
 - Why this doesn't work: http://localhost/taxa/species/MX.205966
 - Complete lists per square:
@@ -153,7 +123,6 @@ Build image from Dockerfile:
     - People with complete lists from most squares: https://ebird.org/atlasny/top100?region=New+York&locInfo.regionCode=US-NY&rankedBy=blocks_with_complete
         - needs complete checklist search
 - Refactor? data generation into shared module
-- manage secrets with secret manager (https://cloud.google.com/run/docs/configuring/secrets).
 - Optimize gunicorn & dockerfile?
 - Port as env var, instead of setting on deploy-time or using default (8080?)
 - Geographic center of observations, day by day, on a xy-chart with Finnish border 
