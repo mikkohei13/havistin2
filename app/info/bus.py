@@ -16,8 +16,9 @@ STOPS = [
 ]
 NUMBER_OF_DEPARTURES = 5
 NUMBER_OF_DEPARTURES_FETCH = 20
+
 # TEMP: Styling helper. Set to False to disable randomized demo states.
-ENABLE_DEMO_RANDOMIZATION = True
+ENABLE_DEMO_RANDOMIZATION = False
 
 GRAPHQL_QUERY = """
 query StopDepartures($stopId: String!, $numberOfDepartures: Int!) {
@@ -45,6 +46,9 @@ query StopDepartures($stopId: String!, $numberOfDepartures: Int!) {
   }
 }
 """
+
+
+
 
 
 
