@@ -53,6 +53,28 @@
         const latitude = 60.27905;
         const longitude = 24.68875;
 
+        let sunriseLocal = null;
+        let sunsetLocal = null;
+        let formattedDayLength = '';
+        let formattedSunriseTime = '';
+        let formattedSunsetTime = '';
+
+        function renderSunOutput() {
+            if (!sunriseLocal || !sunsetLocal) {
+                return;
+            }
+
+            const now = new Date();
+            const sunriseCountdown = calculateCountdown(now, sunriseLocal);
+            const sunsetCountdown = calculateCountdown(now, sunsetLocal);
+            const outputDiv = document.getElementById('output');
+            outputDiv.innerHTML = `
+                <p><strong>Sunrise:</strong> ${formattedSunriseTime} (in ${sunriseCountdown})</p>
+                <p><strong>Sunset:</strong> ${formattedSunsetTime} (in ${sunsetCountdown})</p>
+                <p><strong>Day length:</strong> ${formattedDayLength}</p>
+            `;
+        }
+
         // Fetch sunrise and sunset data
         async function getSunriseSunset() {
             try {
@@ -68,44 +90,22 @@
                 const sunsetUTC = new Date(data.results.sunset);
 
                 // Convert to local time in 24-hour format
-                const sunriseLocal = new Date(sunriseUTC.toLocaleString('en-US'));
-                const sunsetLocal = new Date(sunsetUTC.toLocaleString('en-US'));
+                sunriseLocal = new Date(sunriseUTC.toLocaleString('en-US'));
+                sunsetLocal = new Date(sunsetUTC.toLocaleString('en-US'));
 
                 // Calculate day length
                 const dayLengthMs = sunsetLocal - sunriseLocal;
                 const dayLengthHours = Math.floor(dayLengthMs / (1000 * 60 * 60));
                 const dayLengthMinutes = Math.floor((dayLengthMs % (1000 * 60 * 60)) / (1000 * 60));
-                const formattedDayLength = `${dayLengthHours.toString().padStart(2, '0')} h ${dayLengthMinutes.toString().padStart(2, '0')} min`;
+                formattedDayLength = `${dayLengthHours.toString().padStart(2, '0')} h ${dayLengthMinutes.toString().padStart(2, '0')} min`;
 
                 const sunriseTime = sunriseLocal.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
                 const sunsetTime = sunsetLocal.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
 
-                const formattedSunriseTime = sunriseTime.replace(':', '.');
-                const formattedSunsetTime = sunsetTime.replace(':', '.');
+                formattedSunriseTime = sunriseTime.replace(':', '.');
+                formattedSunsetTime = sunsetTime.replace(':', '.');
 
-                // Calculate countdowns
-                const now = new Date();
-                let sunriseCountdown = calculateCountdown(now, sunriseLocal);
-                let sunsetCountdown = calculateCountdown(now, sunsetLocal);
-
-                // Display results
-                const outputDiv = document.getElementById('output');
-                outputDiv.innerHTML = `
-                    <p><strong>Sunrise:</strong> ${formattedSunriseTime} (in ${sunriseCountdown})</p>
-                    <p><strong>Sunset:</strong> ${formattedSunsetTime} (in ${sunsetCountdown})</p>
-                    <p><strong>Day length:</strong> ${formattedDayLength}</p>
-                `;
-
-                // Update countdown every minute
-                setInterval(() => {
-                    sunriseCountdown = calculateCountdown(new Date(), sunriseLocal);
-                    sunsetCountdown = calculateCountdown(new Date(), sunsetLocal);
-                    outputDiv.innerHTML = `
-                        <p><strong>Sunrise:</strong> ${sunriseTime} (in ${sunriseCountdown})</p>
-                        <p><strong>Sunset:</strong> ${sunsetTime} (in ${sunsetCountdown})</p>
-                        <p><strong>Day length:</strong> ${formattedDayLength}</p>
-                    `;
-                }, 60000);
+                renderSunOutput();
 
             } catch (error) {
                 document.getElementById('output').innerText = 'Error fetching sunrise and sunset times.';
@@ -124,8 +124,10 @@
             return `${hours.toString()} h ${minutes.toString()} min`;
         }
 
-        // Call the function
+        // Initial call and periodic updates for sun data
         getSunriseSunset();
+        setInterval(getSunriseSunset, 3600000); // 1h
+        setInterval(renderSunOutput, 60000); // 1 min countdown refresh
     </script>
 
 
