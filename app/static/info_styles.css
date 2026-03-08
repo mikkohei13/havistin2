@@ -154,3 +154,20 @@ NEWS
     color: #aaa;
     font-size: 65%;
 }
+
+#bus .delayed {
+    color: rgb(255, 38, 0);
+}
+
+#bus .early {
+    color: rgb(123, 202, 255);
+}
+
+#bus .scheduled {
+    color: #b5b5b5;
+}
+
+#bus #stop_id_HSL_2431258 {
+    border: 1px solid orange;
+    border-radius: 10px;
+}
