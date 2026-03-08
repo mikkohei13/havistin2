@@ -1,13 +1,13 @@
-Flask == 3.1.*
+Flask >= 3.1.1
 Werkzeug == 3.1.*
-requests == 2.32.* 
+requests >= 2.32.4
 pandas == 2.3.*
 gunicorn == 23.0.*
 Flask-Caching == 2.3.*
 pymongo[srv] == 4.10.*
 redis == 5.2.*
-matplotlib == 3.9.*
+matplotlib == 3.10.*
 beautifulsoup4 == 4.12.*
-opencv-python == 4.10.*
+opencv-python == 4.12.*
 pydantic == 2.10.*
 openai == 1.58.*

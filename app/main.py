@@ -127,7 +127,7 @@ def weather_change(messaging_on = 0):
 @app.route("/talvilinnut/<int:dev_secret>")
 @app.route("/talvilinnut/")
 @app.route("/talvilinnut")
-@robust_cached(timeout=2592000) # 2592000 = 30 pv
+@robust_cached(timeout=3600) # 2592000 = 30 pv
 def winterbird_root(dev_secret = 1):
     return redirect('/')
 # Page removed due to too heavy API calls

@@ -242,7 +242,7 @@ def main():
 
     # TechCrunch
     tc_url = f"https://newsapi.org/v2/everything?sources=techcrunch&from={ two_days_ago }&pageSize=10&apiKey={ app_secrets.newsapi_key }"
-    print(tc_url)
+#    print(tc_url) # debug
     tc_news_data = common_helpers.fetch_api(tc_url)
     tc_news_articles = filter_json(tc_news_data)
     tc_news_selected_articles = select_articles_with_ai(tc_news_articles)
@@ -250,7 +250,7 @@ def main():
 
     # The Verge
     tv_url = f"https://newsapi.org/v2/everything?sources=the-verge&from={ two_days_ago }&pageSize=10&apiKey={ app_secrets.newsapi_key }"
-    print(tv_url)
+#    print(tv_url) # debug
     tv_news_data = common_helpers.fetch_api(tv_url)
     tv_news_articles = filter_json(tv_news_data)
     tv_news_selected_articles = select_articles_with_ai(tv_news_articles)

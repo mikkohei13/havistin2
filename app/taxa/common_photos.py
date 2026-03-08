@@ -51,12 +51,16 @@ def generate_photos_data(qname, photo_count_toget):
                 if "caption" in photo:
                     new_photo['caption_plain'] = photo['caption']
                 elif "taxonDescriptionCaption" in photo:
-                    if "fi" in photo['taxonDescriptionCaption']:
-                        new_photo['caption_plain'] = photo['taxonDescriptionCaption']['fi']
-                    elif "en" in photo['taxonDescriptionCaption']:
-                        new_photo['caption_plain'] = photo['taxonDescriptionCaption']['en']
-                    elif "sv" in photo['taxonDescriptionCaption']:
-                        new_photo['caption_plain'] = photo['taxonDescriptionCaption']['sv']
+                    caption = photo['taxonDescriptionCaption']
+                    if isinstance(caption, str):
+                        new_photo['caption_plain'] = caption
+                    elif isinstance(caption, dict):
+                        if "fi" in caption:
+                            new_photo['caption_plain'] = caption['fi']
+                        elif "en" in caption:
+                            new_photo['caption_plain'] = caption['en']
+                        elif "sv" in caption:
+                            new_photo['caption_plain'] = caption['sv']
                 
                 if "caption_plain" not in new_photo:
                     new_photo['caption_plain'] = ""
