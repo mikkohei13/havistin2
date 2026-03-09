@@ -32,7 +32,7 @@ def tower():
     return render_template("info_tower.html", html=html)
 
 @info_bp.route('/birds/<string:secret>')
-@robust_cached(timeout=1)  # 3600 = 1 h
+@robust_cached(timeout=3600)  # 3600 = 1 h
 def birds(secret=''):
     html = info.birds.main(secret)
     return render_template("info_birds.html", html=html)

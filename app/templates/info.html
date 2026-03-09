@@ -45,7 +45,7 @@
         setInterval(() => fetchAPIData('/info/rain', 'rain'), 121000); // 2 min
         setInterval(() => fetchAPIData('/info/tower', 'tower'), 122000); // 2 min
         setInterval(() => fetchAPIData('/info/news', 'news'), 3603000); // 1h
-        setInterval(() => fetchAPIData('/info/bus', 'bus'), 30000); // 30 s
+        setInterval(() => fetchAPIData('/info/bus', 'bus'), 60000); // 60 s
 
         // Initial calls
         fetchAPIData('/info/birds/{{ html["bird_secret"] }}', 'birds');

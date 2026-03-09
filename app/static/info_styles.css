@@ -36,6 +36,7 @@ body {
     box-sizing: border-box;
     padding: 0.9rem 1rem;
     background-color: #090b10;
+    background-color: #000000;
     border: 1px solid #242935;
     border-radius: 12px;
 }
@@ -257,6 +258,7 @@ NEWS
     border: 1px solid #2a303b;
     border-radius: 10px;
     background-color: #0d1016;
+    background-color: #000000;
 }
 
 #bus h3 {
