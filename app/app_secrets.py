@@ -23,6 +23,7 @@ bird_url = os.environ.get("BIRD_URL", "")
 bird_class = os.environ.get("BIRD_CLASS", "")
 
 newsapi_key = os.environ.get("NEWSAPI_KEY", "")
+openai_api_key = os.environ["OPENAI_API_KEY"]
 
 flush_secret = os.environ.get("FLUSH_SECRET", "")
 
