@@ -4,26 +4,29 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Havistin - Nappi</title>
+        <title>Havistin - Havis</title>
         <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
         <link rel="stylesheet" href="{{ url_for('static', filename='style-v2.css') }}">
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
             integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
-        <link rel="stylesheet" href="{{ url_for('static', filename='app/nappi.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='app/havis.css') }}">
     </head>
     <body>
         <header class="top_navi">
             <a href="/" aria-label="Takaisin etusivulle">&laquo;</a>
-            <p class="title">Nappi</p>
+            <p class="title">Havis</p>
         </header>
 
         <div class="page_wrapper">
-            <main class="nappi_main">
-                <p class="hint">Aloita paikannus, tee havainto ja tallenna lista puhelimeen.</p>
+            <main class="havis_main">
+                <section id="status-lines" class="status-lines">
+                    <p id="gps_status" class="status-line">Show only GPS-related status messages here</p>
+                    <p id="ui_status" class="status-line">Show UI/process-related status here</p>
+                </section>
 
                 <section class="controls">
                     <button id="start-btn" class="primary-btn" type="button">Aloita</button>
-                    <button id="record-btn" class="secondary-btn hidden" type="button">Havainto</button>
+                    <button id="record-btn" class="secondary-btn hidden" type="button">Lisää havainto</button>
                     <div id="recording-actions" class="recording-actions hidden">
                         <button id="submit-btn" class="primary-btn" type="button">Valmis</button>
                         <button id="cancel-btn" class="secondary-btn" type="button">Peruuta</button>
@@ -48,6 +51,6 @@
 
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
             integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-        <script src="{{ url_for('static', filename='app/nappi.js') }}"></script>
+        <script src="{{ url_for('static', filename='app/havis.js') }}"></script>
     </body>
 </html>

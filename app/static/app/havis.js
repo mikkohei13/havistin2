@@ -1,9 +1,9 @@
 (() => {
-    const DB_NAME = "nappi_db";
+    const DB_NAME = "havis_db";
     const STORE_NAME = "observations";
     const DB_VERSION = 1;
     const MAX_RECORDING_MS = 20000;
-    const API_URL = "/nappi/api/transcribe";
+    const API_URL = "/havis/api/transcribe";
 
     let db = null;
     let watchId = null;
@@ -23,15 +23,20 @@
     const submitBtn = document.getElementById("submit-btn");
     const cancelBtn = document.getElementById("cancel-btn");
     const recordingActions = document.getElementById("recording-actions");
-    const hintText = document.querySelector(".hint");
+    const gpsStatusEl = document.getElementById("gps_status");
+    const uiStatusEl = document.getElementById("ui_status");
     const observationsList = document.getElementById("observations-list");
     const modal = document.getElementById("detail-modal");
     const modalClose = document.getElementById("modal-close");
     const modalBody = document.getElementById("modal-body");
     const modalMap = document.getElementById("modal-map");
 
-    function setHint(text) {
-        hintText.textContent = text;
+    function setGpsStatus(text) {
+        gpsStatusEl.textContent = text;
+    }
+
+    function setUiStatus(text) {
+        uiStatusEl.textContent = text;
     }
 
     function setControlsReady() {
@@ -57,15 +62,15 @@
 
     function gpsErrorLabel(errorCode) {
         if (errorCode === 1) {
-            return "paikannus estetty";
+            return "Paikannus on estetty";
         }
         if (errorCode === 2) {
-            return "sijaintia ei saatu";
+            return "Sijaintia ei saatu";
         }
         if (errorCode === 3) {
-            return "paikannus aikakatkaistiin";
+            return "Paikannus aikakatkaistiin";
         }
-        return "tuntematon virhe";
+        return "Tuntematon virhe";
     }
 
     function toDisplayTime(isoString) {
@@ -151,7 +156,7 @@
         const all = await getAllObservations();
         all.sort((a, b) => String(b.timestamp).localeCompare(String(a.timestamp)));
         if (all.length === 0) {
-            observationsList.innerHTML = '<p class="empty-text">Ei havaintoja viela.</p>';
+            observationsList.innerHTML = '<p class="empty-text">Ei vielä havaintoja.</p>';
             return;
         }
         observationsList.innerHTML = all.map(rowHtml).join("");
@@ -224,17 +229,17 @@
 
     async function startGps() {
         if (!("geolocation" in navigator)) {
-            setHint("GPS ei ole saatavilla. Havainto toimii ilman sijaintia.");
+            setGpsStatus("GPS ei ole saatavilla. Et voi kirjata havaintoja.");
             setControlsReady();
             return;
         }
         if (watchId !== null) {
-            setHint("GPS on jo kaynnissa.");
+//            setGpsStatus("GPS on jo käynnissä.");
             setControlsReady();
             return;
         }
 
-        setHint("Kaynnistetaan GPS-paikannus...");
+        setGpsStatus("Kaynnistetään GPS...");
         watchId = navigator.geolocation.watchPosition(
             (position) => {
                 latestCoords = {
@@ -242,15 +247,15 @@
                     lng: position.coords.longitude,
                 };
                 const accuracy = formatAccuracy(position.coords.accuracy);
-                setHint(
+                setGpsStatus(
                     accuracy
-                        ? `GPS saatavilla, tarkkuus noin ${accuracy}.`
-                        : "GPS saatavilla."
+                        ? `GPS:n tarkkuus ${accuracy}.`
+                        : "GPS:n tarkkuus tuntematon."
                 );
             },
             (error) => {
-                setHint(
-                    `GPS ei saatavilla (${gpsErrorLabel(error.code)}), havainto toimii ilman sijaintia.`
+                setGpsStatus(
+                    `GPS ei ole saatavilla (${gpsErrorLabel(error.code)}). Et voi kirjata havaintoja.`
                 );
             },
             { enableHighAccuracy: true, maximumAge: 5000, timeout: 10000 }
@@ -328,9 +333,11 @@
 
     async function startRecording() {
         if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-            setHint("Aanitys ei ole tuettu tassa selaimessa.");
+            setUiStatus("Tällä selaimella ei voi äänittää.");
             return;
         }
+
+        recordBtn.disabled = true;
 
         try {
             recorderStream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -370,7 +377,7 @@
                     lng: latestCoords ? latestCoords.lng : "",
                 };
                 if (action !== "submit") {
-                    setHint("Havainto peruutettu. Voit aloittaa uuden havainnon.");
+                    setUiStatus("Havainto peruutettu. Voit aloittaa uuden havainnon.");
                     setControlsReady();
                     isRecording = false;
                     clearAutoStopTimer();
@@ -383,9 +390,7 @@
 
                 const blobMimeType = recordingMimeType || "audio/webm";
                 const blob = new Blob(recorderChunks, { type: blobMimeType });
-                setHint("Lahetetaan aani OpenAI:lle ja analysoidaan havaintoa...");
-                submitBtn.disabled = true;
-                cancelBtn.disabled = true;
+                setUiStatus("Lahetetaan aani OpenAI:lle ja analysoidaan havaintoa...");
 
                 try {
                     const payload = await sendAudio(blob, coordsSnapshot, blobMimeType);
@@ -403,10 +408,10 @@
                         species_unrecognized: (payload.species || "").trim() === "",
                     };
                     await putObservation(observation);
-                    setHint("Havainto tallennettu.");
+                    setUiStatus("Havainto tallennettu.");
                 } catch (error) {
                     await saveErrorObservation(error.message || "Tuntematon virhe.", coordsSnapshot);
-                    setHint("Tallennettiin virherivi. Voit yrittaa uudelleen.");
+                    setUiStatus("Yritä uudelleen.");
                 } finally {
                     await renderList();
                     isRecording = false;
@@ -420,15 +425,15 @@
             });
 
             recorder.start();
-            setHint("Aanitys kaynnissa. Valitse Valmis lahettaaaksesi tai Peruuta keskeyttaaksesi.");
+            setUiStatus("Äänitys käynnissä..");
             autoStopTimer = setTimeout(() => {
                 if (recorder && recorder.state === "recording") {
-                    setHint("20 sekuntia taynna, lopetetaan aanitys ja lahetetaan analyysiin...");
+                    setUiStatus("20 sekuntia täynnä, lopetetaan äänitys...");
                     stopRecording("submit");
                 }
             }, MAX_RECORDING_MS);
         } catch (_) {
-            setHint("Mikrofonin kaynnistys epaonnistui.");
+            setUiStatus("Mikrofonin käynnistys epäonnistui.");
             clearAutoStopTimer();
             stopRecorderStream();
             isRecording = false;
@@ -439,6 +444,8 @@
     function stopRecording(action) {
         if (recorder && recorder.state === "recording") {
             recordingAction = action;
+            submitBtn.disabled = true;
+            cancelBtn.disabled = true;
             recorder.stop();
         }
     }
@@ -447,9 +454,11 @@
         try {
             db = await openDb();
             await renderList();
-            setHint("Paina Aloita, niin GPS kytketaan paalle.");
+            setGpsStatus("");
+            setUiStatus("Valmis havainnoimaan!");
         } catch (_) {
-            setHint("Tallennustilan alustus epaonnistui.");
+            setGpsStatus("");
+            setUiStatus("Tallennustilan alustus epäonnistui.");
         }
 
         startBtn.addEventListener("click", async () => {
@@ -464,14 +473,14 @@
             if (!isRecording) {
                 return;
             }
-            setHint("Lopetetaan aanitys ja valmistellaan lahetys...");
+            setUiStatus("Analysoidaan havaintoa...");
             stopRecording("submit");
         });
         cancelBtn.addEventListener("click", () => {
             if (!isRecording) {
                 return;
             }
-            setHint("Peruutetaan havainto...");
+            setUiStatus("Peruutetaan havaintoa...");
             stopRecording("cancel");
         });
 

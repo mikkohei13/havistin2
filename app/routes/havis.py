@@ -7,7 +7,7 @@ import io
 import sys
 import traceback
 
-nappi_bp = Blueprint("nappi", __name__, url_prefix="/nappi")
+havis_bp = Blueprint("havis", __name__, url_prefix="/havis")
 
 TRANSCRIBE_MODEL = "gpt-4o-transcribe"
 GPT_MODEL = "gpt-5.4"
@@ -36,13 +36,14 @@ GPT_SYSTEM_PROMPT = """
 
 
 
-@nappi_bp.route("")
-@nappi_bp.route("/")
-def nappi_root():
+
+@havis_bp.route("")
+@havis_bp.route("/")
+def havis_root():
     user_data = session.get("user_data")
     if user_data is None or "errorCode" in user_data:
         return redirect("/login/start")
-    return render_template("nappi.html")
+    return render_template("havis.html")
 
 
 def _unauthorized():
@@ -92,15 +93,15 @@ def _normalize_observation(data):
     }
 
 
-def _log_nappi_error(context, error, extra=None):
-    print(f"Nappi error [{context}]: {type(error).__name__}: {str(error)}", file=sys.stdout)
+def _log_havis_error(context, error, extra=None):
+    print(f"Havis error [{context}]: {type(error).__name__}: {str(error)}", file=sys.stdout)
     if extra is not None:
-        print(f"Nappi error context [{context}]: {extra}", file=sys.stdout)
+        print(f"Havis error context [{context}]: {extra}", file=sys.stdout)
     print(traceback.format_exc(), sep="\n", file=sys.stdout)
 
 
-@nappi_bp.route("/api/transcribe", methods=["POST"])
-def nappi_transcribe():
+@havis_bp.route("/api/transcribe", methods=["POST"])
+def havis_transcribe():
     user_data = session.get("user_data")
     if user_data is None or "errorCode" in user_data:
         return _unauthorized()
@@ -132,7 +133,7 @@ def nappi_transcribe():
         audio_buffer = io.BytesIO(audio_bytes)
         audio_buffer.name = audio.filename or "recording.webm"
         print(
-            "Nappi transcribe request: "
+            "Havis transcribe request: "
             f"filename={audio_buffer.name}, "
             f"mimetype={audio.mimetype}, "
             f"bytes={len(audio_bytes)}, "
@@ -148,7 +149,7 @@ def nappi_transcribe():
         )
         raw_transcript = transcription.strip()
     except Exception as error:
-        _log_nappi_error(
+        _log_havis_error(
             "transcription",
             error,
             extra={
@@ -166,7 +167,7 @@ def nappi_transcribe():
 
     try:
         print(
-            "Nappi GPT request: "
+            "Havis GPT request: "
             f"gpt_model={GPT_MODEL}, "
             f"transcript_chars={len(raw_transcript)}",
             file=sys.stdout,
@@ -183,7 +184,7 @@ def nappi_transcribe():
         parsed = json.loads(_extract_json_object(content))
         normalized = _normalize_observation(parsed)
     except Exception as error:
-        _log_nappi_error(
+        _log_havis_error(
             "structured_output",
             error,
             extra={

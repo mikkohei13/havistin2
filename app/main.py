@@ -44,7 +44,7 @@ from decorators import robust_cached
 from app.routes.info import info_bp
 from app.routes.atlas import atlas_bp
 from app.routes.taxa import taxa_bp
-from app.routes.nappi import nappi_bp
+from app.routes.havis import havis_bp
 
 
 print("-------------- PREPARE --------------", file = sys.stdout)
@@ -150,7 +150,7 @@ def root():
 app.register_blueprint(info_bp)
 app.register_blueprint(atlas_bp)
 app.register_blueprint(taxa_bp)
-app.register_blueprint(nappi_bp)
+app.register_blueprint(havis_bp)
 
 # Old squareform route, redirect to new route
 @app.route("/ruutulomake/<string:square_id_untrusted>/<string:show_untrusted>")
