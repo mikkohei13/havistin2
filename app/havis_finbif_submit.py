@@ -15,6 +15,18 @@ FINBIF_COLLECTION_ID = "HR.1747"
 FINBIF_FORM_ID = "JX.519"
 
 
+def _log_info(message: str, **kwargs: Any) -> None:
+    """Structured info line for successful steps and progress (stdout / server logs)."""
+    if kwargs:
+        try:
+            extra = json.dumps(kwargs, ensure_ascii=False, default=str)
+        except TypeError:
+            extra = repr(kwargs)
+        print(f"Havis FinBIF info: {message} | {extra}", file=sys.stdout)
+    else:
+        print(f"Havis FinBIF info: {message}", file=sys.stdout)
+
+
 def _log(context: str, err: BaseException, extra: Optional[dict] = None) -> None:
     print(f"Havis FinBIF [{context}]: {type(err).__name__}: {err}", file=sys.stdout)
     if extra:
@@ -31,8 +43,8 @@ def _log_finbif_response(endpoint: str, status: int, body: Any) -> None:
     print(f"Havis FinBIF {endpoint} HTTP {status}:\n{text}", file=sys.stdout)
 
 
-def _log_submitted_document(doc: dict) -> None:
-    """Log the document payload sent to validate/create (truncated if huge)."""
+def _log_submitted_document(doc: dict, label: str = "submitted document") -> None:
+    """Log the document payload (truncated if huge)."""
     try:
         text = json.dumps(doc, ensure_ascii=False, indent=2, default=str)
     except TypeError:
@@ -40,7 +52,7 @@ def _log_submitted_document(doc: dict) -> None:
     max_len = 120_000
     if len(text) > max_len:
         text = text[:max_len] + "\n... [truncated]"
-    print(f"Havis FinBIF submitted document (JSON):\n{text}", file=sys.stdout)
+    print(f"Havis FinBIF {label} (JSON):\n{text}", file=sys.stdout)
 
 
 def _pick_taxon_id(results: list, vernacular_fi: str) -> Optional[str]:
@@ -123,30 +135,19 @@ def _observation_count(obs: dict) -> int:
 
 
 def _unit_notes(obs: dict) -> str:
-    """Muistiinpanot only (no raw transcription in FinBIF payload)."""
+    """Muistiinpanot field only; omit notes in payload when empty."""
     n = obs.get("notes")
-    if not n:
+    if n is None or str(n).strip() == "":
         return ""
     return str(n).strip()
 
 
-def _observer_leg_string(user_data: dict) -> str:
-    """FinBIF leg format: 'Lastname, Firstname' or fullName from /person."""
-    full = (user_data.get("fullName") or "").strip()
-    if full:
-        return full
-    last = (user_data.get("inheritedName") or "").strip()
-    first = (user_data.get("preferredName") or "").strip()
-    if last and first:
-        return f"{last}, {first}"
-    if last:
-        return last
-    if first:
-        return first
-    email = (user_data.get("emailAddress") or "").strip()
-    if email:
-        return email
-    return ""
+def _observer_leg_identifier(user_data: dict) -> str:
+    """FinBIF /person `id` (e.g. MAN.xxx) for gatheringEvent.leg."""
+    pid = user_data.get("id")
+    if pid is None:
+        return ""
+    return str(pid).strip()
 
 
 def _gathering_center_coords(observations: list[dict]) -> tuple[Optional[float], Optional[float]]:
@@ -245,27 +246,22 @@ def build_store_document(
         raise ValueError("Sijaintipuute.")
 
     started = session.get("startedAt") or ""
-    ended = session.get("endedAt") or started
 
     geom = _gathering_geometry_from_observations(usable_obs)
+    geom_type = geom.get("type", "?")
 
-    leg_name = _observer_leg_string(observer_user)
-    if not leg_name:
-        raise ValueError("Havainnoijan nimeä ei löytynyt käyttäjäprofiilista.")
+    leg_id = _observer_leg_identifier(observer_user)
+    if not leg_id:
+        raise ValueError("Havainnoijan tunnistetta ei löytynyt käyttäjäprofiilista.")
 
+    # Havaintoerän aloitus; dateEnd jätetään tyhjäksi (ei kenttää)
     gathering_event: dict[str, Any] = {
         "dateBegin": str(started),
-        "dateEnd": str(ended),
-        "geometry": geom,
-        "leg": [leg_name],
+        "leg": [leg_id],
+        "legPublic": True,
     }
 
     gathering: dict[str, Any] = {
-        "country": "Finland",
-        "dateBegin": str(started),
-        "dateEnd": str(ended),
-        "wgs84Latitude": str(center_lat),
-        "wgs84Longitude": str(center_lng),
         "geometry": geom,
         "units": [],
     }
@@ -278,18 +274,21 @@ def build_store_document(
 
         ts = obs.get("timestamp") or started
         unit: dict[str, Any] = {
-            "wild": "MY.wildWild",
-            "individualCount": _observation_count(obs),
+            "count": str(_observation_count(obs)),
             "identifications": [
                 {
-                    "taxonVerbatim": species,
-                    "taxonURI": _taxon_uri(taxon_id),
+                    "taxon": species
                 }
             ],
+            "unitFact": {
+                "autocompleteSelectedTaxonID": _taxon_uri(taxon_id) 
+            },
             "unitGathering": {
                 "geometry": {"type": "Point", "coordinates": [lng, lat]},
                 "dateBegin": str(ts),
             },
+            "taxonConfidence": "MY.taxonConfidenceSure",
+            "recordBasis": "MY.recordBasisHumanObservation",
         }
         note_text = _unit_notes(obs)
         if note_text:
@@ -300,9 +299,28 @@ def build_store_document(
     document = {
         "collectionID": collection_id,
         "formID": form_id,
+        "keywords": [
+            "new",
+        ],
+        "secureLevel":"MX.secureLevelNone",
         "gatheringEvent": gathering_event,
         "gatherings": [gathering],
+        "creator": "MA.3",
+        "editor": "MA.3",
     }
+    _log_info(
+        "document built",
+        session_id=session.get("id"),
+        session_started_at=started,
+        collection_id=collection_id,
+        form_id=form_id,
+        units=len(gathering["units"]),
+        skipped=len(skip_notes),
+        geometry_type=geom_type,
+        observer_leg_id=leg_id,
+    )
+    if skip_notes:
+        _log_info("skipped observations", reasons=skip_notes)
     return document, skip_notes
 
 
@@ -320,6 +338,15 @@ def submit_session_to_finbif(
     form_id = FINBIF_FORM_ID
     taxon_cache: dict[str, str] = {}
 
+    _log_info(
+        "submit start",
+        session_id=session.get("id"),
+        observation_rows=len(observations),
+        person_id=observer_user.get("id"),
+        collection_id=collection_id,
+        form_id=form_id,
+    )
+
     doc, skip_notes = build_store_document(
         session,
         observations,
@@ -331,6 +358,8 @@ def submit_session_to_finbif(
     )
 
     validate_url = "https://api.laji.fi/documents/validate?lang=fi"
+    _log_info("POST documents/validate", url=validate_url)
+    _log_submitted_document(doc, label="document being validated")
     try:
         v_status, v_body = common_helpers.post_finbif_json(
             validate_url, doc, person_token=person_token
@@ -345,7 +374,6 @@ def submit_session_to_finbif(
 
     if v_status not in (204, 201):
         _log_finbif_response("documents/validate response", v_status, v_body)
-        _log_submitted_document(doc)
         if v_status == 422 and isinstance(v_body, dict):
             return {
                 "ok": False,
@@ -367,8 +395,15 @@ def submit_session_to_finbif(
             "skipped_observations": skip_notes,
         }
 
+    _log_info(
+        "documents/validate OK",
+        http_status=v_status,
+        body_empty=v_body is None,
+    )
+
     # Validation OK — only then create (never POST /documents if validate failed above)
     create_url = "https://api.laji.fi/documents?lang=fi"
+    _log_info("POST documents (create)", url=create_url)
     try:
         c_status, c_body = common_helpers.post_finbif_json(
             create_url, doc, person_token=person_token
@@ -387,10 +422,17 @@ def submit_session_to_finbif(
         _log_submitted_document(doc)
 
     if c_status == 201 and isinstance(c_body, dict):
+        doc_id = c_body.get("id")
+        _log_info(
+            "documents create OK",
+            http_status=c_status,
+            document_id=doc_id,
+            session_id=session.get("id"),
+        )
         return {
             "ok": True,
             "document": c_body,
-            "document_id": c_body.get("id"),
+            "document_id": doc_id,
             "skipped_observations": skip_notes,
         }
 

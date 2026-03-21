@@ -31,6 +31,8 @@ ALLOWED_AUDIO_TYPES = {
 
 
 
+
+
 @havis_bp.route("")
 @havis_bp.route("/")
 def havis_root():
@@ -179,6 +181,12 @@ def havis_submit():
             {"ok": False, "error_code": "bad_request", "message": "Havaintoerä ei ole päättynyt."}
         ), 400
 
+    print(
+        f"Havis API /api/submit: session_id={sess.get('id')} "
+        f"observations={len(observations)} user_id={user_data.get('id')}",
+        file=sys.stdout,
+    )
+
     try:
         result = submit_session_to_finbif(sess, observations, person_token, user_data)
     except ValueError as err:
@@ -188,6 +196,12 @@ def havis_submit():
         return jsonify(
             {"ok": False, "error_code": "server_error", "message": "FinBIF-lähetys epäonnistui."}
         ), 502
+
+    print(
+        f"Havis API /api/submit response: ok={result.get('ok')} "
+        f"error_code={result.get('error_code')} document_id={result.get('document_id')}",
+        file=sys.stdout,
+    )
 
     status = 200 if result.get("ok") else 400
     return jsonify(result), status
