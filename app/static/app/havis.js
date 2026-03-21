@@ -1,7 +1,8 @@
 (() => {
     const DB_NAME = "havis_db";
     const STORE_NAME = "observations";
-    const DB_VERSION = 1;
+    const SESSIONS_STORE = "sessions";
+    const DB_VERSION = 2;
     const MAX_RECORDING_MS = 20000;
     const API_URL = "/havis/api/transcribe";
 
@@ -17,9 +18,13 @@
     let recordingAction = "";
     let map = null;
     let mapMarker = null;
+    let currentSessionId = null;
+    let currentSessionStartIso = null;
 
     const startBtn = document.getElementById("start-btn");
+    const sessionActiveEl = document.getElementById("session-active");
     const recordBtn = document.getElementById("record-btn");
+    const endSessionBtn = document.getElementById("end-session-btn");
     const submitBtn = document.getElementById("submit-btn");
     const cancelBtn = document.getElementById("cancel-btn");
     const recordingActions = document.getElementById("recording-actions");
@@ -39,15 +44,26 @@
         uiStatusEl.textContent = text;
     }
 
-    function setControlsReady() {
-        startBtn.classList.add("hidden");
-        recordBtn.classList.remove("hidden");
+    function setControlsIdle() {
+        startBtn.classList.remove("hidden");
+        sessionActiveEl.classList.add("hidden");
         recordBtn.disabled = false;
+        recordingActions.classList.add("hidden");
+    }
+
+    function setControlsSessionReady() {
+        startBtn.classList.add("hidden");
+        sessionActiveEl.classList.remove("hidden");
+        recordBtn.classList.remove("hidden");
+        endSessionBtn.classList.remove("hidden");
+        recordBtn.disabled = false;
+        endSessionBtn.disabled = false;
         recordingActions.classList.add("hidden");
     }
 
     function setControlsRecording() {
         recordBtn.classList.add("hidden");
+        endSessionBtn.classList.add("hidden");
         recordingActions.classList.remove("hidden");
         submitBtn.disabled = false;
         cancelBtn.disabled = false;
@@ -92,12 +108,36 @@
     function openDb() {
         return new Promise((resolve, reject) => {
             const req = indexedDB.open(DB_NAME, DB_VERSION);
-            req.onupgradeneeded = () => {
+            req.onupgradeneeded = (event) => {
                 const nextDb = req.result;
+                const oldVersion = event.oldVersion;
                 if (!nextDb.objectStoreNames.contains(STORE_NAME)) {
                     nextDb.createObjectStore(STORE_NAME, { keyPath: "id" });
                 }
+                if (oldVersion < 2 && !nextDb.objectStoreNames.contains(SESSIONS_STORE)) {
+                    nextDb.createObjectStore(SESSIONS_STORE, { keyPath: "id" });
+                }
             };
+            req.onsuccess = () => resolve(req.result);
+            req.onerror = () => reject(req.error);
+        });
+    }
+
+    function putSession(session) {
+        return new Promise((resolve, reject) => {
+            const tx = db.transaction(SESSIONS_STORE, "readwrite");
+            const store = tx.objectStore(SESSIONS_STORE);
+            store.put(session);
+            tx.oncomplete = () => resolve();
+            tx.onerror = () => reject(tx.error);
+        });
+    }
+
+    function getSession(id) {
+        return new Promise((resolve, reject) => {
+            const tx = db.transaction(SESSIONS_STORE, "readonly");
+            const store = tx.objectStore(SESSIONS_STORE);
+            const req = store.get(id);
             req.onsuccess = () => resolve(req.result);
             req.onerror = () => reject(req.error);
         });
@@ -185,6 +225,11 @@
             <p><strong>Laji:</strong> ${observation.species || "Tunnistamaton laji"}</p>
             <p><strong>Maara:</strong> ${observation.count === "" ? "-" : observation.count}</p>
             <p><strong>Aika:</strong> ${toDisplayTime(observation.timestamp)}</p>
+            ${
+                observation.sessionStartedAt
+                    ? `<p><strong>Havaintoerä (aloitettu):</strong> ${toDisplayTime(observation.sessionStartedAt)}</p>`
+                    : ""
+            }
             <p><strong>Muistiinpanot:</strong> ${observation.notes || "-"}</p>
             <p><strong>Litterointi:</strong> ${observation.raw_transcript || "-"}</p>
             <p><strong>Sijainti:</strong> ${observation.lat || "-"}, ${observation.lng || "-"}</p>
@@ -230,12 +275,11 @@
     async function startGps() {
         if (!("geolocation" in navigator)) {
             setGpsStatus("GPS ei ole saatavilla. Et voi kirjata havaintoja.");
-            setControlsReady();
+            setControlsSessionReady();
             return;
         }
         if (watchId !== null) {
-//            setGpsStatus("GPS on jo käynnissä.");
-            setControlsReady();
+            setControlsSessionReady();
             return;
         }
 
@@ -260,7 +304,7 @@
             },
             { enableHighAccuracy: true, maximumAge: 5000, timeout: 10000 }
         );
-        setControlsReady();
+        setControlsSessionReady();
     }
 
     function buildId() {
@@ -318,6 +362,8 @@
         const observation = {
             id: buildId(),
             timestamp: new Date().toISOString(),
+            sessionId: currentSessionId || "",
+            sessionStartedAt: currentSessionStartIso || "",
             lat: coordsSnapshot.lat === "" ? "" : String(coordsSnapshot.lat),
             lng: coordsSnapshot.lng === "" ? "" : String(coordsSnapshot.lng),
             species: "",
@@ -378,7 +424,7 @@
                 };
                 if (action !== "submit") {
                     setUiStatus("Havainto peruutettu. Voit aloittaa uuden havainnon.");
-                    setControlsReady();
+                    setControlsSessionReady();
                     isRecording = false;
                     clearAutoStopTimer();
                     stopRecorderStream();
@@ -390,13 +436,15 @@
 
                 const blobMimeType = recordingMimeType || "audio/webm";
                 const blob = new Blob(recorderChunks, { type: blobMimeType });
-                setUiStatus("Lahetetaan aani OpenAI:lle ja analysoidaan havaintoa...");
+                setUiStatus("Analysoidaan havaintoa...");
 
                 try {
                     const payload = await sendAudio(blob, coordsSnapshot, blobMimeType);
                     const observation = {
                         id: buildId(),
                         timestamp: new Date().toISOString(),
+                        sessionId: currentSessionId || "",
+                        sessionStartedAt: currentSessionStartIso || "",
                         lat: coordsSnapshot.lat === "" ? "" : String(coordsSnapshot.lat),
                         lng: coordsSnapshot.lng === "" ? "" : String(coordsSnapshot.lng),
                         species: payload.species || "",
@@ -415,7 +463,7 @@
                 } finally {
                     await renderList();
                     isRecording = false;
-                    setControlsReady();
+                    setControlsSessionReady();
                     clearAutoStopTimer();
                     stopRecorderStream();
                     recordingMimeType = "";
@@ -437,7 +485,7 @@
             clearAutoStopTimer();
             stopRecorderStream();
             isRecording = false;
-            setControlsReady();
+            setControlsSessionReady();
         }
     }
 
@@ -455,15 +503,53 @@
             db = await openDb();
             await renderList();
             setGpsStatus("");
-            setUiStatus("Valmis havainnoimaan!");
+            setUiStatus("Aloita havaintoerä Aloita-painikkeella.");
         } catch (_) {
             setGpsStatus("");
             setUiStatus("Tallennustilan alustus epäonnistui.");
         }
 
         startBtn.addEventListener("click", async () => {
-            startBtn.classList.add("hidden");
-            await startGps();
+            if (!db) {
+                return;
+            }
+            try {
+                const startedAt = new Date().toISOString();
+                const session = { id: buildId(), startedAt, endedAt: null };
+                await putSession(session);
+                currentSessionId = session.id;
+                currentSessionStartIso = startedAt;
+                await startGps();
+                setUiStatus(`Havaintoerä käynnissä (aloitettu ${toDisplayTime(startedAt)}).`);
+            } catch (_) {
+                setUiStatus("Havaintoerän aloitus epäonnistui.");
+            }
+        });
+
+        endSessionBtn.addEventListener("click", async () => {
+            if (!db || isRecording || !currentSessionId) {
+                return;
+            }
+            if (
+                !window.confirm(
+                    "Lopetetaanko havaintoerä? Voit aloittaa uuden erän myöhemmin Aloita-painikkeella."
+                )
+            ) {
+                return;
+            }
+            try {
+                const session = await getSession(currentSessionId);
+                if (session) {
+                    session.endedAt = new Date().toISOString();
+                    await putSession(session);
+                }
+                currentSessionId = null;
+                currentSessionStartIso = null;
+                setControlsIdle();
+                setUiStatus("Havaintoerä päättyi. Voit aloittaa uuden havaintoerän.");
+            } catch (_) {
+                setUiStatus("Havaintoerän päättäminen epäonnistui.");
+            }
         });
 
         recordBtn.addEventListener("click", async () => {

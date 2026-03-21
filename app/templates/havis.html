@@ -26,7 +26,10 @@
 
                 <section class="controls">
                     <button id="start-btn" class="primary-btn" type="button">Aloita</button>
-                    <button id="record-btn" class="secondary-btn hidden" type="button">Lisää havainto</button>
+                    <div id="session-active" class="session-active hidden">
+                        <button id="record-btn" class="secondary-btn" type="button">Lisää havainto</button>
+                        <button id="end-session-btn" class="secondary-btn" type="button">Lopeta havaintoerä</button>
+                    </div>
                     <div id="recording-actions" class="recording-actions hidden">
                         <button id="submit-btn" class="primary-btn" type="button">Valmis</button>
                         <button id="cancel-btn" class="secondary-btn" type="button">Peruuta</button>

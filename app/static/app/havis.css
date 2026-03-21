@@ -63,7 +63,16 @@ body {
     align-content: start;
     gap: 0.6rem;
     box-sizing: border-box;
-    height: calc(2 * (46px + 2px) + 0.6rem);
+    min-height: calc(2 * (46px + 2px) + 0.6rem);
+}
+
+.session-active {
+    display: grid;
+    gap: 0.6rem;
+}
+
+.session-active button {
+    width: 100%;
 }
 
 button {

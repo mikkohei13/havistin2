@@ -1,11 +1,13 @@
-from flask import Blueprint, jsonify, redirect, render_template, request, session
-from openai import OpenAI
-import app_secrets
-import json
-import re
 import io
 import sys
 import traceback
+from typing import Optional
+
+from flask import Blueprint, jsonify, redirect, render_template, request, session
+from openai import OpenAI
+from pydantic import BaseModel, Field
+
+import app_secrets
 
 havis_bp = Blueprint("havis", __name__, url_prefix="/havis")
 
@@ -26,14 +28,75 @@ ALLOWED_AUDIO_TYPES = {
 }
 
 GPT_SYSTEM_PROMPT = """
-    "Analysoi tämä suomenkielinen litterointi joka kuvailee lintuhavaintoa, jossa on tyypillisesti lintulajin suomenkielinen nimi, lukumäärä ja muuta tietoa havainnosta.
-    
-    Palauta ainoastaan JSON-objekti, jossa on seuraavat kentät. Ei markdownia, ei muuta tekstiä.
-    - species (suomenkielinen lajinimi merkkijonona, arvaa tarvittaessa)
-    - count (kokonaisluku tai tyhjä merkkijono)
-    - notes (lyhyt lisähuomio merkkijonona tai tyhjä)
+Tehtäväsi on muuntaa suomenkielinen lintuhavaintoa kuvaava puheentunnistusteksti rakenteiseksi tiedoksi.
+
+Syöte on epämuodollista puhekieltä ja voi sisältää:
+- puheentunnistuksen virheitä, erityisesti lajien nimissä
+- katkonaisia tai puhekielisiä ilmauksia
+- lukumääriä sanoina tai numeroina
+- epätäydellisiä havaintokuvauksia
+
+Palauta vain tiedot, jotka ovat kohtuullisen varmasti pääteltävissä tekstistä.
+Älä keksi puuttuvia tietoja.
+
+Säännöt:
+
+1. Laji
+- Tunnista havaittu lintulaji ja palauta sen vakiintunut suomenkielinen nimi oikeinkirjoitettuna.
+- Korjaa ilmeiset puheentunnistus- ja kirjoitusvirheet.
+- Jos lajia ei voi päätellä, palauta tyhjä merkkijono.
+- Älä tarkenna ylätason ryhmää yksittäiseksi lajiksi ilman selvää perustetta.
+  Esimerkiksi jos tekstistä ilmenee vain "lokki", palauta "lokki", ei tiettyä lokkilajia.
+
+2. Määrä
+- Palauta yksilömäärä kokonaislukuna, jos se ilmenee tekstistä.
+- Jos tekstissä kuvaillaan selvästi yksi lintu mutta määrää ei sanota erikseen, käytä arvoa 1.
+- Jos määrä on epämääräinen tai epäselvä, palauta null.
+
+3. Lisätiedot
+- Kirjoita lyhyt suomenkielinen huomio vain tekstissä mainituista lisätiedoista, kuten paikasta, käyttäytymisestä, suunnasta, ajasta, iästä, puvusta tai säästä.
+- Älä toista lajia tai määrää ilman tarvetta.
+- Jos lisätietoja ei ole, palauta tyhjä merkkijono.
+
+4. Ei-havainto
+- Jos teksti ei kuvaa lintuhavaintoa, palauta:
+  - species = ""
+  - count = null
+  - notes = ""
+
+5. Epävarmuus
+- Jos puhuja arvelee, kyselee tai epäröi eikä havaintoa voi tulkita riittävän varmasti, suosi tyhjää lajia ja null-arvoja mieluummin kuin arvausta.
+
+6. Useat lajit
+- Jos tekstissä mainitaan useita eri lajeja, palauta vain ensimmäinen selvästi havaittu laji siihen liittyvine tietoineen.
+- Älä yhdistä useiden lajien määriä samaan havaintoon.
 """
 
+
+class BirdObservationLLM(BaseModel):
+    species: str = Field(
+        default="",
+        description=(
+            "Havaitun linnun vakiintunut suomenkielinen lajinimi oikeinkirjoitettuna. "
+            "Jos lajia ei voi tunnistaa riittävän varmasti, palauta tyhjä merkkijono."
+        ),
+    )
+    count: Optional[int] = Field(
+        default=None,
+        description=(
+            "Havaittujen yksilöiden määrä kokonaislukuna. "
+            "Käytä arvoa 1, jos tekstissä kuvataan selvästi yksi lintu ilman erikseen mainittua määrää. "
+            "Palauta null, jos määrä on epäselvä, epämääräinen tai vain arvioitu."
+        ),
+    )
+    notes: str = Field(
+        default="",
+        description=(
+            "Lyhyt suomenkielinen lisähuomio vain tekstissä mainituista yksityiskohdista, "
+            "esimerkiksi paikasta, käyttäytymisestä, suunnasta, iästä, puvusta, ajasta tai säästä. "
+            "Palauta tyhjä merkkijono, jos lisätietoja ei ole."
+        ),
+    )
 
 
 
@@ -57,16 +120,6 @@ def _normalize_count(value):
         return int(value)
     except (TypeError, ValueError):
         return ""
-
-
-def _extract_json_object(raw_text):
-    stripped = raw_text.strip()
-    if stripped.startswith("{") and stripped.endswith("}"):
-        return stripped
-    match = re.search(r"\{[\s\S]*\}", stripped)
-    if match:
-        return match.group(0)
-    return "{}"
 
 
 def _normalize_observation(data):
@@ -172,17 +225,22 @@ def havis_transcribe():
             f"transcript_chars={len(raw_transcript)}",
             file=sys.stdout,
         )
-        completion = client.chat.completions.create(
+        completion = client.beta.chat.completions.parse(
             model=GPT_MODEL,
-            response_format={"type": "json_object"},
             messages=[
                 {"role": "system", "content": GPT_SYSTEM_PROMPT},
                 {"role": "user", "content": raw_transcript},
             ],
+            response_format=BirdObservationLLM,
         )
-        content = completion.choices[0].message.content or "{}"
-        parsed = json.loads(_extract_json_object(content))
-        normalized = _normalize_observation(parsed)
+        message = completion.choices[0].message
+        if message.refusal:
+            raise ValueError(f"model_refusal: {message.refusal}")
+        if completion.choices[0].finish_reason == "length":
+            raise ValueError("incomplete_response_max_tokens")
+        if message.parsed is None:
+            raise ValueError("parsed_output_missing")
+        normalized = _normalize_observation(message.parsed.model_dump())
     except Exception as error:
         _log_havis_error(
             "structured_output",
