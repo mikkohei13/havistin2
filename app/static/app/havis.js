@@ -380,18 +380,101 @@
         `;
     }
 
+    function sessionGroupKey(observation) {
+        const sid = observation.sessionId;
+        if (sid !== undefined && sid !== null && String(sid).trim() !== "") {
+            return `id:${sid}`;
+        }
+        const started = observation.sessionStartedAt;
+        if (started !== undefined && started !== null && String(started).trim() !== "") {
+            return `at:${started}`;
+        }
+        return "legacy";
+    }
+
+    function groupObservationsBySession(observations) {
+        const buckets = new Map();
+        for (const obs of observations) {
+            const key = sessionGroupKey(obs);
+            if (!buckets.has(key)) {
+                buckets.set(key, []);
+            }
+            buckets.get(key).push(obs);
+        }
+        const entries = Array.from(buckets.entries());
+        for (const [, items] of entries) {
+            items.sort((a, b) => String(b.timestamp).localeCompare(String(a.timestamp)));
+        }
+        entries.sort((a, b) => {
+            const maxIn = (items) => {
+                let max = 0;
+                for (const o of items) {
+                    const t = new Date(o.timestamp).getTime();
+                    if (!Number.isNaN(t) && t > max) {
+                        max = t;
+                    }
+                }
+                return max;
+            };
+            return maxIn(b[1]) - maxIn(a[1]);
+        });
+        return entries;
+    }
+
+    function sessionStartedIsoForGroup(key, items) {
+        if (key === "legacy") {
+            return "";
+        }
+        if (key.startsWith("at:")) {
+            return key.slice(3);
+        }
+        if (key.startsWith("id:")) {
+            for (const o of items) {
+                const s = o.sessionStartedAt;
+                if (s !== undefined && s !== null && String(s).trim() !== "") {
+                    return s;
+                }
+            }
+        }
+        return "";
+    }
+
+    function observationGroupHeaderHtml(key, items) {
+        if (key === "legacy") {
+            return '<div class="observation-group-header">Ei tallennettua havaintoerää</div>';
+        }
+        const iso = sessionStartedIsoForGroup(key, items);
+        const stamp = iso ? formatSessionStartStampFi(iso) : "";
+        const label = stamp
+            ? `Havaintoerä ${stamp}`
+            : "Havaintoerä";
+        return `<div class="observation-group-header">${label}</div>`;
+    }
+
+    function observationGroupsHtml(groupEntries) {
+        return groupEntries
+            .map(
+                ([key, items]) =>
+                    `<div class="observation-group">${observationGroupHeaderHtml(key, items)}${items
+                        .map(rowHtml)
+                        .join("")}</div>`
+            )
+            .join("");
+    }
+
     async function renderList() {
         const all = await getAllObservations();
-        all.sort((a, b) => String(b.timestamp).localeCompare(String(a.timestamp)));
         if (all.length === 0) {
             observationsList.innerHTML = '<p class="empty-text">Ei vielä havaintoja.</p>';
             return;
         }
-        observationsList.innerHTML = all.map(rowHtml).join("");
+        const groupEntries = groupObservationsBySession(all);
+        const flatOrdered = groupEntries.flatMap(([, items]) => items);
+        observationsList.innerHTML = observationGroupsHtml(groupEntries);
         observationsList.querySelectorAll(".observation-row").forEach((row) => {
             row.addEventListener("click", () => {
                 const id = row.dataset.id;
-                const observation = all.find((item) => item.id === id);
+                const observation = flatOrdered.find((item) => item.id === id);
                 if (observation) {
                     openModal(observation);
                 }

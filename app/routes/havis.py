@@ -1,18 +1,17 @@
 import io
 import sys
 import traceback
-from typing import Optional
 
 from flask import Blueprint, jsonify, redirect, render_template, request, session
 from openai import OpenAI
-from pydantic import BaseModel, Field
 
 import app_secrets
+
+from app.havis_structurization import GPT_MODEL, structurize_transcript
 
 havis_bp = Blueprint("havis", __name__, url_prefix="/havis")
 
 TRANSCRIBE_MODEL = "gpt-4o-transcribe"
-GPT_MODEL = "gpt-5.4"
 
 ALLOWED_AUDIO_TYPES = {
     "audio/mpeg",
@@ -26,79 +25,6 @@ ALLOWED_AUDIO_TYPES = {
     "application/ogg",
     "video/webm",
 }
-
-GPT_SYSTEM_PROMPT = """
-Tehtäväsi on muuntaa suomenkielinen lintuhavaintoa kuvaava puheentunnistusteksti rakenteiseksi tiedoksi.
-
-Syöte on epämuodollista puhekieltä ja voi sisältää:
-- puheentunnistuksen virheitä, erityisesti lajien nimissä
-- katkonaisia tai puhekielisiä ilmauksia
-- lukumääriä sanoina tai numeroina
-- epätäydellisiä havaintokuvauksia
-
-Palauta vain tiedot, jotka ovat kohtuullisen varmasti pääteltävissä tekstistä.
-Älä keksi puuttuvia tietoja.
-
-Säännöt:
-
-1. Laji
-- Tunnista havaittu lintulaji ja palauta sen vakiintunut suomenkielinen nimi oikeinkirjoitettuna.
-- Korjaa ilmeiset puheentunnistus- ja kirjoitusvirheet.
-- Jos lajia ei voi päätellä, palauta tyhjä merkkijono.
-- Älä tarkenna ylätason ryhmää yksittäiseksi lajiksi ilman selvää perustetta.
-  Esimerkiksi jos tekstistä ilmenee vain "lokki", palauta "lokki", ei tiettyä lokkilajia.
-
-2. Määrä
-- Palauta yksilömäärä kokonaislukuna, jos se ilmenee tekstistä.
-- Jos tekstissä kuvaillaan selvästi yksi lintu mutta määrää ei sanota erikseen, käytä arvoa 1.
-- Jos määrä on epämääräinen tai epäselvä, palauta null.
-
-3. Lisätiedot
-- Kirjoita lyhyt suomenkielinen huomio vain tekstissä mainituista lisätiedoista, kuten paikasta, käyttäytymisestä, suunnasta, ajasta, iästä, puvusta tai säästä.
-- Älä toista lajia tai määrää ilman tarvetta.
-- Jos lisätietoja ei ole, palauta tyhjä merkkijono.
-
-4. Ei-havainto
-- Jos teksti ei kuvaa lintuhavaintoa, palauta:
-  - species = ""
-  - count = null
-  - notes = ""
-
-5. Epävarmuus
-- Jos puhuja arvelee, kyselee tai epäröi eikä havaintoa voi tulkita riittävän varmasti, suosi tyhjää lajia ja null-arvoja mieluummin kuin arvausta.
-
-6. Useat lajit
-- Jos tekstissä mainitaan useita eri lajeja, palauta vain ensimmäinen selvästi havaittu laji siihen liittyvine tietoineen.
-- Älä yhdistä useiden lajien määriä samaan havaintoon.
-"""
-
-
-class BirdObservationLLM(BaseModel):
-    species: str = Field(
-        default="",
-        description=(
-            "Havaitun linnun vakiintunut suomenkielinen lajinimi oikeinkirjoitettuna. "
-            "Jos lajia ei voi tunnistaa riittävän varmasti, palauta tyhjä merkkijono."
-        ),
-    )
-    count: Optional[int] = Field(
-        default=None,
-        description=(
-            "Havaittujen yksilöiden määrä kokonaislukuna. "
-            "Käytä arvoa 1, jos tekstissä kuvataan selvästi yksi lintu ilman erikseen mainittua määrää. "
-            "Palauta null, jos määrä on epäselvä, epämääräinen tai vain arvioitu."
-        ),
-    )
-    notes: str = Field(
-        default="",
-        description=(
-            "Lyhyt suomenkielinen lisähuomio vain tekstissä mainituista yksityiskohdista, "
-            "esimerkiksi paikasta, käyttäytymisestä, suunnasta, iästä, puvusta, ajasta tai säästä. "
-            "Palauta tyhjä merkkijono, jos lisätietoja ei ole."
-        ),
-    )
-
-
 
 
 @havis_bp.route("")
@@ -117,39 +43,6 @@ def havis_root():
 
 def _unauthorized():
     return jsonify({"error_code": "unauthorized", "message": "Kirjaudu ensin sisaan."}), 401
-
-
-def _normalize_count(value):
-    if value is None or value == "":
-        return ""
-    try:
-        return int(value)
-    except (TypeError, ValueError):
-        return ""
-
-
-def _normalize_observation(data):
-    species = data.get("species")
-    notes = data.get("notes")
-    count = _normalize_count(data.get("count"))
-
-    if not isinstance(species, str):
-        species = ""
-    if not isinstance(notes, str):
-        notes = ""
-
-    species = species.strip()
-    notes = notes.strip()
-    warnings = []
-    if species == "":
-        warnings.append("species_unrecognized")
-
-    return {
-        "species": species,
-        "count": count,
-        "notes": notes,
-        "warnings": warnings,
-    }
 
 
 def _log_havis_error(context, error, extra=None):
@@ -231,22 +124,7 @@ def havis_transcribe():
             f"transcript_chars={len(raw_transcript)}",
             file=sys.stdout,
         )
-        completion = client.beta.chat.completions.parse(
-            model=GPT_MODEL,
-            messages=[
-                {"role": "system", "content": GPT_SYSTEM_PROMPT},
-                {"role": "user", "content": raw_transcript},
-            ],
-            response_format=BirdObservationLLM,
-        )
-        message = completion.choices[0].message
-        if message.refusal:
-            raise ValueError(f"model_refusal: {message.refusal}")
-        if completion.choices[0].finish_reason == "length":
-            raise ValueError("incomplete_response_max_tokens")
-        if message.parsed is None:
-            raise ValueError("parsed_output_missing")
-        normalized = _normalize_observation(message.parsed.model_dump())
+        result = structurize_transcript(raw_transcript, client=client)
     except Exception as error:
         _log_havis_error(
             "structured_output",
@@ -258,12 +136,4 @@ def havis_transcribe():
         )
         return jsonify({"error_code": "structured_output_invalid", "message": "Tekstin analysointi epaonnistui."}), 502
 
-    return jsonify(
-        {
-            "species": normalized["species"],
-            "count": normalized["count"],
-            "notes": normalized["notes"],
-            "raw_transcript": raw_transcript,
-            "warnings": normalized["warnings"],
-        }
-    )
+    return jsonify(result)

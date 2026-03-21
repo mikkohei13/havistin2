@@ -130,8 +130,39 @@ button:disabled {
 }
 
 .observations-list {
-    display: grid;
-    gap: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.observation-group {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #c5d4dc;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #f4f8fa;
+    box-shadow: 0 1px 0 rgba(0, 50, 70, 0.06);
+}
+
+.observation-group-header {
+    padding: 0.45rem 0.65rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #1a3540;
+    background: #e4eef3;
+    border-bottom: 1px solid #c5d4dc;
+}
+
+.observation-group .observation-row {
+    border: none;
+    border-radius: 0;
+    border-bottom: 1px solid #d9e4e8;
+    background: #ffffff;
+}
+
+.observation-group .observation-row:last-child {
+    border-bottom: none;
 }
 
 .observation-row {
