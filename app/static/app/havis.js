@@ -2,7 +2,7 @@
     const DB_NAME = "havis_db";
     const STORE_NAME = "observations";
     const SESSIONS_STORE = "sessions";
-    const DB_VERSION = 3;
+    const DB_VERSION = 4;
     const LS_ACTIVE_SESSION_KEY = "havis_active_session";
     const MAX_RECORDING_MS = 20000;
     const API_URL = "/havis/api/transcribe";
@@ -462,7 +462,7 @@
         return "";
     }
 
-    function observationGroupHeaderHtml(key, items) {
+    async function observationGroupHeaderHtml(key, items) {
         if (key === "legacy") {
             return '<div class="observation-group-header">Ei tallennettua havaintoerää</div>';
         }
@@ -471,18 +471,71 @@
         const label = stamp
             ? `Havaintoerä ${stamp}`
             : "Havaintoerä";
-        return `<div class="observation-group-header">${label}</div>`;
+        let finbifBlock = "";
+        if (key.startsWith("id:")) {
+            const sid = key.slice(3);
+            const sess = await getSession(sid);
+            const ended = sess && sess.endedAt;
+            const submitted = sess && sess.finbifSubmittedAt;
+            if (ended && !submitted) {
+                finbifBlock = `<button type="button" class="secondary-btn finbif-submit-btn" data-session-id="${sid}">Lähetä FinBIF:iin</button>`;
+            } else if (submitted) {
+                finbifBlock = '<span class="finbif-sent">Lähetetty FinBIF:iin</span>';
+            }
+        }
+        return `<div class="observation-group-header"><span class="observation-group-title">${label}</span>${finbifBlock}</div>`;
     }
 
-    function observationGroupsHtml(groupEntries) {
-        return groupEntries
-            .map(
-                ([key, items]) =>
-                    `<div class="observation-group">${observationGroupHeaderHtml(key, items)}${items
-                        .map(rowHtml)
-                        .join("")}</div>`
-            )
-            .join("");
+    async function observationGroupsHtml(groupEntries) {
+        const parts = [];
+        for (const [key, items] of groupEntries) {
+            const header = await observationGroupHeaderHtml(key, items);
+            parts.push(
+                `<div class="observation-group">${header}${items.map(rowHtml).join("")}</div>`
+            );
+        }
+        return parts.join("");
+    }
+
+    async function submitFinbifSession(sessionId) {
+        if (!db) {
+            return;
+        }
+        const sess = await getSession(sessionId);
+        if (!sess || !sess.endedAt) {
+            setUiStatus("Havaintoerä ei ole päättynyt.");
+            return;
+        }
+        const all = await getAllObservations();
+        const obs = all.filter((o) => String(o.sessionId) === String(sessionId));
+        setUiStatus("Lähetetään FinBIF:iin...");
+        try {
+            const res = await fetch("/havis/api/submit", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                credentials: "same-origin",
+                body: JSON.stringify({ session: sess, observations: obs }),
+            });
+            const payload = await res.json().catch(() => ({}));
+            if (payload.ok) {
+                sess.finbifSubmittedAt = new Date().toISOString();
+                if (payload.document_id) {
+                    sess.finbifDocumentId = payload.document_id;
+                }
+                await putSession(sess);
+                let msg = "Lähetys onnistui.";
+                if (payload.skipped_observations && payload.skipped_observations.length > 0) {
+                    msg += ` (${payload.skipped_observations.length} havaintoa ohitettiin.)`;
+                }
+                setUiStatus(msg);
+            } else {
+                const msg = payload.message || "Lähetys epäonnistui.";
+                setUiStatus(msg);
+            }
+        } catch (_) {
+            setUiStatus("Verkkovirhe.");
+        }
+        await renderList();
     }
 
     async function renderList() {
@@ -493,7 +546,7 @@
         }
         const groupEntries = groupObservationsBySession(all);
         const flatOrdered = groupEntries.flatMap(([, items]) => items);
-        observationsList.innerHTML = observationGroupsHtml(groupEntries);
+        observationsList.innerHTML = await observationGroupsHtml(groupEntries);
         observationsList.querySelectorAll(".observation-row").forEach((row) => {
             row.addEventListener("click", () => {
                 if (modalEditLocked) {
@@ -1074,6 +1127,22 @@
             } catch (_) {
                 setUiStatus("Havaintoerän päättäminen epäonnistui.");
             }
+        });
+
+        observationsList.addEventListener("click", (ev) => {
+            const btn = ev.target.closest(".finbif-submit-btn");
+            if (!btn || !db) {
+                return;
+            }
+            const sid = btn.dataset.sessionId;
+            if (!sid) {
+                return;
+            }
+            ev.preventDefault();
+            btn.disabled = true;
+            submitFinbifSession(sid).finally(() => {
+                btn.disabled = false;
+            });
         });
 
         recordBtn.addEventListener("click", async () => {

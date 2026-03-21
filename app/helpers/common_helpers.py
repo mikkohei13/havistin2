@@ -96,6 +96,49 @@ def fetch_finbif_api(api_url, person_token=None, log=False):
     return dataDict
 
 
+def post_finbif_json(api_url, json_body, person_token=None, log=False):
+    """POST JSON to api.laji.fi with the same auth headers as fetch_finbif_api."""
+    headers = {
+        "Authorization": f"Bearer {app_secrets.finbif_api_token}",
+        "API-Version": "1",
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+    }
+    if person_token:
+        headers["Person-Token"] = person_token
+
+    api_url = api_url.replace("api.laji.fi/v0/", "api.laji.fi/")
+    lang_match = re.search(r"[?&]lang=(fi|en|sv)(?=&|$)", api_url)
+    if lang_match:
+        headers["Accept-Language"] = lang_match.group(1)
+        api_url = re.sub(r"(\?)lang=(fi|en|sv)&", r"\1", api_url)
+        api_url = re.sub(r"&lang=(fi|en|sv)(?=&|$)", "", api_url)
+
+    print("Posting API: " + api_url, file=sys.stdout)
+    if log:
+        print_log(api_url)
+
+    try:
+        r = requests.post(api_url, headers=headers, json=json_body, timeout=120)
+    except ConnectionError:
+        print("ERROR: api.laji.fi POST connection error.", file=sys.stdout)
+        raise
+
+    if r.status_code == 403:
+        print("ERROR: api.laji.fi 403 error.", file=sys.stdout)
+        raise ConnectionError
+
+    if r.status_code == 204 or not r.content:
+        return r.status_code, None
+
+    try:
+        parsed = r.json()
+    except ValueError:
+        return r.status_code, {"raw": r.text}
+
+    return r.status_code, parsed
+
+
 def revoke_finbif_person_token(person_token):
     if not person_token:
         return False

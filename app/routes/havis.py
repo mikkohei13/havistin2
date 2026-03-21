@@ -7,6 +7,7 @@ from openai import OpenAI
 
 import app_secrets
 
+from app.havis_finbif_submit import submit_session_to_finbif
 from app.havis_structurization import GPT_MODEL, structurize_transcript
 
 havis_bp = Blueprint("havis", __name__, url_prefix="/havis")
@@ -25,6 +26,7 @@ ALLOWED_AUDIO_TYPES = {
     "application/ogg",
     "video/webm",
 }
+
 
 
 
@@ -139,3 +141,53 @@ def havis_transcribe():
         return jsonify({"error_code": "structured_output_invalid", "message": "Tekstin analysointi epaonnistui."}), 502
 
     return jsonify(result)
+
+
+@havis_bp.route("/api/submit", methods=["POST"])
+def havis_submit():
+    user_data = session.get("user_data")
+    if user_data is None or "errorCode" in user_data:
+        return _unauthorized()
+
+    person_token = session.get("token")
+    if not person_token:
+        return jsonify(
+            {"ok": False, "error_code": "unauthorized", "message": "Kirjautuminen puuttuu."}
+        ), 401
+
+    payload = request.get_json(silent=True)
+    if not isinstance(payload, dict):
+        return jsonify({"ok": False, "error_code": "bad_request", "message": "Virheellinen JSON."}), 400
+
+    sess = payload.get("session")
+    observations = payload.get("observations")
+    if not isinstance(sess, dict) or not isinstance(observations, list):
+        return jsonify({"ok": False, "error_code": "bad_request", "message": "Puuttuva session tai observations."}), 400
+
+    expected_uid = user_data.get("id")
+    if expected_uid is not None:
+        expected_uid = str(expected_uid)
+    session_uid = sess.get("userId")
+    if session_uid is not None:
+        session_uid = str(session_uid)
+    if expected_uid and session_uid and session_uid != expected_uid:
+        return jsonify({"ok": False, "error_code": "forbidden", "message": "Väärä käyttäjä."}), 403
+
+    ended = sess.get("endedAt")
+    if not ended or str(ended).strip() == "":
+        return jsonify(
+            {"ok": False, "error_code": "bad_request", "message": "Havaintoerä ei ole päättynyt."}
+        ), 400
+
+    try:
+        result = submit_session_to_finbif(sess, observations, person_token, user_data)
+    except ValueError as err:
+        return jsonify({"ok": False, "error_code": "bad_request", "message": str(err)}), 400
+    except Exception as err:
+        _log_havis_error("finbif_submit", err)
+        return jsonify(
+            {"ok": False, "error_code": "server_error", "message": "FinBIF-lähetys epäonnistui."}
+        ), 502
+
+    status = 200 if result.get("ok") else 400
+    return jsonify(result), status
