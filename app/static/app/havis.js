@@ -29,6 +29,8 @@
     let currentSessionId = null;
     let currentSessionStartIso = null;
     let sessionStatusTimer = null;
+    let modalScrollLockY = 0;
+    let modalBodyScrollLocked = false;
 
     const currentUserId = normalizeUserId(
         typeof window.HAVIS_USER_ID !== "undefined" ? window.HAVIS_USER_ID : ""
@@ -491,6 +493,28 @@
         modalMap.style.display = "none";
     }
 
+    function lockBodyScrollForModal() {
+        if (modalBodyScrollLocked) {
+            return;
+        }
+        modalScrollLockY = window.scrollY;
+        document.body.style.position = "fixed";
+        document.body.style.top = `-${modalScrollLockY}px`;
+        document.body.style.width = "100%";
+        modalBodyScrollLocked = true;
+    }
+
+    function unlockBodyScrollForModal() {
+        if (!modalBodyScrollLocked) {
+            return;
+        }
+        document.body.style.position = "";
+        document.body.style.top = "";
+        document.body.style.width = "";
+        window.scrollTo(0, modalScrollLockY);
+        modalBodyScrollLocked = false;
+    }
+
     function openModal(observation) {
         modalBody.innerHTML = `
             <p><strong>Laji:</strong> ${observation.species || "Tunnistamaton laji"}</p>
@@ -520,12 +544,19 @@
             mapMarker = L.marker([lat, lng]).addTo(map);
         }
 
+        lockBodyScrollForModal();
         modal.classList.remove("hidden");
+        if (map) {
+            requestAnimationFrame(() => {
+                map.invalidateSize();
+            });
+        }
     }
 
     function closeModal() {
         modal.classList.add("hidden");
         stopMap();
+        unlockBodyScrollForModal();
     }
 
     function stopRecorderStream() {
