@@ -100,13 +100,19 @@ class BirdObservationLLM(BaseModel):
 
 
 
+
 @havis_bp.route("")
 @havis_bp.route("/")
 def havis_root():
     user_data = session.get("user_data")
     if user_data is None or "errorCode" in user_data:
         return redirect("/login/start")
-    return render_template("havis.html")
+    havis_user_id = user_data.get("id")
+    if havis_user_id is not None:
+        havis_user_id = str(havis_user_id)
+    else:
+        havis_user_id = ""
+    return render_template("havis.html", havis_user_id=havis_user_id)
 
 
 def _unauthorized():

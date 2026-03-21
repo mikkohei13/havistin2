@@ -1,9 +1,11 @@
 `/havis` is a login-protected Flask page served by `app/routes/havis.py` (havis_root) and rendered with `app/templates/havis.html`.
 
+The feature is in a demo phase. No backwards compatibility is needed. Keep it simple.
+
 Frontend logic in `app/static/app/havis.js` handles the flow: Aloita starts a **havaintoerä** (IndexedDB `sessions` row with `startedAt`), then `geolocation.watchPosition`. **Lopeta havaintoerä** sets `endedAt`. **Lisää havainto** starts MediaRecorder, recording auto-stops at 20s, then audio + lat/lng are posted as multipart to `/havis/api/transcribe`; saved observations include `sessionId` / `sessionStartedAt`.
 
 Backend `havis_transcribe` in `app/routes/havis.py` validates auth/input, transcribes Finnish speech via OpenAI Audio API (client.audio.transcriptions.create), then extracts structured JSON (species, count, notes) with GPT (chat.completions JSON mode), normalizes output, and returns {species,count,notes,raw_transcript,warnings}.
 
-Persistence is browser-side IndexedDB in `havis.js` (`havis_db`: stores `sessions` and `observations`); no server DB. Tapping **Aloita** starts a **havaintoerä** (session): a row is stored in `sessions` with `startedAt`, and `endedAt` is set when the user taps **Lopeta havaintoerä**. Each saved observation includes `sessionId` and `sessionStartedAt` for that erä. Observations are listed from IndexedDB, and row click opens a modal with details + Leaflet map marker.
+Persistence is browser-side IndexedDB in `havis.js` (`havis_db`: stores `sessions` and `observations`); no server DB. Each `sessions` row includes `userId` (from `session["user_data"]["id"]`, injected as `window.HAVIS_USER_ID`) so an open erä is scoped to the logged-in user. On load, any open session for that user (`endedAt` unset) is resumed (GPS + UI); `localStorage` key `havis_active_session` mirrors the active session for the same user and is cleared when another account’s pointer is detected or when **Lopeta havaintoerä** confirms. Only **Lopeta havaintoerä** + confirm ends an erä (`endedAt`). Observations are listed from IndexedDB; row click opens a modal with details + Leaflet map marker.
 
-Styles are in `app/static/app/havis.css`. Status text is split: `#gps_status` for geolocation messages and `#ui_status` for recording/transcription/IndexedDB and other process UI. OpenAI key is read from env via `app/app_secrets.py` (`openai_api_key`).
+Styles are in `app/static/app/havis.css`. Status text is split: `#gps_status` for geolocation messages, `#session_status` for an ongoing havaintoerä (start time + “minuuttia sitten”, updated periodically), and `#ui_status` for recording/transcription/IndexedDB and other process UI. OpenAI key is read from env via `app/app_secrets.py` (`openai_api_key`).

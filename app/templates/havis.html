@@ -14,13 +14,14 @@
     <body>
         <header class="top_navi">
             <a href="/" aria-label="Takaisin etusivulle">&laquo;</a>
-            <p class="title">Havis</p>
+            <p class="title">Havis (demoversio)</p>
         </header>
 
         <div class="page_wrapper">
             <main class="havis_main">
                 <section id="status-lines" class="status-lines">
                     <p id="gps_status" class="status-line">Show only GPS-related status messages here</p>
+                    <p id="session_status" class="status-line hidden" aria-live="polite"></p>
                     <p id="ui_status" class="status-line">Show UI/process-related status here</p>
                 </section>
 
@@ -54,6 +55,9 @@
 
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
             integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+        <script>
+            window.HAVIS_USER_ID = {{ havis_user_id|tojson }};
+        </script>
         <script src="{{ url_for('static', filename='app/havis.js') }}"></script>
     </body>
 </html>

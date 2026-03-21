@@ -2,9 +2,17 @@
     const DB_NAME = "havis_db";
     const STORE_NAME = "observations";
     const SESSIONS_STORE = "sessions";
-    const DB_VERSION = 2;
+    const DB_VERSION = 3;
+    const LS_ACTIVE_SESSION_KEY = "havis_active_session";
     const MAX_RECORDING_MS = 20000;
     const API_URL = "/havis/api/transcribe";
+
+    function normalizeUserId(value) {
+        if (value === null || value === undefined) {
+            return "";
+        }
+        return String(value);
+    }
 
     let db = null;
     let watchId = null;
@@ -20,6 +28,11 @@
     let mapMarker = null;
     let currentSessionId = null;
     let currentSessionStartIso = null;
+    let sessionStatusTimer = null;
+
+    const currentUserId = normalizeUserId(
+        typeof window.HAVIS_USER_ID !== "undefined" ? window.HAVIS_USER_ID : ""
+    );
 
     const startBtn = document.getElementById("start-btn");
     const sessionActiveEl = document.getElementById("session-active");
@@ -29,6 +42,7 @@
     const cancelBtn = document.getElementById("cancel-btn");
     const recordingActions = document.getElementById("recording-actions");
     const gpsStatusEl = document.getElementById("gps_status");
+    const sessionStatusEl = document.getElementById("session_status");
     const uiStatusEl = document.getElementById("ui_status");
     const observationsList = document.getElementById("observations-list");
     const modal = document.getElementById("detail-modal");
@@ -97,6 +111,83 @@
         return date.toLocaleString("fi-FI");
     }
 
+    function pad2(n) {
+        return String(n).padStart(2, "0");
+    }
+
+    function formatSessionStartStampFi(isoString) {
+        const date = new Date(isoString);
+        if (Number.isNaN(date.getTime())) {
+            return "";
+        }
+        const d = date.getDate();
+        const m = date.getMonth() + 1;
+        const yyyy = date.getFullYear();
+        return `${d}.${m}.${yyyy} klo ${pad2(date.getHours())}.${pad2(date.getMinutes())}`;
+    }
+
+    function formatMinutesAgoPartFi(isoString) {
+        const start = new Date(isoString).getTime();
+        if (Number.isNaN(start)) {
+            return "";
+        }
+        const mins = Math.floor((Date.now() - start) / 60000);
+        if (mins <= 0) {
+            return "0 minuuttia";
+        }
+        if (mins === 1) {
+            return "1 minuutti";
+        }
+        return `${mins} minuuttia`;
+    }
+
+    function buildSessionOngoingStatusLine(isoString) {
+        const stamp = formatSessionStartStampFi(isoString);
+        const ago = formatMinutesAgoPartFi(isoString);
+        if (!stamp || !ago) {
+            return "Havaintoerä käynnissä.";
+        }
+        return `Havaintoerä aloitettu ${ago} sitten (${stamp})`;
+    }
+
+    function updateSessionStatusText() {
+        if (!sessionStatusEl || !currentSessionStartIso) {
+            return;
+        }
+        sessionStatusEl.textContent = buildSessionOngoingStatusLine(currentSessionStartIso);
+    }
+
+    function stopSessionStatusTicker() {
+        if (sessionStatusTimer !== null) {
+            clearInterval(sessionStatusTimer);
+            sessionStatusTimer = null;
+        }
+    }
+
+    function startSessionStatusTicker() {
+        stopSessionStatusTicker();
+        sessionStatusTimer = window.setInterval(() => {
+            if (currentSessionStartIso) {
+                updateSessionStatusText();
+            }
+        }, 30000);
+    }
+
+    function syncSessionStatusLine() {
+        if (!sessionStatusEl) {
+            return;
+        }
+        if (currentSessionId && currentSessionStartIso) {
+            sessionStatusEl.classList.remove("hidden");
+            updateSessionStatusText();
+            startSessionStatusTicker();
+        } else {
+            sessionStatusEl.classList.add("hidden");
+            sessionStatusEl.textContent = "";
+            stopSessionStatusTicker();
+        }
+    }
+
     function toNumOrNull(value) {
         if (value === "" || value === null || value === undefined) {
             return null;
@@ -108,13 +199,12 @@
     function openDb() {
         return new Promise((resolve, reject) => {
             const req = indexedDB.open(DB_NAME, DB_VERSION);
-            req.onupgradeneeded = (event) => {
+            req.onupgradeneeded = () => {
                 const nextDb = req.result;
-                const oldVersion = event.oldVersion;
                 if (!nextDb.objectStoreNames.contains(STORE_NAME)) {
                     nextDb.createObjectStore(STORE_NAME, { keyPath: "id" });
                 }
-                if (oldVersion < 2 && !nextDb.objectStoreNames.contains(SESSIONS_STORE)) {
+                if (!nextDb.objectStoreNames.contains(SESSIONS_STORE)) {
                     nextDb.createObjectStore(SESSIONS_STORE, { keyPath: "id" });
                 }
             };
@@ -141,6 +231,104 @@
             req.onsuccess = () => resolve(req.result);
             req.onerror = () => reject(req.error);
         });
+    }
+
+    function getAllSessions() {
+        return new Promise((resolve, reject) => {
+            const tx = db.transaction(SESSIONS_STORE, "readonly");
+            const store = tx.objectStore(SESSIONS_STORE);
+            const req = store.getAll();
+            req.onsuccess = () => resolve(req.result || []);
+            req.onerror = () => reject(req.error);
+        });
+    }
+
+    function isSessionOpen(s) {
+        return s && (s.endedAt === null || s.endedAt === undefined || s.endedAt === "");
+    }
+
+    function sessionHasUserId(s) {
+        return typeof s.userId === "string" && s.userId.length > 0;
+    }
+
+    function reconcileActiveSessionPointer() {
+        try {
+            const raw = localStorage.getItem(LS_ACTIVE_SESSION_KEY);
+            if (!raw) {
+                return;
+            }
+            const p = JSON.parse(raw);
+            if (normalizeUserId(p.userId) !== currentUserId) {
+                localStorage.removeItem(LS_ACTIVE_SESSION_KEY);
+            }
+        } catch (_) {
+            localStorage.removeItem(LS_ACTIVE_SESSION_KEY);
+        }
+    }
+
+    function persistActiveSessionPointer() {
+        if (!currentUserId || !currentSessionId || !currentSessionStartIso) {
+            return;
+        }
+        try {
+            localStorage.setItem(
+                LS_ACTIVE_SESSION_KEY,
+                JSON.stringify({
+                    userId: currentUserId,
+                    sessionId: currentSessionId,
+                    sessionStartedAt: currentSessionStartIso,
+                })
+            );
+        } catch (_) {
+            /* quota or private mode */
+        }
+    }
+
+    function clearActiveSessionPointer() {
+        try {
+            localStorage.removeItem(LS_ACTIVE_SESSION_KEY);
+        } catch (_) {
+            /* ignore */
+        }
+    }
+
+    async function resumeOpenSession() {
+        if (!db || !currentUserId) {
+            return false;
+        }
+        const all = await getAllSessions();
+        const openForUser = all.filter(
+            (s) => sessionHasUserId(s) && s.userId === currentUserId && isSessionOpen(s)
+        );
+        if (openForUser.length === 0) {
+            clearActiveSessionPointer();
+            return false;
+        }
+
+        openForUser.sort((a, b) => String(b.startedAt).localeCompare(String(a.startedAt)));
+        const chosen = openForUser[0];
+        if (openForUser.length > 1) {
+            const now = new Date().toISOString();
+            for (let i = 1; i < openForUser.length; i++) {
+                const s = openForUser[i];
+                s.endedAt = now;
+                await putSession(s);
+            }
+        }
+
+        const stored = await getSession(chosen.id);
+        if (!stored || !isSessionOpen(stored)) {
+            clearActiveSessionPointer();
+            return false;
+        }
+
+        currentSessionId = stored.id;
+        currentSessionStartIso = stored.startedAt;
+        persistActiveSessionPointer();
+        setControlsSessionReady();
+        await startGps();
+        syncSessionStatusLine();
+        return true;
     }
 
     function putObservation(observation) {
@@ -501,9 +689,23 @@
     async function init() {
         try {
             db = await openDb();
-            await renderList();
+            reconcileActiveSessionPointer();
             setGpsStatus("");
-            setUiStatus("Aloita havaintoerä Aloita-painikkeella.");
+            const resumed = await resumeOpenSession();
+            if (!resumed) {
+                setControlsIdle();
+            }
+            await renderList();
+            syncSessionStatusLine();
+            if (resumed) {
+                setUiStatus("");
+            } else {
+                setUiStatus(
+                    currentUserId
+                        ? "Aloita havaintoerä Aloita-painikkeella."
+                        : "Käyttäjätunnistus puuttuu. Päivitä sivu."
+                );
+            }
         } catch (_) {
             setGpsStatus("");
             setUiStatus("Tallennustilan alustus epäonnistui.");
@@ -513,14 +715,25 @@
             if (!db) {
                 return;
             }
+            if (!currentUserId) {
+                setUiStatus("Käyttäjätunnistus puuttuu. Päivitä sivu.");
+                return;
+            }
             try {
                 const startedAt = new Date().toISOString();
-                const session = { id: buildId(), startedAt, endedAt: null };
+                const session = {
+                    id: buildId(),
+                    startedAt,
+                    endedAt: null,
+                    userId: currentUserId,
+                };
                 await putSession(session);
                 currentSessionId = session.id;
                 currentSessionStartIso = startedAt;
+                persistActiveSessionPointer();
                 await startGps();
-                setUiStatus(`Havaintoerä käynnissä (aloitettu ${toDisplayTime(startedAt)}).`);
+                syncSessionStatusLine();
+                setUiStatus("");
             } catch (_) {
                 setUiStatus("Havaintoerän aloitus epäonnistui.");
             }
@@ -545,7 +758,9 @@
                 }
                 currentSessionId = null;
                 currentSessionStartIso = null;
+                clearActiveSessionPointer();
                 setControlsIdle();
+                syncSessionStatusLine();
                 setUiStatus("Havaintoerä päättyi. Voit aloittaa uuden havaintoerän.");
             } catch (_) {
                 setUiStatus("Havaintoerän päättäminen epäonnistui.");
