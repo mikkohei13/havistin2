@@ -31,6 +31,9 @@
     let sessionStatusTimer = null;
     let modalScrollLockY = 0;
     let modalBodyScrollLocked = false;
+    let modalObservation = null;
+    let modalEditLocked = false;
+    let recordingMode = null;
 
     const currentUserId = normalizeUserId(
         typeof window.HAVIS_USER_ID !== "undefined" ? window.HAVIS_USER_ID : ""
@@ -51,6 +54,11 @@
     const modalClose = document.getElementById("modal-close");
     const modalBody = document.getElementById("modal-body");
     const modalMap = document.getElementById("modal-map");
+    const modalEditBtn = document.getElementById("modal-edit-btn");
+    const modalRecordingActions = document.getElementById("modal-recording-actions");
+    const modalSubmitBtn = document.getElementById("modal-submit-btn");
+    const modalCancelBtn = document.getElementById("modal-cancel-btn");
+    const modalProcessStatusEl = document.getElementById("modal-process-status");
 
     function setGpsStatus(text) {
         gpsStatusEl.textContent = text;
@@ -58,6 +66,19 @@
 
     function setUiStatus(text) {
         uiStatusEl.textContent = text;
+    }
+
+    function setModalEditStatus(text) {
+        if (!modalProcessStatusEl) {
+            return;
+        }
+        if (text) {
+            modalProcessStatusEl.textContent = text;
+            modalProcessStatusEl.classList.remove("hidden");
+        } else {
+            modalProcessStatusEl.textContent = "";
+            modalProcessStatusEl.classList.add("hidden");
+        }
     }
 
     function setControlsIdle() {
@@ -475,6 +496,9 @@
         observationsList.innerHTML = observationGroupsHtml(groupEntries);
         observationsList.querySelectorAll(".observation-row").forEach((row) => {
             row.addEventListener("click", () => {
+                if (modalEditLocked) {
+                    return;
+                }
                 const id = row.dataset.id;
                 const observation = flatOrdered.find((item) => item.id === id);
                 if (observation) {
@@ -491,6 +515,38 @@
             mapMarker = null;
         }
         modalMap.style.display = "none";
+    }
+
+    function observationDetailHtml(observation) {
+        return `
+            <p><strong>Laji:</strong> ${observation.species || "Tunnistamaton laji"}</p>
+            <p><strong>Maara:</strong> ${observation.count === "" ? "-" : observation.count}</p>
+            <p><strong>Aika:</strong> ${toDisplayTime(observation.timestamp)}</p>
+            ${
+                observation.sessionStartedAt
+                    ? `<p><strong>Havaintoerä (aloitettu):</strong> ${toDisplayTime(observation.sessionStartedAt)}</p>`
+                    : ""
+            }
+            <p><strong>Muistiinpanot:</strong> ${observation.notes || "-"}</p>
+            <p><strong>Litterointi:</strong> ${observation.raw_transcript || "-"}</p>
+            <p><strong>Sijainti:</strong> ${observation.lat || "-"}, ${observation.lng || "-"}</p>
+            ${observation.error_message ? `<p><strong>Virhe:</strong> ${observation.error_message}</p>` : ""}
+        `;
+    }
+
+    function setModalFooterIdle() {
+        modalEditBtn.classList.remove("hidden");
+        modalRecordingActions.classList.add("hidden");
+        modalSubmitBtn.disabled = false;
+        modalCancelBtn.disabled = false;
+        modalEditBtn.disabled = false;
+    }
+
+    function setModalFooterRecording() {
+        modalEditBtn.classList.add("hidden");
+        modalRecordingActions.classList.remove("hidden");
+        modalSubmitBtn.disabled = false;
+        modalCancelBtn.disabled = false;
     }
 
     function lockBodyScrollForModal() {
@@ -516,20 +572,12 @@
     }
 
     function openModal(observation) {
-        modalBody.innerHTML = `
-            <p><strong>Laji:</strong> ${observation.species || "Tunnistamaton laji"}</p>
-            <p><strong>Maara:</strong> ${observation.count === "" ? "-" : observation.count}</p>
-            <p><strong>Aika:</strong> ${toDisplayTime(observation.timestamp)}</p>
-            ${
-                observation.sessionStartedAt
-                    ? `<p><strong>Havaintoerä (aloitettu):</strong> ${toDisplayTime(observation.sessionStartedAt)}</p>`
-                    : ""
-            }
-            <p><strong>Muistiinpanot:</strong> ${observation.notes || "-"}</p>
-            <p><strong>Litterointi:</strong> ${observation.raw_transcript || "-"}</p>
-            <p><strong>Sijainti:</strong> ${observation.lat || "-"}, ${observation.lng || "-"}</p>
-            ${observation.error_message ? `<p><strong>Virhe:</strong> ${observation.error_message}</p>` : ""}
-        `;
+        modalObservation = { ...observation };
+        modalBody.innerHTML = observationDetailHtml(modalObservation);
+        setModalFooterIdle();
+        setModalEditStatus("");
+        modalEditLocked = false;
+        modalClose.disabled = false;
 
         stopMap();
         const lat = toNumOrNull(observation.lat);
@@ -554,7 +602,12 @@
     }
 
     function closeModal() {
+        if (modalEditLocked) {
+            return;
+        }
         modal.classList.add("hidden");
+        modalObservation = null;
+        setModalEditStatus("");
         stopMap();
         unlockBodyScrollForModal();
     }
@@ -679,13 +732,43 @@
         await putObservation(observation);
     }
 
-    async function startRecording() {
+    async function saveErrorObservationEdit(message, baseline) {
+        const observation = {
+            ...baseline,
+            species: "",
+            count: "",
+            notes: "",
+            raw_transcript: "",
+            has_error: true,
+            error_message: message,
+            species_unrecognized: true,
+        };
+        await putObservation(observation);
+        modalObservation = observation;
+        modalBody.innerHTML = observationDetailHtml(observation);
+    }
+
+    async function beginAudioRecording(mode) {
         if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
             setUiStatus("Tällä selaimella ei voi äänittää.");
+            if (mode === "session") {
+                recordBtn.disabled = false;
+                setControlsSessionReady();
+            } else {
+                modalEditLocked = false;
+                modalClose.disabled = false;
+                recordBtn.disabled = false;
+                setModalFooterIdle();
+                setModalEditStatus("Tällä selaimella ei voi äänittää.");
+            }
             return;
         }
 
-        recordBtn.disabled = true;
+        if (mode === "session") {
+            recordBtn.disabled = true;
+        } else {
+            recordBtn.disabled = true;
+        }
 
         try {
             recorderStream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -710,7 +793,13 @@
             recorderChunks = [];
             isRecording = true;
             recordingAction = "";
-            setControlsRecording();
+            recordingMode = mode;
+            if (mode === "session") {
+                setControlsRecording();
+            } else {
+                setModalEditStatus("");
+                setModalFooterRecording();
+            }
 
             recorder.addEventListener("dataavailable", (event) => {
                 if (event.data && event.data.size > 0) {
@@ -719,66 +808,140 @@
             });
 
             recorder.addEventListener("stop", async () => {
+                const recMode = recordingMode;
+                recordingMode = null;
                 const action = recordingAction;
-                const coordsSnapshot = {
-                    lat: latestCoords ? latestCoords.lat : "",
-                    lng: latestCoords ? latestCoords.lng : "",
-                };
-                if (action !== "submit") {
-                    setUiStatus("Havainto peruutettu. Voit aloittaa uuden havainnon.");
-                    setControlsSessionReady();
-                    isRecording = false;
-                    clearAutoStopTimer();
-                    stopRecorderStream();
-                    recordingMimeType = "";
-                    recorderChunks = [];
-                    recordingAction = "";
+
+                if (recMode === "session") {
+                    const coordsSnapshot = {
+                        lat: latestCoords ? latestCoords.lat : "",
+                        lng: latestCoords ? latestCoords.lng : "",
+                    };
+                    if (action !== "submit") {
+                        setUiStatus("Havainto peruutettu. Voit aloittaa uuden havainnon.");
+                        setControlsSessionReady();
+                        isRecording = false;
+                        clearAutoStopTimer();
+                        stopRecorderStream();
+                        recordingMimeType = "";
+                        recorderChunks = [];
+                        recordingAction = "";
+                        return;
+                    }
+
+                    const blobMimeType = recordingMimeType || "audio/webm";
+                    const blob = new Blob(recorderChunks, { type: blobMimeType });
+                    setUiStatus("Analysoidaan havaintoa...");
+
+                    try {
+                        const payload = await sendAudio(blob, coordsSnapshot, blobMimeType);
+                        const observation = {
+                            id: buildId(),
+                            timestamp: new Date().toISOString(),
+                            sessionId: currentSessionId || "",
+                            sessionStartedAt: currentSessionStartIso || "",
+                            lat: coordsSnapshot.lat === "" ? "" : String(coordsSnapshot.lat),
+                            lng: coordsSnapshot.lng === "" ? "" : String(coordsSnapshot.lng),
+                            species: payload.species || "",
+                            count: payload.count === undefined || payload.count === null ? "" : payload.count,
+                            notes: payload.notes || "",
+                            raw_transcript: payload.raw_transcript || "",
+                            has_error: false,
+                            error_message: "",
+                            species_unrecognized: (payload.species || "").trim() === "",
+                        };
+                        await putObservation(observation);
+                        setUiStatus("Havainto tallennettu.");
+                    } catch (error) {
+                        await saveErrorObservation(error.message || "Tuntematon virhe.", coordsSnapshot);
+                        setUiStatus("Yritä uudelleen.");
+                    } finally {
+                        await renderList();
+                        isRecording = false;
+                        setControlsSessionReady();
+                        clearAutoStopTimer();
+                        stopRecorderStream();
+                        recordingMimeType = "";
+                        recorderChunks = [];
+                        recordingAction = "";
+                    }
                     return;
                 }
 
-                const blobMimeType = recordingMimeType || "audio/webm";
-                const blob = new Blob(recorderChunks, { type: blobMimeType });
-                setUiStatus("Analysoidaan havaintoa...");
+                if (recMode === "modal-edit") {
+                    if (action !== "submit") {
+                        setUiStatus("Muokkaus peruutettu.");
+                        setModalEditStatus("Muokkaus peruutettu.");
+                        setModalFooterIdle();
+                        modalEditLocked = false;
+                        modalClose.disabled = false;
+                        recordBtn.disabled = false;
+                        isRecording = false;
+                        clearAutoStopTimer();
+                        stopRecorderStream();
+                        recordingMimeType = "";
+                        recorderChunks = [];
+                        recordingAction = "";
+                        return;
+                    }
 
-                try {
-                    const payload = await sendAudio(blob, coordsSnapshot, blobMimeType);
-                    const observation = {
-                        id: buildId(),
-                        timestamp: new Date().toISOString(),
-                        sessionId: currentSessionId || "",
-                        sessionStartedAt: currentSessionStartIso || "",
-                        lat: coordsSnapshot.lat === "" ? "" : String(coordsSnapshot.lat),
-                        lng: coordsSnapshot.lng === "" ? "" : String(coordsSnapshot.lng),
-                        species: payload.species || "",
-                        count: payload.count === undefined || payload.count === null ? "" : payload.count,
-                        notes: payload.notes || "",
-                        raw_transcript: payload.raw_transcript || "",
-                        has_error: false,
-                        error_message: "",
-                        species_unrecognized: (payload.species || "").trim() === "",
-                    };
-                    await putObservation(observation);
-                    setUiStatus("Havainto tallennettu.");
-                } catch (error) {
-                    await saveErrorObservation(error.message || "Tuntematon virhe.", coordsSnapshot);
-                    setUiStatus("Yritä uudelleen.");
-                } finally {
-                    await renderList();
-                    isRecording = false;
-                    setControlsSessionReady();
-                    clearAutoStopTimer();
-                    stopRecorderStream();
-                    recordingMimeType = "";
-                    recorderChunks = [];
-                    recordingAction = "";
+                    const blobMimeType = recordingMimeType || "audio/webm";
+                    const blob = new Blob(recorderChunks, { type: blobMimeType });
+                    setUiStatus("Analysoidaan havaintoa...");
+                    setModalEditStatus("Analysoidaan havaintoa...");
+
+                    try {
+                        const payload = await sendAudio(blob, { lat: "", lng: "" }, blobMimeType);
+                        const base = modalObservation;
+                        const updated = {
+                            ...base,
+                            species: payload.species || "",
+                            count: payload.count === undefined || payload.count === null ? "" : payload.count,
+                            notes: payload.notes || "",
+                            raw_transcript: payload.raw_transcript || "",
+                            has_error: false,
+                            error_message: "",
+                            species_unrecognized: (payload.species || "").trim() === "",
+                        };
+                        await putObservation(updated);
+                        modalObservation = updated;
+                        modalBody.innerHTML = observationDetailHtml(updated);
+                        setUiStatus("Havainto päivitetty.");
+                        setModalEditStatus("Havainto päivitetty.");
+                    } catch (error) {
+                        await saveErrorObservationEdit(
+                            error.message || "Tuntematon virhe.",
+                            modalObservation
+                        );
+                        setUiStatus("Yritä uudelleen.");
+                        setModalEditStatus("Yritä uudelleen.");
+                    } finally {
+                        await renderList();
+                        isRecording = false;
+                        setModalFooterIdle();
+                        modalEditLocked = false;
+                        modalClose.disabled = false;
+                        recordBtn.disabled = false;
+                        clearAutoStopTimer();
+                        stopRecorderStream();
+                        recordingMimeType = "";
+                        recorderChunks = [];
+                        recordingAction = "";
+                    }
                 }
             });
 
             recorder.start();
             setUiStatus("Äänitys käynnissä..");
+            if (mode === "modal-edit") {
+                setModalEditStatus("Äänitys käynnissä..");
+            }
             autoStopTimer = setTimeout(() => {
                 if (recorder && recorder.state === "recording") {
                     setUiStatus("20 sekuntia täynnä, lopetetaan äänitys...");
+                    if (mode === "modal-edit") {
+                        setModalEditStatus("20 sekuntia täynnä, lopetetaan äänitys...");
+                    }
                     stopRecording("submit");
                 }
             }, MAX_RECORDING_MS);
@@ -787,15 +950,47 @@
             clearAutoStopTimer();
             stopRecorderStream();
             isRecording = false;
-            setControlsSessionReady();
+            recordingMode = null;
+            if (mode === "session") {
+                setControlsSessionReady();
+            } else {
+                modalEditLocked = false;
+                modalClose.disabled = false;
+                recordBtn.disabled = false;
+                setModalFooterIdle();
+                setModalEditStatus("Mikrofonin käynnistys epäonnistui.");
+            }
         }
+    }
+
+    async function startRecording() {
+        if (modalEditLocked || isRecording) {
+            return;
+        }
+        await beginAudioRecording("session");
+    }
+
+    async function startModalEditRecording() {
+        if (!db || !modalObservation || modalEditLocked || isRecording) {
+            return;
+        }
+        modalEditLocked = true;
+        modalClose.disabled = true;
+        recordBtn.disabled = true;
+        modalEditBtn.disabled = true;
+        await beginAudioRecording("modal-edit");
     }
 
     function stopRecording(action) {
         if (recorder && recorder.state === "recording") {
             recordingAction = action;
-            submitBtn.disabled = true;
-            cancelBtn.disabled = true;
+            if (recordingMode === "session") {
+                submitBtn.disabled = true;
+                cancelBtn.disabled = true;
+            } else if (recordingMode === "modal-edit") {
+                modalSubmitBtn.disabled = true;
+                modalCancelBtn.disabled = true;
+            }
             recorder.stop();
         }
     }
@@ -854,7 +1049,7 @@
         });
 
         endSessionBtn.addEventListener("click", async () => {
-            if (!db || isRecording || !currentSessionId) {
+            if (!db || isRecording || modalEditLocked || !currentSessionId) {
                 return;
             }
             if (
@@ -885,23 +1080,43 @@
             await startRecording();
         });
         submitBtn.addEventListener("click", () => {
-            if (!isRecording) {
+            if (!isRecording || recordingMode !== "session") {
                 return;
             }
             setUiStatus("Analysoidaan havaintoa...");
             stopRecording("submit");
         });
         cancelBtn.addEventListener("click", () => {
-            if (!isRecording) {
+            if (!isRecording || recordingMode !== "session") {
                 return;
             }
             setUiStatus("Peruutetaan havaintoa...");
             stopRecording("cancel");
         });
 
+        modalEditBtn.addEventListener("click", async () => {
+            await startModalEditRecording();
+        });
+        modalSubmitBtn.addEventListener("click", () => {
+            if (!isRecording || recordingMode !== "modal-edit") {
+                return;
+            }
+            setUiStatus("Analysoidaan havaintoa...");
+            setModalEditStatus("Analysoidaan havaintoa...");
+            stopRecording("submit");
+        });
+        modalCancelBtn.addEventListener("click", () => {
+            if (!isRecording || recordingMode !== "modal-edit") {
+                return;
+            }
+            setUiStatus("Peruutetaan havaintoa...");
+            setModalEditStatus("Peruutetaan havaintoa...");
+            stopRecording("cancel");
+        });
+
         modalClose.addEventListener("click", closeModal);
         modal.addEventListener("click", (event) => {
-            if (event.target === modal) {
+            if (event.target === modal && !modalEditLocked) {
                 closeModal();
             }
         });

@@ -120,6 +120,10 @@ button:disabled {
     width: 100%;
 }
 
+.recording-actions.hidden {
+    display: none;
+}
+
 .observations {
     margin-top: 1rem;
 }
@@ -266,6 +270,11 @@ button:disabled {
     min-height: 40px;
 }
 
+.close-btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
 .modal-content #modal-title {
     flex-shrink: 0;
     margin: 0 0 0.5rem 0;
@@ -289,4 +298,46 @@ button:disabled {
     border-radius: 10px;
     border: 1px solid #d9e4e8;
     display: none;
+}
+
+/* `.hidden` alone loses to `.modal-recording-actions { display: grid }` — need combined rule */
+.modal-recording-actions.hidden {
+    display: none;
+}
+
+#modal-edit-btn.hidden {
+    display: none;
+}
+
+.modal-process-status {
+    flex-shrink: 0;
+    margin: 0.5rem 0 0 0;
+    color: #2f4f58;
+    font-size: 0.95rem;
+}
+
+.modal-process-status.hidden {
+    display: none;
+}
+
+.modal-actions {
+    flex-shrink: 0;
+    margin-top: 0.75rem;
+    display: grid;
+    gap: 0.6rem;
+}
+
+.modal-actions .secondary-btn,
+.modal-actions .primary-btn {
+    width: 100%;
+}
+
+.modal-recording-actions {
+    display: grid;
+    gap: 0.6rem;
+    grid-template-columns: 1fr;
+}
+
+.modal-recording-actions button {
+    width: 100%;
 }

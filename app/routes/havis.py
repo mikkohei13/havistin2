@@ -29,7 +29,6 @@ ALLOWED_AUDIO_TYPES = {
 
 
 
-
 @havis_bp.route("")
 @havis_bp.route("/")
 def havis_root():
