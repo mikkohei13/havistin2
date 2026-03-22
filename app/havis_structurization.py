@@ -47,6 +47,7 @@ Säännöt:
 
 2. Määrä
 - Palauta yksilömäärä kokonaislukuna, jos se ilmenee tekstistä.
+- Jos tekstissä on vaihteluväli tai arvio, palauta vähimmäismäärä.
 - Jos tekstissä kuvaillaan selvästi yksi lintu mutta määrää ei sanota erikseen, käytä arvoa 1.
 - Jos määrä on epämääräinen tai epäselvä, palauta null.
 
@@ -81,7 +82,7 @@ class BirdObservationLLM(BaseModel):
     count: Optional[int] = Field(
         default=None,
         description=(
-            "Havaittujen yksilöiden määrä kokonaislukuna. "
+            "Havaittujen yksilöiden vähimmäismäärä kokonaislukuna. "
             "Käytä arvoa 1, jos tekstissä kuvataan selvästi yksi lintu ilman erikseen mainittua määrää. "
             "Palauta null, jos määrä on epäselvä, epämääräinen tai vain arvioitu."
         ),

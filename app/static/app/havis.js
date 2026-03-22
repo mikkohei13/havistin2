@@ -246,6 +246,39 @@
         });
     }
 
+    function deleteSession(id) {
+        return new Promise((resolve, reject) => {
+            const tx = db.transaction(SESSIONS_STORE, "readwrite");
+            const store = tx.objectStore(SESSIONS_STORE);
+            store.delete(id);
+            tx.oncomplete = () => resolve();
+            tx.onerror = () => reject(tx.error);
+        });
+    }
+
+    function deleteObservationsByIds(ids) {
+        if (!ids || ids.length === 0) {
+            return Promise.resolve();
+        }
+        return new Promise((resolve, reject) => {
+            const tx = db.transaction(STORE_NAME, "readwrite");
+            const store = tx.objectStore(STORE_NAME);
+            for (const id of ids) {
+                store.delete(id);
+            }
+            tx.oncomplete = () => resolve();
+            tx.onerror = () => reject(tx.error);
+        });
+    }
+
+    async function deleteObservationsForSession(sessionId) {
+        const all = await getAllObservations();
+        const ids = all
+            .filter((o) => String(o.sessionId) === String(sessionId))
+            .map((o) => o.id);
+        await deleteObservationsByIds(ids);
+    }
+
     function getSession(id) {
         return new Promise((resolve, reject) => {
             const tx = db.transaction(SESSIONS_STORE, "readonly");
@@ -462,9 +495,15 @@
         return "";
     }
 
+    function observationGroupDeleteButton(key) {
+        const enc = encodeURIComponent(key);
+        return `<button type="button" class="session-delete-btn" data-havis-group-key="${enc}">Poista</button>`;
+    }
+
     async function observationGroupHeaderHtml(key, items) {
+        const deleteBtn = observationGroupDeleteButton(key);
         if (key === "legacy") {
-            return '<div class="observation-group-header">Ei tallennettua havaintoerää</div>';
+            return `<div class="observation-group-header"><span class="observation-group-title">Ei tallennettua havaintoerää</span><div class="observation-group-actions">${deleteBtn}</div></div>`;
         }
         const iso = sessionStartedIsoForGroup(key, items);
         const stamp = iso ? formatSessionStartStampFi(iso) : "";
@@ -476,14 +515,54 @@
             const sid = key.slice(3);
             const sess = await getSession(sid);
             const ended = sess && sess.endedAt;
-            const submitted = sess && sess.finbifSubmittedAt;
-            if (ended && !submitted) {
-                finbifBlock = `<button type="button" class="secondary-btn finbif-submit-btn" data-session-id="${sid}">Lähetä FinBIF:iin</button>`;
-            } else if (submitted) {
-                finbifBlock = '<span class="finbif-sent">Lähetetty FinBIF:iin</span>';
+            if (ended) {
+                finbifBlock = `<button type="button" class="secondary-btn finbif-submit-btn" data-session-id="${sid}">Lähetä Vihkoon</button>`;
             }
         }
-        return `<div class="observation-group-header"><span class="observation-group-title">${label}</span>${finbifBlock}</div>`;
+        return `<div class="observation-group-header"><span class="observation-group-title">${label}</span><div class="observation-group-actions">${finbifBlock}${deleteBtn}</div></div>`;
+    }
+
+    async function deleteHavaintoeraByKey(key) {
+        try {
+            const all = await getAllObservations();
+            const groupEntries = groupObservationsBySession(all);
+            const entry = groupEntries.find(([k]) => k === key);
+            if (!entry) {
+                setUiStatus("Havaintoerää ei löytynyt.");
+                await renderList();
+                return;
+            }
+            const [, items] = entry;
+
+            if (key.startsWith("id:")) {
+                const sid = key.slice(3);
+                if (currentSessionId === sid && (isRecording || modalEditLocked)) {
+                    setUiStatus("Lopeta äänitys tai muokkaus ennen poistoa.");
+                    return;
+                }
+                if (currentSessionId === sid) {
+                    currentSessionId = null;
+                    currentSessionStartIso = null;
+                    clearActiveSessionPointer();
+                    setControlsIdle();
+                    syncSessionStatusLine();
+                }
+                await deleteObservationsForSession(sid);
+                const sess = await getSession(sid);
+                if (sess) {
+                    await deleteSession(sid);
+                }
+            } else if (key === "legacy" || key.startsWith("at:")) {
+                const ids = items.map((o) => o.id);
+                await deleteObservationsByIds(ids);
+            }
+
+            setUiStatus("Havaintoerä poistettu.");
+            await renderList();
+        } catch (_) {
+            setUiStatus("Poistaminen epäonnistui.");
+            await renderList();
+        }
     }
 
     async function observationGroupsHtml(groupEntries) {
@@ -508,7 +587,7 @@
         }
         const all = await getAllObservations();
         const obs = all.filter((o) => String(o.sessionId) === String(sessionId));
-        setUiStatus("Lähetetään FinBIF:iin...");
+        setUiStatus("Lähetetään Vihkoon...");
         try {
             const res = await fetch("/havis/api/submit", {
                 method: "POST",
@@ -518,12 +597,9 @@
             });
             const payload = await res.json().catch(() => ({}));
             if (payload.ok) {
-                sess.finbifSubmittedAt = new Date().toISOString();
-                if (payload.document_id) {
-                    sess.finbifDocumentId = payload.document_id;
-                }
-                await putSession(sess);
-                let msg = "Lähetys onnistui.";
+                await deleteObservationsForSession(sessionId);
+                await deleteSession(sessionId);
+                let msg = "Lähetys onnistui. Voit muokata havaintoja Vihkossa.";
                 if (payload.skipped_observations && payload.skipped_observations.length > 0) {
                     msg += ` (${payload.skipped_observations.length} havaintoa ohitettiin.)`;
                 }
@@ -1124,24 +1200,51 @@
                 setControlsIdle();
                 syncSessionStatusLine();
                 setUiStatus("Havaintoerä päättyi. Voit aloittaa uuden havaintoerän.");
+                await renderList();
             } catch (_) {
                 setUiStatus("Havaintoerän päättäminen epäonnistui.");
             }
         });
 
         observationsList.addEventListener("click", (ev) => {
-            const btn = ev.target.closest(".finbif-submit-btn");
-            if (!btn || !db) {
+            const finbifBtn = ev.target.closest(".finbif-submit-btn");
+            if (finbifBtn && db) {
+                const sid = finbifBtn.dataset.sessionId;
+                if (!sid) {
+                    return;
+                }
+                ev.preventDefault();
+                finbifBtn.disabled = true;
+                submitFinbifSession(sid).finally(() => {
+                    finbifBtn.disabled = false;
+                });
                 return;
             }
-            const sid = btn.dataset.sessionId;
-            if (!sid) {
+            const delBtn = ev.target.closest(".session-delete-btn");
+            if (!delBtn || !db) {
+                return;
+            }
+            const raw = delBtn.dataset.havisGroupKey;
+            if (!raw) {
                 return;
             }
             ev.preventDefault();
-            btn.disabled = true;
-            submitFinbifSession(sid).finally(() => {
-                btn.disabled = false;
+            let key;
+            try {
+                key = decodeURIComponent(raw);
+            } catch (_) {
+                return;
+            }
+            if (
+                !window.confirm(
+                    "Poistetaanko havaintoerä ja sen havainnot? Tätä ei voi perua."
+                )
+            ) {
+                return;
+            }
+            delBtn.disabled = true;
+            deleteHavaintoeraByKey(key).finally(() => {
+                delBtn.disabled = false;
             });
         });
 

@@ -1,6 +1,7 @@
 import io
 import sys
 import traceback
+from datetime import datetime, timezone
 
 from flask import Blueprint, jsonify, redirect, render_template, request, session
 from openai import OpenAI
@@ -9,6 +10,7 @@ import app_secrets
 
 from app.havis_finbif_submit import submit_session_to_finbif
 from app.havis_structurization import GPT_MODEL, structurize_transcript
+from app.havis_transcription_log import log_transcription
 
 havis_bp = Blueprint("havis", __name__, url_prefix="/havis")
 
@@ -141,6 +143,9 @@ def havis_transcribe():
             },
         )
         return jsonify({"error_code": "structured_output_invalid", "message": "Tekstin analysointi epaonnistui."}), 502
+
+    structured_only = {k: result[k] for k in ("species", "count", "notes", "warnings")}
+    log_transcription(datetime.now(timezone.utc), raw_transcript, structured_only)
 
     return jsonify(result)
 

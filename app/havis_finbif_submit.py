@@ -281,7 +281,7 @@ def build_store_document(
                 }
             ],
             "unitFact": {
-                "autocompleteSelectedTaxonID": _taxon_uri(taxon_id) 
+                "autocompleteSelectedTaxonID": _taxon_uri(taxon_id).replace("http://tun.fi/", "")
             },
             "unitGathering": {
                 "geometry": {"type": "Point", "coordinates": [lng, lat]},
