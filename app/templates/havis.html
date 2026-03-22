@@ -15,6 +15,7 @@
         <header class="top_navi">
             <a href="/" aria-label="Takaisin etusivulle">&laquo;</a>
             <p class="title">Havis (demoversio)</p>
+            <button id="help-btn" class="secondary-btn help-btn" type="button">Ohje</button>
         </header>
 
         <div class="page_wrapper">
@@ -42,6 +43,22 @@
                     <div id="observations-list" class="observations-list"></div>
                 </section>
             </main>
+        </div>
+
+        <div id="info-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="info-modal-title">
+            <div class="modal-content">
+                <button id="info-modal-close" class="close-btn" type="button" aria-label="Sulje">&times;</button>
+                <h3 id="info-modal-title">Ohje</h3>
+                <div class="modal-body">
+                    <p>Tämä on demo sovelluksesta, jolla voi tallentaa lintuhavaintoja sanelemalla Lajitietokeskuksen Vihko-havaintopalveluun.</p>
+                    <p>Käynnistä havaintoerä Aloita-painikkeella.</p>
+                    <p>Lisää havainto -painikkeella voit aloittaa sanelun. Yhdessä havainnossa voi olla vain yksi laji. Sovellus yleensä ymmärtää vapaamuotoisen sanelun, mutta selkeyden vuoksi kannattaa aloittaa lajinimellä, esim. "harmaalokki, 20 yksilöä yhdessä parvessa, muuttivat pohjoiseen". Sanelu voi kestää enintään 20 sekuntia.</p>
+                    <p>Sovellus kirjaa paikan ja ajankohdan automaattisesti. Kirjattuja havaintoja voi muokata uudelleensanelemalla painamalla niitä ja Muokkaa-painiketta.</p>
+                    <p>Kun olet tallentanut haluamasi havainnot, lopeta havaintoerä ja lähetä se Vihkoon. Tämän jälkeen havaintoja voi muokata Vihkossa.</p>
+                    <p>Sovellus lähettää sanelun OpenAI:ille Yhdysvaltoihin.</p>
+                    <p>Sovellus tallentaa tekstiksi puretun sanelun ylläpidon käyttöön. Tätä käytetään sovelluksen parantamiseen. Äänitettä ei tallenneta pysyvästi.</p>
+                </div>
+            </div>
         </div>
 
         <div id="detail-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">

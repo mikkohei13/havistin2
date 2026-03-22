@@ -27,6 +27,9 @@
         {% if session['user_data'] %}
             <h3><a href='/my/year/{{ html["current_year"] }}/MX.37600'>Omat havainnot</a></h3>
             <p>Tilastoja omista havainnoistasi eri vuosilta.</p>
+
+            <h3><a href='/havis'>Tallenna havaintoja</a></h3>
+            <p>Mobiilaitteessa toimiva havaintojen tallennussovellus.</p>
         {% else %}
             <h3><a href='/login/start'>Kirjaudu sisään</a></h3>
             <p>Kirjaudu sisään, niin näet tilastoja omista havainnoistasi.</p>

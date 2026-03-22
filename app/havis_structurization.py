@@ -71,6 +71,7 @@ Säännöt:
 """
 
 
+
 class BirdObservationLLM(BaseModel):
     species: str = Field(
         default="",

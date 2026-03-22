@@ -50,6 +50,9 @@
     const sessionStatusEl = document.getElementById("session_status");
     const uiStatusEl = document.getElementById("ui_status");
     const observationsList = document.getElementById("observations-list");
+    const infoModal = document.getElementById("info-modal");
+    const infoModalClose = document.getElementById("info-modal-close");
+    const helpBtn = document.getElementById("help-btn");
     const modal = document.getElementById("detail-modal");
     const modalClose = document.getElementById("modal-close");
     const modalBody = document.getElementById("modal-body");
@@ -741,6 +744,16 @@
         unlockBodyScrollForModal();
     }
 
+    function openInfoModal() {
+        lockBodyScrollForModal();
+        infoModal.classList.remove("hidden");
+    }
+
+    function closeInfoModal() {
+        infoModal.classList.add("hidden");
+        unlockBodyScrollForModal();
+    }
+
     function stopRecorderStream() {
         if (!recorderStream) {
             return;
@@ -1290,6 +1303,14 @@
         modal.addEventListener("click", (event) => {
             if (event.target === modal && !modalEditLocked) {
                 closeModal();
+            }
+        });
+
+        helpBtn.addEventListener("click", openInfoModal);
+        infoModalClose.addEventListener("click", closeInfoModal);
+        infoModal.addEventListener("click", (event) => {
+            if (event.target === infoModal) {
+                closeInfoModal();
             }
         });
     }
