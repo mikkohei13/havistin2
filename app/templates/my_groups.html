@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <title>Omat heimot {{ html["year"] }} - Havistin (biomi.org)</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var yearSelect = document.getElementById('yearSelect');
+            var submitButton = document.getElementById('submitButton');
+
+            function updateButtonStatus() {
+                submitButton.disabled = !yearSelect.value;
+            }
+
+            function preselectValuesFromUrl() {
+                var pathArray = window.location.pathname.split('/');
+                // "/my/groups/{year}"
+                if (pathArray.length >= 4 && pathArray[2] === 'groups') {
+                    var year = pathArray[3];
+                    if (year) {
+                        yearSelect.value = year;
+                    }
+                }
+                updateButtonStatus();
+            }
+
+            yearSelect.addEventListener('change', updateButtonStatus);
+
+            submitButton.addEventListener('click', function () {
+                submitButton.disabled = true;
+                submitButton.textContent = 'Siirrytään...';
+                document.body.style.cursor = 'wait';
+
+                var year = yearSelect.value;
+                if (year) {
+                    window.location.href = '/my/groups/' + year;
+                }
+            });
+
+            preselectValuesFromUrl();
+        });
+    </script>
+{% endblock %}
+
+{% block breadcrumb %}
+    <a href="/">Havistin</a> &raquo; <a href="/my/year/{{ html["year"] }}/MX.37600">Omat havainnot</a> &raquo; Omat heimot
+{% endblock %}
+
+{% block body %}
+
+    <h1>Omat heimot Suomesta, {{ html["year"] }}</h1>
+
+    <div id="subnavi">
+        <h3>Valitse tarkasteltava vuosi</h3>
+        <form id="navigationForm">
+            <label for="yearSelect">Vuosi:</label>
+            <select id="yearSelect">
+                <option value="">valitse</option>
+                {{ html["year_options"]|safe }}
+            </select>
+
+            <button id="submitButton" type="button" disabled>Siirry</button>
+        </form>
+    </div>
+
+    {% if html["needs_login"] %}
+        <p><a href="/login/start">Kirjaudu sisään</a>, jotta voit nähdä heimot, joita olet havainnut valitulla vuonna Suomessa (Laji.fi -tunnus).</p>
+    {% elif html["api_error"] %}
+        <p class="error">Lajitietokeskuksen rajapinta ei juuri nyt palauttanut tietoja. Yritä myöhemmin uudelleen.</p>
+    {% elif html["got_results"] %}
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Nimi</th>
+                    <th>Tieteellinen nimi</th>
+                    <th>Havaintoja</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for fam in html["families"] %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{% if fam["fi"] %}{{ fam["fi"]|capitalize }}{% else %}—{% endif %}</td>
+                    <td>{% if fam["sci"] %}<em>{{ fam["sci"] }}</em>{% else %}—{% endif %}</td>
+                    <td><a href="https://laji.fi/observation/map?target={{ fam["id"] }}&amp;countryId=ML.206&amp;time={{ html["year"] }}-01-01%2F{{ html["year"] }}-12-31&amp;observerPersonToken=true">{{ fam["count"] }}</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Ei havaintoja näillä hakuehdoilla.</p>
+    {% endif %}
+
+{% endblock %}
