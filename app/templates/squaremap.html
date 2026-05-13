@@ -28,21 +28,6 @@
 
     <div id="heading">
         <h1>{{ html["heading"]|safe }}</h1>
-        <p id="links">
-            <span>
-                <a href="/atlas/puutelista/{{ html["square_id"] }}">Puutelista</a>
-            </span>
-            <span>
-                Naapuriruudut:
-                <a href="/atlas/ruutu/{{ html["neighbour_ids"]["w"] }}">&laquo; W</a>
-                <a href="/atlas/ruutu/{{ html["neighbour_ids"]["n"] }}">N</a>
-                <a href="/atlas/ruutu/{{ html["neighbour_ids"]["s"] }}">S</a>
-                <a href="/atlas/ruutu/{{ html["neighbour_ids"]["e"] }}">E &raquo;</a>
-            </span>
-            <span>
-                <a href="https://laji.fi/map?gridsquare={{ html["square_id"] }}&layers=maastokartta,atlasGrid&print=true">Tulostettava kartta</a>
-            </span>
-        </p>
         <p>Tämä kartta näyttää ne ruudun atlashavainnot (max 10.000 uusinta), joiden paikka on tiedossa Lajitietokeskuksessa noin 5 km tai paremmalla tarkkuudella.</p>
     </div>
 

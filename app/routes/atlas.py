@@ -5,8 +5,6 @@ import requests
 import app_secrets
 
 import atlas.atlas
-import atlas.misslist
-import atlas.misslist_old
 import atlas.here
 import atlas.squaremap
 import atlas.species
@@ -40,18 +38,6 @@ def species_proportions():
 def here(square_id_untrusted):
     html = atlas.here.main(square_id_untrusted)
     return render_template("atlas_here.html", html=html)
-
-@atlas_bp.route("/puutelista/<string:square_id_untrusted>")
-@robust_cached(timeout=3600)
-def misslist(square_id_untrusted):
-    html = atlas.misslist.main(square_id_untrusted)
-    return render_template("atlas_misslist.html", html=html)
-
-@atlas_bp.route("/puutelista_vanha/<string:square_id_untrusted>")
-@robust_cached(timeout=3600)
-def misslist_old(square_id_untrusted):
-    html = atlas.misslist_old.main(square_id_untrusted)
-    return render_template("atlas_misslist_old.html", html=html)
 
 @atlas_bp.route("/ruutu/<string:square_id_untrusted>")
 @robust_cached(timeout=10800)

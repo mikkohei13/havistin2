@@ -134,7 +134,7 @@ def main(society_untrusted):
 
         table += f"""
             <tr class='{ percentage_class } { category_class } { category_class2 }'>
-                <td><a href='/atlas/puutelista/{ coordinates }' title='Puutelista'>{ coordinates }</a></td>
+                <td>{ coordinates }</td>
                 <td>{ sum_3rd }</td>
                 <td>{ category_3rd }</td>
                 <td>{ sum }</td>
