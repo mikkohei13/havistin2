@@ -7,36 +7,72 @@ BIOTA = "MX.37600"
 AGG_PAGE_SIZE = 1000
 TAXA_CHUNK_SIZE = 50
 
+VALID_RANKS = frozenset({"phylum", "class", "order", "family"})
 
-def _family_qname(family_id_raw):
-    if not family_id_raw:
+# Warehouse aggregateBy / selected field (unit.linkings.taxon.*)
+RANK_AGGREGATE_FIELD = {
+    "phylum": "unit.linkings.taxon.phylumId",
+    "class": "unit.linkings.taxon.classId",
+    "order": "unit.linkings.taxon.orderId",
+    "family": "unit.linkings.taxon.familyId",
+}
+
+RANK_H1 = {
+    "phylum": "Pääjaksoittain Suomesta",
+    "class": "Omat luokat Suomesta",
+    "order": "Omat lahkot Suomesta",
+    "family": "Omat heimot Suomesta",
+}
+
+RANK_COUNT_LABEL = {
+    "phylum": "Pääjaksoja",
+    "class": "Luokkia",
+    "order": "Lahkoja",
+    "family": "Heimoja",
+}
+
+DOCUMENT_TITLE_PREFIX = {
+    "phylum": "Havainnot pääjaksoittain",
+    "class": "Omat luokat",
+    "order": "Omat lahkot",
+    "family": "Omat heimot",
+}
+
+
+def _taxon_qname(raw):
+    if not raw:
         return None
-    return str(family_id_raw).replace("http://tun.fi/", "").strip()
+    return str(raw).replace("http://tun.fi/", "").strip()
 
 
-def _family_aggregate_url(year, page):
+def _normalize_rank(rank_untrusted):
+    if not rank_untrusted:
+        return "family"
+    r = str(rank_untrusted).strip().lower()
+    return r if r in VALID_RANKS else "family"
+
+
+def _aggregate_url(year, page, aggregate_field):
     return (
         "https://api.laji.fi/warehouse/query/unit/aggregate"
         f"?countryId=ML.206&target={BIOTA}&time={year}"
         "&individualCountMin=1"
-        "&aggregateBy=unit.linkings.taxon.familyId"
-        "&selected=unit.linkings.taxon.familyId"
+        f"&aggregateBy={aggregate_field}"
+        f"&selected={aggregate_field}"
         "&useIdentificationAnnotations=true&includeSubTaxa=true&includeNonValidTaxa=true"
         "&cache=true&qualityIssues=NO_ISSUES&geoJSON=false&onlyCount=false"
         "&excludeNulls=true&pessimisticDateRangeHandling=false"
-#        "&taxonCounts=false&gatheringCounts=false&pairCounts=false&atlasCounts=false"
         "&selfAsObserver=true"
         "&orderBy=count%20DESC"
         f"&pageSize={AGG_PAGE_SIZE}&page={page}"
     )
 
 
-
-def fetch_family_aggregate_pages(token, year):
+def fetch_aggregate_pages(token, year, aggregate_field):
     all_rows = []
     page = 1
     while True:
-        url = _family_aggregate_url(year, page)
+        url = _aggregate_url(year, page, aggregate_field)
         data = common_helpers.fetch_finbif_api(url, person_token=token)
         rows = data.get("results") or []
         if not rows:
@@ -53,13 +89,13 @@ def fetch_family_aggregate_pages(token, year):
     return all_rows
 
 
-def _parse_aggregate_rows(rows):
+def _parse_aggregate_rows(rows, aggregate_field):
     """Build list of {id, count} from warehouse aggregate results."""
     out = []
     for row in rows:
         agg = row.get("aggregateBy") or {}
-        raw_id = agg.get("unit.linkings.taxon.familyId")
-        qname = _family_qname(raw_id)
+        raw_id = agg.get(aggregate_field)
+        qname = _taxon_qname(raw_id)
         if not qname:
             continue
         try:
@@ -89,7 +125,7 @@ def resolve_taxon_names(qnames):
         data = common_helpers.fetch_finbif_api(url)
         for item in data.get("results") or []:
             tid = item.get("id") or ""
-            qn = _family_qname(tid)
+            qn = _taxon_qname(tid)
             if not qn:
                 continue
             fi = item.get("vernacularName") or ""
@@ -98,7 +134,7 @@ def resolve_taxon_names(qnames):
     return names
 
 
-def main(token, year_untrusted):
+def main(token, year_untrusted, rank_untrusted):
     html = dict()
 
     current_year = datetime.datetime.now().year
@@ -110,6 +146,12 @@ def main(token, year_untrusted):
         year = year_untrusted
     html["year"] = year
 
+    rank = _normalize_rank(rank_untrusted)
+    html["rank"] = rank
+    html["rank_h1"] = RANK_H1[rank]
+    html["rank_count_label"] = RANK_COUNT_LABEL[rank]
+    html["document_title"] = f"{DOCUMENT_TITLE_PREFIX[rank]} {year}"
+
     html["year_options"] = generate_year_dropdown(1970)
 
     html["needs_login"] = not token
@@ -120,18 +162,20 @@ def main(token, year_untrusted):
     if not token:
         return html
 
+    agg_field = RANK_AGGREGATE_FIELD[rank]
+
     try:
-        rows = fetch_family_aggregate_pages(token, year)
+        rows = fetch_aggregate_pages(token, year, agg_field)
     except Exception as e:
         print(f"my.groups: aggregate failed: {e}", flush=True)
         html["api_error"] = True
         return html
 
-    families_raw = _parse_aggregate_rows(rows)
-    if not families_raw:
+    rows_parsed = _parse_aggregate_rows(rows, agg_field)
+    if not rows_parsed:
         return html
 
-    id_set = {f["id"] for f in families_raw}
+    id_set = {f["id"] for f in rows_parsed}
     try:
         name_map = resolve_taxon_names(id_set)
     except Exception as e:
@@ -139,7 +183,7 @@ def main(token, year_untrusted):
         name_map = {}
 
     merged = []
-    for f in families_raw:
+    for f in rows_parsed:
         nm = name_map.get(f["id"], {})
         merged.append(
             {
