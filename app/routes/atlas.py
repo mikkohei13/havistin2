@@ -6,7 +6,6 @@ import app_secrets
 
 import atlas.atlas
 import atlas.here
-import atlas.squaremap
 import atlas.species
 import atlas.specieslist
 import atlas.singlespecies
@@ -38,13 +37,6 @@ def species_proportions():
 def here(square_id_untrusted):
     html = atlas.here.main(square_id_untrusted)
     return render_template("atlas_here.html", html=html)
-
-@atlas_bp.route("/ruutu/<string:square_id_untrusted>")
-@robust_cached(timeout=10800)
-def squaremap(square_id_untrusted):
-    html = atlas.squaremap.main(square_id_untrusted)
-    return render_template("squaremap.html", html=html)
-
 @atlas_bp.route("/lajiluettelo")
 @atlas_bp.route("/lajiluettelo/")
 @robust_cached(timeout=10800)

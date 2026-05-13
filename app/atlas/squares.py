@@ -28,7 +28,7 @@ def square_html(data_dict):
     for key, value in data_dict.items():
         name = common_atlas.square_name(key) 
         html += "<tr>"
-        html += "<td><a href='/atlas/ruutu/" + key + "'>" + key + " " + name + "</a></td>"
+        html += "<td>" + key + " " + name + "</td>"
         html += "<td>" + str(value) + "</td>"
         html += "</tr>"
 
