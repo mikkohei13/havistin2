@@ -13,16 +13,7 @@
                 squareselection.onsubmit = function() {
                     const mode = document.getElementById("mode").value
                     const square = document.getElementById("square").value;
-                    if ("squareform" == mode) {
-                        const currentUrlPath = window.location.pathname
-                        if (currentUrlPath.includes("mukautuva")) {
-                            window.location = "/atlas/ruutulomake/" + square + "/mukautuva";
-                        }
-                        else {
-                            window.location = "/atlas/ruutulomake/" + square + "/vakio";
-                        }
-                    }
-                    else if ("squaremap" == mode) {
+                    if ("squaremap" == mode) {
                         window.location = "/atlas/ruutu/" + square;
                     }
                     else if ("misslist" == mode) {

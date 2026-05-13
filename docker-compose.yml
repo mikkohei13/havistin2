@@ -21,6 +21,5 @@ services:
       --reload
       --reload-extra-file /havistin2/app/templates/base.html
       --reload-extra-file /havistin2/app/templates/index.html
-      --reload-extra-file /havistin2/app/templates/squareform.html
     # Note that the extra-files have to exist, otherwise dockec-compose will complain "Error: File ... does not exists."
   

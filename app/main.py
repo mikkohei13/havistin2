@@ -152,11 +152,6 @@ app.register_blueprint(atlas_bp)
 app.register_blueprint(taxa_bp)
 app.register_blueprint(havis_bp)
 
-# Old squareform route, redirect to new route
-@app.route("/ruutulomake/<string:square_id_untrusted>/<string:show_untrusted>")
-def squareform_redirect(square_id_untrusted, show_untrusted):
-    return redirect('/atlas/ruutulomake/' + square_id_untrusted + "/" + show_untrusted)
-
 @app.route("/login/start")
 def login_start():
     locale = request.args.get("locale", "fi")

@@ -98,7 +98,6 @@ def main(square_id_untrusted):
 #    html["total_obs_count"] = collection_counts(square_id)
 
     square_name, society, centerpoint, cornerpoints = common_atlas.square_info(square_id)
-    # Todo: Make heading the same way as on squareform
     html["heading"] = f"{square_id} {square_name}"
     html["centerpoint"] = centerpoint
     html["cornerpoints"] = cornerpoints

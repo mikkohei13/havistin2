@@ -5,7 +5,6 @@ import requests
 import app_secrets
 
 import atlas.atlas
-import atlas.squareform
 import atlas.misslist
 import atlas.misslist_old
 import atlas.here
@@ -35,42 +34,6 @@ def atlas_root():
 def species_proportions():
     html = atlas.species_proportions.main()
     return render_template("species_proportions.html", html=html)
-
-@atlas_bp.route("/ruutulomake/<string:square_id_untrusted>/<string:show_untrusted>")
-@robust_cached(timeout=3600)
-def squareform(square_id_untrusted, show_untrusted):
-    html = atlas.squareform.main(square_id_untrusted, show_untrusted)
-    return render_template("squareform.html", html=html)
-
-
-# TODO: Temporary test for making PDF's, remove of move to separate file
-@atlas_bp.route("/ruutupdf/<string:square_id_untrusted>/<string:show_untrusted>")
-@robust_cached(timeout=1)
-def squarepdf(square_id_untrusted, show_untrusted):
-    html = atlas.squareform.main(square_id_untrusted, show_untrusted)
-    html_page = render_template("squarepdf.html", html=html)
-#    return html_page
-
-    print(html_page)
-
-    url = "https://api.laji.fi/html-to-pdf"
-    data = html_page
-    headers = {
-        "Content-Type": "text/plain",
-        "Accept": "application/pdf",
-        "Authorization": f"Bearer {app_secrets.finbif_api_token}",
-        "API-Version": "1"
-    }
-
-    response = requests.post(url, data=data, headers=headers)
-    print("Status Code:", response.status_code)
-    print("Headers:", response.headers)
-    print("Text:", response.text)
-
-    res = make_response(response.content)
-    res.headers.set('Content-Type', 'application/pdf')
-    res.headers.set('Content-Disposition', 'inline; filename=ruutulomake.pdf')
-    return res
 
 @atlas_bp.route("/here/<string:square_id_untrusted>")
 @robust_cached(timeout=3600)
