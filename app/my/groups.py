@@ -52,10 +52,12 @@ def _normalize_rank(rank_untrusted):
     return r if r in VALID_RANKS else "family"
 
 
-def _aggregate_url(year, page, aggregate_field):
+def _aggregate_url(page, aggregate_field, time_filter=None):
+    """time_filter: year int/str for one calendar year, or None for no date filter (all time)."""
+    time_q = f"&time={time_filter}" if time_filter is not None else ""
     return (
         "https://api.laji.fi/warehouse/query/unit/aggregate"
-        f"?countryId=ML.206&target={BIOTA}&time={year}"
+        f"?countryId=ML.206&target={BIOTA}{time_q}"
         "&individualCountMin=1"
         f"&aggregateBy={aggregate_field}"
         f"&selected={aggregate_field}"
@@ -68,11 +70,11 @@ def _aggregate_url(year, page, aggregate_field):
     )
 
 
-def fetch_aggregate_pages(token, year, aggregate_field):
+def fetch_aggregate_pages(token, aggregate_field, time_filter=None):
     all_rows = []
     page = 1
     while True:
-        url = _aggregate_url(year, page, aggregate_field)
+        url = _aggregate_url(page, aggregate_field, time_filter=time_filter)
         data = common_helpers.fetch_finbif_api(url, person_token=token)
         rows = data.get("results") or []
         if not rows:
@@ -106,13 +108,26 @@ def _parse_aggregate_rows(rows, aggregate_field):
     return out
 
 
+def _counts_by_id(rows, aggregate_field):
+    return {item["id"]: item["count"] for item in _parse_aggregate_rows(rows, aggregate_field)}
+
+
 def _chunks(seq, size):
     for i in range(0, len(seq), size):
         yield seq[i : i + size]
 
 
+def _parse_taxonomic_order(raw):
+    if raw is None:
+        return None
+    try:
+        return int(raw)
+    except (TypeError, ValueError):
+        return None
+
+
 def resolve_taxon_names(qnames):
-    """Map MX qname -> {fi, sci} using batched GET /taxa (no person token)."""
+    """Map MX qname -> {fi, sci, taxonomic_order} using batched GET /taxa (no person token)."""
     names = {}
     for chunk in _chunks(list(qnames), TAXA_CHUNK_SIZE):
         id_param = ",".join(chunk)
@@ -130,7 +145,11 @@ def resolve_taxon_names(qnames):
                 continue
             fi = item.get("vernacularName") or ""
             sci = item.get("scientificName") or ""
-            names[qn] = {"fi": fi, "sci": sci}
+            names[qn] = {
+                "fi": fi,
+                "sci": sci,
+                "taxonomic_order": _parse_taxonomic_order(item.get("taxonomicOrder")),
+            }
     return names
 
 
@@ -165,17 +184,19 @@ def main(token, year_untrusted, rank_untrusted):
     agg_field = RANK_AGGREGATE_FIELD[rank]
 
     try:
-        rows = fetch_aggregate_pages(token, year, agg_field)
+        rows_year = fetch_aggregate_pages(token, agg_field, time_filter=year)
+        rows_all = fetch_aggregate_pages(token, agg_field, time_filter=None)
     except Exception as e:
         print(f"my.groups: aggregate failed: {e}", flush=True)
         html["api_error"] = True
         return html
 
-    rows_parsed = _parse_aggregate_rows(rows, agg_field)
-    if not rows_parsed:
+    count_year = _counts_by_id(rows_year, agg_field)
+    count_all = _counts_by_id(rows_all, agg_field)
+    id_set = set(count_year) | set(count_all)
+    if not id_set:
         return html
 
-    id_set = {f["id"] for f in rows_parsed}
     try:
         name_map = resolve_taxon_names(id_set)
     except Exception as e:
@@ -183,18 +204,30 @@ def main(token, year_untrusted, rank_untrusted):
         name_map = {}
 
     merged = []
-    for f in rows_parsed:
-        nm = name_map.get(f["id"], {})
+    for tid in id_set:
+        nm = name_map.get(tid, {})
+        cy = count_year.get(tid, 0)
+        ca = count_all.get(tid, 0)
         merged.append(
             {
-                "id": f["id"],
-                "count": f["count"],
+                "id": tid,
+                "count": cy,
+                "count_all": ca,
                 "fi": nm.get("fi") or "",
                 "sci": nm.get("sci") or "",
+                "taxonomic_order": nm.get("taxonomic_order"),
             }
         )
 
-    merged.sort(key=lambda x: (-x["count"], x["fi"] or x["sci"] or x["id"]))
+    merged.sort(
+        key=lambda x: (
+            -x["count"],
+            -x["count_all"],
+            x["taxonomic_order"] is None,
+            x["taxonomic_order"] if x["taxonomic_order"] is not None else 0,
+            x["fi"] or x["sci"] or x["id"],
+        )
+    )
 
     html["families"] = merged
     html["got_results"] = True

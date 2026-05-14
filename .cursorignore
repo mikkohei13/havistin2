@@ -1,3 +1,5 @@
 **/__pycache__/**
 .env
 service-account-key.json
+THIRD-PARTY-LICENSES.md
+LICENSE

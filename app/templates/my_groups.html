@@ -2,6 +2,30 @@
 
 {% block head %}
     <title>{{ html["document_title"] }} - Havistin (biomi.org)</title>
+    <style>
+        .styled-table th.sortable {
+            cursor: pointer;
+            user-select: none;
+            white-space: nowrap;
+        }
+        .styled-table th.sortable:hover {
+            text-decoration: underline;
+        }
+        .styled-table th.sortable::after {
+            content: '';
+            display: inline-block;
+            width: 0.65em;
+            margin-left: 0.25em;
+            opacity: 0.45;
+            font-size: 0.75em;
+        }
+        .styled-table th.sort-asc::after {
+            content: '\2003\2191';
+        }
+        .styled-table th.sort-desc::after {
+            content: '\2003\2193';
+        }
+    </style>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             var yearSelect = document.getElementById('yearSelect');
@@ -47,6 +71,126 @@
             });
 
             preselectValuesFromUrl();
+
+            var taxaTable = document.getElementById('my-groups-taxa-table');
+            var taxaTbody = document.getElementById('my-groups-taxa-tbody');
+            if (taxaTable && taxaTbody) {
+                var defaultDir = { tax: 1, name: 1, sci: 1, countYear: -1, countAll: -1 };
+                var sortState = { key: 'countYear', dir: -1 };
+
+                function parseTaxAttr(s) {
+                    if (s === null || s === '') {
+                        return null;
+                    }
+                    var n = parseInt(s, 10);
+                    return isNaN(n) ? null : n;
+                }
+
+                function cmpTax(oa, ob, dir) {
+                    var a = oa.tax;
+                    var b = ob.tax;
+                    if (a === null && b === null) {
+                        return 0;
+                    }
+                    if (a === null) {
+                        return 1;
+                    }
+                    if (b === null) {
+                        return -1;
+                    }
+                    return dir * (a - b);
+                }
+
+                function cmpNum(oa, ob, key, dir) {
+                    var a = oa[key];
+                    var b = ob[key];
+                    return dir * (a - b);
+                }
+
+                function cmpStr(oa, ob, key, dir) {
+                    var a = oa[key] || '';
+                    var b = ob[key] || '';
+                    var c = a.localeCompare(b, 'fi', { sensitivity: 'base' });
+                    return dir === 1 ? c : -c;
+                }
+
+                function rowSortPayload(tr) {
+                    return {
+                        tax: parseTaxAttr(tr.getAttribute('data-sort-tax')),
+                        name: tr.getAttribute('data-sort-name') || '',
+                        sci: tr.getAttribute('data-sort-sci') || '',
+                        countYear: parseInt(tr.getAttribute('data-sort-count-year'), 10) || 0,
+                        countAll: parseInt(tr.getAttribute('data-sort-count-all'), 10) || 0
+                    };
+                }
+
+                function applySort() {
+                    var rows = Array.prototype.slice.call(taxaTbody.querySelectorAll('tr'));
+                    rows.sort(function (ra, rb) {
+                        var da = rowSortPayload(ra);
+                        var db = rowSortPayload(rb);
+                        var dir = sortState.dir;
+                        var k = sortState.key;
+                        if (k === 'tax') {
+                            return cmpTax(da, db, dir);
+                        }
+                        if (k === 'name') {
+                            return cmpStr(da, db, 'name', dir);
+                        }
+                        if (k === 'sci') {
+                            return cmpStr(da, db, 'sci', dir);
+                        }
+                        if (k === 'countYear') {
+                            return cmpNum(da, db, 'countYear', dir);
+                        }
+                        if (k === 'countAll') {
+                            return cmpNum(da, db, 'countAll', dir);
+                        }
+                        return 0;
+                    });
+                    rows.forEach(function (r) {
+                        taxaTbody.appendChild(r);
+                    });
+                }
+
+                function syncHeaderClasses() {
+                    var headers = taxaTable.querySelectorAll('thead th.sortable');
+                    for (var i = 0; i < headers.length; i++) {
+                        var th = headers[i];
+                        th.classList.remove('sort-asc', 'sort-desc');
+                        th.removeAttribute('aria-sort');
+                        if (th.getAttribute('data-sort-key') === sortState.key) {
+                            if (sortState.dir === 1) {
+                                th.classList.add('sort-asc');
+                                th.setAttribute('aria-sort', 'ascending');
+                            } else {
+                                th.classList.add('sort-desc');
+                                th.setAttribute('aria-sort', 'descending');
+                            }
+                        }
+                    }
+                }
+
+                var headerCells = taxaTable.querySelectorAll('thead th.sortable');
+                for (var h = 0; h < headerCells.length; h++) {
+                    headerCells[h].addEventListener('click', function () {
+                        var key = this.getAttribute('data-sort-key');
+                        if (!key) {
+                            return;
+                        }
+                        if (sortState.key === key) {
+                            sortState.dir = -sortState.dir;
+                        } else {
+                            sortState.key = key;
+                            sortState.dir = defaultDir[key] || 1;
+                        }
+                        applySort();
+                        syncHeaderClasses();
+                    });
+                }
+
+                syncHeaderClasses();
+            }
         });
     </script>
 {% endblock %}
@@ -87,22 +231,30 @@
         <p class="error">Lajitietokeskuksen rajapinta ei juuri nyt palauttanut tietoja. Yritä myöhemmin uudelleen.</p>
     {% elif html["got_results"] %}
         <p>{{ html["rank_count_label"] }} yhteensä: <strong>{{ html["families"]|length }}</strong>.</p>
-        <table class="styled-table">
+        <table class="styled-table" id="my-groups-taxa-table">
             <thead>
                 <tr>
-                    <th>#</th>
-                    <th>Nimi</th>
-                    <th>Tieteellinen nimi</th>
-                    <th>Havaintoja</th>
+                    <th class="sortable" data-sort-key="tax" scope="col" title="Taksonominen järjestys (Laji.fi)">Takson.</th>
+                    <th class="sortable" data-sort-key="name" scope="col">Nimi</th>
+                    <th class="sortable" data-sort-key="sci" scope="col">Tieteellinen nimi</th>
+                    <th class="sortable" data-sort-key="countYear" scope="col">Havaintoja ({{ html["year"] }})</th>
+                    <th class="sortable" data-sort-key="countAll" scope="col">Havaintoja (kaikki vuodet)</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="my-groups-taxa-tbody">
                 {% for fam in html["families"] %}
-                <tr>
-                    <td>{{ loop.index }}</td>
+                <tr
+                    data-sort-tax="{% if fam['taxonomic_order'] is not none %}{{ fam['taxonomic_order'] }}{% endif %}"
+                    data-sort-name="{{ fam['fi']|e }}"
+                    data-sort-sci="{{ fam['sci']|e }}"
+                    data-sort-count-year="{{ fam['count'] }}"
+                    data-sort-count-all="{{ fam['count_all'] }}"
+                >
+                    <td>{% if fam["taxonomic_order"] is not none %}{{ fam["taxonomic_order"] }}{% else %}—{% endif %}</td>
                     <td>{% if fam["fi"] %}{{ fam["fi"]|capitalize }}{% else %}—{% endif %}</td>
                     <td>{% if fam["sci"] %}<em>{{ fam["sci"] }}</em>{% else %}—{% endif %}</td>
                     <td><a href="https://laji.fi/observation/map?target={{ fam["id"] }}&amp;countryId=ML.206&amp;time={{ html["year"] }}-01-01%2F{{ html["year"] }}-12-31&amp;observerPersonToken=true">{{ fam["count"] }}</a></td>
+                    <td><a href="https://laji.fi/observation/map?target={{ fam["id"] }}&amp;countryId=ML.206&amp;observerPersonToken=true">{{ fam["count_all"] }}</a></td>
                 </tr>
                 {% endfor %}
             </tbody>
