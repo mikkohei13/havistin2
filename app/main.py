@@ -252,7 +252,8 @@ def my_year(year_untrusted, taxon_id_untrusted = "MX.37600"): # default = Biota
 @app.route("/my/groups/<int:year_untrusted>/<string:rank_untrusted>/")
 def my_groups(year_untrusted, rank_untrusted=None):
     token = session.get('token', None)
-    html = my.groups.main(token, year_untrusted, rank_untrusted)
+    scope = request.args.get('scope', 'mine')
+    html = my.groups.main(token, year_untrusted, rank_untrusted, scope_untrusted=scope)
     return render_template("my_groups.html", html=html)
 
 @app.route("/my/gps")

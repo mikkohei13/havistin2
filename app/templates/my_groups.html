@@ -25,11 +25,15 @@
         .styled-table th.sort-desc::after {
             content: '\2003\2193';
         }
+        .count_0 a {
+            color: #fff !important;
+        }
     </style>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             var yearSelect = document.getElementById('yearSelect');
             var rankSelect = document.getElementById('rankSelect');
+            var scopeSelect = document.getElementById('scopeSelect');
             var submitButton = document.getElementById('submitButton');
 
             function updateButtonStatus() {
@@ -52,7 +56,19 @@
                         }
                     }
                 }
+                var scopeParam = new URLSearchParams(window.location.search).get('scope');
+                if (scopeSelect && scopeParam === 'all') {
+                    scopeSelect.value = 'all';
+                }
                 updateButtonStatus();
+            }
+
+            function buildGroupsUrl(year, rank) {
+                var url = '/my/groups/' + year + '/' + rank;
+                if (scopeSelect && scopeSelect.value === 'all') {
+                    url += '?scope=all';
+                }
+                return url;
             }
 
             yearSelect.addEventListener('change', updateButtonStatus);
@@ -66,7 +82,7 @@
                 var year = yearSelect.value;
                 var rank = rankSelect.value;
                 if (year && rank) {
-                    window.location.href = '/my/groups/' + year + '/' + rank;
+                    window.location.href = buildGroupsUrl(year, rank);
                 }
             });
 
@@ -75,8 +91,11 @@
             var taxaTable = document.getElementById('my-groups-taxa-table');
             var taxaTbody = document.getElementById('my-groups-taxa-tbody');
             if (taxaTable && taxaTbody) {
-                var defaultDir = { tax: 1, name: 1, sci: 1, countYear: -1, countAll: -1 };
-                var sortState = { key: 'countYear', dir: -1 };
+                var defaultDir = { tax: 1, name: 1, sci: 1, countYear: -1, countAll: -1, countPublic: -1 };
+                var tableScope = taxaTable.getAttribute('data-scope') || 'mine';
+                var sortState = tableScope === 'all'
+                    ? { key: 'countPublic', dir: -1 }
+                    : { key: 'countYear', dir: -1 };
 
                 function parseTaxAttr(s) {
                     if (s === null || s === '') {
@@ -120,7 +139,8 @@
                         name: tr.getAttribute('data-sort-name') || '',
                         sci: tr.getAttribute('data-sort-sci') || '',
                         countYear: parseInt(tr.getAttribute('data-sort-count-year'), 10) || 0,
-                        countAll: parseInt(tr.getAttribute('data-sort-count-all'), 10) || 0
+                        countAll: parseInt(tr.getAttribute('data-sort-count-all'), 10) || 0,
+                        countPublic: parseInt(tr.getAttribute('data-sort-count-public'), 10) || 0
                     };
                 }
 
@@ -145,6 +165,9 @@
                         }
                         if (k === 'countAll') {
                             return cmpNum(da, db, 'countAll', dir);
+                        }
+                        if (k === 'countPublic') {
+                            return cmpNum(da, db, 'countPublic', dir);
                         }
                         return 0;
                     });
@@ -196,7 +219,7 @@
 {% endblock %}
 
 {% block breadcrumb %}
-    <a href="/">Havistin</a> &raquo; <a href="/my/year/{{ html["year"] }}/MX.37600">Omat havainnot</a> &raquo; <a href="/my/groups/{{ html["year"] }}/{{ html["rank"] }}">Omat taksonit</a>
+    <a href="/">Havistin</a> &raquo; <a href="/my/year/{{ html["year"] }}/MX.37600">Omat havainnot</a> &raquo; <a href="/my/groups/{{ html["year"] }}/{{ html["rank"] }}">Omat lajiryhmät</a>
 {% endblock %}
 
 {% block body %}
@@ -221,6 +244,12 @@
                 <option value="family"{% if html["rank"] == "family" %} selected{% endif %}>Heimo</option>
             </select>
 
+            <label for="scopeSelect">Lista:</label>
+            <select id="scopeSelect">
+                <option value="mine"{% if html.get("scope", "mine") == "mine" %} selected{% endif %}>Vain omat havainnot</option>
+                <option value="all"{% if html.get("scope") == "all" %} selected{% endif %}>Kaikki Suomessa ({{ html.get("year", "") }})</option>
+            </select>
+
             <button id="submitButton" type="button" disabled>Siirry</button>
         </form>
     </div>
@@ -230,8 +259,24 @@
     {% elif html["api_error"] %}
         <p class="error">Lajitietokeskuksen rajapinta ei juuri nyt palauttanut tietoja. Yritä myöhemmin uudelleen.</p>
     {% elif html["got_results"] %}
-        <p>{{ html["rank_count_label"] }} yhteensä: <strong>{{ html["families"]|length }}</strong>.</p>
-        <table class="styled-table" id="my-groups-taxa-table">
+
+    {% if html.get("scope", "mine") == "mine" %}
+    <p id="missing-taxa">
+    {% if html["mx_qnames_not_in_year"] %}
+        <a href="https://laji.fi/observation/list?target={{ html["mx_qnames_not_in_year"]|join(",") }}&countryId=ML.206&qualityIssues=BOTH&observerPersonToken=true">Omat havainnot puuttuvista lajiryhmistä</a>
+    {% else %}
+        Ei taksoniryhmiä, joilla olisi omia havaintoja vain muina vuosina; kaikilla listalla olevilla ryhmillä on havaintoja myös vuonna {{ html["year"] }}.
+    {% endif %}
+    </p>
+    {% endif %}
+
+        {% if html.get("scope") == "all" %}
+        <p>{{ html["rank_count_label"] }} joilla havaintoja Suomessa vuonna {{ html["year"] }}: <strong>{{ html["families"]|length }}</strong>, joista omia <strong>{{ html["families_count"] }}</strong>.</p>
+        {% else %}
+        <p>{{ html["rank_count_label"] }} yhteensä {{ html["families"]|length }}, joista omia vuonna {{ html["year"] }} <strong>{{ html["families_count"] }}</strong>.</p>
+        {% endif %}
+
+        <table class="styled-table" id="my-groups-taxa-table" data-scope="{{ html.get('scope', 'mine') }}">
             <thead>
                 <tr>
                     <th class="sortable" data-sort-key="tax" scope="col" title="Taksonominen järjestys (Laji.fi)">Takson.</th>
@@ -239,6 +284,7 @@
                     <th class="sortable" data-sort-key="sci" scope="col">Tieteellinen nimi</th>
                     <th class="sortable" data-sort-key="countYear" scope="col">Havaintoja ({{ html["year"] }})</th>
                     <th class="sortable" data-sort-key="countAll" scope="col">Havaintoja (kaikki vuodet)</th>
+                    <th class="sortable" data-sort-key="countPublic" scope="col" title="Kaikkien havainnoijien havainnot Suomesta vuodesta 2000">Suomessa (2000–)</th>
                 </tr>
             </thead>
             <tbody id="my-groups-taxa-tbody">
@@ -249,12 +295,14 @@
                     data-sort-sci="{{ fam['sci']|e }}"
                     data-sort-count-year="{{ fam['count'] }}"
                     data-sort-count-all="{{ fam['count_all'] }}"
+                    data-sort-count-public="{{ fam['count_public'] }}"
                 >
                     <td>{% if fam["taxonomic_order"] is not none %}{{ fam["taxonomic_order"] }}{% else %}—{% endif %}</td>
                     <td>{% if fam["fi"] %}{{ fam["fi"]|capitalize }}{% else %}—{% endif %}</td>
                     <td>{% if fam["sci"] %}<em>{{ fam["sci"] }}</em>{% else %}—{% endif %}</td>
-                    <td><a href="https://laji.fi/observation/map?target={{ fam["id"] }}&amp;countryId=ML.206&amp;time={{ html["year"] }}-01-01%2F{{ html["year"] }}-12-31&amp;observerPersonToken=true">{{ fam["count"] }}</a></td>
-                    <td><a href="https://laji.fi/observation/map?target={{ fam["id"] }}&amp;countryId=ML.206&amp;observerPersonToken=true">{{ fam["count_all"] }}</a></td>
+                    <td class="count_{{ fam["count"] }}"><a href="https://laji.fi/observation/species?target={{ fam["id"] }}&amp;countryId=ML.206&amp;time={{ html["year"] }}-01-01%2F{{ html["year"] }}-12-31&amp;observerPersonToken=true">{{ fam["count"] }}</a></td>
+                    <td class="count_all_{{ fam["count_all"] }}"><a href="https://laji.fi/observation/species?target={{ fam["id"] }}&amp;countryId=ML.206&amp;observerPersonToken=true">{{ fam["count_all"] }}</a></td>
+                    <td class="count_public_{{ fam["count_public"] }}"><a href="https://laji.fi/observation/species?target={{ fam["id"] }}&amp;countryId=ML.206&amp;time={{ html["public_time_laji"]|urlencode }}">{{ fam["count_public"] }}</a></td>
                 </tr>
                 {% endfor %}
             </tbody>
