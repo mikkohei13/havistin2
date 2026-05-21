@@ -15,7 +15,6 @@ def public_count_time_filter():
     return f"{PUBLIC_COUNT_TIME_FROM}/{end_year}"
 
 VALID_RANKS = frozenset({"phylum", "class", "order", "family"})
-VALID_SCOPES = frozenset({"mine", "all"})
 
 # Warehouse aggregateBy / selected field (unit.linkings.taxon.*)
 RANK_AGGREGATE_FIELD = {
@@ -30,13 +29,6 @@ RANK_H1 = {
     "class": "Omat luokat Suomesta",
     "order": "Omat lahkot Suomesta",
     "family": "Omat heimot Suomesta",
-}
-
-RANK_COUNT_LABEL = {
-    "phylum": "Pääjaksoja",
-    "class": "Luokkia",
-    "order": "Lahkoja",
-    "family": "Heimoja",
 }
 
 DOCUMENT_TITLE_PREFIX = {
@@ -60,13 +52,6 @@ def _normalize_rank(rank_untrusted):
         return "family"
     r = str(rank_untrusted).strip().lower()
     return r if r in VALID_RANKS else "family"
-
-
-def _normalize_scope(scope_untrusted):
-    if not scope_untrusted:
-        return "mine"
-    s = str(scope_untrusted).strip().lower()
-    return s if s in VALID_SCOPES else "mine"
 
 
 def _aggregate_url(
@@ -145,6 +130,9 @@ def _parse_aggregate_rows(rows, aggregate_field):
             cnt = 0
         out.append({"id": qname, "count": cnt})
     return out
+
+
+
 
 
 def _counts_by_id(rows, aggregate_field):
@@ -236,7 +224,7 @@ def resolve_taxon_names(qnames):
     return names
 
 
-def main(token, year_untrusted, rank_untrusted, scope_untrusted="mine"):
+def main(token, year_untrusted, rank_untrusted):
     html = dict()
 
     current_year = datetime.datetime.now().year
@@ -249,11 +237,8 @@ def main(token, year_untrusted, rank_untrusted, scope_untrusted="mine"):
     html["year"] = year
 
     rank = _normalize_rank(rank_untrusted)
-    scope = _normalize_scope(scope_untrusted)
     html["rank"] = rank
-    html["scope"] = scope
     html["rank_h1"] = RANK_H1[rank]
-    html["rank_count_label"] = RANK_COUNT_LABEL[rank]
     html["document_title"] = f"{DOCUMENT_TITLE_PREFIX[rank]} {year}"
 
     html["year_options"] = generate_year_dropdown(1970)
@@ -265,8 +250,7 @@ def main(token, year_untrusted, rank_untrusted, scope_untrusted="mine"):
     html["needs_login"] = not token
     html["api_error"] = False
     html["got_results"] = False
-    html["families"] = []
-    html["families_count"] = 0
+    html["rank_taxa"] = []
     html["mx_qnames_not_in_year"] = []
 
     if not token:
@@ -277,32 +261,22 @@ def main(token, year_untrusted, rank_untrusted, scope_untrusted="mine"):
     public_time = public_count_time_filter()
 
     try:
-        if scope == "all":
-            public_in_year = fetch_full_public_counts(agg_field, year)
-            id_set = set(public_in_year)
-            if not id_set:
-                return html
-            count_year = fetch_observer_counts_for_taxa(
-                token, agg_field, id_set, year
-            )
-            count_all = fetch_observer_counts_for_taxa(
-                token, agg_field, id_set, None
-            )
-        else:
-            rows_year = fetch_aggregate_pages(
-                token, agg_field, time_filter=year, self_as_observer=True
-            )
-            rows_all = fetch_aggregate_pages(
-                token, agg_field, time_filter=None, self_as_observer=True
-            )
-            count_year = _counts_by_id(rows_year, agg_field)
-            count_all = _counts_by_id(rows_all, agg_field)
-            id_set = set(count_year) | set(count_all)
-            if not id_set:
-                return html
+        count_public = fetch_full_public_counts(agg_field, public_time)
+        id_set = set(count_public)
+        if not id_set:
+            return html
 
-        count_public = fetch_public_counts_for_taxa(
-            agg_field, id_set, public_time
+        user_all_counts = _counts_by_id(
+            fetch_aggregate_pages(
+                token, agg_field, time_filter=None, self_as_observer=True
+            ),
+            agg_field,
+        )
+        user_year_counts = _counts_by_id(
+            fetch_aggregate_pages(
+                token, agg_field, time_filter=year, self_as_observer=True
+            ),
+            agg_field,
         )
     except Exception as e:
         print(f"my.groups: aggregate failed: {e}", flush=True)
@@ -318,8 +292,8 @@ def main(token, year_untrusted, rank_untrusted, scope_untrusted="mine"):
     merged = []
     for tid in id_set:
         nm = name_map.get(tid, {})
-        cy = count_year.get(tid, 0)
-        ca = count_all.get(tid, 0)
+        cy = user_year_counts.get(tid, 0)
+        ca = user_all_counts.get(tid, 0)
         merged.append(
             {
                 "id": tid,
@@ -332,26 +306,15 @@ def main(token, year_untrusted, rank_untrusted, scope_untrusted="mine"):
             }
         )
 
-    if scope == "all":
-        merged.sort(
-            key=lambda x: (
-                -x["count_public"],
-                -x["count"],
-                x["taxonomic_order"] is None,
-                x["taxonomic_order"] if x["taxonomic_order"] is not None else 0,
-                x["fi"] or x["sci"] or x["id"],
-            )
+    merged.sort(
+        key=lambda x: (
+            -x["count_public"],
+            -x["count"],
+            x["taxonomic_order"] is None,
+            x["taxonomic_order"] if x["taxonomic_order"] is not None else 0,
+            x["fi"] or x["sci"] or x["id"],
         )
-    else:
-        merged.sort(
-            key=lambda x: (
-                -x["count"],
-                -x["count_all"],
-                x["taxonomic_order"] is None,
-                x["taxonomic_order"] if x["taxonomic_order"] is not None else 0,
-                x["fi"] or x["sci"] or x["id"],
-            )
-        )
+    )
 
     not_in_year = [r for r in merged if r["count"] == 0 and r["count_all"] > 0]
     not_in_year.sort(
@@ -363,8 +326,22 @@ def main(token, year_untrusted, rank_untrusted, scope_untrusted="mine"):
     )
     html["mx_qnames_not_in_year"] = [r["id"] for r in not_in_year]
 
-    html["families_count"] = sum(1 for r in merged if r["count"] > 0)
-    html["families"] = merged
+    html["rank_taxa"] = merged
+
+    # Count taxa (must match visible table rows)
+    html["taxacount_own_year"] = 0
+    html["taxacount_own_all"] = 0
+    html["taxacount_public"] = 0
+
+    for taxonrow in merged:
+        if taxonrow["count"] > 0:
+            html["taxacount_own_year"] = html["taxacount_own_year"] + 1
+        if taxonrow["count_all"] > 0:
+            html["taxacount_own_all"] = html["taxacount_own_all"] + 1
+        if taxonrow["count_public"] > 0:
+            html["taxacount_public"] = html["taxacount_public"] + 1
+
     html["got_results"] = True
 
     return html
+
