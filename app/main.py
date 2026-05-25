@@ -47,6 +47,7 @@ from app.routes.info import info_bp
 from app.routes.atlas import atlas_bp
 from app.routes.taxa import taxa_bp
 from app.routes.havis import havis_bp
+from app.routes.stats import stats_bp
 
 
 print("-------------- PREPARE --------------", file = sys.stdout)
@@ -153,6 +154,7 @@ app.register_blueprint(info_bp)
 app.register_blueprint(atlas_bp)
 app.register_blueprint(taxa_bp)
 app.register_blueprint(havis_bp)
+app.register_blueprint(stats_bp)
 
 @app.route("/login/start")
 def login_start():

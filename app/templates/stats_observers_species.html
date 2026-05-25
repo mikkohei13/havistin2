@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <title>Havainnoijat lajimäärän mukaan - Havistin (biomi.org)</title>
+{% endblock %}
+
+{% block breadcrumb %}
+    <a href="/">Havistin</a> &raquo; Tilastot &raquo; Havainnoijat (lajit)
+{% endblock %}
+
+{% block body %}
+
+    <h1>Havainnoijat lajimäärän mukaan</h1>
+
+    <p>Eniten Suomessa lajeja havainneet. Mukana ei ole ei-luonnonvaraisia, epävarmoja tai virheellisiä havaintoja, eikä nollahavaintoja.</p>
+
+    {{ html["table"]|safe }}
+
+{% endblock %}
