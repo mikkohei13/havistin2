@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request, session, g, jsonify
+from flask import Flask, render_template, redirect, request, session, g, jsonify, url_for
 #from werkzeug.exceptions import HTTPException
 from extensions import cache
 from decorators import robust_cached
@@ -29,6 +29,7 @@ import weather.change
 import my.year
 import my.groups
 import my.gps
+import my.home
 import my.miss
 
 import misc.bingo
@@ -124,7 +125,7 @@ def _login_user_with_person_token(person_token):
         "https://api.laji.fi/person",
         person_token=person_token
     )
-    return render_template("login.html")
+    return redirect(url_for("my_home"), code=303)
 
 
 def _extract_person_token_from_request():
@@ -261,6 +262,12 @@ def my_groups(year_untrusted, rank_untrusted=None):
 def my_gps():
     html = my.gps.main()
     return render_template("generic_gps.html", html=html)
+
+@app.route("/my")
+@app.route("/my/")
+def my_home():
+    html = my.home.main()
+    return render_template("my_home.html", html=html)
 
 @app.route("/my/<string:coord_untrusted>")
 @robust_cached(timeout=1)

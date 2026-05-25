@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <title>Omat havainnot - Havistin (biomi.org)</title>
+{% endblock %}
+
+{% block breadcrumb %}
+    <a href="/">Havistin</a> &raquo; Omat havainnot
+{% endblock %}
+
+{% block body %}
+
+{% if not session.get('user_data') %}
+    <h1>Omat havainnot</h1>
+    <p>Nähdäksesi tilastoja omista havainnoistasi, <a href="/login/start">kirjaudu sisään</a> Laji.fi-tunnuksella.</p>
+{% elif session['user_data']['errorCode'] is defined %}
+    <h1>Virheellinen kirjautuminen</h1>
+{% else %}
+    <h1>Olet nyt kirjautunut</h1>
+    <p>Olet kirjautunut näillä tiedoilla:
+        {{ session["user_data"]['fullName'] }},
+        {{ session["user_data"]['id'] }},
+        {{ session["user_data"]['emailAddress'] }}
+    </p>
+    <p>Voit <a href='/logout'>kirjautua ulos tästä</a> tai oikeasta ylänurkasta.</p>
+
+    {% for year in html["years"] %}
+    <h3><a href='/my/year/{{ year }}/MX.37600'>Omat havainnot {{ year }}</a></h3>
+    {% endfor %}
+    <p style="margin-top: 5em;">&nbsp;</p>
+{% endif %}
+
+{% endblock %}
