@@ -86,6 +86,16 @@
                     form.elements.period.value = per;
                 }
             }
+            return;
+        }
+
+        if (path.indexOf('/stats/observers/species') !== -1) {
+            if (segs.length >= 5 && segs[3] === 'species') {
+                var ystats = segs[4];
+                if (form.elements.year && /^\d{4}$/.test(ystats)) {
+                    form.elements.year.value = ystats;
+                }
+            }
         }
     }
 

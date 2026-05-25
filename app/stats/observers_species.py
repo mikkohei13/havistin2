@@ -1,7 +1,9 @@
+import datetime
 import html
 from urllib.parse import urlencode
 
 from helpers import common_helpers
+from helpers.year_dropdown import generate_year_dropdown
 
 _API_BASE = "https://api.laji.fi/warehouse/query/unit/aggregate"
 
@@ -38,10 +40,14 @@ def _fetch_aggregate(year=None):
     url = f"{_API_BASE}?{urlencode(params)}"
     return common_helpers.fetch_finbif_api(url)
 
-
 def main(year_untrusted=None):
+    current_year = datetime.datetime.now().year
     if year_untrusted is not None:
         year = int(year_untrusted)
+        if year < 1970:
+            year = current_year
+        elif year > current_year:
+            year = current_year
     else:
         year = None
 
@@ -87,4 +93,5 @@ def main(year_untrusted=None):
         "page_size": len(rows),
         "min_taxon": min_taxon,
         "year": year,
+        "year_options": generate_year_dropdown(1970),
     }

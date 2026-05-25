@@ -1,7 +1,9 @@
 {% extends "base.html" %}
+{% import "macros/path_nav.html" as path_nav %}
 
 {% block head %}
     <title>Havainnoijat lajimäärän mukaan{% if html["year"] is not none %} {{ html["year"] }}{% endif %} - Havistin (biomi.org)</title>
+    <script src="{{ url_for('static', filename='year_path_nav.js') }}" defer></script>
 {% endblock %}
 
 {% block breadcrumb %}
@@ -11,6 +13,14 @@
 {% block body %}
 
     <h1>Havainnoijat lajimäärän mukaan{% if html["year"] is not none %} {{ html["year"] }}{% endif %}</h1>
+
+    {% call path_nav.path_nav(
+        "Valitse vuosi",
+        "/stats/observers/species/{year}",
+        html["year_options"],
+        "Siirry",
+        "Siirrytään..."
+    ) %}{% endcall %}
 
     <p>Eniten Suomessa lajeja havainneet. Mukana ei ole ei-luonnonvaraisia, epävarmoja tai virheellisiä havaintoja, eikä nollahavaintoja. Taulukko päivittyy kerran vuorokaudessa.</p>
 

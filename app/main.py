@@ -260,7 +260,6 @@ def my_groups(year_untrusted, rank_untrusted=None):
 
 @app.route("/my/gps")
 @app.route("/my/gps/")
-@robust_cached(timeout=1)
 def my_gps():
     html = my.gps.main()
     return render_template("generic_gps.html", html=html)

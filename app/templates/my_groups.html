@@ -169,7 +169,7 @@
     <h1>{{ html["rank_h1"] }}, {{ html["year"] }}</h1>
 
     {% call path_nav.path_nav(
-        "Valitse vuosi ja taksoninen taso",
+        "Valitse vuosi ja taksonominen taso",
         "/my/groups/{year}/{rank}",
         html["year_options"],
         "Siirry",
@@ -181,7 +181,7 @@
                 <option value="phylum"{% if html["rank"] == "phylum" %} selected{% endif %}>Pääjakso</option>
                 <option value="class"{% if html["rank"] == "class" %} selected{% endif %}>Luokka</option>
                 <option value="order"{% if html["rank"] == "order" %} selected{% endif %}>Lahko</option>
-                <option value="family"{% if html["rank"] == "family" %} selected{% endif %}>Heimo</option>
+                <!--<option value="family"{% if html["rank"] == "family" %} selected{% endif %}>Heimo</option>-->
             </select>
     {% endcall %}
 

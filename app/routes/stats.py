@@ -14,14 +14,14 @@ def _render_observers_species(year_untrusted=None):
 
 @stats_bp.route("/observers/species")
 @stats_bp.route("/observers/species/")
-@robust_cached(timeout=1) # 72000 = 20 h
+@robust_cached(timeout=72000) # 72000 = 20 h
 def observers_species():
     return _render_observers_species(year_untrusted=None)
 
 
 @stats_bp.route("/observers/species/<int:year_untrusted>")
 @stats_bp.route("/observers/species/<int:year_untrusted>/")
-@robust_cached(timeout=1) # 72000 = 20 h
+@robust_cached(timeout=72000) # 72000 = 20 h
 def observers_species_year(year_untrusted):
     return _render_observers_species(year_untrusted=year_untrusted)
 
