@@ -1,5 +1,6 @@
 
 from helpers import common_helpers
+from helpers.year_dropdown import generate_year_dropdown
 import datetime
 import json
 import calendar
@@ -172,16 +173,6 @@ def generate_rarest_list(species_list, year):
 
     html += "</div>\n"
     return html
-
-
-def generate_year_dropdown(start_year):
-    current_year = datetime.datetime.now().year
-    html_options = []
-
-    for year in range(current_year, (start_year - 1), -1):
-        html_options.append('<option value="{0}">{0}</option>'.format(year))
-
-    return '\n'.join(html_options)
 
 
 def get_taxon_name(qname):

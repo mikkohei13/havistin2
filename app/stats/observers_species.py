@@ -8,7 +8,7 @@ _API_BASE = "https://api.laji.fi/warehouse/query/unit/aggregate"
 
 
 
-def _fetch_aggregate():
+def _fetch_aggregate(year=None):
     params = {
         "aggregateBy": "gathering.team.memberName",
         "orderBy": "speciesCount DESC",
@@ -33,12 +33,19 @@ def _fetch_aggregate():
         "higherTaxon": "false",
         "lang": "fi",
     }
+    if year is not None:
+        params["time"] = str(year)
     url = f"{_API_BASE}?{urlencode(params)}"
     return common_helpers.fetch_finbif_api(url)
 
 
-def main():
-    data = _fetch_aggregate()
+def main(year_untrusted=None):
+    if year_untrusted is not None:
+        year = int(year_untrusted)
+    else:
+        year = None
+
+    data = _fetch_aggregate(year=year)
     total = data.get("total", 0)
     results = list(data.get("results", []))
 
@@ -79,4 +86,5 @@ def main():
         "total": total,
         "page_size": len(rows),
         "min_taxon": min_taxon,
+        "year": year,
     }

@@ -1,0 +1,15 @@
+{# Shared "year + caller() fields + submit" navigation. Wire with year_path_nav.js (data-path-template, named controls). #}
+{% macro path_nav(heading, path_template, year_options_html, submit_label, busy_label, form_id="navigationForm", year_select_id="yearSelect", submit_id="submitButton") %}
+    <div id="subnavi">
+        <h3>{{ heading }}</h3>
+        <form id="{{ form_id }}" class="havistin-path-nav" method="get" action="#" data-path-template="{{ path_template }}" data-busy-label="{{ busy_label|e }}">
+            <label for="{{ year_select_id }}">Vuosi:</label>
+            <select id="{{ year_select_id }}" name="year">
+                <option value="">valitse</option>
+                {{ year_options_html|safe }}
+            </select>
+            {{ caller() }}
+            <button id="{{ submit_id }}" type="button" class="havistin-path-nav-submit" disabled>{{ submit_label }}</button>
+        </form>
+    </div>
+{% endmacro %}

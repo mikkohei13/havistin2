@@ -1,54 +1,10 @@
 {% extends "base.html" %}
+{% import "macros/path_nav.html" as path_nav %}
 
 {% block head %}
     <title>Omat havainnot {{ html["year"] }} - Havistin (biomi.org)</title>
     <script src="/static/chart.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var yearSelect = document.getElementById('yearSelect');
-            var taxonSelect = document.getElementById('taxonSelect');
-            var submitButton = document.getElementById('submitButton');
-
-            function updateButtonStatus() {
-                submitButton.disabled = !(yearSelect.value && taxonSelect.value);
-            }
-
-            function preselectValuesFromUrl() {
-                var pathArray = window.location.pathname.split('/');
-                // Assuming the URL pattern is "/my/year/{year}/{taxonKey}"
-                if (pathArray.length === 5) {
-                    var year = pathArray[3];
-                    var taxonKey = pathArray[4];
-
-                    if (year) {
-                        yearSelect.value = year;
-                    }
-                    if (taxonKey) {
-                        taxonSelect.value = taxonKey;
-                    }
-                }
-                updateButtonStatus();
-            }
-
-            yearSelect.addEventListener('change', updateButtonStatus);
-            taxonSelect.addEventListener('change', updateButtonStatus);
-
-            submitButton.addEventListener('click', function () {
-                submitButton.disabled = true;
-                submitButton.textContent = 'Hakee havaintoja...';
-                document.body.style.cursor = 'wait';
-
-                var year = yearSelect.value;
-                var taxonKey = taxonSelect.value;
-                if (year && taxonKey) {
-                    window.location.href = '/my/year/' + year + '/' + taxonKey;
-                }
-            });
-
-            preselectValuesFromUrl();
-        });
-
-    </script>
+    <script src="{{ url_for('static', filename='year_path_nav.js') }}" defer></script>
 {% endblock %}
 
 {% block breadcrumb %}
@@ -59,17 +15,15 @@
 
     <h1>Omat havainnot Suomesta, {{ html["fi_name"] }} ({{ html["sci_name"] }}), {{ html["year"] }}</h1>
 
-    <div id="subnavi">
-        <h3>Valitse tarkasteltava vuosi ja lajiryhmä</h3>
-        <form id="navigationForm">
-            <label for="yearSelect">Vuosi:</label>
-            <select id="yearSelect">
-                <option value="">valitse</option>
-                {{ html["year_options"]|safe }}
-            </select>
-
+    {% call path_nav.path_nav(
+        "Valitse tarkasteltava vuosi ja lajiryhmä",
+        "/my/year/{year}/{taxon}",
+        html["year_options"],
+        "Valitse",
+        "Hakee havaintoja..."
+    ) %}
             <label for="taxonSelect">lajiryhmä:</label>
-            <select id="taxonSelect">
+            <select id="taxonSelect" name="taxon">
                 <option value="">valitse</option>
                 <option value="MX.37600">Kaikki lajit</option>
                 <option value="MX.37602">- Eläimet</option>
@@ -93,10 +47,7 @@
                 <option value="MX.70582">- Jäkälät</option>
                 <option value="MX.70149">Limasienet</option>
             </select>
-
-            <button id="submitButton" type="button" disabled>Valitse</button>
-        </form>
-    </div>
+    {% endcall %}
 
     {% if html["got_results"] %}
 

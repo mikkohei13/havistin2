@@ -1,7 +1,7 @@
 import datetime
 
 from helpers import common_helpers
-from my.year import generate_year_dropdown
+from helpers.year_dropdown import generate_year_dropdown
 
 BIOTA = "MX.37600"
 AGG_PAGE_SIZE = 1000

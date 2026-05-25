@@ -1,18 +1,18 @@
 {% extends "base.html" %}
 
 {% block head %}
-    <title>Havainnoijat lajimäärän mukaan - Havistin (biomi.org)</title>
+    <title>Havainnoijat lajimäärän mukaan{% if html["year"] is not none %} {{ html["year"] }}{% endif %} - Havistin (biomi.org)</title>
 {% endblock %}
 
 {% block breadcrumb %}
-    <a href="/">Havistin</a> &raquo; Tilastot &raquo; Havainnoijat (lajit)
+    <a href="/">Havistin</a> &raquo; Havainnoijat{% if html["year"] is not none %} {{ html["year"] }}{% endif %}
 {% endblock %}
 
 {% block body %}
 
-    <h1>Havainnoijat lajimäärän mukaan</h1>
+    <h1>Havainnoijat lajimäärän mukaan{% if html["year"] is not none %} {{ html["year"] }}{% endif %}</h1>
 
-    <p>Eniten Suomessa lajeja havainneet. Mukana ei ole ei-luonnonvaraisia, epävarmoja tai virheellisiä havaintoja, eikä nollahavaintoja.</p>
+    <p>Eniten Suomessa lajeja havainneet. Mukana ei ole ei-luonnonvaraisia, epävarmoja tai virheellisiä havaintoja, eikä nollahavaintoja. Taulukko päivittyy kerran vuorokaudessa.</p>
 
     {{ html["table"]|safe }}
 

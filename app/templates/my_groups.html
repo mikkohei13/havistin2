@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% import "macros/path_nav.html" as path_nav %}
 
 {% block head %}
     <title>{{ html["document_title"] }} - Havistin (biomi.org)</title>
@@ -29,56 +30,9 @@
             color: #fff !important;
         }
     </style>
+    <script src="{{ url_for('static', filename='year_path_nav.js') }}" defer></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            var yearSelect = document.getElementById('yearSelect');
-            var rankSelect = document.getElementById('rankSelect');
-            var submitButton = document.getElementById('submitButton');
-
-            function updateButtonStatus() {
-                submitButton.disabled = !(yearSelect.value && rankSelect.value);
-            }
-
-            function preselectValuesFromUrl() {
-                var pathArray = window.location.pathname.split('/');
-                // "/my/groups/{year}" or "/my/groups/{year}/{rank}"
-                if (pathArray.length >= 4 && pathArray[2] === 'groups') {
-                    var year = pathArray[3];
-                    if (year) {
-                        yearSelect.value = year;
-                    }
-                    if (pathArray.length >= 5 && pathArray[4]) {
-                        var rank = pathArray[4].toLowerCase();
-                        var opt = rankSelect.querySelector('option[value="' + rank + '"]');
-                        if (opt) {
-                            rankSelect.value = rank;
-                        }
-                    }
-                }
-                updateButtonStatus();
-            }
-
-            function buildGroupsUrl(year, rank) {
-                return '/my/groups/' + year + '/' + rank;
-            }
-
-            yearSelect.addEventListener('change', updateButtonStatus);
-            rankSelect.addEventListener('change', updateButtonStatus);
-
-            submitButton.addEventListener('click', function () {
-                submitButton.disabled = true;
-                submitButton.textContent = 'Siirrytään...';
-                document.body.style.cursor = 'wait';
-
-                var year = yearSelect.value;
-                var rank = rankSelect.value;
-                if (year && rank) {
-                    window.location.href = buildGroupsUrl(year, rank);
-                }
-            });
-
-            preselectValuesFromUrl();
-
             var taxaTable = document.getElementById('my-groups-taxa-table');
             var taxaTbody = document.getElementById('my-groups-taxa-tbody');
             if (taxaTable && taxaTbody) {
@@ -214,27 +168,22 @@
 
     <h1>{{ html["rank_h1"] }}, {{ html["year"] }}</h1>
 
-    <div id="subnavi">
-        <h3>Valitse vuosi ja taksoninen taso</h3>
-        <form id="navigationForm">
-            <label for="yearSelect">Vuosi:</label>
-            <select id="yearSelect">
-                <option value="">valitse</option>
-                {{ html["year_options"]|safe }}
-            </select>
-
+    {% call path_nav.path_nav(
+        "Valitse vuosi ja taksoninen taso",
+        "/my/groups/{year}/{rank}",
+        html["year_options"],
+        "Siirry",
+        "Siirrytään..."
+    ) %}
             <label for="rankSelect">Taso:</label>
-            <select id="rankSelect">
+            <select id="rankSelect" name="rank">
                 <option value="">valitse</option>
                 <option value="phylum"{% if html["rank"] == "phylum" %} selected{% endif %}>Pääjakso</option>
                 <option value="class"{% if html["rank"] == "class" %} selected{% endif %}>Luokka</option>
                 <option value="order"{% if html["rank"] == "order" %} selected{% endif %}>Lahko</option>
                 <option value="family"{% if html["rank"] == "family" %} selected{% endif %}>Heimo</option>
             </select>
-
-            <button id="submitButton" type="button" disabled>Siirry</button>
-        </form>
-    </div>
+    {% endcall %}
 
     {% if html["needs_login"] %}
         <p><a href="/login/start">Kirjaudu sisään</a>, jotta näet omat havaintosi valitulla vuodella ja taksonisella tasolla (Laji.fi -tunnus).</p>

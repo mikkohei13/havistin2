@@ -1,7 +1,9 @@
 {% extends "base.html" %}
+{% import "macros/path_nav.html" as path_nav %}
 
 {% block head %}
     <title>{{ html["society_name"] }} - Talvilintulaskennat - Havistin (biomi.org)</title>
+    <script src="{{ url_for('static', filename='year_path_nav.js') }}" defer></script>
 {% endblock %}
 
 {% block breadcrumb %}
@@ -12,79 +14,62 @@
 
     <h1>Talvilintulaskennat</h1>
 
-    <form id="wbc_navigation">   
-        <select id="field1" name="field1">
-            <option value="x">valitse yhdistys</option>
-            <option value="ML.1088">Ålands Fågelskyddsförening</option>
-            <option value="ML.1089">Turun Lintutieteellinen Yhdistys</option>
-            <option value="ML.1090">Porin Lintutieteellinen Yhdistys</option>
-            <option value="ML.1091">Helsingin Seudun Lintutieteellinen Yhdistys - Tringa</option>
-            <option value="ML.1092">Keski- ja Pohjois-Uudenmaan Lintuharrastajat - Apus</option>
-            <option value="ML.1093">Porvoon Seudun Lintuyhdistys</option>
-            <option value="ML.1094">Kymenlaakson Lintutieteellinen Yhdistys</option>
-            <option value="ML.1095">Etelä-Karjalan Lintutieteellinen Yhdistys</option>
-            <option value="ML.1096">Lounais-Hämeen Lintuharrastajat</option>
-            <option value="ML.1097">Kanta-Hämeen Lintutieteellinen Yhdistys</option>
-            <option value="ML.1098">Päijät-Hämeen Lintutieteellinen Yhdistys</option>
-            <option value="ML.1099">Pirkanmaan Lintutieteellinen Yhdistys</option>
-            <option value="ML.1101">Etelä-Savon Lintuharrastajat - Oriolus</option>
-            <option value="ML.1102">Pohjois-Savon Lintuyhdistys - Kuikka</option>
-            <option value="ML.1103">Pohjois-Karjalan Lintutieteellinen Yhdistys</option>
-            <option value="ML.1104">Keski-Suomen Lintutieteellinen Yhdistys</option>
-            <option value="ML.1105">Suomenselän Lintutieteellinen Yhdistys</option>
-            <option value="ML.1106">Suupohjan Lintutieteellinen Yhdistys</option>
-            <option value="ML.1107">Merenkurkun Lintutieteellinen Yhdistys</option>
-            <option value="ML.1108">Keski-Pohjanmaan Lintutieteellinen Yhdistys</option>
-            <option value="ML.1109">Pohjois-Pohjanmaan Lintutieteellinen Yhdistys</option>
-            <option value="ML.1110">Kainuun Lintutieteellinen Yhdistys</option>
-            <option value="ML.1111">Kemi-Tornion Lintuharrastajat - Xenus</option>
-            <option value="ML.1112">Lapin Lintutieteellinen Yhdistys</option>
-            <option value="ML.1113">Kuusamon lintukerho</option>
-            <option value="ML.1114">Lohjan Lintutieteellinen Yhdistys - Hakki</option>
-            <option value="ML.1116">Rauman Seudun Lintuharrastajat</option>
-            <option value="ML.1267">Ostrobothnia Australis</option>
-		</select>
+    {% set sid = html["society_id"] %}
+    {% call path_nav.path_nav(
+        "Valitse lintuyhdistys, vuosi (syksyn vuosiluvun mukaan) ja kausi",
+        "/talvilinnut/laskenta/{society}/{year}-{period}",
+        html["year_options"],
+        "Valitse",
+        "Siirrytään..."
+    ) %}
+            <label for="societySelect">Yhdistys:</label>
+            <select id="societySelect" name="society">
+                <option value="">valitse yhdistys</option>
+                <option value="ML.1088"{% if sid == "ML.1088" %} selected{% endif %}>Ålands Fågelskyddsförening</option>
+                <option value="ML.1089"{% if sid == "ML.1089" %} selected{% endif %}>Turun Lintutieteellinen Yhdistys</option>
+                <option value="ML.1090"{% if sid == "ML.1090" %} selected{% endif %}>Porin Lintutieteellinen Yhdistys</option>
+                <option value="ML.1091"{% if sid == "ML.1091" %} selected{% endif %}>Helsingin Seudun Lintutieteellinen Yhdistys - Tringa</option>
+                <option value="ML.1092"{% if sid == "ML.1092" %} selected{% endif %}>Keski- ja Pohjois-Uudenmaan Lintuharrastajat - Apus</option>
+                <option value="ML.1093"{% if sid == "ML.1093" %} selected{% endif %}>Porvoon Seudun Lintuyhdistys</option>
+                <option value="ML.1094"{% if sid == "ML.1094" %} selected{% endif %}>Kymenlaakson Lintutieteellinen Yhdistys</option>
+                <option value="ML.1095"{% if sid == "ML.1095" %} selected{% endif %}>Etelä-Karjalan Lintutieteellinen Yhdistys</option>
+                <option value="ML.1096"{% if sid == "ML.1096" %} selected{% endif %}>Lounais-Hämeen Lintuharrastajat</option>
+                <option value="ML.1097"{% if sid == "ML.1097" %} selected{% endif %}>Kanta-Hämeen Lintutieteellinen Yhdistys</option>
+                <option value="ML.1098"{% if sid == "ML.1098" %} selected{% endif %}>Päijät-Hämeen Lintutieteellinen Yhdistys</option>
+                <option value="ML.1099"{% if sid == "ML.1099" %} selected{% endif %}>Pirkanmaan Lintutieteellinen Yhdistys</option>
+                <option value="ML.1101"{% if sid == "ML.1101" %} selected{% endif %}>Etelä-Savon Lintuharrastajat - Oriolus</option>
+                <option value="ML.1102"{% if sid == "ML.1102" %} selected{% endif %}>Pohjois-Savon Lintuyhdistys - Kuikka</option>
+                <option value="ML.1103"{% if sid == "ML.1103" %} selected{% endif %}>Pohjois-Karjalan Lintutieteellinen Yhdistys</option>
+                <option value="ML.1104"{% if sid == "ML.1104" %} selected{% endif %}>Keski-Suomen Lintutieteellinen Yhdistys</option>
+                <option value="ML.1105"{% if sid == "ML.1105" %} selected{% endif %}>Suomenselän Lintutieteellinen Yhdistys</option>
+                <option value="ML.1106"{% if sid == "ML.1106" %} selected{% endif %}>Suupohjan Lintutieteellinen Yhdistys</option>
+                <option value="ML.1107"{% if sid == "ML.1107" %} selected{% endif %}>Merenkurkun Lintutieteellinen Yhdistys</option>
+                <option value="ML.1108"{% if sid == "ML.1108" %} selected{% endif %}>Keski-Pohjanmaan Lintutieteellinen Yhdistys</option>
+                <option value="ML.1109"{% if sid == "ML.1109" %} selected{% endif %}>Pohjois-Pohjanmaan Lintutieteellinen Yhdistys</option>
+                <option value="ML.1110"{% if sid == "ML.1110" %} selected{% endif %}>Kainuun Lintutieteellinen Yhdistys</option>
+                <option value="ML.1111"{% if sid == "ML.1111" %} selected{% endif %}>Kemi-Tornion Lintuharrastajat - Xenus</option>
+                <option value="ML.1112"{% if sid == "ML.1112" %} selected{% endif %}>Lapin Lintutieteellinen Yhdistys</option>
+                <option value="ML.1113"{% if sid == "ML.1113" %} selected{% endif %}>Kuusamon lintukerho</option>
+                <option value="ML.1114"{% if sid == "ML.1114" %} selected{% endif %}>Lohjan Lintutieteellinen Yhdistys - Hakki</option>
+                <option value="ML.1116"{% if sid == "ML.1116" %} selected{% endif %}>Rauman Seudun Lintuharrastajat</option>
+                <option value="ML.1267"{% if sid == "ML.1267" %} selected{% endif %}>Ostrobothnia Australis</option>
+            </select>
 
-		<input type="text" id="field2" name="field2" placeholder="syksyn vuosi">
-
-		<select id="field3" name="field3">
-			<option value="x" class="empty">valitse kausi</option>
-			<option value="1">syksy</option>
-			<option value="2">talvi</option>
-			<option value="3">kevät</option>
-		</select>
-
-		<button type="button" id="wbc_navigate" onclick="navigateToUrl()">Valitse</button>
-	</form>
+            <label for="periodSelect">Kausi:</label>
+            <select id="periodSelect" name="period">
+                <option value="">valitse kausi</option>
+                <option value="1"{% if html["season_period"] == "1" %} selected{% endif %}>syksy</option>
+                <option value="2"{% if html["season_period"] == "2" %} selected{% endif %}>talvi</option>
+                <option value="3"{% if html["season_period"] == "3" %} selected{% endif %}>kevät</option>
+            </select>
+    {% endcall %}
 
     {% if html["data"] is not none and html["data"] != "" %}
         <!--Content-->
-        <h3>{{ html["society_name"] }}: {{ html["count"] }} laskettua reittiä kaudelta {{ html["season"] }}</h3>    
-        <div id="data">{{ html["data"]|safe }}</div>    
+        <h3>{{ html["society_name"] }}: {{ html["count"] }} laskettua reittiä kaudelta {{ html["season"] }}</h3>
+        <div id="data">{{ html["data"]|safe }}</div>
     {% else %}
         <p>Valitse lintuyhdistys, vuosi (syksyn vuosiluvun mukaan) ja kausi, jolta haluat nähdä talvilintulaskentojen tuloksia.</p>
     {% endif %}
-
-    <script>
-		function navigateToUrl() {
-            var button = document.getElementById("wbc_navigate");
-            button.disabled = true;
-
-			var field1 = document.getElementById("field1").value;
-			var field2 = document.getElementById("field2").value;
-			var field3 = document.getElementById("field3").value;
-
-            if ("x" == field1 || "" == field2 || "x" == field3) {
-                alert("Valitse arvo kaikkiin kolmeen kenttään")
-                button.disabled = false;
-                return
-            }
-
-			var url = "/talvilinnut/laskenta/" + field1 + "/" + field2 + "-" + field3;
-            console.log(url)
-			window.location.href = url;
-		}
-	</script>
-
 
 {% endblock %}

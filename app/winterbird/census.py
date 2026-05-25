@@ -2,6 +2,7 @@
 
 import re
 from helpers import common_helpers
+from helpers.year_dropdown import generate_year_dropdown
 import datetime
 
 import pandas as pd
@@ -149,18 +150,26 @@ def datatable(society_id, year_month):
 
 def main(society_id_dirty, season_dirty):
     html = dict()
+    html["year_options"] = generate_year_dropdown(1970)
+    html["society_id"] = ""
+    html["season_year"] = ""
+    html["season_period"] = ""
 
     if "" == society_id_dirty and "" == season_dirty:
         html["society_name"] = ""
         html["season"] = ""
         html["data"] = ""
         html["count"] = 0
-    
+
     else:
         society_id = validate_society_id(society_id_dirty)
         season = validate_season(season_dirty)
         html["society_name"] = get_society_info(society_id)
         html["season"] = season
+        html["society_id"] = society_id
+        season_parts = season.split("-", 1)
+        html["season_year"] = season_parts[0]
+        html["season_period"] = season_parts[1] if len(season_parts) > 1 else ""
         season_year_month = season_to_year_month(season)
         html["data"], html["count"] = datatable(society_id, season_year_month)
 
