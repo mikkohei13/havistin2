@@ -24,9 +24,10 @@
     </p>
     <p>Voit <a href='/logout'>kirjautua ulos tästä</a> tai oikeasta ylänurkasta.</p>
 
-    {% for year in html["years"] %}
-    <h3><a href='/my/year/{{ year }}/MX.37600'>Omat havainnot {{ year }}</a></h3>
-    {% endfor %}
+    <h3><a href='/my/year/{{ html["current_year"] }}/MX.37600'>Omat havainnot {{ html["current_year"] }}</a></h3>
+
+    <h3>Omat <a href='/my/groups/{{ html["current_year"] }}/phylum'>pääjaksot</a> / <a href='/my/groups/{{ html["current_year"] }}/class'>luokat</a> / <a href='/my/groups/{{ html["current_year"] }}/order'>lahkot</a> {{ html["current_year"] }}</a></h3>
+
     <p style="margin-top: 5em;">&nbsp;</p>
 {% endif %}
 
