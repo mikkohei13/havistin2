@@ -44,10 +44,8 @@ def main(year_untrusted=None):
     current_year = datetime.datetime.now().year
     if year_untrusted is not None:
         year = int(year_untrusted)
-        if year < 1970:
-            year = current_year
-        elif year > current_year:
-            year = current_year
+        if year < 1500:
+            year = None
     else:
         year = None
 
