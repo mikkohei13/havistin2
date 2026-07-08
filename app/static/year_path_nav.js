@@ -54,6 +54,14 @@
             return;
         }
 
+        if (path.indexOf('/my/documents/') !== -1 && segs.length >= 4) {
+            var yd = segs[3];
+            if (form.elements.year && /^\d{4}$/.test(yd)) {
+                form.elements.year.value = yd;
+            }
+            return;
+        }
+
         if (path.indexOf('/my/groups/') !== -1 && segs.length >= 5) {
             var yg = segs[3];
             var rank = segs[4] ? segs[4].toLowerCase() : '';

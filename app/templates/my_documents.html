@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% import "macros/path_nav.html" as path_nav %}
+
+{% block head %}
+    <title>Omat havaintoerät {{ html["year"] }} - Havistin (biomi.org)</title>
+    <script src="{{ url_for('static', filename='year_path_nav.js') }}" defer></script>
+{% endblock %}
+
+{% block breadcrumb %}
+    <a href="/">Havistin</a> &raquo; <a href="/my">Omat havainnot</a> &raquo; Omat havaintoerät {{ html["year"] }}
+{% endblock %}
+
+{% block body %}
+
+    <h1>Omat dokumentit, {{ html["year"] }}</h1>
+
+    {% call path_nav.path_nav(
+        "Valitse tarkasteltava vuosi",
+        "/my/documents/{year}",
+        html["year_options"],
+        "Valitse",
+        "Haetaan dokumentteja..."
+    ) %}{% endcall %}
+
+    {% if not html["logged_in"] %}
+    <p>Nähdäksesi omat dokumenttisi, <a href="/login/start">kirjaudu sisään</a> Laji.fi-tunnuksella.</p>
+    {% elif html["got_results"] %}
+    <p>{{ html["document_count"] }} havaintoerää.</p>
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>Päivämäärä</th>
+                <th>Paikka</th>
+                <th>Havaintoja</th>
+                <th>Dokumentti</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for doc in html["documents"] %}
+            <tr class="observation_count_{{ doc["unit_count"] }}">
+                <td>{{ doc["date_display"] }}</td>
+                <td>{{ doc["locality"] }}</td>
+                <td>{{ doc["unit_count"] }}</td>
+                <td><a href="https://laji.fi/project/{{ doc["form_id"] }}/form/{{ doc["id"] }}">{{ doc["id"] }}</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>Ei dokumentteja vuodelta {{ html["year"] }}.</p>
+    {% endif %}
+
+{% endblock %}

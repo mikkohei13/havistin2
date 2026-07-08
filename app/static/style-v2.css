@@ -511,6 +511,9 @@ figure {
     color: #999;
 }
 
+.observation_count_0, .observation_count_1 {
+    color: #999;
+}
 
 /* Printer */
 

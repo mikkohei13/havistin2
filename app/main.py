@@ -28,6 +28,7 @@ import weather.change
 
 import my.year
 import my.groups
+import my.documents as my_documents_page
 import my.gps
 import my.home
 import my.miss
@@ -250,6 +251,13 @@ def my_year(year_untrusted, taxon_id_untrusted = "MX.37600"): # default = Biota
     token = session.get('token', None)
     html = my.year.main(token, year_untrusted, taxon_id_untrusted)
     return render_template("my_year.html", html=html)
+
+@app.route("/my/documents/<int:year_untrusted>")
+@app.route("/my/documents/<int:year_untrusted>/")
+def my_documents_root(year_untrusted):
+    token = session.get('token', None)
+    html = my_documents_page.main(token, year_untrusted)
+    return render_template("my_documents.html", html=html)
 
 @app.route("/my/groups/<int:year_untrusted>/<string:rank_untrusted>")
 @app.route("/my/groups/<int:year_untrusted>/<string:rank_untrusted>/")
