@@ -33,7 +33,6 @@ def _fetch_aggregate(year=None):
         "countryId": "ML.206",
         "wild": "WILD,WILD_UNKNOWN",
         "higherTaxon": "false",
-        "lang": "fi",
     }
     if year is not None:
         params["time"] = str(year)
