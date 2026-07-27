@@ -11,8 +11,6 @@ SELECTED_FIELDS = (
     "gatherings.municipality,gatherings.units,gatheringEvent.leg"
 )
 
-
-
 def get_documents(token, year):
     params = {
         "selectedFields": SELECTED_FIELDS,
