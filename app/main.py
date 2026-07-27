@@ -283,6 +283,7 @@ def my_taxa_photo(taxon_id_untrusted):
     photo = my.inat_photos.get_photo(taxon_id, sci)
     return jsonify({
         "image_url": photo.get("image_url"),
+        "author": photo.get("author", ""),
         "attribution": photo.get("attribution", ""),
         "license_html": photo.get("license_html", ""),
         "source_url": photo.get("source_url", ""),

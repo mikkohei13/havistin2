@@ -4,6 +4,8 @@
     <title>{% if html.needs_login %}Kirjaudu{% else %}{{ html.vernacular_name or html.scientific_name }}{% endif %} - Havistin (biomi.org)</title>
     <style>
         .taxa-controls { margin: 1em 0; display: flex; flex-wrap: wrap; gap: 0.75em 1.5em; align-items: center; }
+        .taxa-section { margin: 1.5em 0 2em; }
+        .taxa-section h2 { font-size: 1.1em; margin-bottom: 0.75em; }
         .taxa-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
@@ -31,6 +33,7 @@
             background: #e8e8e8;
         }
         .taxa-card .names { margin-top: 0.35em; font-size: 0.9em; line-height: 1.25; }
+        .taxa-card .stats { font-size: 0.75em; color: #555; margin-top: 0.2em; }
         .taxa-card .credit { font-size: 0.7em; color: #666; margin-top: 0.25em; line-height: 1.2; }
         .taxa-card.hidden { display: none; }
     </style>
@@ -47,79 +50,107 @@
     <p>Nähdäksesi tämän sivun, <a href="/login/start">kirjaudu sisään</a> Laji.fi-tunnuksella.</p>
 {% else %}
     <h1>{{ html.vernacular_name }} <em>{{ html.scientific_name }}</em></h1>
-    <p>{{ html.shown_count }} lajia
-        {% if html.finnish_species_count and html.finnish_species_count > html.shown_count %}
-            (yleisimmät; Suomessa {{ html.finnish_species_count }})
-        {% endif %}
-        &middot; havaittu {{ html.observed_count }}
-    </p>
+    <p>Suomessa {{ html.finnish_species_count }} lajia &middot; havaittu {{ html.observed_count }}</p>
 
-    <div class="taxa-controls">
-        <label>Suodatus:
-            <select id="taxa-filter">
-                <option value="all">Kaikki</option>
-                <option value="observed">Havaitut</option>
-                <option value="missing">Puuttuvat</option>
-            </select>
-        </label>
-        <label>Järjestys:
-            <select id="taxa-sort">
-                <option value="taxonomic">Taksonominen</option>
-                <option value="count">Havaintomäärä</option>
-            </select>
-        </label>
-    </div>
-
-    <div class="taxa-grid" id="taxa-grid">
-        {% for s in html.species %}
-        <a class="taxa-card{% if s.observed %} observed{% endif %}"
-           href="/taxa/species/{{ s.id }}"
-           data-id="{{ s.id }}"
-           data-sci="{{ s.scientific_name }}"
-           data-observed="{{ 1 if s.observed else 0 }}"
-           data-count="{{ s.obs_count }}"
-           data-tax="{{ s.taxonomic_order }}">
-            <div class="photo placeholder" data-photo-slot></div>
-            <div class="names">
-                <div>{{ s.vernacular_name }}</div>
-                <div><em>{{ s.scientific_name }}</em></div>
+    {% if html.mode == 'summary' %}
+        <p>Tässä lajiryhmässä on paljon lajeja. Alla on valikoituja lajeja havaintotietojesi perusteella.</p>
+        {% for section in html.sections %}
+        <div class="taxa-section">
+            <h2>{{ section.title }}</h2>
+            <div class="taxa-grid taxa-photo-grid">
+                {% for s in section.species %}
+                <a class="taxa-card{% if s.observed %} observed{% endif %}"
+                   href="/taxa/species/{{ s.id }}"
+                   data-id="{{ s.id }}"
+                   data-sci="{{ s.scientific_name }}"
+                   data-observed="{{ 1 if s.observed else 0 }}"
+                   data-count="{{ s.obs_count }}"
+                   data-tax="{{ s.taxonomic_order }}">
+                    <div class="photo placeholder" data-photo-slot></div>
+                    <div class="names">
+                        <div>{{ s.vernacular_name }}</div>
+                        <div><em>{{ s.scientific_name }}</em></div>
+                    </div>
+                    <div class="stats">
+                        {% if s.user_obs_count %}Omat: {{ s.user_obs_count }} &middot; {% endif %}
+                        Suomi: {{ s.obs_count }}
+                    </div>
+                    <div class="credit" data-credit></div>
+                </a>
+                {% endfor %}
             </div>
-            <div class="credit" data-credit></div>
-        </a>
+        </div>
         {% endfor %}
-    </div>
+    {% else %}
+        <div class="taxa-controls">
+            <label>Suodatus:
+                <select id="taxa-filter">
+                    <option value="all">Kaikki</option>
+                    <option value="observed">Havaitut</option>
+                    <option value="missing">Puuttuvat</option>
+                </select>
+            </label>
+            <label>Järjestys:
+                <select id="taxa-sort">
+                    <option value="taxonomic">Taksonominen</option>
+                    <option value="count">Havaintomäärä</option>
+                </select>
+            </label>
+        </div>
+
+        <div class="taxa-grid taxa-photo-grid" id="taxa-grid">
+            {% for s in html.species %}
+            <a class="taxa-card{% if s.observed %} observed{% endif %}"
+               href="/taxa/species/{{ s.id }}"
+               data-id="{{ s.id }}"
+               data-sci="{{ s.scientific_name }}"
+               data-observed="{{ 1 if s.observed else 0 }}"
+               data-count="{{ s.obs_count }}"
+               data-tax="{{ s.taxonomic_order }}">
+                <div class="photo placeholder" data-photo-slot></div>
+                <div class="names">
+                    <div>{{ s.vernacular_name }}</div>
+                    <div><em>{{ s.scientific_name }}</em></div>
+                </div>
+                <div class="credit" data-credit></div>
+            </a>
+            {% endfor %}
+        </div>
+    {% endif %}
 
     <script>
     (function () {
+        var gridMode = {{ 'false' if html.mode == 'summary' else 'true' }};
         var grid = document.getElementById('taxa-grid');
         var filterEl = document.getElementById('taxa-filter');
         var sortEl = document.getElementById('taxa-sort');
-        if (!grid) return;
 
         function cards() {
-            return Array.prototype.slice.call(grid.querySelectorAll('.taxa-card'));
+            return Array.prototype.slice.call(document.querySelectorAll('.taxa-photo-grid .taxa-card'));
         }
 
-        function applyFilterSort() {
-            var filter = filterEl.value;
-            var sort = sortEl.value;
-            var list = cards();
-            list.forEach(function (card) {
-                var obs = card.getAttribute('data-observed') === '1';
-                var show = filter === 'all' || (filter === 'observed' && obs) || (filter === 'missing' && !obs);
-                card.classList.toggle('hidden', !show);
-            });
-            list.sort(function (a, b) {
-                if (sort === 'count') {
-                    return (parseInt(b.getAttribute('data-count'), 10) || 0) - (parseInt(a.getAttribute('data-count'), 10) || 0);
-                }
-                return (parseInt(a.getAttribute('data-tax'), 10) || 0) - (parseInt(b.getAttribute('data-tax'), 10) || 0);
-            });
-            list.forEach(function (card) { grid.appendChild(card); });
-        }
+        if (gridMode && grid && filterEl && sortEl) {
+            function applyFilterSort() {
+                var filter = filterEl.value;
+                var sort = sortEl.value;
+                var list = cards();
+                list.forEach(function (card) {
+                    var obs = card.getAttribute('data-observed') === '1';
+                    var show = filter === 'all' || (filter === 'observed' && obs) || (filter === 'missing' && !obs);
+                    card.classList.toggle('hidden', !show);
+                });
+                list.sort(function (a, b) {
+                    if (sort === 'count') {
+                        return (parseInt(b.getAttribute('data-count'), 10) || 0) - (parseInt(a.getAttribute('data-count'), 10) || 0);
+                    }
+                    return (parseInt(a.getAttribute('data-tax'), 10) || 0) - (parseInt(b.getAttribute('data-tax'), 10) || 0);
+                });
+                list.forEach(function (card) { grid.appendChild(card); });
+            }
 
-        filterEl.addEventListener('change', applyFilterSort);
-        sortEl.addEventListener('change', applyFilterSort);
+            filterEl.addEventListener('change', applyFilterSort);
+            sortEl.addEventListener('change', applyFilterSort);
+        }
 
         function loadPhoto(card) {
             if (card.getAttribute('data-photo-loaded')) return;
@@ -138,13 +169,17 @@
                         img.loading = 'lazy';
                         slot.replaceWith(img);
                     }
-                    if (credit && data.attribution) {
-                        credit.textContent = data.attribution;
+                    if (credit && data.author) {
+                        credit.textContent = '\u00a9 ' + data.author;
+                        if (data.attribution) {
+                            credit.title = data.attribution;
+                        }
                     }
                 })
                 .catch(function () {});
         }
 
+        var allCards = cards();
         if ('IntersectionObserver' in window) {
             var io = new IntersectionObserver(function (entries) {
                 entries.forEach(function (entry) {
@@ -154,9 +189,9 @@
                     }
                 });
             }, { rootMargin: '200px' });
-            cards().forEach(function (card) { io.observe(card); });
+            allCards.forEach(function (card) { io.observe(card); });
         } else {
-            cards().forEach(loadPhoto);
+            allCards.forEach(loadPhoto);
         }
     })();
     </script>

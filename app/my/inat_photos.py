@@ -12,6 +12,12 @@ def _connect():
     return cache_db.connect_inat_photo_db()
 
 
+def author_from_attribution(attribution):
+    if not attribution:
+        return ""
+    return attribution.split(",")[0].replace("(c) ", "").replace("(c)", "").strip()
+
+
 def _fetch_from_inat(scientific_name):
     data = common_helpers.fetch_api(
         f"https://api.inaturalist.org/v1/search?q={quote(scientific_name)}"
@@ -27,9 +33,11 @@ def _fetch_from_inat(scientific_name):
         license_code = p.get("license_code")
         if license_code in DISALLOWED:
             continue
+        attribution = p.get("attribution", "")
         return {
             "image_url": p.get("medium_url") or p.get("small_url") or p.get("square_url"),
-            "attribution": p.get("attribution", ""),
+            "attribution": attribution,
+            "author": author_from_attribution(attribution),
             "license_code": license_code,
             "license_html": common_helpers.cc_abbreviation(license_code),
             "source_url": p.get("native_page_url", ""),
@@ -42,6 +50,8 @@ def get_photo(qname, scientific_name):
     coll = _connect()
     cached = coll.find_one({"_id": qname})
     if cached:
+        if not cached.get("author") and cached.get("attribution"):
+            cached["author"] = author_from_attribution(cached["attribution"])
         return cached
 
     photo = _fetch_from_inat(scientific_name)
@@ -49,6 +59,7 @@ def get_photo(qname, scientific_name):
         photo = {
             "image_url": None,
             "attribution": "",
+            "author": "",
             "license_code": None,
             "license_html": "",
             "source_url": "",
