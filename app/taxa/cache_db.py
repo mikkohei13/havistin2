@@ -8,11 +8,17 @@ def print_log(dict):
     print(dict, sep="\n", file = sys.stdout)
 
 
-def connect_db():
+def _client_db():
     client = MongoClient("mongodb+srv://%s:%s@clusterfree0.zps1x.gcp.mongodb.net/?retryWrites=true&w=majority" % (app_secrets.mongodb_user, app_secrets.mongodb_pass))
-    db = client['havistin']
-    taxon_photos_coll = db['taxon_photos']
-    return taxon_photos_coll
+    return client['havistin']
+
+
+def connect_db():
+    return _client_db()['taxon_photos']
+
+
+def connect_inat_photo_db():
+    return _client_db()['taxon_inat_photo']
 
 
 # Note that if you remove some data items, they will persist in mongodb even after upsert

@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <title>{% if html.needs_login %}Kirjaudu{% else %}{{ html.vernacular_name or html.scientific_name }}{% endif %} - Havistin (biomi.org)</title>
+    <style>
+        .taxa-controls { margin: 1em 0; display: flex; flex-wrap: wrap; gap: 0.75em 1.5em; align-items: center; }
+        .taxa-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 0.75em;
+        }
+        .taxa-card {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            border: 2px solid #ccc;
+            background: #f7f7f7;
+            padding: 0.4em;
+        }
+        .taxa-card.observed { border-color: #1a9e8f; background: #dcfffe; }
+        .taxa-card img {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+            display: block;
+            background: #ddd;
+        }
+        .taxa-card .placeholder {
+            width: 100%;
+            aspect-ratio: 1;
+            background: #e8e8e8;
+        }
+        .taxa-card .names { margin-top: 0.35em; font-size: 0.9em; line-height: 1.25; }
+        .taxa-card .credit { font-size: 0.7em; color: #666; margin-top: 0.25em; line-height: 1.2; }
+        .taxa-card.hidden { display: none; }
+    </style>
+{% endblock %}
+
+{% block breadcrumb %}
+    <a href="/">Havistin</a> &raquo; <a href="/my/">Omat havainnot</a> &raquo; Lajiruudukko
+{% endblock %}
+
+{% block body %}
+
+{% if html.needs_login %}
+    <h1>Lajiruudukko</h1>
+    <p>Nähdäksesi tämän sivun, <a href="/login/start">kirjaudu sisään</a> Laji.fi-tunnuksella.</p>
+{% else %}
+    <h1>{{ html.vernacular_name }} <em>{{ html.scientific_name }}</em></h1>
+    <p>{{ html.shown_count }} lajia
+        {% if html.finnish_species_count and html.finnish_species_count > html.shown_count %}
+            (yleisimmät; Suomessa {{ html.finnish_species_count }})
+        {% endif %}
+        &middot; havaittu {{ html.observed_count }}
+    </p>
+
+    <div class="taxa-controls">
+        <label>Suodatus:
+            <select id="taxa-filter">
+                <option value="all">Kaikki</option>
+                <option value="observed">Havaitut</option>
+                <option value="missing">Puuttuvat</option>
+            </select>
+        </label>
+        <label>Järjestys:
+            <select id="taxa-sort">
+                <option value="taxonomic">Taksonominen</option>
+                <option value="count">Havaintomäärä</option>
+            </select>
+        </label>
+    </div>
+
+    <div class="taxa-grid" id="taxa-grid">
+        {% for s in html.species %}
+        <a class="taxa-card{% if s.observed %} observed{% endif %}"
+           href="/taxa/species/{{ s.id }}"
+           data-id="{{ s.id }}"
+           data-sci="{{ s.scientific_name }}"
+           data-observed="{{ 1 if s.observed else 0 }}"
+           data-count="{{ s.obs_count }}"
+           data-tax="{{ s.taxonomic_order }}">
+            <div class="photo placeholder" data-photo-slot></div>
+            <div class="names">
+                <div>{{ s.vernacular_name }}</div>
+                <div><em>{{ s.scientific_name }}</em></div>
+            </div>
+            <div class="credit" data-credit></div>
+        </a>
+        {% endfor %}
+    </div>
+
+    <script>
+    (function () {
+        var grid = document.getElementById('taxa-grid');
+        var filterEl = document.getElementById('taxa-filter');
+        var sortEl = document.getElementById('taxa-sort');
+        if (!grid) return;
+
+        function cards() {
+            return Array.prototype.slice.call(grid.querySelectorAll('.taxa-card'));
+        }
+
+        function applyFilterSort() {
+            var filter = filterEl.value;
+            var sort = sortEl.value;
+            var list = cards();
+            list.forEach(function (card) {
+                var obs = card.getAttribute('data-observed') === '1';
+                var show = filter === 'all' || (filter === 'observed' && obs) || (filter === 'missing' && !obs);
+                card.classList.toggle('hidden', !show);
+            });
+            list.sort(function (a, b) {
+                if (sort === 'count') {
+                    return (parseInt(b.getAttribute('data-count'), 10) || 0) - (parseInt(a.getAttribute('data-count'), 10) || 0);
+                }
+                return (parseInt(a.getAttribute('data-tax'), 10) || 0) - (parseInt(b.getAttribute('data-tax'), 10) || 0);
+            });
+            list.forEach(function (card) { grid.appendChild(card); });
+        }
+
+        filterEl.addEventListener('change', applyFilterSort);
+        sortEl.addEventListener('change', applyFilterSort);
+
+        function loadPhoto(card) {
+            if (card.getAttribute('data-photo-loaded')) return;
+            card.setAttribute('data-photo-loaded', '1');
+            var id = card.getAttribute('data-id');
+            var sci = card.getAttribute('data-sci');
+            fetch('/my/taxa/photo/' + encodeURIComponent(id) + '?sci=' + encodeURIComponent(sci))
+                .then(function (r) { return r.json(); })
+                .then(function (data) {
+                    var slot = card.querySelector('[data-photo-slot]');
+                    var credit = card.querySelector('[data-credit]');
+                    if (data.image_url && slot) {
+                        var img = document.createElement('img');
+                        img.src = data.image_url;
+                        img.alt = sci;
+                        img.loading = 'lazy';
+                        slot.replaceWith(img);
+                    }
+                    if (credit && data.attribution) {
+                        credit.textContent = data.attribution;
+                    }
+                })
+                .catch(function () {});
+        }
+
+        if ('IntersectionObserver' in window) {
+            var io = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) {
+                        loadPhoto(entry.target);
+                        io.unobserve(entry.target);
+                    }
+                });
+            }, { rootMargin: '200px' });
+            cards().forEach(function (card) { io.observe(card); });
+        } else {
+            cards().forEach(loadPhoto);
+        }
+    })();
+    </script>
+{% endif %}
+
+{% endblock %}

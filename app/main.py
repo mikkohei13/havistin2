@@ -32,6 +32,8 @@ import my.documents as my_documents_page
 import my.gps
 import my.home
 import my.miss
+import my.taxa_grid
+import my.inat_photos
 
 import misc.bingo
 
@@ -271,6 +273,27 @@ def my_groups(year_untrusted, rank_untrusted=None):
 def my_gps():
     html = my.gps.main()
     return render_template("generic_gps.html", html=html)
+
+@app.route("/my/taxa/photo/<string:taxon_id_untrusted>")
+def my_taxa_photo(taxon_id_untrusted):
+    if not session.get("token"):
+        return jsonify({"error": "login required"}), 401
+    taxon_id = common_helpers.valid_qname(taxon_id_untrusted)
+    sci = request.args.get("sci", "")
+    photo = my.inat_photos.get_photo(taxon_id, sci)
+    return jsonify({
+        "image_url": photo.get("image_url"),
+        "attribution": photo.get("attribution", ""),
+        "license_html": photo.get("license_html", ""),
+        "source_url": photo.get("source_url", ""),
+    })
+
+@app.route("/my/taxa/<string:taxon_id_untrusted>")
+@app.route("/my/taxa/<string:taxon_id_untrusted>/")
+def my_taxa(taxon_id_untrusted):
+    token = session.get("token", None)
+    html = my.taxa_grid.main(token, taxon_id_untrusted)
+    return render_template("my_taxa.html", html=html)
 
 @app.route("/my")
 @app.route("/my/")
