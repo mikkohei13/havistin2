@@ -31,10 +31,8 @@ def _fetch_from_inat(scientific_name):
 
     # If name cannot be exactly matched, don't return images
     if record["name"] != scientific_name:
-        print(f"No match found: {record['name']} vs {scientific_name}")
         return None
 
-    print(f"MATCH found: {record['name']} vs {scientific_name}")
     for photo in record.get("taxon_photos") or []:
         p = photo.get("photo") or {}
         license_code = p.get("license_code")

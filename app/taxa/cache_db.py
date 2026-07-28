@@ -21,6 +21,11 @@ def connect_inat_photo_db():
     return _client_db()['taxon_inat_photo']
 
 
+def clear_inat_photo_cache():
+    """Delete all documents in taxon_inat_photo only. Leaves other collections untouched."""
+    return connect_inat_photo_db().delete_many({})
+
+
 # Note that if you remove some data items, they will persist in mongodb even after upsert
 def set_taxon_photos_data(collection, qname, data):
     record_id = collection.update_one({ '_id': qname }, { "$set": data }, True)

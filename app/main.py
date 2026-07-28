@@ -20,6 +20,7 @@ import taxa.common_photos
 import taxa.compare_years
 import taxa.miss
 import taxa.animate
+import taxa.cache_db as cache_db
 
 import winterbird.winterbird
 import winterbird.census
@@ -345,7 +346,11 @@ def flush_cache():
         return "Forbidden", 403
     with app.app_context():
         cache.clear()
-    return render_template("simple.html", content="Cache flushed")
+    deleted = cache_db.clear_inat_photo_cache().deleted_count
+    return render_template(
+        "simple.html",
+        content=f"Cache flushed (inat photo docs removed: {deleted})",
+    )
 
 # This should catch connection errors to FinBIF API, in case the error is not already handled elsewhere.
 @app.errorhandler(ConnectionError)
