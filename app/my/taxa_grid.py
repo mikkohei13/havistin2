@@ -1,10 +1,10 @@
 from helpers import common_helpers
 
 
-GRID_MAX = 250
+GRID_MAX = 100
 TOP_N = 10
-SPECIES_PAGE_SIZE = 1000
-USER_AGG_PAGE_SIZE = 2000
+SPECIES_PAGE_SIZE = 10000
+USER_AGG_PAGE_SIZE = 10000
 
 
 def fetch_finnish_species_page(taxon_id, page):
@@ -80,6 +80,31 @@ def build_species_list(results, user_counts):
     return species
 
 
+def fetch_children(taxon_id):
+    """True immediate children only (includeHidden so nested taxa are not raised)."""
+    url = (
+        f"https://api.laji.fi/taxa/{taxon_id}/children"
+        f"?checklist=MR.1&checklistVersion=current&finnish=true"
+        f"&includeHidden=true&includeMedia=false&includeDescriptions=false"
+        f"&includeRedListEvaluations=false&sortOrder=taxonomic"
+        f"&selectedFields=id,vernacularName,scientificName,taxonRank,taxonomicOrder,countOfFinnishSpecies"
+        f"&lang=fi&langFallback=true"
+    )
+    data = common_helpers.fetch_finbif_api(url)
+    children = []
+    for item in data.get("results", []):
+        sid = item.get("id")
+        if not sid:
+            continue
+        children.append({
+            "id": sid,
+            "scientific_name": item.get("scientificName", ""),
+            "vernacular_name": item.get("vernacularName") or "",
+            "finnish_species_count": item.get("countOfFinnishSpecies") or 0,
+        })
+    return children
+
+
 def prepare_display(species):
     if len(species) <= GRID_MAX:
         return {
@@ -100,7 +125,7 @@ def prepare_display(species):
             "species": sorted(observed, key=lambda s: s["obs_count"])[:TOP_N],
         },
         {
-            "title": "Yleisimmät havaitsemattomat lajit",
+            "title": "Yleisimmät lajit, joita et ole havainnut",
             "species": sorted(missing, key=lambda s: s["obs_count"], reverse=True)[:TOP_N],
         },
     ]
@@ -109,6 +134,7 @@ def prepare_display(species):
         "mode": "summary",
         "sections": [s for s in sections if s["species"]],
     }
+
 
 
 def main(token, taxon_id_untrusted):
@@ -134,10 +160,12 @@ def main(token, taxon_id_untrusted):
 
     html["taxon_id"] = taxon_id
     html["scientific_name"] = taxon.get("scientificName", "")
-    html["vernacular_name"] = taxon.get("vernacularName", "")
+    html["vernacular_name"] = taxon.get("vernacularName", "").capitalize()
     html["finnish_species_count"] = taxon.get("countOfFinnishSpecies", len(species))
     html["observed_count"] = sum(1 for s in species if s["observed"])
     html["mode"] = display["mode"]
     html["species"] = display.get("species", [])
     html["sections"] = display.get("sections", [])
+    html["children"] = fetch_children(taxon_id) if display["mode"] == "summary" else []
     return html
+

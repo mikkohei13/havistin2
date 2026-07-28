@@ -57,7 +57,9 @@ def fetch_finbif_api(api_url, person_token=None, log=False):
     # API v1: send access token and other params as headers instead of query params
     headers = {
         'Authorization': f'Bearer {app_secrets.finbif_api_token}',
-        'API-Version': '1'
+        'API-Version': '1',
+        'Accept-Language': 'fi',
+        'Accept': 'application/json'
     }
 
     if person_token:

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block head %}
-    <title>{% if html.needs_login %}Kirjaudu{% else %}{{ html.vernacular_name or html.scientific_name }}{% endif %} - Havistin (biomi.org)</title>
+    <title>Omat havainnot: {{ html.vernacular_name or html.scientific_name }} - Havistin (biomi.org)</title>
     <style>
         .taxa-controls { margin: 1em 0; display: flex; flex-wrap: wrap; gap: 0.75em 1.5em; align-items: center; }
         .taxa-section { margin: 1.5em 0 2em; }
@@ -15,11 +15,15 @@
             display: block;
             text-decoration: none;
             color: inherit;
-            border: 2px solid #ccc;
+            border: 2px solid #eee;
             background: #f7f7f7;
             padding: 0.4em;
+            border-radius: 0.5em;
         }
-        .taxa-card.observed { border-color: #1a9e8f; background: #dcfffe; }
+        .taxa-card.observed {
+            border-color:#4DB6BC; /* v2 turquoise */
+            background: #dcfffe;
+        }
         .taxa-card img {
             width: 100%;
             aspect-ratio: 1;
@@ -33,27 +37,54 @@
             background: #e8e8e8;
         }
         .taxa-card .names { margin-top: 0.35em; font-size: 0.9em; line-height: 1.25; }
-        .taxa-card .stats { font-size: 0.75em; color: #555; margin-top: 0.2em; }
-        .taxa-card .credit { font-size: 0.7em; color: #666; margin-top: 0.25em; line-height: 1.2; }
+        .taxa-card .stats {
+            color: #555;
+            margin: 0.5em 0;
+        }
+        .taxa-card .stats p {
+            margin: 0.2em 0;
+            font-size: 0.8em;
+        }
+        .taxa-card .credit { font-size: 0.7em; color: #888; margin-top: 0.25em; line-height: 1.2; }
         .taxa-card.hidden { display: none; }
+        a:visited { color: #000; }
+        .taxa-card img { border-radius: 0.4em; }
+        .taxa-children { list-style: none; padding: 0; margin: 0.5em 0 0; }
+        .taxa-children li { margin: 0.35em 0; }
     </style>
 {% endblock %}
 
 {% block breadcrumb %}
-    <a href="/">Havistin</a> &raquo; <a href="/my/">Omat havainnot</a> &raquo; Lajiruudukko
+    <a href="/">Havistin</a> &raquo; <a href="/my/">Omat havainnot</a> &raquo; Omat lajit
 {% endblock %}
 
 {% block body %}
 
 {% if html.needs_login %}
-    <h1>Lajiruudukko</h1>
+    <h1>Omat havainnot</h1>
     <p>Nähdäksesi tämän sivun, <a href="/login/start">kirjaudu sisään</a> Laji.fi-tunnuksella.</p>
 {% else %}
-    <h1>{{ html.vernacular_name }} <em>{{ html.scientific_name }}</em></h1>
-    <p>Suomessa {{ html.finnish_species_count }} lajia &middot; havaittu {{ html.observed_count }}</p>
+    <h1>{{ html.vernacular_name }} (<em>{{ html.scientific_name }}</em>)</h1>
+    <p>Olet havainnot {{ html.observed_count }} lajia Suomessa esiintyvästä {{ html.finnish_species_count }} lajista.</p>
 
     {% if html.mode == 'summary' %}
-        <p>Tässä lajiryhmässä on paljon lajeja. Alla on valikoituja lajeja havaintotietojesi perusteella.</p>
+        <p>Tässä lajiryhmässä on yli 100 lajia, joten kaikkien sijasta alla näytetään vain osa niistä. Valitse jokin alaryhmä nähdäksesi kaikki lajit:</p>
+
+        {% if html.children %}
+        <div class="taxa-section">
+            <ul class="taxa-children">
+                {% for c in html.children %}
+                <li>
+                    <a href="/my/taxa/{{ c.id }}">
+                        {% if c.vernacular_name %}{{ c.vernacular_name }} {% endif %}<em>{{ c.scientific_name }}</em> &ndash; {{ c.finnish_species_count }} lajia
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+
         {% for section in html.sections %}
         <div class="taxa-section">
             <h2>{{ section.title }}</h2>
@@ -72,8 +103,8 @@
                         <div><em>{{ s.scientific_name }}</em></div>
                     </div>
                     <div class="stats">
-                        {% if s.user_obs_count %}Omat: {{ s.user_obs_count }} &middot; {% endif %}
-                        Suomi: {{ s.obs_count }}
+                        <p>{% if s.user_obs_count %}Omat: {{ s.user_obs_count }}{% endif %}</p>
+                        <p>Suomi: {{ s.obs_count }}</p>
                     </div>
                     <div class="credit" data-credit></div>
                 </a>
@@ -81,6 +112,7 @@
             </div>
         </div>
         {% endfor %}
+
     {% else %}
         <div class="taxa-controls">
             <label>Suodatus:
@@ -112,7 +144,11 @@
                     <div>{{ s.vernacular_name }}</div>
                     <div><em>{{ s.scientific_name }}</em></div>
                 </div>
-                <div class="credit" data-credit></div>
+                <div class="stats">
+                    <p>{% if s.user_obs_count %}Omat: {{ s.user_obs_count }}{% endif %}</p>
+                    <p>Suomi: {{ s.obs_count }}</p>
+                </div>
+            <div class="credit" data-credit></div>
             </a>
             {% endfor %}
         </div>
