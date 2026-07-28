@@ -290,6 +290,28 @@ def my_taxa_photo(taxon_id_untrusted):
         "source_url": photo.get("source_url", ""),
     })
 
+@app.route("/api/finbif/autocomplete/taxa")
+def api_finbif_autocomplete_taxa():
+    query = (request.args.get("query") or "").strip()
+    if not query:
+        return jsonify({"results": []})
+    try:
+        limit = min(max(int(request.args.get("limit") or 15), 1), 30)
+    except ValueError:
+        limit = 15
+    params = {
+        "query": query,
+        "limit": limit,
+        "finnish": "true",
+        "languages": "fi",
+        "matchType": "exact,partial,likely",
+        "includeHidden": "false",
+        "checklist": "MR.1",
+    }
+    url = f"https://api.laji.fi/autocomplete/taxa?{urlencode(params)}"
+    data = common_helpers.fetch_finbif_api(url)
+    return jsonify(data)
+
 @app.route("/my/taxa/<string:taxon_id_untrusted>")
 @app.route("/my/taxa/<string:taxon_id_untrusted>/")
 def my_taxa(taxon_id_untrusted):

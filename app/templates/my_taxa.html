@@ -2,56 +2,7 @@
 
 {% block head %}
     <title>Omat havainnot: {{ html.vernacular_name or html.scientific_name }} - Havistin (biomi.org)</title>
-    <style>
-        .taxa-controls { margin: 1em 0; display: flex; flex-wrap: wrap; gap: 0.75em 1.5em; align-items: center; }
-        .taxa-section { margin: 1.5em 0 2em; }
-        .taxa-section h2 { font-size: 1.1em; margin-bottom: 0.75em; }
-        .taxa-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-            gap: 0.75em;
-        }
-        .taxa-card {
-            display: block;
-            text-decoration: none;
-            color: inherit;
-            border: 2px solid #eee;
-            background: #f7f7f7;
-            padding: 0.4em;
-            border-radius: 0.5em;
-        }
-        .taxa-card.observed {
-            border-color:#4DB6BC; /* v2 turquoise */
-            background: #dcfffe;
-        }
-        .taxa-card img {
-            width: 100%;
-            aspect-ratio: 1;
-            object-fit: cover;
-            display: block;
-            background: #ddd;
-        }
-        .taxa-card .placeholder {
-            width: 100%;
-            aspect-ratio: 1;
-            background: #e8e8e8;
-        }
-        .taxa-card .names { margin-top: 0.35em; font-size: 0.9em; line-height: 1.25; }
-        .taxa-card .stats {
-            color: #555;
-            margin: 0.5em 0;
-        }
-        .taxa-card .stats p {
-            margin: 0.2em 0;
-            font-size: 0.8em;
-        }
-        .taxa-card .credit { font-size: 0.7em; color: #888; margin-top: 0.25em; line-height: 1.2; }
-        .taxa-card.hidden { display: none; }
-        a:visited { color: #000; }
-        .taxa-card img { border-radius: 0.4em; }
-        .taxa-children { list-style: none; padding: 0; margin: 0.5em 0 0; }
-        .taxa-children li { margin: 0.35em 0; }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style-mytaxa.css') }}">
 {% endblock %}
 
 {% block breadcrumb %}
@@ -65,7 +16,23 @@
     <p>Nähdäksesi tämän sivun, <a href="/login/start">kirjaudu sisään</a> Laji.fi-tunnuksella.</p>
 {% else %}
     <h1>{{ html.vernacular_name }} (<em>{{ html.scientific_name }}</em>)</h1>
-    <p>Olet havainnot {{ html.observed_count }} lajia Suomessa esiintyvästä {{ html.finnish_species_count }} lajista.</p>
+    <p>Olet havainnut {{ html.observed_count }} lajia Suomessa esiintyvästä {{ html.finnish_species_count }} lajista.</p>
+
+    <div class="taxa-controls">
+        <label for="taxon-select-query">Hae lajiryhmää (luokka tai alempi):</label>
+        <div class="taxon-select"
+             data-taxon-select
+             data-autocomplete-url="/api/finbif/autocomplete/taxa"
+             data-navigate-prefix="/my/taxa/">
+            <input id="taxon-select-query"
+                   type="text"
+                   class="taxon-select__query"
+                   autocomplete="off"
+                   placeholder="Hae nimellä…" />
+            <input type="hidden" name="taxon_id" value="" />
+            <ul class="taxon-select__suggestions" hidden></ul>
+        </div>
+    </div>
 
     {% if html.mode == 'summary' %}
         <p>Tässä lajiryhmässä on yli 100 lajia, joten kaikkien sijasta alla näytetään vain osa niistä. Valitse jokin alaryhmä nähdäksesi kaikki lajit:</p>
@@ -231,6 +198,7 @@
         }
     })();
     </script>
+    <script src="{{ url_for('static', filename='taxon_select.js') }}"></script>
 {% endif %}
 
 {% endblock %}

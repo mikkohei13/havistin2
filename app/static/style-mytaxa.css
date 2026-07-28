@@ -1,0 +1,86 @@
+.taxa-controls { margin: 1em 0; display: flex; flex-wrap: wrap; gap: 0.75em 1.5em; align-items: center; }
+.taxa-section { margin: 1.5em 0 2em; }
+.taxa-section h2 { font-size: 1.1em; margin-bottom: 0.75em; }
+.taxa-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 0.75em;
+}
+.taxa-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    border: 2px solid #eee;
+    background: #f7f7f7;
+    padding: 0.4em;
+    border-radius: 0.5em;
+}
+.taxa-card.observed {
+    border-color:#4DB6BC; /* v2 turquoise */
+    background: #dcfffe;
+}
+.taxa-card img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    display: block;
+    background: #ddd;
+}
+.taxa-card .placeholder {
+    width: 100%;
+    aspect-ratio: 1;
+    background: #e8e8e8;
+}
+.taxa-card .names { margin-top: 0.35em; font-size: 0.9em; line-height: 1.25; }
+.taxa-card .stats {
+    color: #555;
+    margin: 0.5em 0;
+}
+.taxa-card .stats p {
+    margin: 0.2em 0;
+    font-size: 0.8em;
+}
+.taxa-card .credit { font-size: 0.7em; color: #888; margin-top: 0.25em; line-height: 1.2; }
+.taxa-card.hidden { display: none; }
+a:visited { color: #000; }
+.taxa-card img { border-radius: 0.4em; }
+.taxa-children { list-style: none; padding: 0; margin: 0.5em 0 0; }
+.taxa-children li { margin: 0.35em 0; }
+.taxon-select { position: relative; max-width: 28em; }
+.taxon-select__query {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.4em 0.5em;
+    font: inherit;
+}
+.taxon-select__suggestions {
+    position: absolute;
+    z-index: 20;
+    left: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background: #fff;
+    border: 1px solid #ccc;
+    max-height: 16em;
+    overflow-y: auto;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+}
+.taxon-select__suggestion button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    border: 0;
+    background: transparent;
+    padding: 0.45em 0.6em;
+    font: inherit;
+    cursor: pointer;
+}
+.taxon-select__suggestion button:hover,
+.taxon-select__suggestion button:focus {
+    background: #dcfffe;
+}
+.taxon-select--loading .taxon-select__query {
+    background: #fafafa;
+}
