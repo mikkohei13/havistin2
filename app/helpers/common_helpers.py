@@ -1,3 +1,5 @@
+from html import escape
+
 import requests
 import json
 import sys
@@ -8,6 +10,19 @@ import app_secrets
 
 def print_log(dict):
     print(dict, sep="\n", file = sys.stdout)
+
+
+def escape_html(value):
+    """Escape text for insertion into HTML, including attribute values."""
+    return escape("" if value is None else str(value), quote=True)
+
+
+def tun_link(uri, text):
+    """Link to a tun.fi URI. Anything else is shown as escaped text, with no link."""
+    uri = str(uri or "")
+    if not (uri.startswith("http://tun.fi/") or uri.startswith("https://tun.fi/")):
+        return escape_html(text)
+    return f"<a href='{escape_html(uri)}' target='_blank'>{escape_html(text)}</a>"
 
 
 def cc_link_html(link, name):
@@ -186,21 +201,36 @@ def fetch_api(api_url, log = False):
     return dataDict
 
 
+def square_polygon(square, color, text):
+    """One map square as data. Templates insert the list with |tojson."""
+    return {
+        "coords": [
+            [square["sw-n"], square["sw-e"]],
+            [square["nw-n"], square["nw-e"]],
+            [square["ne-n"], square["ne-e"]],
+            [square["se-n"], square["se-e"]],
+        ],
+        "color": color,
+        "text": text,
+    }
+
+
 # Expects data as:
 # { "668:338": 0, "669:338": 10, "670:338": 20  }
 def squares_with_data(square_data, colorfunction, textfunction):
     with open("data/atlas-grids.json") as f:
         squares = json.load(f)
 
-    coordinates = ""
+    polygons = []
     for square_id, value in square_data.items():
+        square = squares[square_id]
+        polygons.append(square_polygon(
+            square,
+            colorfunction(value),
+            textfunction(value, square_id, square),
+        ))
 
-        color = colorfunction(value)
-        text = textfunction(value, square_id, squares[square_id])
-
-        coordinates = coordinates + f"{{ coords: [[{squares[square_id]['sw-n']},{squares[square_id]['sw-e']}], [{squares[square_id]['nw-n']},{squares[square_id]['nw-e']}], [{squares[square_id]['ne-n']},{squares[square_id]['ne-e']}], [{squares[square_id]['se-n']},{squares[square_id]['se-e']}]], color: '{color}', text: '{text}' }},\n"
-    
-    return coordinates
+    return polygons
 
 
 def valid_qname(qname):

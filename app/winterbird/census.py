@@ -47,8 +47,8 @@ def get_society_info(society_id):
 
 
 def id_to_qname_link(id):
-    qname = id.replace("http://tun.fi/", "")
-    return f"<a href='{id}' target='_blank'>{qname}</a>"
+    qname = str(id).replace("http://tun.fi/", "").replace("https://tun.fi/", "")
+    return common_helpers.tun_link(id, qname)
 
 
 def clean_name(name):
@@ -103,18 +103,20 @@ def datatable(society_id, year_month):
         if named_place_id not in named_places_lookup:
             continue
 
-        named_place_name = clean_name(named_places_lookup[named_place_id])
+        named_place_name = common_helpers.escape_html(clean_name(named_places_lookup[named_place_id]))
+        taxon_name = common_helpers.escape_html(observation["aggregateBy"]["unit.linkings.taxon.nameFinnish"])
 
         # Fill in sort order that contains all the taxa included in the results
-        taxon_order_dict[ int(observation["aggregateBy"]["unit.linkings.taxon.taxonomicOrder"]) ] = observation["aggregateBy"]["unit.linkings.taxon.nameFinnish"]
+        taxon_order_dict[ int(observation["aggregateBy"]["unit.linkings.taxon.taxonomicOrder"]) ] = taxon_name
 
-        # Metadata
-        heading = f"{named_place_name} {observation['oldestRecord']} {document_qname_link}"
+        # Metadata. Place name, date, and taxon name are escaped before they enter the
+        # dataframe; to_html(escape=False) below keeps the document link as HTML.
+        heading = f"{named_place_name} {common_helpers.escape_html(observation['oldestRecord'])} {document_qname_link}"
         if heading not in census_observations:
             census_observations[heading] = dict()
         
         # Observations
-        census_observations[heading][observation["aggregateBy"]["unit.linkings.taxon.nameFinnish"]] = observation["individualCountSum"]
+        census_observations[heading][taxon_name] = observation["individualCountSum"]
 
     # Once the order_dict is filled with all taxa in the data, sort it by taxonomic sort order number. 
     sorted_taxon_order_dict = dict(sorted(taxon_order_dict.items(), key=lambda x: int(x[0])))

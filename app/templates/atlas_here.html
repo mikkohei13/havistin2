@@ -38,7 +38,7 @@
 <script>
 
 // Map
-var map = L.map('map', { scrollWheelZoom: false }).setView([{{ html["centerpoint"]|safe }}], 11);
+var map = L.map('map', { scrollWheelZoom: false }).setView({{ html["centerpoint"]|tojson }}, 11);
 
 // Set max zoom, since too much zooming gives wrong impression of inaccurate obs locations.
 // But: this affects heat map calculations!
@@ -48,12 +48,12 @@ var tiles = L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors',
 }).addTo(map);
 
-var polyLatLon = [ {{ html["cornerpoints"]|safe }} ];
+var polyLatLon = {{ html["cornerpoints"]|tojson }};
 var polyline = L.polyline(polyLatLon, {color: 'red'}).addTo(map);
 
 var marker
 
-const page_square_id = "{{ html["square_id"] }}";
+const page_square_id = {{ html["square_id"]|tojson }};
 
 // On page load
 window.onload = function() {

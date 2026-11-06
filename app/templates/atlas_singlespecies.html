@@ -66,7 +66,7 @@
             labels: labels,
             datasets: [
                 { 
-                    data: {{ html["phenology_atlas_confirmed"]|safe }},
+                    data: {{ html["phenology_atlas_confirmed"]|tojson }},
                     type: 'line',
                     borderColor: '#1C9AA7',
                     tension: 0.1,
@@ -74,7 +74,7 @@
                     label: "varmat"
                 },
                 { 
-                    data: {{ html["phenology_atlas_all"]|safe }},
+                    data: {{ html["phenology_atlas_all"]|tojson }},
                     type: 'bar',
                     backgroundColor: '#FE708A',
                     pointStyle: false,

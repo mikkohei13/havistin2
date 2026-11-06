@@ -229,8 +229,8 @@ def main(species_name_untrusted):
 
     notes = get_notes(species_data["id"])
 
-    phenology_atlas_all = str(get_phenology(species_data["id"], "&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD"))
-    phenology_atlas_confirmed = str(get_phenology(species_data["id"], "&atlasClass=MY.atlasClassEnumD"))
+    phenology_atlas_all = get_phenology(species_data["id"], "&atlasClass=MY.atlasClassEnumB%2CMY.atlasClassEnumC%2CMY.atlasClassEnumD")
+    phenology_atlas_confirmed = get_phenology(species_data["id"], "&atlasClass=MY.atlasClassEnumD")
 
     html = dict()
     html["prediction_map"] = get_prediction_map_html(species_name)

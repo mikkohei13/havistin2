@@ -6,11 +6,16 @@ import numpy as np
 
 
 def text_summap(value, square_id, square_data):
+    # Popup HTML. Tags here are ours; names and numbers are escaped.
+    place = f"{common_helpers.escape_html(square_id)} {common_helpers.escape_html(square_data['kunta'])}, {common_helpers.escape_html(square_data['nimi'])}"
+    until_level = common_helpers.escape_html(value["until_level"])
+    atlas_sum = common_helpers.escape_html(value["atlas_class_sum"])
     # Special case for showing target points on the map
     if "tyydyttävä-selvitysaste" == value['atlas_class_name']:
-        text = f"{square_id} {square_data['kunta']}, {square_data['nimi']}:<br>Tyydyttävän selvitysasteen raja-arvo: { value['until_level'] }<br>Pesimävarmuussumma nyt: { value['atlas_class_sum'] }"
+        text = f"{place}:<br>Tyydyttävän selvitysasteen raja-arvo: {until_level}<br>Pesimävarmuussumma nyt: {atlas_sum}"
     else:
-        text = f"{square_id} {square_data['kunta']}, {square_data['nimi']}:<br>Pisteitä selvitysasteeseen { value['atlas_class_name'] } tarvitaan: { value['until_level'] }<br>Pesimävarmuussumma nyt: { value['atlas_class_sum'] }"
+        class_name = common_helpers.escape_html(value["atlas_class_name"])
+        text = f"{place}:<br>Pisteitä selvitysasteeseen {class_name} tarvitaan: {until_level}<br>Pesimävarmuussumma nyt: {atlas_sum}"
     return text
 
 

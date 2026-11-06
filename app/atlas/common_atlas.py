@@ -283,9 +283,15 @@ def square_info(square_id):
 
     society = d["yhd"]
 
-    centerpoint = str2decimal(d["c-n"]) + "," + str2decimal(d["c-e"])
+    centerpoint = [float(str2decimal(d["c-n"])), float(str2decimal(d["c-e"]))]
 
-    cornerpoints = "[" + str(d["sw-n"]) + "," + str(d["sw-e"]) + "], [" + str(d["nw-n"]) + "," + str(d["nw-e"]) + "], [" + str(d["ne-n"]) + "," + str(d["ne-e"]) + "], [" + str(d["se-n"]) + "," + str(d["se-e"]) + "], [" + str(d["sw-n"]) + "," + str(d["sw-e"]) + "]"
+    cornerpoints = [
+        [d["sw-n"], d["sw-e"]],
+        [d["nw-n"], d["nw-e"]],
+        [d["ne-n"], d["ne-e"]],
+        [d["se-n"], d["se-e"]],
+        [d["sw-n"], d["sw-e"]],
+    ]
 
     return name, society, centerpoint, cornerpoints
 

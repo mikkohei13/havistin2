@@ -25,7 +25,7 @@ def color_viridis(value):
 
 # Example color function. Takes three arguments: value, square_id and square information dictionary.
 def text_example(value, square_id, square_data):
-    text = f"{square_id} {square_data['kunta']} {square_data['nimi']}: {value}"
+    text = f"{common_helpers.escape_html(square_id)} {common_helpers.escape_html(square_data['kunta'])} {common_helpers.escape_html(square_data['nimi'])}: {common_helpers.escape_html(value)}"
     return text
 
 
@@ -54,35 +54,33 @@ def squares_with_data(square_data, colorfunction, textfunction):
     with open("data/atlas-grids.json") as f:
         squares = json.load(f)
 
-    coordinates = ""
+    polygons = []
     for square_id, value in square_data.items():
+        square = squares[square_id]
+        polygons.append(common_helpers.square_polygon(
+            square,
+            colorfunction(value),
+            textfunction(value, square_id, square),
+        ))
 
-        color = colorfunction(value)
-        text = textfunction(value, square_id, squares[square_id])
-
-        coordinates = coordinates + f"{{ coords: [[{squares[square_id]['sw-n']},{squares[square_id]['sw-e']}], [{squares[square_id]['nw-n']},{squares[square_id]['nw-e']}], [{squares[square_id]['ne-n']},{squares[square_id]['ne-e']}], [{squares[square_id]['se-n']},{squares[square_id]['se-e']}]], color: '{color}', text: '{text}' }},\n"
-    
-    return coordinates
+    return polygons
 
 
 def all_squares():
     with open("data/atlas-grids.json") as f:
         squares = json.load(f)
 
-    coordinates = ""
+    polygons = []
     limit = 4000
     i = 0
     for square_id, d in squares.items():
-        text = f"{square_id} {d['kunta']}, {d['nimi']}"
-
-        color = color_random(1)
-
-        coordinates = coordinates + f"{{ coords: [[{d['sw-n']},{d['sw-e']}], [{d['nw-n']},{d['nw-e']}], [{d['ne-n']},{d['ne-e']}], [{d['se-n']},{d['se-e']}]], color: '{color}', text: '{text}' }},\n"
+        text = f"{common_helpers.escape_html(square_id)} {common_helpers.escape_html(d['kunta'])}, {common_helpers.escape_html(d['nimi'])}"
+        polygons.append(common_helpers.square_polygon(d, color_random(1), text))
         i = i + 1
         if i >= limit:
             break
 
-    return coordinates
+    return polygons
 
 
 def main(square_id_untrusted):

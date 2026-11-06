@@ -1,7 +1,6 @@
 
 
 from datetime import timedelta, date
-import json
 
 import atlas.common_atlas as common_atlas
 from helpers import common_helpers
@@ -208,7 +207,7 @@ def datechart_data(collection_id):
         cumulative_chartsj_data.append(dict(x = single_date.strftime("%Y-%m-%d"), y = str(cumulative_count)))
         daily_chartsj_data.append(dict(x = single_date.strftime("%Y-%m-%d"), y = str(daily_count)))
 
-    return json.dumps(cumulative_chartsj_data), json.dumps(daily_chartsj_data)
+    return cumulative_chartsj_data, daily_chartsj_data
 
 
 def main():

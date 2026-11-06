@@ -103,14 +103,9 @@
     <p class="img-chart"><img src="/static/images/havainnot-2022.png" alt=""></p>
 
     <script type="text/javascript">
-        json = '{{ html["cumulative_datechart_data_vihko"]|safe }}';
-        vihko_data = JSON.parse(json);
-
-        json = '{{ html["cumulative_datechart_data_tiira"]|safe }}';
-        tiira_data = JSON.parse(json);
-
-        json = '{{ html["cumulative_datechart_data_tipu"]|safe }}';
-        tipu_data = JSON.parse(json);
+        vihko_data = {{ html["cumulative_datechart_data_vihko"]|tojson }};
+        tiira_data = {{ html["cumulative_datechart_data_tiira"]|tojson }};
+        tipu_data = {{ html["cumulative_datechart_data_tipu"]|tojson }};
 
         const data = {
             datasets: [
@@ -145,14 +140,9 @@
     </script>
 
     <script type="text/javascript">
-        json = '{{ html["daily_datechart_data_vihko"]|safe }}';
-        vihko_data = JSON.parse(json);
-
-        json = '{{ html["daily_datechart_data_tiira"]|safe }}';
-        tiira_data = JSON.parse(json);
-
-        json = '{{ html["daily_datechart_data_tipu"]|safe }}';
-        tipu_data = JSON.parse(json);
+        vihko_data = {{ html["daily_datechart_data_vihko"]|tojson }};
+        tiira_data = {{ html["daily_datechart_data_tiira"]|tojson }};
+        tipu_data = {{ html["daily_datechart_data_tipu"]|tojson }};
 
         const daily_data = {
             datasets: [

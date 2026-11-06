@@ -1,6 +1,5 @@
 
 from helpers import common_helpers
-import json
 
 def main():
     html = dict()
@@ -17,6 +16,6 @@ def main():
 #    print(cleaned_data)
 
     # Convert data into format that can be used with chart.js
-    html["river_data"] = json.dumps(cleaned_data)
+    html["river_data"] = cleaned_data
 
     return html

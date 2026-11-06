@@ -41,14 +41,14 @@
         }
     
         // Set intervals for each element
-        setInterval(() => fetchAPIData('/info/birds/{{ html["bird_secret"] }}', 'birds'), 3600000); // 1h
+        setInterval(() => fetchAPIData('/info/birds/' + {{ html["bird_secret"]|tojson }}, 'birds'), 3600000); // 1h
         setInterval(() => fetchAPIData('/info/rain', 'rain'), 121000); // 2 min
         setInterval(() => fetchAPIData('/info/tower', 'tower'), 122000); // 2 min
         setInterval(() => fetchAPIData('/info/news', 'news'), 3603000); // 1h
         setInterval(() => fetchAPIData('/info/bus', 'bus'), 60000); // 60 s
 
         // Initial calls
-        fetchAPIData('/info/birds/{{ html["bird_secret"] }}', 'birds');
+        fetchAPIData('/info/birds/' + {{ html["bird_secret"]|tojson }}, 'birds');
         fetchAPIData('/info/rain', 'rain');
         fetchAPIData('/info/tower', 'tower');
         fetchAPIData('/info/news', 'news');

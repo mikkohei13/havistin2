@@ -24,7 +24,7 @@
         }).addTo(map);
 
         // Array of arrays containing polygon coordinates
-        var polygons = [ {{ html["coordinates"]|safe }} ];
+        var polygons = {{ html["coordinates"]|tojson }};
 
         // Loop through the polygons array and create a separate L.polyline object for each polygon
         for (var i = 0; i < polygons.length; i++) {

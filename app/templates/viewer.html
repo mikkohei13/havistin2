@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Check for URL fragment and activate the corresponding tab
     var urlFragment = window.location.hash.substring(1);
     if (urlFragment) {
-        id = '{{ html["document_id"] }}' + '#' + urlFragment;
+        id = {{ html["document_id"]|tojson }} + '#' + urlFragment;
         id_css = replaceWithUnderscore(id)
         var targetTab = document.querySelector('#v_sidebar li[data-target="' + id_css + '"]');
         if (targetTab) {

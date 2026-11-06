@@ -62,7 +62,7 @@ function initializeRiverChart(containerId, riverData) {
 }
 
 // Call it directly
-const data = {{ html["river_data"]|safe }};
+const data = {{ html["river_data"]|tojson }};
 initializeRiverChart('lineChart', data);
 
 </script>

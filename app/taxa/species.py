@@ -61,8 +61,8 @@ def generate_fact_table(facts_dict):
     html = "<table class='styled-table'>"
     for key, value in facts_dict.items():
         html += "<tr>"
-        html += f"<td>{key}</td>"
-        html += f"<td>{value}</td>"
+        html += f"<td>{common_helpers.escape_html(key)}</td>"
+        html += f"<td>{common_helpers.escape_html(value)}</td>"
         html += "</tr>"
     html += "</table>"
 
@@ -88,10 +88,10 @@ def summarize_fact(data, name, fetch_terms):
         summary_human_readable = summary
 
     html = "<table class='styled-table facts'>\n"
-    html += f"<thead><th>{name}</th><th>Havaintoja kpl</th></thead>\n"
+    html += f"<thead><th>{common_helpers.escape_html(name)}</th><th>Havaintoja kpl</th></thead>\n"
     html += "<tbody>\n"
     for key, value in summary_human_readable.items():
-        html += f"<tr><td>{key}</td><td>{value}</td></tr>\n"
+        html += f"<tr><td>{common_helpers.escape_html(key)}</td><td>{value}</td></tr>\n"
     html += "</tbody>\n</table>\n"
 
     return html

@@ -3,6 +3,8 @@ service-account-key.json
 .DS_Store
 .cursor/
 
+LOCAL_NOTES.md
+
 export/
 import/
 test*

@@ -76,12 +76,12 @@ var ctx = document.getElementById('year_chart').getContext('2d');
 var chart = new Chart(ctx, {
     type: 'line',
     data: {
-        labels: {{ html["species_chart_data"]["days"]|safe }},
+        labels: {{ html["species_chart_data"]["days"]|tojson }},
         datasets: [{
             label: 'Kumulatiivinen lajimäärä',
             backgroundColor: 'rgb(255, 99, 132)',
             borderColor: 'rgb(255, 99, 132)',
-            data: {{ html["species_chart_data"]["cumulative_counts"]|safe }},
+            data: {{ html["species_chart_data"]["cumulative_counts"]|tojson }},
             fill: false,
         }]
     },
@@ -113,7 +113,7 @@ var chart = new Chart(ctx, {
             label: 'Lajeja kuukaudessa',
             backgroundColor: 'rgb(251, 216, 1)',
             borderColor: 'rgb(251, 216, 1)',
-            data: {{ html["month_chart_species_data"]|safe }},
+            data: {{ html["month_chart_species_data"]|tojson }},
             fill: false,
         }]
     },
@@ -149,13 +149,13 @@ var ctx = document.getElementById('day_chart').getContext('2d');
 var chart = new Chart(ctx, {
     type: 'bar',
     data: {
-        labels: {{ html["day_chart_data"]["days"]|safe }},
+        labels: {{ html["day_chart_data"]["days"]|tojson }},
         datasets: [{
             label: 'Havaintojen lukumäärä',
             backgroundColor: 'rgb(43, 170, 177)',
             borderColor: 'rgb(43, 170, 177)',
             hoverBackgroundColor: 'rgb(255, 99, 132)',
-            data: {{ html["day_chart_data"]["counts"]|safe }},
+            data: {{ html["day_chart_data"]["counts"]|tojson }},
             fill: false,
         }]
     },

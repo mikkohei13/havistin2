@@ -29,10 +29,12 @@ def color_viridis_capped(value):
 
 
 def text_completelists(value, square_id, square_data):
+    place = f"{common_helpers.escape_html(square_id)} {common_helpers.escape_html(square_data['kunta'])}, {common_helpers.escape_html(square_data['nimi'])}"
+    # value["text"] is already tun.fi links built above
     if 1 == value["list_count"]:
-        text = f"{square_id} {square_data['kunta']}, {square_data['nimi']}:<br>yksi täydellinen lista:<br>{ value['text'] }"
+        text = f"{place}:<br>yksi täydellinen lista:<br>{ value['text'] }"
     else:
-        text = f"{square_id} {square_data['kunta']}, {square_data['nimi']}:<br>{ value['list_count'] } täydellistä listaa:<br>{ value['text'] }"
+        text = f"{place}:<br>{ common_helpers.escape_html(value['list_count']) } täydellistä listaa:<br>{ value['text'] }"
     return text
 
 
@@ -72,13 +74,14 @@ def fetch_completelists_per_square():
 
         total_list_count += 1
 
+        link = common_helpers.tun_link(document_id, document_id) + " "
         if square_id in squares:
             squares[square_id]["list_count"] += 1
-            squares[square_id]["text"] += f"<a href=\\'{ document_id }\\' target=\\'_blank\\'>{ document_id }</a> "
+            squares[square_id]["text"] += link
         else:
             squares[square_id] = dict()
             squares[square_id]["list_count"] = 1
-            squares[square_id]["text"] = f"<a href=\\'{ document_id }\\' target=\\'_blank\\'>{ document_id }</a> "
+            squares[square_id]["text"] = link
 
 #    print(squares)
 
