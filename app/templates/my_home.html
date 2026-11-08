@@ -31,7 +31,15 @@
     <h3>Omat <a href='/my/groups/{{ html["current_year"] }}/phylum'>pääjaksot</a> / <a href='/my/groups/{{ html["current_year"] }}/class'>luokat</a> / <a href='/my/groups/{{ html["current_year"] }}/order'>lahkot</a> {{ html["current_year"] }}</a></h3>
 
     <h3><a href='/my/taxa/MX.229577'>Omat lajit</a> (esimerkkinä luteet)</h3>
-    
+
+    {% if person_token %}
+    <h3>Terra</h3>
+    <form id="terra-login" action="{{ terra_login_url }}" method="post" referrerpolicy="no-referrer">
+        <input type="hidden" name="personToken" value="{{ person_token }}">
+        <button type="submit">Avaa Terra</button>
+    </form>
+    {% endif %}
+
     <p style="margin-top: 5em;">&nbsp;</p>
 {% endif %}
 

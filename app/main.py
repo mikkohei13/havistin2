@@ -111,6 +111,8 @@ print("-------------- PAGES --------------", file = sys.stdout)
 LAJI_AUTH_LOGIN_URL = "https://login.laji.fi/login"
 LAJI_AUTH_TARGET = "KE.781"
 LOCAL_LOGIN_POST_URL = "http://localhost/login"
+TERRA_LOGIN_URL_LOCAL = "http://localhost:85/login"
+TERRA_LOGIN_URL_PROD = "https://terra.biomi.org/login"
 
 
 def _safe_next_target(value):
@@ -122,6 +124,12 @@ def _safe_next_target(value):
 def _request_is_localhost():
     host = request.host.split(":", 1)[0].lower()
     return host in ("localhost", "127.0.0.1")
+
+
+def _terra_login_url():
+    if _request_is_localhost():
+        return TERRA_LOGIN_URL_LOCAL
+    return TERRA_LOGIN_URL_PROD
 
 
 def _login_user_with_person_token(person_token):
@@ -323,7 +331,12 @@ def my_taxa(taxon_id_untrusted):
 @app.route("/my/")
 def my_home():
     html = my.home.main()
-    return render_template("my_home.html", html=html)
+    return render_template(
+        "my_home.html",
+        html=html,
+        terra_login_url=_terra_login_url(),
+        person_token=session.get("token") or "",
+    )
 
 @app.route("/my/<string:coord_untrusted>")
 @robust_cached(timeout=1)
