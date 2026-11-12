@@ -34,9 +34,10 @@
 
     {% if person_token %}
     <h3>Terra</h3>
+    <p>Terra on kehitteillä oleva havaintojen tallennussovellus. Sillä tehdyt havainnot tallentuvat Vihkoon omalle tilillesi. Käytä omalla vastuulla.</p>
     <form id="terra-login" action="{{ terra_login_url }}" method="post" referrerpolicy="no-referrer">
         <input type="hidden" name="personToken" value="{{ person_token }}">
-        <button type="submit">Avaa Terra</button>
+        <button type="submit">Kirjaudu Terraan</button>
     </form>
     {% endif %}
 
