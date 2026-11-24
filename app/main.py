@@ -112,7 +112,7 @@ LAJI_AUTH_LOGIN_URL = "https://login.laji.fi/login"
 LAJI_AUTH_TARGET = "KE.781"
 LOCAL_LOGIN_POST_URL = "http://localhost/login"
 TERRA_LOGIN_URL_LOCAL = "http://localhost:85/login"
-TERRA_LOGIN_URL_PROD = "https://terra.biomi.org/login"
+TERRA_LOGIN_URL_PROD = "https://pica.biomi.org/login"
 
 
 def _safe_next_target(value):
@@ -159,7 +159,12 @@ def _extract_person_token_from_request():
 @app.route("/")
 def root():
     html = index.index.main()
-    return render_template("index.html", html=html)
+    return render_template(
+        "index.html",
+        html=html,
+        terra_login_url=_terra_login_url(),
+        person_token=session.get("token") or "",
+    )
 
 # Blueprints
 app.register_blueprint(info_bp)

@@ -30,14 +30,17 @@
 
     <h3>Omat <a href='/my/groups/{{ html["current_year"] }}/phylum'>pääjaksot</a> / <a href='/my/groups/{{ html["current_year"] }}/class'>luokat</a> / <a href='/my/groups/{{ html["current_year"] }}/order'>lahkot</a> {{ html["current_year"] }}</a></h3>
 
-    <h3><a href='/my/taxa/MX.229577'>Omat lajit</a> (esimerkkinä luteet)</h3>
+    <h3><a href='/my/taxa/MX.37580'>Omat lajit</a> (esimerkkinä linnut)</h3>
 
     {% if person_token %}
-    <h3>Terra</h3>
-    <p>Terra on kehitteillä oleva havaintojen tallennussovellus. Sillä tehdyt havainnot tallentuvat Vihkoon omalle tilillesi. Käytä omalla vastuulla.</p>
-    <form id="terra-login" action="{{ terra_login_url }}" method="post" referrerpolicy="no-referrer">
+    <!-- Terra is the technical name for the mobile app, which is branded for users as Pica. -->
+    <form id="subnavi" style="margin-top: 2em;" class="temp" action="{{ terra_login_url }}" method="post" referrerpolicy="no-referrer">
+        <h3>Pica: Kirjaa havaintoja puhelimella</h3>
+        <p>
+            Kokeile uutta tallennussovellusta, joka on tarkoitettu havaintojen nopeaan tallentamiseen. Se toimii puhelimen selaimessa, joten asennusta ei tarvita. Havainnot tallentuvat Lajitietokeskuksen Vihkoon omalle tilillesi. Pica on vielä kehitysvaiheessa, ja sen ominaisuudet voivat muuttua varoittamatta.
+        </p>
         <input type="hidden" name="personToken" value="{{ person_token }}">
-        <button type="submit">Kirjaudu Terraan</button>
+        <button type="submit">Kirjaa havaintoja Picalla</button>
     </form>
     {% endif %}
 
